@@ -1,1 +1,1815 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Interactiva · Lenguaje 4° Básico · Unidad 2</title>
+<style>
+/* ============================================================
+   ESTILOS — Guía Interactiva de Lenguaje 4° Básico
+   Todo embebido, sin dependencias externas (funciona offline)
+   ============================================================ */
+:root{
+  --morado:#6C3FB5;
+  --morado-osc:#4A2680;
+  --morado-claro:#EDE4FF;
+  --naranjo:#FF8A3D;
+  --amarillo:#FFC93C;
+  --verde:#2FA84F;
+  --verde-claro:#E3F7E8;
+  --rojo:#E0453A;
+  --rojo-claro:#FDE7E5;
+  --azul:#1E88E5;
+  --gris:#5B5B6B;
+  --texto:#26243B;
+  --fondo:#F5F1FF;
+  --card:#FFFFFF;
+  --sombra:0 6px 18px rgba(76,38,128,.14);
+  --radio:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Trebuchet MS","Verdana","Segoe UI",sans-serif;
+  background:var(--fondo);
+  color:var(--texto);
+  line-height:1.55;
+  font-size:17px;
+  padding-bottom:40px;
+}
+button{font-family:inherit;cursor:pointer;border:none}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--azul);outline-offset:2px}
 
+/* ---------- Barra superior ---------- */
+#barra{
+  position:sticky;top:0;z-index:50;
+  background:var(--morado);color:#fff;
+  padding:8px 14px;box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+#barraTop{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
+#marcaBarra{font-weight:bold;font-size:15px}
+#stats{display:flex;gap:14px;flex-wrap:wrap;font-size:15px;font-weight:bold}
+#stats span{background:rgba(255,255,255,.16);padding:3px 10px;border-radius:20px;white-space:nowrap}
+#progWrap{margin-top:7px;background:rgba(255,255,255,.25);border-radius:20px;height:14px;overflow:hidden}
+#progBar{height:100%;width:0%;background:linear-gradient(90deg,var(--amarillo),var(--naranjo));border-radius:20px;transition:width .5s ease}
+#progTxt{font-size:12.5px;margin-top:3px;opacity:.95}
+
+/* ---------- Contenedor ---------- */
+.wrap{max-width:840px;margin:0 auto;padding:16px}
+.card{
+  background:var(--card);border-radius:var(--radio);
+  box-shadow:var(--sombra);padding:22px;margin-bottom:18px;
+}
+h1{font-size:30px;color:var(--morado-osc);line-height:1.2;margin-bottom:8px}
+h2{font-size:23px;color:var(--morado-osc);margin-bottom:10px}
+h3{font-size:19px;color:var(--morado);margin:16px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:0 0 10px 22px}
+li{margin-bottom:5px}
+.centro{text-align:center}
+
+/* ---------- Botones ---------- */
+.btn{
+  background:var(--morado);color:#fff;font-size:18px;font-weight:bold;
+  padding:14px 26px;border-radius:14px;box-shadow:0 4px 0 var(--morado-osc);
+  transition:transform .1s, box-shadow .1s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--morado-osc)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--morado-osc)}
+.btn.naranjo{background:var(--naranjo);box-shadow:0 4px 0 #C9631F}
+.btn.naranjo:hover{box-shadow:0 6px 0 #C9631F}
+.btn.verde{background:var(--verde);box-shadow:0 4px 0 #1E7635}
+.btn.verde:hover{box-shadow:0 6px 0 #1E7635}
+.btn.gris{background:#8A87A0;box-shadow:0 4px 0 #63617A}
+.btn.chico{font-size:15px;padding:9px 16px;border-radius:11px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ---------- Mapa de niveles ---------- */
+.nivelGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.nivelCard{
+  background:#fff;border:3px solid var(--morado-claro);border-radius:var(--radio);
+  padding:16px;text-align:left;transition:transform .15s, border-color .15s;
+  position:relative;box-shadow:var(--sombra);
+}
+.nivelCard.abierto{border-color:var(--morado)}
+.nivelCard.abierto:hover{transform:translateY(-4px)}
+.nivelCard.bloqueado{opacity:.55;filter:grayscale(.6);cursor:not-allowed}
+.nivelCard.listo{border-color:var(--verde);background:var(--verde-claro)}
+.nivelCard .emo{font-size:36px;display:block;margin-bottom:4px}
+.nivelCard .tit{font-weight:bold;font-size:17px;color:var(--morado-osc);display:block}
+.nivelCard .sub{font-size:13.5px;color:var(--gris);display:block;margin-top:3px}
+.nivelCard .est{position:absolute;top:12px;right:14px;font-size:19px}
+
+/* ---------- Teoría ---------- */
+.teoBox{background:var(--morado-claro);border-radius:14px;padding:16px;margin:12px 0}
+.resumen{background:#FFF6DE;border-left:6px solid var(--amarillo);border-radius:10px;padding:13px 15px;margin:12px 0}
+.dato{background:#E4F2FF;border-left:6px solid var(--azul);border-radius:10px;padding:13px 15px;margin:12px 0}
+.ejemplo{background:#fff;border:2px dashed var(--naranjo);border-radius:10px;padding:11px 14px;margin:8px 0}
+.textoFuente{background:#FFFDF5;border:2px solid var(--amarillo);border-radius:12px;padding:14px 16px;margin:12px 0;font-size:16px}
+.poema{white-space:pre-line;font-style:italic;text-align:center;line-height:1.7;background:#FFFDF5;border:2px solid var(--amarillo);border-radius:12px;padding:16px}
+
+/* ---------- Preguntas ---------- */
+.preg{font-size:19px;font-weight:bold;margin-bottom:14px;color:var(--morado-osc)}
+.contexto{background:#F3F0FF;border-radius:10px;padding:11px 14px;margin-bottom:12px;font-size:16px;white-space:pre-line}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{
+  background:#fff;border:3px solid var(--morado-claro);border-radius:13px;
+  padding:13px 16px;text-align:left;font-size:17px;color:var(--texto);
+  transition:background .12s, border-color .12s;width:100%;
+}
+.opt:hover:not(:disabled){background:var(--morado-claro)}
+.opt.ok{background:var(--verde-claro);border-color:var(--verde);font-weight:bold}
+.opt.no{background:var(--rojo-claro);border-color:var(--rojo)}
+.optsVF{display:flex;gap:14px;flex-wrap:wrap}
+.optsVF .opt{flex:1;min-width:130px;text-align:center;font-size:20px;font-weight:bold}
+
+/* ---------- Feedback ---------- */
+.fb{margin-top:14px;padding:14px 16px;border-radius:13px;font-size:16.5px;animation:aparece .25s ease}
+.fb.ok{background:var(--verde-claro);border-left:6px solid var(--verde)}
+.fb.no{background:var(--rojo-claro);border-left:6px solid var(--rojo)}
+.fb b{display:block;margin-bottom:4px;font-size:18px}
+@keyframes aparece{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- Flashcards ---------- */
+.flashArea{perspective:1200px;margin:16px 0}
+.flash{
+  position:relative;width:100%;min-height:210px;cursor:pointer;
+  transition:transform .55s;transform-style:preserve-3d;
+}
+.flash.girada{transform:rotateY(180deg)}
+.flashCara{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border-radius:16px;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:22px;font-size:19px;box-shadow:var(--sombra);
+}
+.flashCara.frente{background:linear-gradient(135deg,var(--morado),#8E5BD6);color:#fff;font-weight:bold;font-size:21px}
+.flashCara.detras{background:#fff;border:3px solid var(--verde);transform:rotateY(180deg);color:var(--texto)}
+.flashNav{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:12px}
+
+/* ---------- Relacionar ---------- */
+.matchGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.matchCol{display:flex;flex-direction:column;gap:9px}
+.mItem{
+  background:#fff;border:3px solid var(--morado-claro);border-radius:12px;
+  padding:11px 13px;font-size:15.5px;text-align:left;transition:.12s;
+}
+.mItem:hover:not(:disabled){background:var(--morado-claro)}
+.mItem.sel{background:var(--amarillo);border-color:var(--naranjo);font-weight:bold}
+.mItem.hecho{background:var(--verde-claro);border-color:var(--verde);opacity:.75;cursor:default}
+.mItem.err{background:var(--rojo-claro);border-color:var(--rojo)}
+
+/* ---------- Ordenar ---------- */
+.ordList{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+.ordItem{
+  background:#fff;border:3px solid var(--morado-claro);border-radius:12px;
+  padding:11px 14px;display:flex;align-items:center;gap:10px;font-size:16px;
+}
+.ordItem .num{background:var(--morado);color:#fff;border-radius:50%;width:29px;height:29px;
+  display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;font-size:15px}
+.ordItem .txt{flex:1;text-align:left}
+.ordBtns{display:flex;flex-direction:column;gap:3px}
+.ordBtns button{background:var(--morado-claro);border-radius:7px;width:32px;height:22px;font-size:12px;color:var(--morado-osc);font-weight:bold}
+.ordItem.ok{background:var(--verde-claro);border-color:var(--verde)}
+.ordItem.no{background:var(--rojo-claro);border-color:var(--rojo)}
+
+/* ---------- Completar (B/V y vocabulario) ---------- */
+.hueco{display:inline-block;min-width:44px;border-bottom:4px solid var(--naranjo);text-align:center;font-weight:bold;color:var(--morado-osc)}
+.palabraGrande{font-size:32px;font-weight:bold;text-align:center;margin:14px 0;letter-spacing:1px;color:var(--morado-osc)}
+
+/* ---------- Racha / toast ---------- */
+#toast{
+  position:fixed;left:50%;top:78px;transform:translateX(-50%) scale(.85);
+  background:var(--amarillo);color:var(--morado-osc);font-weight:bold;
+  padding:11px 20px;border-radius:30px;box-shadow:var(--sombra);
+  opacity:0;pointer-events:none;transition:.3s;z-index:99;font-size:17px;text-align:center;
+}
+#toast.ver{opacity:1;transform:translateX(-50%) scale(1)}
+
+/* ---------- Medallas ---------- */
+.medGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:11px;margin-top:10px}
+.med{background:#fff;border:3px solid var(--amarillo);border-radius:14px;padding:12px;text-align:center;font-size:14px;box-shadow:var(--sombra)}
+.med .ic{font-size:31px;display:block}
+.med.gris{border-color:#DDD;opacity:.45;filter:grayscale(1)}
+
+/* ---------- Tabla resultados ---------- */
+.resGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:14px 0}
+.resBox{background:var(--morado-claro);border-radius:14px;padding:14px;text-align:center}
+.resBox .n{font-size:28px;font-weight:bold;color:var(--morado-osc);display:block}
+.resBox .l{font-size:13.5px;color:var(--gris)}
+
+.oculto{display:none!important}
+.pie{text-align:center;font-size:13px;color:var(--gris);margin-top:18px}
+.chip{display:inline-block;background:var(--morado-claro);color:var(--morado-osc);border-radius:20px;
+  padding:3px 12px;font-size:13.5px;font-weight:bold;margin:0 5px 5px 0}
+
+@media(max-width:620px){
+  body{font-size:16px}
+  h1{font-size:24px}
+  .matchGrid{grid-template-columns:1fr}
+  .wrap{padding:11px}
+  .card{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<div id="barra" class="oculto">
+  <div id="barraTop">
+    <div id="marcaBarra">🪄 Lenguaje 4° Básico · Unidad 2</div>
+    <div id="stats">
+      <span id="sXP">⭐ 0 XP</span>
+      <span id="sRacha">🔥 0</span>
+      <span id="sNivel">🏅 Nivel 1</span>
+      <button class="btn chico gris" onclick="irAlMapa()">🗺️ Mapa</button>
+    </div>
+  </div>
+  <div id="progWrap"><div id="progBar"></div></div>
+  <div id="progTxt">Progreso general: 0%</div>
+</div>
+
+<div id="toast"></div>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ============================================================
+   1) DATOS — Contenido pedagógico y banco de ítems
+   Fuente: Guía Formativa N°2, Lenguaje y Comunicación,
+   4° Básico, Instituto Alonso de Ercilla (Hermanos Maristas),
+   agosto 2026 + indicaciones de la profesora (Unidad 2, lecciones 1-3).
+   ============================================================ */
+
+/* Textos de la guía, reutilizados en varias actividades */
+const TEXTOS = {
+t1:`📜 TEXTO N°1 — "Pócima para aprobar exámenes"
+Obviamente, la magia es limitada en estos casos. En principio… debes estudiar. Pero para sentirte iluminado a la hora del examen, puedes beber esta pócima que te hará sentir súper inteligente.
+
+Ingredientes:
+• 1 vaso de leche
+• 1 yema de huevo
+• Unas gotas de esencia de vainilla
+• 2 cucharadas de azúcar
+• 1 pizca de canela molida
+
+Preparación: Coloca todos los ingredientes en una licuadora o en una batidora y bébelos con toda su espuma.`,
+
+t2:`🥤 TEXTO N°2 — "Brebaje para adquirir una fuerza poderosa"
+Si necesitas ganar algún campeonato de fútbol o simplemente quieres tener mucha energía para poder correr, saltar o sujetar a tu perro cuando lo sacas a pasear, prueba con esta antigua fórmula alquímica del mago Melisek.
+
+Ingredientes:
+• 2 cucharadas de miel de caña
+• 1 taza de leche caliente
+• 2 cucharadas de cacao en polvo
+• 1 cucharada de crema de leche
+
+Preparación: Coloca la miel, el cacao y la crema de leche en un tazón. Vierte la leche hirviendo sobre estos ingredientes, revuelve todo con un palito de naranjo (o uno de brochette si lo tienes más a mano) y bébelo antes de que se enfríe.`,
+
+t3:`🧙 TEXTO N°3 — Consejos del mago
+"Ustedes saben que los magos deben practicar mucho con la varita mágica. Si quieres ser un mago de verdad sigue los siguientes consejos…"
+
+Recuerda que con la varita NO DEBES:
+• Pegarle a tu mascota.
+• Usarla descuidadamente, pues puedes ponérsela en un ojo a alguien.
+• Hacer conjuros negativos.
+• Prestársela a otro mago.
+• Olvidarla en cualquier lugar.`,
+
+poema:`Caimanes y cocodrilos
+(Ana Merino)
+
+Siempre tuve mucho lío
+intentando dibujar
+caimanes y cocodrilos.
+
+Me parecen parecidos
+el caimán y el cocodrilo,
+y no me puedo acercar
+demasiado a la gran charca
+donde nadan a sus anchas
+porque tienen apetito
+y me podrían zampar
+en tres o cuatro mordiscos.
+
+Caimanes y cocodrilos
+al dentista nunca han ido,
+aunque se les caen los dientes
+muchos más les han salido.
+
+El cocodrilo, me cuentan,
+puede visitar el mar
+porque se guarda en la lengua
+unas glándulas de sal.
+
+Del caimán del Orinoco
+me dicen que quedan pocos
+y tenemos que rogar
+para que tengamos más.
+
+Si el caimán cierra la boca
+sus dientes ya no se notan,
+si lo hace el cocodrilo
+se le verán cien colmillos.
+
+Diferenciar no he podido
+al caimán del cocodrilo;
+lo mejor será esperar
+los bramidos del caimán,
+pues he leído en un libro
+que el cocodrilo se calla
+porque el silencio le agrada
+y no le gusta hacer ruido.
+
+El que canta es el caimán.`
+};
+
+/* ---- BANCO DE NIVELES ---- */
+const NIVELES = [
+
+/* ===================== NIVEL 1 ===================== */
+{
+ nombre:"Aprendiz de Instrucciones",
+ emoji:"📋",
+ sub:"Textos instructivos y normativos",
+ teoria:{
+  titulo:"📋 Textos instructivos y textos normativos",
+  html:`
+  <p>Hay textos que <b>no cuentan historias</b>: su misión es <b>enseñarnos a hacer algo</b> o <b>decirnos cómo debemos comportarnos</b>. Se llaman <b>textos no literarios</b>.</p>
+  <h3>🔧 El texto INSTRUCTIVO</h3>
+  <p>Explica <b>paso a paso</b> cómo hacer una tarea o procedimiento. Su propósito comunicativo es <b>instruir</b>, es decir, enseñar a hacer algo.</p>
+  <ul>
+    <li>Los pasos van <b>en orden</b> (si cambias el orden, no funciona).</li>
+    <li>Incluye <b>texto e imágenes</b> que complementan la información.</li>
+    <li>Las instrucciones son <b>cortas y precisas</b>.</li>
+    <li>Usa verbos en <b>infinitivo</b> (buscar, leer, hervir) <b>o</b> en <b>segunda persona</b> (busca, lee, hierve).</li>
+  </ul>
+  <div class="ejemplo"><b>Estructura típica:</b> <b>Título</b> → <b>Ingredientes o materiales</b> → <b>Preparación o pasos</b>.<br>
+  Ejemplos: una receta, el manual de un juguete, las instrucciones de un experimento.</div>
+  <h3>📜 El texto NORMATIVO</h3>
+  <p>Entrega <b>normas o reglamentos</b>: nos dice <b>cómo actuar</b> en un lugar o situación. Su propósito es <b>regular la conducta</b>.</p>
+  <div class="ejemplo">Ejemplos: reglas de convivencia, reglamento de disciplina, las leyes, los diez mandamientos, el decálogo de la sana convivencia del curso.</div>
+  `,
+  resumen:"El texto <b>instructivo</b> te enseña <b>CÓMO HACER</b> algo paso a paso (receta). El texto <b>normativo</b> te dice <b>CÓMO ACTUAR</b> o comportarte (reglamento).",
+  dato:"🧠 Truco para no confundirte: <b>Instructivo = Instrucciones = \"hazlo así\"</b>. <b>Normativo = Normas = \"pórtate así\"</b>. ¡Los dos empiezan con la palabra que los explica!"
+ },
+ flash:[
+  {f:"¿Cuál es el propósito comunicativo de un texto instructivo?",b:"Enseñar a realizar una actividad paso a paso (instruir)."},
+  {f:"¿Cuál es el propósito comunicativo de un texto normativo?",b:"Entregar normas o reglas para saber cómo actuar en un lugar o situación."},
+  {f:"¿Cuál es la estructura de una receta o pócima?",b:"Título → Ingredientes → Preparación."},
+  {f:"¿En qué dos formas verbales se escriben las instrucciones?",b:"En infinitivo (hervir, buscar) o en segunda persona (hierve, busca)."},
+  {f:"Nombra 3 ejemplos de texto normativo",b:"Reglamento de disciplina, reglas de convivencia, las leyes (también: los diez mandamientos)."},
+  {f:"Nombra 3 ejemplos de texto instructivo",b:"Una receta de cocina, el manual de un juego, las instrucciones de un experimento."},
+  {f:"¿Por qué el orden de los pasos es importante en un instructivo?",b:"Porque si se cambia el orden, el procedimiento no resulta bien."},
+  {f:"¿Para qué sirven las imágenes en un texto instructivo?",b:"Complementan la información y ayudan a entender mejor cada paso."}
+ ],
+ items:[
+  {t:"mc",p:"Los textos 1 y 2 (la pócima y el brebaje) corresponden al tipo de texto:",ctx:"Ambos tienen título, una lista de ingredientes y una preparación paso a paso.",
+   o:["Narrativo","Normativo","Instructivo","Instrumental"],c:2,
+   exp:["No: un texto narrativo cuenta una historia con personajes y acontecimientos, y aquí no se cuenta ninguna historia.",
+        "No: los normativos entregan normas o reglamentos de conducta, no pasos para preparar algo.",
+        "¡Exacto! Tienen título, ingredientes y preparación paso a paso: enseñan CÓMO HACER algo.",
+        "No: \"instrumental\" no es un tipo de texto estudiado; te confundió el parecido con \"instructivo\"."]},
+  {t:"mc",p:"El texto N°1 (\"Pócima para aprobar exámenes\") tiene como objetivo dar:",o:["Instrucciones","Normas","Órdenes","Sugerencias"],c:0,
+   exp:["¡Muy bien! Entrega las instrucciones para preparar la pócima paso a paso.",
+        "No: las normas dicen cómo comportarse, aquí se explica cómo preparar algo.",
+        "No: no manda ni obliga, solo explica un procedimiento.",
+        "No: una sugerencia es un consejo opcional; aquí hay pasos concretos que seguir."]},
+  {t:"mc",p:"¿De qué se trata el texto N°1?",o:["Del buen uso de la varita mágica","De un brebaje para adquirir fuerzas","De una pócima para la buena suerte","De una pócima para aprobar los exámenes"],c:3,
+   exp:["No: eso es el texto N°3, los consejos del mago.",
+        "No: ese es el texto N°2, el brebaje del mago Melisek.",
+        "No: no habla de suerte, sino de sentirse iluminado en el examen.",
+        "¡Correcto! El título mismo lo dice: \"Pócima para aprobar exámenes\"."]},
+  {t:"mc",p:"¿Cuál es la estructura de los textos instructivos leídos?",o:["Título / preparación / ingredientes","Título / ingredientes / indicaciones","Título / ingredientes / preparación","Título / indicaciones / preparación"],c:2,
+   exp:["No: la preparación va DESPUÉS de los ingredientes, no antes.",
+        "Casi, pero la palabra que usan los textos es \"preparación\", no \"indicaciones\".",
+        "¡Perfecto! Primero el título, luego los ingredientes y al final la preparación.",
+        "No: faltan los ingredientes, que aparecen antes de la preparación."]},
+  {t:"mc",p:"Según el texto N°2, la leche debe estar:",ctx:"\"Vierte la leche hirviendo sobre estos ingredientes…\"",
+   o:["Fría","En la caja","Semi congelada","Hervida"],c:3,
+   exp:["No: el texto dice claramente que la leche va hirviendo.",
+        "No: eso no aparece en el texto.",
+        "No: al contrario, debe estar muy caliente.",
+        "¡Exacto! Dice \"1 taza de leche caliente\" y \"vierte la leche hirviendo\"."]},
+  {t:"mc",p:"Según el texto N°2, el brebaje está preparado para una persona. ¿Qué deberías hacer para prepararlo para el equipo de fútbol del colegio?",
+   o:["Aumentar los ingredientes al doble para que alcance para todo el equipo","Aumentar los ingredientes según la cantidad de personas del equipo","Disminuir la cantidad de ingredientes","Disminuir la crema de leche y aumentar el azúcar"],c:1,
+   exp:["No: el doble alcanza solo para 2 personas, y un equipo tiene muchos más jugadores.",
+        "¡Muy bien! Hay que multiplicar los ingredientes según cuántas personas sean.",
+        "No: si son más personas, se necesita MÁS cantidad, no menos.",
+        "No: eso cambiaría la receta y además el brebaje no lleva azúcar."]},
+  {t:"mc",p:"Según el texto N°3, deduce: ¿qué podría pasar si NO sigues los consejos del mago sobre la varita mágica?",
+   o:["Puedes darle un mal uso a la varita mágica","Nada, ya que las varitas no ocasionan daño","Puedes perderla y que otra persona la ocupe","Nada, porque las varitas mágicas no existen"],c:0,
+   exp:["¡Correcto! Todos los consejos apuntan a lo mismo: usarla mal puede causar daño.",
+        "No: el propio texto advierte que puedes lastimar a alguien en un ojo.",
+        "Eso es solo UNO de los cinco consejos; la respuesta debe incluir todos.",
+        "Ojo: la pregunta se responde DENTRO del mundo del texto, no según la vida real."]},
+  {t:"mc",p:"El texto N°3 (los consejos del mago) es principalmente un texto:",o:["Instructivo, porque enseña a fabricar una varita","Normativo, porque entrega reglas sobre cómo actuar con la varita","Narrativo, porque cuenta la vida del mago","Poético, porque tiene rimas"],c:1,
+   exp:["No: nunca explica cómo fabricar una varita.",
+        "¡Exacto! Es una lista de cosas que NO DEBES hacer: son normas de conducta.",
+        "No: no hay una historia con inicio, desarrollo y final.",
+        "No: no está escrito en versos ni tiene rima."]},
+  {t:"mc",p:"¿Cuál de estos verbos está escrito en INFINITIVO, como se usa en los textos instructivos?",o:["Hierve","Hervir","Hirviendo","Hervía"],c:1,
+   exp:["Esa es la forma en segunda persona (tú), también válida, pero no es infinitivo.",
+        "¡Muy bien! Los infinitivos terminan en -ar, -er, -ir: hervir, buscar, leer.",
+        "Ese es un gerundio (termina en -ando/-iendo).",
+        "Ese es un verbo en pasado, no un infinitivo."]},
+  {t:"vf",p:"Los textos normativos nos ofrecen pautas a seguir que se deben respetar.",c:true,
+   ok:"¡Correcto! Justamente esa es la función de un texto normativo: entregar normas que se respetan.",
+   no:"En realidad es verdadero: los textos normativos entregan pautas o normas que deben respetarse."},
+  {t:"vf",p:"La importancia de los textos normativos es que nos permiten desarrollarnos mejor y tener una convivencia grata con las demás personas.",c:true,
+   ok:"¡Muy bien! Las normas ordenan la convivencia y nos ayudan a vivir mejor juntos.",
+   no:"Es verdadero: gracias a las normas convivimos mejor, tanto de forma individual como en grupo."},
+  {t:"vf",p:"Los textos instructivos se escriben solamente con verbos en infinitivo.",c:false,
+   ok:"¡Exacto! Es falso: también pueden usar la segunda persona (busca, lee, hierve).",
+   no:"Es falso: además del infinitivo (buscar, leer, hervir) se puede usar la segunda persona (busca, lee, hierve)."},
+  {t:"vf",p:"La diferencia entre un texto instructivo y uno normativo es que los instructivos explican cómo actuar frente a una situación y los normativos entregan los pasos para realizar una actividad.",c:false,
+   ok:"¡Muy bien detectado! Está al revés: los INSTRUCTIVOS dan los pasos y los NORMATIVOS dicen cómo actuar.",
+   no:"Es falso porque la definición está invertida: los instructivos entregan los pasos, y los normativos indican cómo actuar."},
+  {t:"vf",p:"En un texto instructivo el orden de los pasos puede cambiarse sin ningún problema.",c:false,
+   ok:"¡Correcto! Si cambias el orden, el procedimiento no resulta como debería.",
+   no:"Es falso: el orden es fundamental. No puedes revolver antes de poner los ingredientes en el tazón."},
+  {t:"vf",p:"El reglamento de disciplina del colegio es un ejemplo de texto normativo.",c:true,
+   ok:"¡Muy bien! Un reglamento entrega normas de conducta: es normativo.",
+   no:"Es verdadero: un reglamento entrega normas sobre cómo debemos comportarnos."},
+  {t:"vf",p:"Las imágenes de un texto instructivo son solo un adorno y no aportan información.",c:false,
+   ok:"¡Exacto! Las imágenes complementan la información y ayudan a comprender los pasos.",
+   no:"Es falso: la guía dice que los textos instructivos incluyen texto e imágenes que COMPLEMENTAN la información."},
+  {t:"orden",p:"Ordena la preparación del \"Brebaje para adquirir una fuerza poderosa\" (texto N°2).",
+   pasos:["Colocar la miel, el cacao y la crema de leche en un tazón.","Verter la leche hirviendo sobre los ingredientes.","Revolver todo con un palito de naranjo.","Beber el brebaje antes de que se enfríe."],
+   ok:"¡Perfecto! Recuerda: primero los ingredientes en el tazón, después la leche hirviendo, luego revolver y por último beber.",
+   no:"Revisa el texto: primero van los ingredientes al tazón, después se vierte la leche hirviendo, se revuelve y recién ahí se bebe."},
+  {t:"orden",p:"Ordena la preparación de la \"Pócima para aprobar exámenes\" (texto N°1).",
+   pasos:["Reunir los ingredientes: leche, yema de huevo, vainilla, azúcar y canela.","Colocar todos los ingredientes en una licuadora o batidora.","Licuar hasta que se forme espuma.","Beber la pócima con toda su espuma."],
+   ok:"¡Excelente! Ese es exactamente el procedimiento que indica el texto N°1.",
+   no:"Vuelve a leer el texto N°1: primero se reúnen los ingredientes, luego van a la licuadora y por último se bebe con espuma."},
+  {t:"match",p:"Relaciona cada texto con su propósito comunicativo.",
+   pares:[["Receta de cocina","Enseñar a preparar un plato paso a paso"],
+          ["Reglamento del colegio","Indicar cómo debemos comportarnos"],
+          ["Poema","Expresar sentimientos y emociones"],
+          ["Cuento","Narrar una historia con personajes"]],
+   ok:"¡Muy bien! Cada tipo de texto tiene un propósito distinto: instruir, normar, expresar o narrar."},
+  {t:"match",p:"Relaciona cada parte con lo que le corresponde en un texto instructivo.",
+   pares:[["Título","Dice de qué se trata la preparación"],
+          ["Ingredientes","Lista de lo que necesitas y en qué cantidad"],
+          ["Preparación","Pasos ordenados que debes seguir"],
+          ["Imagen","Complementa y aclara la información"]],
+   ok:"¡Excelente! Ya dominas la estructura de un texto instructivo."}
+ ]
+},
+
+/* ===================== NIVEL 2 ===================== */
+{
+ nombre:"Detective Lector",
+ emoji:"🔍",
+ sub:"Información explícita, implícita e inferencias",
+ teoria:{
+  titulo:"🔍 Leer como un detective",
+  html:`
+  <p>Cuando lees, hay <b>dos tipos de información</b> que puedes encontrar:</p>
+  <h3>👀 Información EXPLÍCITA</h3>
+  <p>Está <b>escrita tal cual</b> en el texto. Solo tienes que <b>buscarla y copiarla</b>. Suele responder a: ¿quién?, ¿qué?, ¿cuándo?, ¿dónde?, ¿cuántos?</p>
+  <div class="ejemplo">Texto: "1 taza de leche caliente". → Pregunta: ¿Cómo debe estar la leche? → <b>Caliente</b>. ¡Está escrito!</div>
+  <h3>🕵️ Información IMPLÍCITA (inferencias)</h3>
+  <p><b>No está escrita</b>: tú la <b>deduces</b> juntando las pistas del texto con lo que ya sabes. Las preguntas suelen decir: <i>deduce, infiere, ¿por qué?, ¿qué podría pasar?, ¿para qué?</i></p>
+  <div class="ejemplo">Texto: "no me puedo acercar demasiado a la charca porque tienen apetito y me podrían zampar". → Inferencia: <b>estos animales son peligrosos</b>. El texto nunca escribió la palabra "peligroso": tú la dedujiste.</div>
+  <h3>🧭 Los 3 pasos del detective</h3>
+  <ol><li>Lee la pregunta con atención y subraya la palabra clave.</li>
+  <li>Vuelve al texto y busca la pista (¡siempre hay una!).</li>
+  <li>Descarta las alternativas que el texto no permite afirmar.</li></ol>
+  `,
+  resumen:"<b>Explícita</b> = está escrita, la encuentro. <b>Implícita</b> = no está escrita, la deduzco con pistas del texto + lo que ya sé.",
+  dato:"🧠 Regla de oro: en una prueba, <b>toda respuesta debe poder defenderse con el texto</b>. Si no puedes mostrar la pista, probablemente no es la respuesta correcta."
+ },
+ flash:[
+  {f:"¿Qué es la información explícita?",b:"La que está escrita tal cual en el texto; se localiza y se copia."},
+  {f:"¿Qué es la información implícita?",b:"La que no está escrita: se deduce (infiere) usando las pistas del texto y lo que ya sabes."},
+  {f:"¿Qué es hacer una inferencia?",b:"Sacar una conclusión que el texto no dice de forma directa, uniendo pistas del texto con tus conocimientos."},
+  {f:"Palabras que anuncian una pregunta de inferencia",b:"Deduce, infiere, ¿por qué?, ¿para qué?, ¿qué podría pasar?, ¿qué quiso decir?"},
+  {f:"¿Cómo compruebo si mi respuesta es correcta?",b:"Buscando en el texto la pista o el verso que la respalda."},
+  {f:"¿Qué es el propósito comunicativo de un texto?",b:"La intención del autor: para qué escribió el texto (informar, instruir, expresar, entretener, normar)."}
+ ],
+ items:[
+  {t:"mc",p:"Según el texto N°1, ¿crees que una pócima mágica te ayudaría a sacarte una buena nota?",ctx:"\"Obviamente, la magia es limitada en estos casos. En principio… debes estudiar.\"",
+   o:["Sí, porque los antiguos magos eran sabios","Sí, porque las pócimas mágicas son reales","No, porque hay que estudiar para sacarse buenas notas","No, porque las pócimas mágicas huelen muy mal"],c:2,
+   exp:["No: el propio texto reconoce que la magia es limitada en estos casos.",
+        "No: además el texto dice que primero debes estudiar.",
+        "¡Exacto! El mismo texto lo dice: \"En principio… debes estudiar\".",
+        "El texto nunca habla del olor de la pócima: esa idea no aparece."]},
+  {t:"mc",p:"¿Qué información del texto N°2 es EXPLÍCITA?",o:["Que el brebaje sirve para hacer trampa","Que lleva 2 cucharadas de cacao en polvo","Que el mago Melisek es muy anciano","Que el brebaje sabe delicioso"],c:1,
+   exp:["El texto nunca dice eso; sería inventar.",
+        "¡Correcto! Está escrito tal cual en la lista de ingredientes.",
+        "El texto no dice la edad del mago Melisek.",
+        "El texto no describe el sabor del brebaje."]},
+  {t:"mc",p:"\"Vierte la leche hirviendo… y bébelo antes de que se enfríe\". ¿Qué se puede INFERIR de esta instrucción?",
+   o:["Que el brebaje debe tomarse caliente para que resulte bien","Que el brebaje es peligroso","Que la leche fría es más sana","Que el brebaje sirve solo en invierno"],c:0,
+   exp:["¡Muy bien! Si insiste en beberlo antes de que se enfríe, es porque debe tomarse caliente.",
+        "El texto no advierte ningún peligro.",
+        "El texto no compara la leche fría con la caliente.",
+        "En ningún momento se menciona una estación del año."]},
+  {t:"mc",p:"En el texto N°3, el mago dice: \"Usarla descuidadamente, pues puedes ponérsela en un ojo a alguien\". ¿Qué se deduce?",
+   o:["Que la varita es de juguete","Que la varita puede causar accidentes si se usa mal","Que los magos son torpes","Que hay que guardar la varita en una caja"],c:1,
+   exp:["El texto no dice que sea de juguete.",
+        "¡Exacto! Es una inferencia: si puede lastimar un ojo, puede provocar accidentes.",
+        "El texto no habla de la torpeza de los magos, sino del cuidado al usarla.",
+        "Eso no aparece en el texto; solo dice que no la olvides en cualquier lugar."]},
+  {t:"mc",p:"¿Cuál es el propósito comunicativo del texto que presenta a los alquimistas al inicio de la guía?",
+   ctx:"\"Los antiguos alquimistas (magos) medievales eran un poco químicos y otros pocos magos… Te invito a que disfrutes de la lectura…\"",
+   o:["Instruir sobre cómo ser alquimista","Informar sobre quiénes eran los alquimistas e invitar a leer","Narrar la vida de un mago famoso","Convencer al lector de fabricar pócimas"],c:1,
+   exp:["No entrega pasos para hacer nada: solo presenta el tema.",
+        "¡Correcto! Primero informa quiénes eran y luego invita a leer los textos.",
+        "No cuenta la historia de ningún personaje en particular.",
+        "No intenta convencer: es una introducción informativa."]},
+  {t:"mc",p:"Según el poema, ¿para qué se debe rogar?",ctx:"\"Del caimán del Orinoco / me dicen que quedan pocos / y tenemos que rogar / para que tengamos más.\"",
+   o:["Para tener más caimanes","Para que cante el caimán","Para que el cocodrilo se calle","Para ver a caimanes y cocodrilos"],c:0,
+   exp:["¡Correcto! Como quedan pocos caimanes del Orinoco, se ruega para que haya más.",
+        "El canto del caimán aparece al final, pero no es lo que se ruega.",
+        "El silencio del cocodrilo es otra idea del poema, no lo que se ruega.",
+        "El poema no pide verlos, sino que existan más."]},
+  {t:"mc",p:"¿Qué se puede inferir sobre el hablante del poema \"Caimanes y cocodrilos\"?",
+   o:["Que es un experto biólogo en reptiles","Que le interesan estos animales pero le cuesta distinguirlos","Que les tiene odio a los cocodrilos","Que trabaja en un zoológico"],c:1,
+   exp:["Al contrario: dice \"Diferenciar no he podido\", no es un experto.",
+        "¡Muy bien! Habla de ellos con interés y admite que no logra diferenciarlos.",
+        "No expresa odio: siente curiosidad y hasta cierta admiración.",
+        "El poema nunca menciona un zoológico."]},
+  {t:"mc",p:"\"...y no me puedo acercar demasiado a la gran charca… porque tienen apetito y me podrían zampar\". ¿Qué siente el hablante?",
+   o:["Aburrimiento","Alegría","Temor o precaución","Enojo"],c:2,
+   exp:["No: alguien aburrido no se preocuparía por acercarse o no.",
+        "No: no hay señales de alegría en esos versos.",
+        "¡Exacto! Se mantiene a distancia porque teme que lo puedan comer.",
+        "No hay enojo: hay cuidado frente al peligro."]},
+  {t:"vf",p:"Una información implícita es aquella que aparece copiada literalmente en el texto.",c:false,
+   ok:"¡Correcto! Es al revés: la implícita NO aparece escrita, hay que deducirla.",
+   no:"Es falso: la que aparece copiada literalmente es la EXPLÍCITA. La implícita se deduce."},
+  {t:"vf",p:"Para responder una pregunta de inferencia puedo usar tanto las pistas del texto como mis propios conocimientos.",c:true,
+   ok:"¡Muy bien! Inferir es justamente combinar el texto con lo que ya sabes.",
+   no:"Es verdadero: inferir es unir las pistas del texto con tus experiencias y conocimientos."},
+  {t:"vf",p:"Si una alternativa suena bonita pero no tiene ninguna pista en el texto, igual puede ser la respuesta correcta.",c:false,
+   ok:"¡Exacto! Toda respuesta debe poder defenderse con el texto.",
+   no:"Es falso: si no puedes mostrar la pista en el texto, esa alternativa no es la correcta."},
+  {t:"vf",p:"La pregunta \"¿Cuántas cucharadas de cacao lleva el brebaje?\" busca información explícita.",c:true,
+   ok:"¡Correcto! La respuesta (2 cucharadas) está escrita tal cual en el texto.",
+   no:"Es verdadero: esa información está escrita literalmente en la lista de ingredientes."},
+  {t:"vf",p:"La pregunta \"¿Qué podría pasar si no sigues los consejos del mago?\" busca información explícita.",c:false,
+   ok:"¡Muy bien! Es una pregunta de inferencia: el texto no lo dice, hay que deducirlo.",
+   no:"Es falso: esa pregunta pide deducir, o sea información IMPLÍCITA."},
+  {t:"match",p:"Clasifica cada pregunta según el tipo de información que pide.",
+   pares:[["¿Cuántos ingredientes tiene la pócima?","EXPLÍCITA: se cuenta en la lista de ingredientes"],
+          ["¿Por qué el mago pide no prestar la varita?","IMPLÍCITA: hay que deducir la intención del mago"],
+          ["¿Qué río se nombra en el poema?","EXPLÍCITA: aparece escrito (el Orinoco)"],
+          ["¿Qué siente el hablante hacia los caimanes?","IMPLÍCITA: se deduce por lo que dice el poema"]],
+   ok:"¡Excelente clasificación! Ya distingues cuándo buscar y cuándo deducir."}
+ ]
+},
+
+/* ===================== NIVEL 3 ===================== */
+{
+ nombre:"Poeta Explorador",
+ emoji:"🪶",
+ sub:"El poema: verso, estrofa, rima y propósito",
+ teoria:{
+  titulo:"🪶 El poema y su estructura",
+  html:`
+  <p>El <b>poema</b> es un <b>texto literario</b>. Su propósito comunicativo es <b>expresar sentimientos, emociones y sensaciones</b>, y crear belleza con las palabras.</p>
+  <h3>🧱 Sus partes</h3>
+  <ul>
+    <li><b>Verso:</b> cada <b>línea</b> del poema. ("Siempre tuve mucho lío" = 1 verso)</li>
+    <li><b>Estrofa:</b> un <b>grupo de versos</b> separado por un espacio en blanco.</li>
+    <li><b>Rima:</b> la <b>semejanza de sonidos</b> al final de los versos (cocodri<b>lo</b> / <b>lío</b>).</li>
+    <li><b>Hablante lírico:</b> la <b>voz</b> que habla dentro del poema (¡no es la autora!).</li>
+    <li><b>Autor:</b> la persona real que lo escribió. Aquí: <b>Ana Merino</b>.</li>
+  </ul>
+  <div class="ejemplo"><b>Cómo contar:</b> los versos se cuentan <b>línea por línea</b>; las estrofas, contando los <b>bloques</b> separados por espacios.<br>
+  En "Caimanes y cocodrilos" hay <b>8 estrofas</b> y <b>36 versos</b> en total.</div>
+  <h3>🎯 Propósito del poema "Caimanes y cocodrilos"</h3>
+  <p>El hablante quiere <b>describir las diferencias</b> entre el caimán y el cocodrilo, jugando con lo difícil que resulta distinguirlos.</p>
+  `,
+  resumen:"<b>Verso</b> = una línea. <b>Estrofa</b> = un grupo de versos. <b>Rima</b> = sonidos parecidos al final. El poema <b>expresa sentimientos</b>.",
+  dato:"🐊 Dato del poema: el cocodrilo puede visitar el mar porque guarda <b>glándulas de sal</b> en la lengua. ¡Y el que canta es el caimán, porque al cocodrilo le agrada el silencio!"
+ },
+ poema:true,
+ flash:[
+  {f:"¿Qué es un verso?",b:"Cada línea de un poema."},
+  {f:"¿Qué es una estrofa?",b:"Un grupo o conjunto de versos, separado de otro por un espacio en blanco."},
+  {f:"¿Qué es la rima?",b:"La semejanza de sonidos al final de dos o más versos."},
+  {f:"¿Quién es el hablante lírico?",b:"La voz que habla dentro del poema. No es lo mismo que el autor."},
+  {f:"¿Quién escribió \"Caimanes y cocodrilos\"?",b:"Ana Merino."},
+  {f:"¿Cuántas estrofas tiene \"Caimanes y cocodrilos\"?",b:"8 estrofas."},
+  {f:"¿Cuántos versos tiene \"Caimanes y cocodrilos\"?",b:"36 versos en total."},
+  {f:"¿Cuál es el propósito comunicativo de un poema?",b:"Expresar sentimientos, emociones y sensaciones a través de un lenguaje bello."},
+  {f:"¿Por qué el cocodrilo puede visitar el mar?",b:"Porque guarda en la lengua unas glándulas de sal."},
+  {f:"¿Cuál de los dos animales canta, según el poema?",b:"El caimán. El cocodrilo se calla porque le agrada el silencio."},
+  {f:"¿Qué significa \"charca\" en el poema?",b:"Agua detenida, similar a un pozo."},
+  {f:"¿Qué significa \"bramido\"?",b:"El sonido que emite el toro y otros animales salvajes."}
+ ],
+ items:[
+  {t:"mc",p:"¿Para qué se escribió el poema \"Caimanes y cocodrilos\"?",
+   o:["Para invitar a cuidar a los caimanes y cocodrilos","Para describir las diferencias entre el caimán y el cocodrilo","Para manifestar los sentimientos del caimán y del cocodrilo","Para explicar lo difícil que es dibujar un caimán y un cocodrilo"],c:1,
+   exp:["Solo una estrofa habla de que quedan pocos; no es el propósito de TODO el poema.",
+        "¡Correcto! Casi todas las estrofas comparan a ambos animales: dientes, sal, sonido.",
+        "Los sentimientos son del hablante, no de los animales.",
+        "El dibujo aparece solo en la primera estrofa, como una introducción."]},
+  {t:"mc",p:"¿Qué característica de estos animales se expresa en la estrofa \"Caimanes y cocodrilos / al dentista nunca han ido…\"?",
+   o:["Su hábitat","Su bramido","Su dentadura","Su peligrosidad"],c:2,
+   exp:["No: el hábitat (la charca, el mar) se menciona en otras estrofas.",
+        "No: el bramido aparece cerca del final del poema.",
+        "¡Exacto! Habla de los dientes que se les caen y de los que les salen.",
+        "La peligrosidad aparece en la estrofa de \"me podrían zampar\"."]},
+  {t:"mc",p:"¿Qué característica se expresa en la estrofa que dice \"y no me puedo acercar demasiado a la gran charca… porque tienen apetito\"?",
+   o:["Su dentadura","Su peligrosidad","Su color","Su tamaño"],c:1,
+   exp:["Los dientes se tratan en otra estrofa distinta.",
+        "¡Muy bien! El hablante no se acerca porque podrían comérselo: son peligrosos.",
+        "El poema nunca menciona el color de estos animales.",
+        "El poema no habla del tamaño de los animales."]},
+  {t:"mc",p:"¿A qué se refiere el poeta cuando dice: \"siempre tuve mucho lío intentando dibujar caimanes y cocodrilos\"?",
+   o:["Era fácil el dibujo de estos animales","Era muy aburrido para él dibujarlos","Era un problema dibujarlos","Era muy hábil dibujándolos"],c:2,
+   exp:["Al revés: \"tener lío\" indica dificultad, no facilidad.",
+        "No habla de aburrimiento, sino de dificultad.",
+        "¡Correcto! \"Tener lío\" significa tener problemas o dificultad.",
+        "\"Tener lío\" es lo contrario de ser hábil."]},
+  {t:"mc",p:"¿Cuántas estrofas tiene el poema \"Caimanes y cocodrilos\"?",o:["4 estrofas","6 estrofas","8 estrofas","36 estrofas"],c:2,
+   exp:["Cuenta de nuevo los bloques separados por espacios en blanco.",
+        "Falta contar la última estrofa, que tiene un solo verso.",
+        "¡Exacto! Son 8 bloques de versos, incluido el último de un solo verso.",
+        "36 es el número de VERSOS, no de estrofas."]},
+  {t:"mc",p:"¿Cuántos versos tiene en total el poema \"Caimanes y cocodrilos\"?",o:["8 versos","20 versos","36 versos","50 versos"],c:2,
+   exp:["8 es el número de ESTROFAS, no de versos.",
+        "Son más: recuerda contar línea por línea todas las estrofas.",
+        "¡Perfecto! 36 líneas en total, sumando las 8 estrofas.",
+        "Son menos: revisa tu conteo línea por línea."]},
+  {t:"mc",p:"La última estrofa del poema es \"El que canta es el caimán\". Esto significa que:",
+   o:["El caimán sabe cantar canciones","El sonido que se escucha es del caimán, no del cocodrilo","Los cocodrilos también cantan","El caimán está feliz"],c:1,
+   exp:["No canta canciones: \"cantar\" aquí se refiere al bramido que emite.",
+        "¡Muy bien! El poema dice que el cocodrilo se calla, así que el sonido es del caimán.",
+        "El poema dice justo lo contrario: el cocodrilo prefiere el silencio.",
+        "El poema no habla de la felicidad del caimán."]},
+  {t:"mc",p:"Según el poema, ¿por qué el cocodrilo puede visitar el mar?",o:["Porque nada más rápido","Porque se guarda glándulas de sal en la lengua","Porque tiene más dientes","Porque no le gusta la charca"],c:1,
+   exp:["El poema no compara la velocidad al nadar.",
+        "¡Correcto! El texto lo dice de forma explícita.",
+        "Los dientes no tienen relación con visitar el mar.",
+        "El poema no dice que le disguste la charca."]},
+  {t:"vf",p:"Un verso es un grupo de estrofas.",c:false,
+   ok:"¡Exacto! Es al revés: una estrofa es un grupo de versos.",
+   no:"Es falso: el verso es la línea, y la estrofa es el grupo de versos."},
+  {t:"vf",p:"El hablante lírico y el autor del poema son siempre la misma persona.",c:false,
+   ok:"¡Muy bien! El hablante es la voz que el autor crea dentro del poema.",
+   no:"Es falso: el autor es la persona real (Ana Merino) y el hablante lírico es la voz del poema."},
+  {t:"vf",p:"El propósito principal de un poema es entregar instrucciones paso a paso.",c:false,
+   ok:"¡Correcto! Eso corresponde al texto instructivo; el poema expresa sentimientos.",
+   no:"Es falso: entregar pasos es propio del texto instructivo. El poema expresa sentimientos y emociones."},
+  {t:"vf",p:"En el poema, \"charca\" significa agua detenida, similar a un pozo.",c:true,
+   ok:"¡Muy bien! Esa es la definición que entrega el vocabulario del texto.",
+   no:"Es verdadero: el propio texto define charca como agua detenida, similar a un pozo."},
+  {t:"vf",p:"El poema afirma que quedan pocos caimanes del Orinoco.",c:true,
+   ok:"¡Correcto! Dice \"me dicen que quedan pocos y tenemos que rogar para que tengamos más\".",
+   no:"Es verdadero: el poema dice que del caimán del Orinoco quedan pocos."},
+  {t:"vf",p:"Las palabras \"lío\" y \"cocodrilos\" riman en la primera estrofa.",c:true,
+   ok:"¡Muy bien oído! Comparten sonidos finales parecidos: eso es la rima.",
+   no:"Es verdadero: \"lío\" y \"cocodrilos\" tienen sonidos finales semejantes, o sea, riman."},
+  {t:"orden",p:"Ordena las ideas del poema tal como aparecen, de la primera estrofa a la última.",
+   pasos:["La dificultad para dibujar caimanes y cocodrilos.","El peligro de acercarse a la charca.","Los dientes que se les caen y les vuelven a salir.","El cocodrilo puede visitar el mar por sus glándulas de sal.","Quedan pocos caimanes del Orinoco.","El que canta es el caimán."],
+   ok:"¡Excelente! Seguiste perfectamente el hilo del poema.",
+   no:"Vuelve a leer el poema completo: empieza con el dibujo y termina con el canto del caimán."},
+  {t:"match",p:"Relaciona cada concepto poético con su definición.",
+   pares:[["Verso","Cada línea del poema"],
+          ["Estrofa","Conjunto de versos"],
+          ["Rima","Semejanza de sonidos al final de los versos"],
+          ["Hablante lírico","La voz que habla dentro del poema"]],
+   ok:"¡Perfecto! Ya manejas el vocabulario de la poesía."}
+ ]
+},
+
+/* ===================== NIVEL 4 ===================== */
+{
+ nombre:"Mago de las Palabras",
+ emoji:"✨",
+ sub:"Lenguaje literal, figurado y figuras literarias",
+ teoria:{
+  titulo:"✨ Lenguaje literal, figurado y figuras literarias",
+  html:`
+  <h3>🗣️ Lenguaje LITERAL</h3>
+  <p>Las palabras significan <b>exactamente lo que dicen</b>. Es el lenguaje de las recetas, las noticias y las instrucciones.</p>
+  <div class="ejemplo">"Tus dientes son blancos." → Es la verdad tal cual.</div>
+  <h3>🎨 Lenguaje FIGURADO</h3>
+  <p>Las palabras significan <b>algo distinto</b> de lo que dicen: hay que interpretarlas. Es el lenguaje de la poesía.</p>
+  <div class="ejemplo">"Las perlas de tu boca brillan." → No hay perlas de verdad: se refiere a los <b>dientes</b>.</div>
+  <h3>🪄 Las 5 figuras literarias</h3>
+  <ul>
+   <li><b>COMPARACIÓN:</b> une dos cosas parecidas usando <b>como, cual, parece, se asemeja</b>.<br>
+   <i>"Eres <b>como</b> una mariposa."</i></li>
+   <li><b>METÁFORA:</b> reemplaza una cosa por otra, <b>SIN usar "como"</b>.<br>
+   <i>"Las <b>perlas</b> de tu boca brillan." (perlas = dientes)</i></li>
+   <li><b>PERSONIFICACIÓN:</b> da cualidades <b>humanas</b> a animales, objetos o cosas.<br>
+   <i>"Mi muñeca me <b>habló</b>, me <b>dijo</b> cosas que no puedo repetir."</i></li>
+   <li><b>HIPÉRBOLE:</b> <b>exagera</b> muchísimo una idea.<br>
+   <i>"<b>Mil pedazos</b> de mi corazón rodaron por toda la habitación."</i></li>
+   <li><b>ALITERACIÓN:</b> <b>repite el mismo sonido</b> varias veces y produce un efecto musical.<br>
+   <i>"El <b>r</b>uido con que <b>r</b>ueda la <b>r</b>onca tempestad."</i></li>
+  </ul>
+  `,
+  resumen:"¿Usa \"como\"? → <b>Comparación</b>. ¿Cambia una cosa por otra sin \"como\"? → <b>Metáfora</b>. ¿Un objeto o animal actúa como humano? → <b>Personificación</b>. ¿Exagera muchísimo? → <b>Hipérbole</b>. ¿Repite un sonido? → <b>Aliteración</b>.",
+  dato:"🧠 Truco rápido: <b>C</b>omparación tiene <b>C</b>omo. Si sacas el \"como\" y la frase sigue igual, ¡se convirtió en metáfora! \"Eres como una mariposa\" (comparación) → \"Eres una mariposa\" (metáfora)."
+ },
+ flash:[
+  {f:"¿Qué es el lenguaje literal?",b:"Cuando las palabras significan exactamente lo que dicen."},
+  {f:"¿Qué es el lenguaje figurado?",b:"Cuando las palabras significan algo distinto de lo que dicen y hay que interpretarlas."},
+  {f:"COMPARACIÓN",b:"Relaciona dos elementos parecidos usando un conector: como, cual, parece, se asemeja. Ej: \"Eres como una mariposa\"."},
+  {f:"METÁFORA",b:"Reemplaza un elemento por otro sin usar \"como\". Ej: \"Las perlas de tu boca brillan\" (perlas = dientes)."},
+  {f:"PERSONIFICACIÓN",b:"Atribuye cualidades humanas a animales, objetos o cosas. Ej: \"Mi muñeca me habló\"."},
+  {f:"HIPÉRBOLE",b:"Exageración enorme de una idea. Ej: \"Mil pedazos de mi corazón rodaron por la habitación\"."},
+  {f:"ALITERACIÓN",b:"Repetición de un mismo sonido para dar musicalidad. Ej: \"el ruido con que rueda la ronca tempestad\"."},
+  {f:"\"Tus ojos son dos luceros\"",b:"METÁFORA (reemplaza los ojos por luceros, sin usar \"como\")."},
+  {f:"\"El viento susurraba entre los árboles\"",b:"PERSONIFICACIÓN (susurrar es una acción humana)."},
+  {f:"\"Te lo he dicho un millón de veces\"",b:"HIPÉRBOLE (exageración)."},
+  {f:"\"Sus manos son suaves como el algodón\"",b:"COMPARACIÓN (usa el conector \"como\")."},
+  {f:"\"Tres tristes tigres tragaban trigo\"",b:"ALITERACIÓN (se repite el sonido \"tr\")."}
+ ],
+ items:[
+  {t:"mc",p:"Lee los versos y responde: ¿a qué figura literaria corresponden?",
+   ctx:"\"…que el cocodrilo se calla\nporque el silencio le agrada\ny no le gusta hacer ruido.\nEl que canta es el caimán.\"",
+   o:["Personificación","Metáfora","Comparación","Hipérbole"],c:0,
+   exp:["¡Exacto! Callarse, que algo le agrade y cantar son acciones y sentimientos humanos dados a los animales.",
+        "No: no se reemplaza un elemento por otro.",
+        "No: no aparece ningún conector como \"como\" o \"parece\".",
+        "No: no hay ninguna exageración enorme."]},
+  {t:"mc",p:"\"Las perlas de tu boca brillan\" corresponde a:",o:["Comparación","Metáfora","Hipérbole","Aliteración"],c:1,
+   exp:["No hay conector \"como\": si lo hubiera (\"tus dientes son como perlas\"), sí sería comparación.",
+        "¡Correcto! Se reemplazan los dientes por perlas sin usar \"como\".",
+        "No hay exageración de cantidad ni tamaño.",
+        "No se repite ningún sonido en particular."]},
+  {t:"mc",p:"\"Mi muñeca me habló, me dijo cosas que no puedo repetir\" corresponde a:",o:["Metáfora","Hipérbole","Personificación","Comparación"],c:2,
+   exp:["No se reemplaza un objeto por otro.",
+        "No hay exageración: el problema es que una muñeca no puede hablar.",
+        "¡Muy bien! Hablar y decir son acciones humanas dadas a un objeto.",
+        "No aparece ningún conector de comparación."]},
+  {t:"mc",p:"\"Mil pedazos de mi corazón rodaron por toda la habitación\" corresponde a:",o:["Hipérbole","Personificación","Comparación","Aliteración"],c:0,
+   exp:["¡Correcto! \"Mil pedazos\" es una exageración enorme.",
+        "El corazón no realiza acciones humanas aquí: se exagera su ruptura.",
+        "No hay conector \"como\".",
+        "No se repite un sonido de forma llamativa."]},
+  {t:"mc",p:"\"Eres como una mariposa\" corresponde a:",o:["Metáfora","Comparación","Personificación","Hipérbole"],c:1,
+   exp:["Sería metáfora si dijera \"Eres una mariposa\", sin el \"como\".",
+        "¡Exacto! El conector \"como\" delata la comparación.",
+        "No se dan cualidades humanas a nada.",
+        "No hay exageración numérica ni de tamaño."]},
+  {t:"mc",p:"\"El susurro suave del silencio sonaba sereno\" corresponde a:",o:["Aliteración","Metáfora","Hipérbole","Comparación"],c:0,
+   exp:["¡Muy bien! Se repite el sonido \"s\" una y otra vez.",
+        "No se reemplaza un elemento por otro.",
+        "No hay exageración.",
+        "No aparece el conector \"como\"."]},
+  {t:"mc",p:"¿Cuál de estas oraciones está escrita en lenguaje LITERAL?",
+   o:["Estoy muerto de hambre","La leche debe estar hirviendo","Tus ojos son dos estrellas","El reloj devoró las horas"],c:1,
+   exp:["Es una hipérbole: nadie se muere de hambre literalmente.",
+        "¡Correcto! Dice exactamente lo que significa: es lenguaje literal.",
+        "Es una metáfora: los ojos no son estrellas de verdad.",
+        "Es una personificación: un reloj no puede devorar."]},
+  {t:"mc",p:"\"Estoy muerto de cansancio\" significa realmente que:",o:["La persona falleció","La persona está muy cansada","La persona está enferma","La persona está durmiendo"],c:1,
+   exp:["No: es lenguaje figurado, no hay que entenderlo al pie de la letra.",
+        "¡Muy bien! Es una hipérbole que expresa un cansancio enorme.",
+        "El cansancio no es lo mismo que una enfermedad.",
+        "Estar cansado no significa estar durmiendo."]},
+  {t:"mc",p:"\"El sol sonrió sobre la ciudad\" contiene una:",o:["Comparación","Personificación","Hipérbole","Aliteración"],c:1,
+   exp:["No hay conector de comparación.",
+        "¡Exacto! Sonreír es una acción humana atribuida al sol.",
+        "No hay exageración de cantidad.",
+        "Aunque hay algunas eses, lo que destaca es la acción humana del sol."]},
+  {t:"vf",p:"En la comparación siempre aparece un conector como \"como\", \"cual\" o \"parece\".",c:true,
+   ok:"¡Correcto! Ese conector es la marca que distingue a la comparación de la metáfora.",
+   no:"Es verdadero: la comparación necesita un conector (como, cual, parece, se asemeja)."},
+  {t:"vf",p:"La metáfora usa la palabra \"como\" para unir dos elementos.",c:false,
+   ok:"¡Muy bien! La metáfora NO usa \"como\": esa es la comparación.",
+   no:"Es falso: la que usa \"como\" es la comparación. La metáfora reemplaza directamente un elemento por otro."},
+  {t:"vf",p:"La hipérbole es una exageración.",c:true,
+   ok:"¡Exacto! Hipérbole = exageración enorme de una idea.",
+   no:"Es verdadero: la hipérbole exagera muchísimo una idea."},
+  {t:"vf",p:"La aliteración consiste en dar cualidades humanas a los objetos.",c:false,
+   ok:"¡Correcto! Eso es la personificación. La aliteración repite sonidos.",
+   no:"Es falso: dar cualidades humanas es la PERSONIFICACIÓN. La aliteración repite un mismo sonido."},
+  {t:"vf",p:"El lenguaje figurado es propio de los poemas y el lenguaje literal es propio de las recetas e instructivos.",c:true,
+   ok:"¡Muy bien! Un instructivo debe entenderse tal cual; un poema, en cambio, se interpreta.",
+   no:"Es verdadero: los poemas usan lenguaje figurado y los instructivos usan lenguaje literal."},
+  {t:"vf",p:"\"El caimán al dentista nunca ha ido\" es un ejemplo de personificación.",c:true,
+   ok:"¡Excelente! Ir al dentista es una costumbre humana atribuida a un animal.",
+   no:"Es verdadero: ir al dentista es algo propio de las personas, no de los caimanes."},
+  {t:"match",p:"Relaciona cada verso con su figura literaria.",
+   pares:[["\"Mi muñeca me habló, me dijo cosas que no puedo repetir\"","Personificación"],
+          ["\"Las perlas de tu boca brillan\"","Metáfora"],
+          ["\"Mil pedazos de mi corazón rodaron por toda la habitación\"","Hipérbole"],
+          ["\"Eres como una mariposa\"","Comparación"],
+          ["\"El susurro suave del silencio sonaba sereno\"","Aliteración"]],
+   ok:"¡Perfecto! Este es exactamente el ejercicio del ítem IV de la prueba. ¡Lo dominas!"},
+  {t:"match",p:"Ronda 2: relaciona cada expresión con su figura literaria.",
+   pares:[["\"Tus ojos son dos luceros\"","Metáfora"],
+          ["\"El viento susurraba entre los árboles\"","Personificación"],
+          ["\"Te lo he dicho un millón de veces\"","Hipérbole"],
+          ["\"Sus manos son suaves como el algodón\"","Comparación"],
+          ["\"Tres tristes tigres tragaban trigo\"","Aliteración"]],
+   ok:"¡Excelente! Ya identificas las cinco figuras literarias sin dudar."}
+ ]
+},
+
+/* ===================== NIVEL 5 ===================== */
+{
+ nombre:"Guardián de la B y la V",
+ emoji:"🛡️",
+ sub:"Reglas ortográficas de B y V",
+ teoria:{
+  titulo:"🛡️ Uso de B y V",
+  html:`
+  <p>La <b>b</b> y la <b>v</b> suenan igual, por eso hay que aprender <b>reglas</b> para no equivocarse.</p>
+  <h3>🅱️ Se escribe con B</h3>
+  <ul>
+   <li><b>Antes de otra consonante</b> (bl, br, bs…): <i>ha<b>bl</b>ar, <b>br</b>azo, o<b>bv</b>io, posi<b>bl</b>e</i>.</li>
+   <li><b>Después de la letra M</b>: <i>ho<b>mb</b>re, tu<b>mb</b>a, ca<b>mb</b>io</i>.</li>
+   <li>En los <b>verbos terminados en -aba</b> (pretérito imperfecto): <i>cant<b>aba</b>, jug<b>aba</b>, salt<b>aba</b></i>.</li>
+   <li>En las palabras que <b>comienzan con bu-, bur-, bus-</b>: <i><b>bu</b>rbuja, <b>bur</b>lar, <b>bús</b>queda</i>.</li>
+  </ul>
+  <h3>🆅 Se escribe con V</h3>
+  <ul>
+   <li><b>Después de la letra N</b>: <i>e<b>nv</b>ase, i<b>nv</b>itar, co<b>nv</b>ersar</i>.</li>
+   <li><b>Después de las letras D y B</b>: <i>a<b>dv</b>erbio, o<b>bv</b>io, su<b>bv</b>ención</i>.</li>
+   <li>En los <b>verbos vivir, hervir y servir</b> y todas sus formas conjugadas: <i>ser<b>v</b>irá, her<b>v</b>ía, vi<b>v</b>imos</i>.</li>
+   <li>En los <b>adjetivos terminados en -ave, -eve, -avo, -evo, -ivo</b>: <i>su<b>ave</b>, br<b>eve</b>, oct<b>avo</b>, nu<b>evo</b>, act<b>ivo</b></i>.</li>
+  </ul>
+  `,
+  resumen:"Con <b>B</b>: antes de consonante, después de <b>m</b>, verbos en <b>-aba</b>, palabras con <b>bu-/bur-/bus-</b>. Con <b>V</b>: después de <b>n</b>, después de <b>d</b> y <b>b</b>, verbos <b>vivir/hervir/servir</b>, adjetivos en <b>-ave, -eve, -avo, -evo, -ivo</b>.",
+  dato:"🧠 Mnemotecnia: <b>\"M con B, N con V\"</b> — ho<b>mb</b>re / e<b>nv</b>ase. ¡Nunca falla! Y recuerda los tres verbos rebeldes: <b>vivir, hervir y servir</b> siempre con V."
+ },
+ flash:[
+  {f:"¿Qué letra va después de M?",b:"Siempre B: hombre, tumba, cambio."},
+  {f:"¿Qué letra va después de N?",b:"Siempre V: envase, invitar, conversar."},
+  {f:"¿Qué letra va después de D y B?",b:"V: adverbio, obvio, subvención."},
+  {f:"¿Cómo se escriben los verbos terminados en -aba?",b:"Con B: cantaba, jugaba, saltaba (pretérito imperfecto)."},
+  {f:"Palabras que empiezan con bu-, bur-, bus-",b:"Se escriben con B: burbuja, burlar, búsqueda."},
+  {f:"¿Cómo se escriben vivir, hervir y servir?",b:"Con V, en todas sus formas: vivía, hervirá, servirá."},
+  {f:"Adjetivos terminados en -ave, -eve, -avo, -evo, -ivo",b:"Se escriben con V: suave, breve, octavo, nuevo, activo."},
+  {f:"¿Qué letra se usa antes de otra consonante (bl, br)?",b:"B: hablar, posible, brazo, amable."}
+ ],
+ items:[
+  {t:"bv",p:"Completa la palabra:",pal:"Ham__re",c:"b",res:"HAMBRE",
+   regla:"Después de la letra M siempre se escribe B.",ej:"tumba",
+   opsRegla:["Antes de otra consonante","Después de la letra m","Después de la letra n"],cRegla:1,
+   opsEj:["jugaba","envase","tumba"],cEj:2},
+  {t:"bv",p:"Completa la palabra:",pal:"Canta__a",c:"b",res:"CANTABA",
+   regla:"Los verbos terminados en -aba (pretérito imperfecto) se escriben con B.",ej:"jugaba",
+   opsRegla:["Después de la letra m","En los verbos terminados en -aba (pretérito imperfecto)","Antes de otra consonante"],cRegla:1,
+   opsEj:["tumba","posible","jugaba"],cEj:2},
+  {t:"bv",p:"Completa la palabra:",pal:"Ama__le",c:"b",res:"AMABLE",
+   regla:"Se escribe B antes de otra consonante (aquí, antes de la L).",ej:"posible",
+   opsRegla:["En las palabras que comienzan con bu-, bur- o bus-","Antes de otra consonante","Después de la letra m"],cRegla:1,
+   opsEj:["burbuja","tumba","posible"],cEj:2},
+  {t:"bv",p:"Completa la palabra:",pal:"__úsqueda",c:"b",res:"BÚSQUEDA",
+   regla:"Las palabras que comienzan con bu-, bur- o bus- se escriben con B.",ej:"burbuja",
+   opsRegla:["Antes de otra consonante","Después de la letra n","En las palabras que comienzan con bu-, bur- o bus-"],cRegla:2,
+   opsEj:["posible","envase","burbuja"],cEj:2},
+  {t:"bv",p:"Completa la palabra:",pal:"In__itar",c:"v",res:"INVITAR",
+   regla:"Después de la letra N siempre se escribe V.",ej:"envase",
+   opsRegla:["En los verbos vivir, hervir y servir","Después de la letra n","Después de las letras d y b"],cRegla:1,
+   opsEj:["hervirá","envase","obvio"],cEj:1},
+  {t:"bv",p:"Completa la palabra:",pal:"Ser__irá",c:"v",res:"SERVIRÁ",
+   regla:"Los verbos vivir, hervir y servir y sus formas conjugadas se escriben con V.",ej:"hervirá",
+   opsRegla:["Después de la letra n","En los verbos vivir, hervir y servir, y en sus formas conjugadas","En los adjetivos terminados en -ave, -eve, -avo, -evo, -ivo"],cRegla:1,
+   opsEj:["envase","hervirá","octavo"],cEj:1},
+  {t:"bv",p:"Completa la palabra:",pal:"Nue__o",c:"v",res:"NUEVO",
+   regla:"Los adjetivos terminados en -ave, -eve, -avo, -evo, -ivo se escriben con V.",ej:"octavo",
+   opsRegla:["En los verbos vivir, hervir y servir","Después de las letras d y b","En los adjetivos terminados en -ave, -eve, -avo, -evo, -ivo"],cRegla:2,
+   opsEj:["hervirá","obvio","octavo"],cEj:2},
+  {t:"bv",p:"Completa la palabra:",pal:"Ad__erbio",c:"v",res:"ADVERBIO",
+   regla:"Después de las letras D y B se escribe V.",ej:"obvio",
+   opsRegla:["En los adjetivos terminados en -ave, -eve, -avo, -evo, -ivo","Después de la letra n","Después de las letras d y b"],cRegla:2,
+   opsEj:["octavo","envase","obvio"],cEj:2},
+  {t:"bv",p:"Completa la palabra:",pal:"Tum__a",c:"b",res:"TUMBA",
+   regla:"Después de la letra M siempre se escribe B.",ej:"hombre",
+   opsRegla:["Después de la letra m","Después de la letra n","En los verbos terminados en -aba"],cRegla:0,
+   opsEj:["envase","hombre","octavo"],cEj:1},
+  {t:"bv",p:"Completa la palabra:",pal:"En__ase",c:"v",res:"ENVASE",
+   regla:"Después de la letra N siempre se escribe V.",ej:"invitar",
+   opsRegla:["Después de la letra m","Después de la letra n","Antes de otra consonante"],cRegla:1,
+   opsEj:["tumba","invitar","jugaba"],cEj:1},
+  {t:"bv",p:"Completa la palabra:",pal:"Her__irá",c:"v",res:"HERVIRÁ",
+   regla:"Los verbos vivir, hervir y servir se escriben con V en todas sus formas.",ej:"servirá",
+   opsRegla:["En los verbos vivir, hervir y servir, y en sus formas conjugadas","Después de la letra m","En las palabras que comienzan con bu-, bur- o bus-"],cRegla:0,
+   opsEj:["burbuja","servirá","tumba"],cEj:1},
+  {t:"bv",p:"Completa la palabra:",pal:"Acti__o",c:"v",res:"ACTIVO",
+   regla:"Los adjetivos terminados en -ave, -eve, -avo, -evo, -ivo se escriben con V.",ej:"octavo",
+   opsRegla:["En los adjetivos terminados en -ave, -eve, -avo, -evo, -ivo","Después de la letra n","Antes de otra consonante"],cRegla:0,
+   opsEj:["octavo","envase","tumba"],cEj:0},
+  {t:"vf",p:"Después de la letra M siempre se escribe V.",c:false,
+   ok:"¡Correcto! Después de M va B: hombre, tumba, cambio.",
+   no:"Es falso. Recuerda: \"M con B\" (hombre, tumba) y \"N con V\" (envase, invitar)."},
+  {t:"vf",p:"Los verbos vivir, hervir y servir se escriben con V.",c:true,
+   ok:"¡Muy bien! Y también todas sus formas conjugadas: vivía, hervirá, servirá.",
+   no:"Es verdadero: vivir, hervir y servir van con V en todas sus formas."},
+  {t:"vf",p:"La palabra \"búsqueda\" se escribe con B porque comienza con bus-.",c:true,
+   ok:"¡Exacto! Las palabras que empiezan con bu-, bur- o bus- se escriben con B.",
+   no:"Es verdadero: bu-, bur- y bus- se escriben siempre con B (burbuja, burlar, búsqueda)."},
+  {t:"vf",p:"La palabra \"adverbio\" se escribe con V porque va después de la letra D.",c:true,
+   ok:"¡Correcto! Después de D y de B se escribe V: adverbio, obvio, subvención.",
+   no:"Es verdadero: después de las letras D y B se escribe V."},
+  {t:"vf",p:"\"Cantaba\", \"jugaba\" y \"saltaba\" se escriben con V porque son verbos.",c:false,
+   ok:"¡Muy bien! Los verbos terminados en -aba se escriben con B.",
+   no:"Es falso: los verbos terminados en -aba (pretérito imperfecto) se escriben con B."},
+  {t:"match",p:"Relaciona cada palabra con la regla que la explica.",
+   pares:[["hombre","Después de la letra m se escribe b"],
+          ["envase","Después de la letra n se escribe v"],
+          ["jugaba","Verbos terminados en -aba se escriben con b"],
+          ["octavo","Adjetivos en -ave, -eve, -avo, -evo, -ivo con v"]],
+   ok:"¡Excelente! Ya conectas cada palabra con su regla ortográfica."},
+  {t:"match",p:"Ronda 2: relaciona cada palabra con su regla.",
+   pares:[["burbuja","Palabras que comienzan con bu-, bur-, bus-"],
+          ["obvio","Después de las letras d y b se escribe v"],
+          ["hervirá","Verbos vivir, hervir y servir"],
+          ["posible","Antes de otra consonante se escribe b"]],
+   ok:"¡Perfecto! Con esto el ítem V de la prueba ya no tiene secretos."}
+ ]
+},
+
+/* ===================== NIVEL 6 ===================== */
+{
+ nombre:"Cazador de Significados",
+ emoji:"🎯",
+ sub:"Vocabulario según el contexto",
+ teoria:{
+  titulo:"🎯 Inferir el significado por el contexto",
+  html:`
+  <p>A veces aparece una palabra que <b>no conoces</b>. ¡No te asustes! El propio texto te da <b>pistas</b> para descubrir su significado. A eso se le llama <b>inferir por contexto</b>.</p>
+  <h3>🔦 Cómo hacerlo en 3 pasos</h3>
+  <ol>
+   <li><b>Relee la oración completa</b>, no solo la palabra.</li>
+   <li><b>Busca pistas</b>: ¿qué está pasando?, ¿qué palabras la rodean?, ¿hay ejemplos o explicaciones cerca?</li>
+   <li><b>Prueba reemplazarla</b> por la alternativa: si la oración sigue teniendo sentido, ¡es la correcta!</li>
+  </ol>
+  <div class="ejemplo">"…porque tienen apetito y me podrían <b>zampar</b> en tres o cuatro mordiscos."<br>
+  Pistas: <i>apetito</i> y <i>mordiscos</i> → <b>zampar = comer apresuradamente</b>. ✅</div>
+  <h3>📖 Vocabulario del poema</h3>
+  <ul>
+   <li><b>Charca:</b> agua detenida, similar a un pozo.</li>
+   <li><b>Zampar:</b> comer apresuradamente.</li>
+   <li><b>Orinoco:</b> uno de los ríos más importantes de América del Sur, pasa por Venezuela y Colombia.</li>
+   <li><b>Bramido:</b> sonido que emite el toro y otros animales salvajes.</li>
+  </ul>
+  `,
+  resumen:"No memorices palabras sueltas: <b>lee la oración completa, busca pistas y prueba reemplazar</b>. El contexto casi siempre te da la respuesta.",
+  dato:"🧠 Truco del reemplazo: cambia la palabra difícil por cada alternativa y lee la oración en voz baja. La que suena bien y mantiene el sentido es la correcta."
+ },
+ flash:[
+  {f:"Charca",b:"Agua detenida, similar a un pozo."},
+  {f:"Zampar",b:"Comer apresuradamente."},
+  {f:"Bramido",b:"Sonido que emite el toro y otros animales salvajes."},
+  {f:"Orinoco",b:"Uno de los ríos más importantes de América del Sur; pasa por Venezuela y Colombia."},
+  {f:"Brebaje",b:"Bebida preparada mezclando varios ingredientes."},
+  {f:"Pócima",b:"Bebida medicinal o mágica hecha con una mezcla de ingredientes."},
+  {f:"Alquimista",b:"Antiguo sabio, mitad químico y mitad mago, que buscaba convertir metales en oro."},
+  {f:"Conjuro",b:"Fórmula mágica que se dice o se hace para lograr un efecto."},
+  {f:"Verter",b:"Echar o dejar caer un líquido de un recipiente a otro."},
+  {f:"Pizca",b:"Cantidad muy pequeña de algo."},
+  {f:"Descuidadamente",b:"Sin poner atención ni cuidado."},
+  {f:"Incansablemente",b:"Sin cansarse, sin detenerse."}
+ ],
+ items:[
+  {t:"mc",p:"\"…porque tienen apetito y me podrían ZAMPAR en tres o cuatro mordiscos\". En el poema, ZAMPAR significa:",
+   o:["Asustar","Comer apresuradamente","Perseguir","Mirar fijamente"],c:1,
+   exp:["Las pistas \"apetito\" y \"mordiscos\" apuntan a comer, no a asustar.",
+        "¡Exacto! Apetito + mordiscos = comer rápidamente.",
+        "Perseguir no calza con \"en tres o cuatro mordiscos\".",
+        "Mirar no tiene relación con los mordiscos."]},
+  {t:"mc",p:"\"…no me puedo acercar demasiado a la gran CHARCA donde nadan a sus anchas\". CHARCA significa:",
+   o:["Una montaña alta","Agua detenida, similar a un pozo","Una cueva oscura","Un bosque tupido"],c:1,
+   exp:["No: allí los animales NADAN, así que debe haber agua.",
+        "¡Correcto! El propio vocabulario del texto lo define así.",
+        "En una cueva no se podría nadar a sus anchas.",
+        "En un bosque no se nada."]},
+  {t:"mc",p:"\"…lo mejor será esperar los BRAMIDOS del caimán\". BRAMIDOS significa:",
+   o:["Sus movimientos","Sus sonidos fuertes","Sus dientes","Sus colores"],c:1,
+   exp:["Las estrofas siguientes hablan de callarse y hacer ruido: es sonido.",
+        "¡Muy bien! Un bramido es el sonido que emite el toro y otros animales salvajes.",
+        "Los dientes ya se mencionaron en otra estrofa.",
+        "El poema no menciona colores."]},
+  {t:"mc",p:"\"Trataban de convertir cualquier metal en oro y buscaban INCANSABLEMENTE la Piedra Filosofal\". INCANSABLEMENTE significa:",
+   o:["Con mucho cansancio","Sin detenerse nunca","De vez en cuando","Con miedo"],c:1,
+   exp:["Ojo con el prefijo IN-: significa \"no\". In-cansable = que no se cansa.",
+        "¡Exacto! El prefijo IN- niega: sin cansarse, sin detenerse.",
+        "Es lo contrario: la buscaban todo el tiempo.",
+        "El texto no habla de miedo."]},
+  {t:"mc",p:"\"Usarla DESCUIDADAMENTE, pues puedes ponérsela en un ojo a alguien\". DESCUIDADAMENTE significa:",
+   o:["Con mucho cuidado","Sin poner atención","Muy rápido","En secreto"],c:1,
+   exp:["El prefijo DES- niega: es lo contrario a \"con cuidado\".",
+        "¡Correcto! DES-cuidadamente = sin cuidado, sin poner atención.",
+        "La velocidad no es lo que advierte el texto.",
+        "El texto no habla de secretos."]},
+  {t:"mc",p:"\"Prueba con esta antigua FÓRMULA ALQUÍMICA del mago Melisek\". En el texto, FÓRMULA ALQUÍMICA significa:",
+   o:["Una operación matemática","Una receta mágica antigua","Un hechizo prohibido","Un libro de historia"],c:1,
+   exp:["No: en el texto se trata de una preparación con ingredientes.",
+        "¡Muy bien! Es la receta o preparación de un alquimista.",
+        "El texto no dice que esté prohibida.",
+        "No es un libro, sino una preparación."]},
+  {t:"mc",p:"\"1 PIZCA de canela molida\". PIZCA significa:",o:["Un paquete completo","Una cantidad muy pequeña","Una taza llena","Un litro"],c:1,
+   exp:["Si fuera un paquete, la receta lo diría así.",
+        "¡Exacto! Una pizca es lo que cabe entre dos dedos: muy poquito.",
+        "Una taza es mucho más que una pizca.",
+        "Un litro es una medida de líquidos, y muchísimo más."]},
+  {t:"mc",p:"\"VIERTE la leche hirviendo sobre estos ingredientes\". VIERTE significa:",o:["Guarda","Echa o deja caer el líquido","Congela","Revuelve"],c:1,
+   exp:["Guardar no tiene sentido con la leche hirviendo sobre los ingredientes.",
+        "¡Correcto! Verter es echar un líquido de un recipiente a otro.",
+        "Al contrario: la leche debe estar caliente.",
+        "Revolver es el paso siguiente, no este."]},
+  {t:"mc",p:"\"Cientos de frasquitos con ingredientes mágicos, pócimas y BREBAJES medicinales\". BREBAJES significa:",
+   o:["Libros antiguos","Bebidas hechas con una mezcla de ingredientes","Piedras preciosas","Herramientas de trabajo"],c:1,
+   exp:["Los frasquitos guardan líquidos, no libros.",
+        "¡Muy bien! Está junto a \"pócimas\": son bebidas preparadas.",
+        "Las piedras no serían \"medicinales\".",
+        "Las herramientas no van en frasquitos ni son medicinales."]},
+  {t:"vf",p:"Para descubrir el significado de una palabra desconocida conviene leer la oración completa.",c:true,
+   ok:"¡Exacto! El contexto es tu mejor pista.",
+   no:"Es verdadero: la oración completa entrega las pistas para inferir el significado."},
+  {t:"vf",p:"Si no conozco una palabra, lo mejor es adivinar al azar sin releer el texto.",c:false,
+   ok:"¡Correcto! Siempre conviene releer y buscar pistas antes de responder.",
+   no:"Es falso: adivinar al azar es el peor método. Relee y busca pistas en el contexto."},
+  {t:"vf",p:"El prefijo IN- en \"incansablemente\" significa negación: \"que no se cansa\".",c:true,
+   ok:"¡Muy bien! Los prefijos IN- y DES- son grandes pistas para inferir significados.",
+   no:"Es verdadero: IN- niega. In-cansable = que no se cansa."},
+  {t:"vf",p:"Una buena forma de comprobar el significado es reemplazar la palabra por la alternativa y ver si la oración conserva el sentido.",c:true,
+   ok:"¡Exacto! Es el truco del reemplazo. Úsalo siempre en la prueba.",
+   no:"Es verdadero: si al reemplazarla la oración sigue teniendo sentido, esa es la respuesta."},
+  {t:"match",p:"Relaciona cada palabra del poema con su significado.",
+   pares:[["Charca","Agua detenida, similar a un pozo"],
+          ["Zampar","Comer apresuradamente"],
+          ["Bramido","Sonido que emiten algunos animales salvajes"],
+          ["Orinoco","Río importante de América del Sur"]],
+   ok:"¡Excelente! Este es el vocabulario exacto que aparece en la prueba."},
+  {t:"match",p:"Relaciona cada palabra de los textos de los alquimistas con su significado.",
+   pares:[["Pócima","Bebida mágica o medicinal"],
+          ["Alquimista","Sabio antiguo, mitad químico, mitad mago"],
+          ["Pizca","Cantidad muy pequeña"],
+          ["Verter","Echar un líquido en otro recipiente"]],
+   ok:"¡Perfecto! Ya puedes deducir significados como todo un detective de palabras."}
+ ]
+}
+];
+
+/* ===================== DESAFÍO FINAL ===================== */
+const DESAFIO = {
+ nombre:"Desafío Final del Mago",
+ emoji:"🏆",
+ sub:"Todos los contenidos mezclados",
+ items:[
+  {t:"mc",p:"Una receta de cocina y el reglamento de tu curso se diferencian porque:",
+   o:["La receta narra una historia y el reglamento también","La receta enseña a hacer algo y el reglamento indica cómo comportarse","Ambos expresan sentimientos","La receta usa versos y el reglamento estrofas"],c:1,
+   exp:["Ninguno de los dos narra historias.",
+        "¡Correcto! Instructivo = cómo hacer; normativo = cómo actuar.",
+        "Expresar sentimientos es propio del poema.",
+        "Versos y estrofas son propios del poema."]},
+  {t:"mc",p:"\"La luna se asomó curiosa por la ventana\". La figura literaria es:",o:["Comparación","Hipérbole","Personificación","Aliteración"],c:2,
+   exp:["No hay conector \"como\".",
+        "No hay exageración de cantidad.",
+        "¡Exacto! Asomarse y ser curiosa son cualidades humanas dadas a la luna.",
+        "No se repite un sonido de forma llamativa."]},
+  {t:"mc",p:"¿Cuál palabra está bien escrita?",o:["Enbase","Envase","Emvase","Enbaze"],c:1,
+   exp:["Después de N va V, no B.",
+        "¡Correcto! Después de la letra N siempre se escribe V.",
+        "Después de M va B, pero aquí la letra anterior es N.",
+        "El error está en la B y también en la Z final."]},
+  {t:"mc",p:"¿Cuál palabra está bien escrita?",o:["Ombre","Honvre","Hombre","Honbre"],c:2,
+   exp:["Le falta la H inicial.",
+        "Después de M va B, no V, y aquí además cambió la M por N.",
+        "¡Muy bien! Después de M se escribe B: hombre.",
+        "Debe ser M antes de B, no N."]},
+  {t:"mc",p:"En un poema, el conjunto de versos separado por un espacio en blanco se llama:",o:["Párrafo","Estrofa","Capítulo","Rima"],c:1,
+   exp:["Párrafo es de los textos en prosa, no de los poemas.",
+        "¡Correcto! En poesía se llama estrofa.",
+        "Los capítulos son de los libros de cuentos o novelas.",
+        "La rima es la semejanza de sonidos, no un grupo de versos."]},
+  {t:"mc",p:"\"Su risa era música para mis oídos\" es una:",o:["Metáfora","Comparación","Aliteración","Hipérbole"],c:0,
+   exp:["¡Exacto! Reemplaza la risa por música, sin usar \"como\".",
+        "Sería comparación si dijera \"su risa era COMO música\".",
+        "No hay repetición de sonidos.",
+        "No hay exageración de cantidad."]},
+  {t:"mc",p:"\"Coloca todos los ingredientes en una licuadora\". El verbo \"coloca\" está en:",o:["Infinitivo","Segunda persona","Pasado","Gerundio"],c:1,
+   exp:["El infinitivo sería \"colocar\".",
+        "¡Muy bien! Está dirigido a ti (tú coloca): segunda persona.",
+        "No está en pasado: es una instrucción para ahora.",
+        "El gerundio sería \"colocando\"."]},
+  {t:"mc",p:"Si una pregunta dice \"deduce qué podría pasar si…\", está pidiendo información:",o:["Explícita","Implícita","Del título","Del diccionario"],c:1,
+   exp:["La explícita se copia del texto; aquí hay que razonar.",
+        "¡Correcto! \"Deduce\" es la señal de una pregunta de inferencia.",
+        "El título no entrega esa respuesta.",
+        "No se trata de buscar en el diccionario, sino de razonar con el texto."]},
+  {t:"vf",p:"Los textos instructivos pueden usar verbos en infinitivo o en segunda persona.",c:true,
+   ok:"¡Exacto! Ambas formas son correctas: hervir / hierve.",
+   no:"Es verdadero: pueden usar infinitivo (hervir) o segunda persona (hierve)."},
+  {t:"vf",p:"La hipérbole y la comparación son la misma figura literaria.",c:false,
+   ok:"¡Correcto! La hipérbole exagera; la comparación une dos elementos con \"como\".",
+   no:"Es falso: la hipérbole exagera y la comparación relaciona dos elementos usando \"como\"."},
+  {t:"vf",p:"En el poema \"Caimanes y cocodrilos\" el hablante logra diferenciar fácilmente a ambos animales.",c:false,
+   ok:"¡Muy bien! El poema dice justamente \"Diferenciar no he podido\".",
+   no:"Es falso: el hablante dice \"Diferenciar no he podido al caimán del cocodrilo\"."},
+  {t:"vf",p:"La palabra \"servirá\" se escribe con V porque viene del verbo servir.",c:true,
+   ok:"¡Correcto! Vivir, hervir y servir van siempre con V.",
+   no:"Es verdadero: los verbos vivir, hervir y servir se escriben con V en todas sus formas."},
+  {t:"match",p:"Desafío final: relaciona cada ejemplo con su concepto.",
+   pares:[["\"Eres como una mariposa\"","Comparación"],
+          ["\"Mi muñeca me habló\"","Personificación"],
+          ["Título / ingredientes / preparación","Estructura del texto instructivo"],
+          ["Cada línea de un poema","Verso"],
+          ["Reglamento de convivencia","Texto normativo"]],
+   ok:"¡Cierre perfecto! Has conectado todos los contenidos de la unidad."},
+  {t:"orden",p:"Ordena los pasos que debes seguir para responder bien una pregunta de comprensión lectora.",
+   pasos:["Leer la pregunta y subrayar la palabra clave.","Volver al texto y buscar la pista.","Descartar las alternativas que el texto no permite afirmar.","Elegir la respuesta y comprobarla con el texto."],
+   ok:"¡Excelente estrategia! Aplícala en la prueba y no fallarás.",
+   no:"Recuerda el orden del detective: leer la pregunta, buscar la pista, descartar y comprobar."}
+ ]
+};
+</script>
+<script>
+/* ============================================================
+   2) MOTOR DEL JUEGO — lógica y presentación
+   ============================================================ */
+
+/* ---------- Estado ---------- */
+const S = {
+  xp:0, racha:0, mejorRacha:0,
+  correctas:0, incorrectas:0,
+  nivel:0, idx:0, fase:"inicio",
+  completados:[],           // índices de niveles terminados
+  aciertosNivel:{},         // {nivel: {ok:n, total:n}}
+  inicio:null,
+  respondida:false
+};
+
+const TOTAL_ITEMS = NIVELES.reduce((a,n)=>a+n.items.length,0) + DESAFIO.items.length;
+const IDX_DESAFIO = NIVELES.length;
+
+const APLAUSOS = ["¡Excelente! 🎉","¡Muy bien! 🌟","¡Perfecto! 💪","¡Lo lograste! ✨","¡Genial! 🚀","¡Increíble! 🏅","¡Vas muy bien! 👏"];
+const ANIMOS   = ["¡Casi! Sigue intentando 💪","No te rindas, ya lo entenderás 🌱","¡Tranquilo! Los errores enseñan 🧠","Vuelve a leer con calma 🔍"];
+
+const el = id => document.getElementById(id);
+const app = () => el("app");
+const rnd = arr => arr[Math.floor(Math.random()*arr.length)];
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+/* Fisher-Yates: mezcla una copia del arreglo */
+function mezclar(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+/* ---------- HUD ---------- */
+function actualizarHUD(){
+  el("barra").classList.remove("oculto");
+  el("sXP").textContent = "⭐ " + S.xp + " XP";
+  el("sRacha").textContent = "🔥 " + S.racha;
+  el("sNivel").textContent = "🏅 " + (S.nivel >= IDX_DESAFIO ? "Final" : "Nivel " + (S.nivel+1));
+  const hechos = S.correctas + S.incorrectas;
+  const pct = Math.min(100, Math.round(hechos / TOTAL_ITEMS * 100));
+  el("progBar").style.width = pct + "%";
+  el("progTxt").textContent = "Progreso general: " + pct + "%  ·  " + hechos + " de " + TOTAL_ITEMS + " actividades";
+}
+
+function toast(txt){
+  const t = el("toast");
+  t.textContent = txt;
+  t.classList.add("ver");
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove("ver"), 1800);
+}
+
+/* ---------- Puntaje ---------- */
+function sumarAcierto(){
+  S.correctas++;
+  S.racha++;
+  if(S.racha > S.mejorRacha) S.mejorRacha = S.racha;
+  let pts = 10;
+  if(S.racha >= 3){ pts += 5; }
+  if(S.racha >= 5){ pts += 5; }
+  S.xp += pts;
+  if(S.racha === 3) toast("🔥 ¡Racha de 3! +5 XP extra");
+  if(S.racha === 5) toast("🔥🔥 ¡Racha de 5! +10 XP extra");
+  if(S.racha === 10) toast("🔥🔥🔥 ¡Racha de 10! Eres imparable");
+  const n = S.aciertosNivel[S.nivel] = S.aciertosNivel[S.nivel] || {ok:0,total:0};
+  n.ok++; n.total++;
+  actualizarHUD();
+}
+function sumarError(){
+  S.incorrectas++;
+  S.racha = 0;
+  const n = S.aciertosNivel[S.nivel] = S.aciertosNivel[S.nivel] || {ok:0,total:0};
+  n.total++;
+  actualizarHUD();
+}
+
+/* ============================================================
+   PANTALLAS
+   ============================================================ */
+
+function pantallaBienvenida(){
+  el("barra").classList.add("oculto");
+  app().innerHTML = `
+  <div class="card centro">
+    <div style="font-size:64px">🪄🐊📜</div>
+    <h1>Guía Interactiva de Lenguaje</h1>
+    <p style="font-size:20px;color:var(--morado)"><b>4° Básico · Unidad 2 (Lecciones 1, 2 y 3)</b></p>
+    <p style="color:var(--gris)">Instituto Alonso de Ercilla · Hermanos Maristas</p>
+    <div class="teoBox" style="text-align:left">
+      <b>🎯 En esta aventura vas a practicar:</b>
+      <ul>
+        <li>Comprensión de textos literarios y no literarios (información explícita, implícita e inferencias)</li>
+        <li>Textos instructivos y normativos: estructura y propósito comunicativo</li>
+        <li>El poema: verso, estrofa, rima y propósito</li>
+        <li>Lenguaje literal y figurado</li>
+        <li>Figuras literarias: comparación, metáfora, personificación, hipérbole y aliteración</li>
+        <li>Uso de <b>B</b> y <b>V</b></li>
+        <li>Vocabulario: inferir significados por el contexto</li>
+      </ul>
+    </div>
+    <p><span class="chip">6 niveles + desafío final</span><span class="chip">${TOTAL_ITEMS} actividades</span><span class="chip">${NIVELES.reduce((a,n)=>a+(n.flash?n.flash.length:0),0)} tarjetas</span></p>
+    <p style="margin-top:14px">Ganas <b>XP</b> con cada acierto, sumas <b>rachas</b> 🔥 y desbloqueas <b>medallas</b> 🏅.<br>¿Estás listo para convertirte en <b>Maestro del Lenguaje</b>?</p>
+    <button class="btn naranjo" style="font-size:21px;margin-top:12px" onclick="comenzar()">🚀 ¡Comenzar aventura!</button>
+  </div>
+  <div class="pie">Preparado a partir de la Guía Formativa N°2 de Lenguaje y Comunicación (agosto 2026).</div>`;
+  window.scrollTo(0,0);
+}
+
+function comenzar(){
+  S.inicio = Date.now();
+  irAlMapa();
+}
+
+function irAlMapa(){
+  actualizarHUD();
+  const cards = NIVELES.map((n,i)=>{
+    const hecho = S.completados.includes(i);
+    const abierto = i === 0 || S.completados.includes(i-1) || hecho;
+    const cls = hecho ? "listo" : (abierto ? "abierto" : "bloqueado");
+    const est = hecho ? "✅" : (abierto ? "▶️" : "🔒");
+    const marc = S.aciertosNivel[i] ? `<span class="sub">Aciertos: ${S.aciertosNivel[i].ok}/${S.aciertosNivel[i].total}</span>` : "";
+    return `<button class="nivelCard ${cls}" ${abierto?`onclick="abrirNivel(${i})"`:"disabled"}>
+      <span class="est">${est}</span>
+      <span class="emo">${n.emoji}</span>
+      <span class="tit">Nivel ${i+1}: ${n.nombre}</span>
+      <span class="sub">${n.sub}</span>
+      <span class="sub">${n.items.length} actividades · ${n.flash.length} tarjetas</span>
+      ${marc}
+    </button>`;
+  }).join("");
+
+  const todosListos = S.completados.length >= NIVELES.length;
+  const desafioHecho = S.completados.includes(IDX_DESAFIO);
+  const cardDes = `<button class="nivelCard ${desafioHecho?"listo":(todosListos?"abierto":"bloqueado")}"
+    ${todosListos?`onclick="abrirDesafio()"`:"disabled"}>
+    <span class="est">${desafioHecho?"✅":(todosListos?"▶️":"🔒")}</span>
+    <span class="emo">${DESAFIO.emoji}</span>
+    <span class="tit">${DESAFIO.nombre}</span>
+    <span class="sub">${DESAFIO.sub}</span>
+    <span class="sub">${todosListos?DESAFIO.items.length+" actividades":"Completa los 6 niveles para desbloquear"}</span>
+  </button>`;
+
+  app().innerHTML = `
+  <div class="card">
+    <h2>🗺️ Mapa de la aventura</h2>
+    <p>Completa cada nivel para desbloquear el siguiente. Puedes repetir los niveles que ya terminaste.</p>
+    <div class="nivelGrid">${cards}${cardDes}</div>
+  </div>
+  ${medallero()}
+  ${desafioHecho?`<div class="card centro"><button class="btn verde" onclick="pantallaFinal()">📊 Ver mis resultados finales</button></div>`:""}`;
+  window.scrollTo(0,0);
+}
+
+/* ---------- Medallero ---------- */
+function medallas(){
+  const tot = S.correctas + S.incorrectas;
+  const pct = tot ? S.correctas/tot : 0;
+  return [
+    {ic:"📋",n:"Aprendiz de Instrucciones",ok:S.completados.includes(0)},
+    {ic:"🔍",n:"Detective Lector",ok:S.completados.includes(1)},
+    {ic:"🪶",n:"Poeta Explorador",ok:S.completados.includes(2)},
+    {ic:"✨",n:"Mago de las Palabras",ok:S.completados.includes(3)},
+    {ic:"🛡️",n:"Guardián de la B y la V",ok:S.completados.includes(4)},
+    {ic:"🎯",n:"Cazador de Significados",ok:S.completados.includes(5)},
+    {ic:"🏆",n:"Maestro del Lenguaje",ok:S.completados.includes(IDX_DESAFIO)},
+    {ic:"🔥",n:"Racha de 5",ok:S.mejorRacha>=5},
+    {ic:"⚡",n:"Racha de 10",ok:S.mejorRacha>=10},
+    {ic:"💎",n:"500 XP",ok:S.xp>=500},
+    {ic:"👑",n:"1000 XP",ok:S.xp>=1000},
+    {ic:"🎖️",n:"90% de aciertos",ok:tot>=20 && pct>=0.9}
+  ];
+}
+function medallero(){
+  const m = medallas();
+  const g = m.map(x=>`<div class="med ${x.ok?"":"gris"}"><span class="ic">${x.ic}</span>${x.n}</div>`).join("");
+  return `<div class="card"><h2>🏅 Mis medallas (${m.filter(x=>x.ok).length}/${m.length})</h2><div class="medGrid">${g}</div></div>`;
+}
+
+/* ---------- Teoría del nivel ---------- */
+function abrirNivel(i){
+  S.nivel = i; S.idx = 0;
+  const n = NIVELES[i];
+  app().innerHTML = `
+  <div class="card">
+    <p class="chip">Nivel ${i+1} de ${NIVELES.length}</p>
+    <h1>${n.emoji} ${n.nombre}</h1>
+    <p style="color:var(--gris)">${n.sub}</p>
+    <div class="teoBox">
+      <h2>${n.teoria.titulo}</h2>
+      ${n.teoria.html}
+    </div>
+    ${n.poema ? `<h3>📖 El poema completo</h3><div class="poema">${esc(TEXTOS.poema)}</div>` : ""}
+    <div class="resumen"><b>📌 Resumen para repasar:</b><br>${n.teoria.resumen}</div>
+    <div class="dato">${n.teoria.dato}</div>
+    <div class="centro" style="margin-top:16px">
+      <button class="btn" onclick="iniciarFlash()">🃏 Repasar con tarjetas (${n.flash.length})</button>
+      <button class="btn naranjo" onclick="iniciarItems()">✏️ Ir a las actividades</button>
+    </div>
+  </div>
+  <div class="card centro"><button class="btn chico gris" onclick="irAlMapa()">🗺️ Volver al mapa</button></div>`;
+  actualizarHUD();
+  window.scrollTo(0,0);
+}
+
+/* ---------- Textos de apoyo (consulta rápida) ---------- */
+function verTexto(k){
+  const cont = el("cajaTexto");
+  if(!cont) return;
+  if(cont.dataset.abierto === k){ cont.innerHTML=""; cont.dataset.abierto=""; return; }
+  cont.dataset.abierto = k;
+  cont.innerHTML = `<div class="textoFuente" style="white-space:pre-line">${esc(TEXTOS[k])}</div>`;
+}
+function barraTextos(){
+  return `<div class="card">
+    <b>📚 ¿Necesitas releer? Abre los textos:</b><br>
+    <button class="btn chico" onclick="verTexto('t1')">Texto 1</button>
+    <button class="btn chico" onclick="verTexto('t2')">Texto 2</button>
+    <button class="btn chico" onclick="verTexto('t3')">Texto 3</button>
+    <button class="btn chico" onclick="verTexto('poema')">Poema</button>
+    <div id="cajaTexto" data-abierto=""></div>
+  </div>`;
+}
+
+/* ============================================================
+   FLASHCARDS
+   ============================================================ */
+let FL = {lista:[], i:0};
+function iniciarFlash(){
+  FL.lista = mezclar(NIVELES[S.nivel].flash);
+  FL.i = 0;
+  pintarFlash();
+}
+function pintarFlash(){
+  const c = FL.lista[FL.i];
+  app().innerHTML = `
+  <div class="card">
+    <h2>🃏 Tarjetas de repaso</h2>
+    <p>Tarjeta <b>${FL.i+1}</b> de <b>${FL.lista.length}</b> · Haz clic en la tarjeta para darla vuelta.</p>
+    <div class="flashArea">
+      <div class="flash" id="fcard" tabindex="0" role="button" aria-label="Girar tarjeta"
+           onclick="girarFlash()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();girarFlash();}">
+        <div class="flashCara frente">${esc(c.f)}</div>
+        <div class="flashCara detras">${esc(c.b)}</div>
+      </div>
+    </div>
+    <div class="flashNav">
+      <button class="btn chico gris" onclick="navFlash(-1)" ${FL.i===0?"disabled":""}>⬅️ Anterior</button>
+      <button class="btn chico" onclick="girarFlash()">🔄 Girar</button>
+      <button class="btn chico gris" onclick="navFlash(1)" ${FL.i===FL.lista.length-1?"disabled":""}>Siguiente ➡️</button>
+    </div>
+    <div class="flashNav" style="margin-top:14px">
+      <button class="btn chico" onclick="iniciarFlash()">🔀 Mezclar de nuevo</button>
+      <button class="btn naranjo" onclick="iniciarItems()">✏️ Ir a las actividades</button>
+      <button class="btn chico gris" onclick="abrirNivel(S.nivel)">📖 Volver a la teoría</button>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+function girarFlash(){ el("fcard").classList.toggle("girada"); }
+function navFlash(d){
+  FL.i = Math.max(0, Math.min(FL.lista.length-1, FL.i+d));
+  pintarFlash();
+}
+
+/* ============================================================
+   ACTIVIDADES
+   ============================================================ */
+let ITEMS = [];
+
+function iniciarItems(){
+  ITEMS = mezclar(NIVELES[S.nivel].items);
+  S.idx = 0;
+  pintarItem();
+}
+function abrirDesafio(){
+  S.nivel = IDX_DESAFIO; S.idx = 0;
+  ITEMS = mezclar(DESAFIO.items);
+  app().innerHTML = `
+  <div class="card centro">
+    <div style="font-size:56px">🏆</div>
+    <h1>${DESAFIO.nombre}</h1>
+    <p>Aquí se mezcla <b>todo lo que aprendiste</b>: textos instructivos y normativos, comprensión lectora, poesía, figuras literarias, B/V y vocabulario.</p>
+    <p>Son <b>${DESAFIO.items.length} actividades</b>. ¡Demuestra que eres un Maestro del Lenguaje!</p>
+    <button class="btn naranjo" onclick="pintarItem()">⚔️ ¡Aceptar el desafío!</button>
+  </div>`;
+  actualizarHUD();
+  window.scrollTo(0,0);
+}
+
+function cabeceraItem(){
+  const nom = S.nivel >= IDX_DESAFIO ? DESAFIO.nombre : ("Nivel "+(S.nivel+1)+": "+NIVELES[S.nivel].nombre);
+  return `<p class="chip">${nom}</p><p class="chip">Actividad ${S.idx+1} de ${ITEMS.length}</p>`;
+}
+
+function pintarItem(){
+  if(S.idx >= ITEMS.length){ finNivel(); return; }
+  S.respondida = false;
+  const it = ITEMS[S.idx];
+  const fn = {mc:pintarMC, vf:pintarVF, orden:pintarOrden, match:pintarMatch, bv:pintarBV}[it.t];
+  fn(it);
+  actualizarHUD();
+  window.scrollTo(0,0);
+}
+
+function botonSiguiente(){
+  const ultimo = S.idx === ITEMS.length-1;
+  return `<div class="centro" style="margin-top:16px">
+    <button class="btn naranjo" onclick="siguienteItem()">${ultimo?"🏁 Terminar el nivel":"Siguiente ➡️"}</button>
+  </div>`;
+}
+function siguienteItem(){ S.idx++; pintarItem(); }
+
+function mostrarFB(okOrNo, texto){
+  const z = el("zonaFB");
+  z.innerHTML = `<div class="fb ${okOrNo?"ok":"no"}">
+      <b>${okOrNo ? rnd(APLAUSOS) : "Respuesta incorrecta " + "❌"}</b>${texto}
+    </div>` + botonSiguiente();
+  z.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+/* ---------- Selección múltiple ---------- */
+function pintarMC(it){
+  const orden = mezclar(it.o.map((txt,i)=>({txt,i})));
+  window._ordenMC = orden;
+  const opts = orden.map((o,pos)=>`<button class="opt" id="o${pos}" onclick="respMC(${pos})">${esc(o.txt)}</button>`).join("");
+  app().innerHTML = `
+  <div class="card">
+    ${cabeceraItem()}
+    <p class="preg">${esc(it.p)}</p>
+    ${it.ctx?`<div class="contexto">${esc(it.ctx)}</div>`:""}
+    <div class="opts">${opts}</div>
+    <div id="zonaFB"></div>
+  </div>
+  ${barraTextos()}`;
+}
+function respMC(pos){
+  if(S.respondida) return;
+  S.respondida = true;
+  const it = ITEMS[S.idx];
+  const orden = window._ordenMC;
+  const original = orden[pos].i;
+  const correcto = original === it.c;
+  orden.forEach((o,p)=>{
+    const b = el("o"+p);
+    b.disabled = true;
+    if(o.i === it.c) b.classList.add("ok");
+    else if(p === pos) b.classList.add("no");
+  });
+  const expl = it.exp ? it.exp[original] : "";
+  let txt = esc(expl);
+  if(!correcto){
+    txt += `<br><br><b style="display:inline">✅ La respuesta correcta es:</b> ${esc(it.o[it.c])}<br>${esc(it.exp?it.exp[it.c]:"")}`;
+  }
+  correcto ? sumarAcierto() : sumarError();
+  mostrarFB(correcto, txt);
+}
+
+/* ---------- Verdadero / Falso ---------- */
+function pintarVF(it){
+  app().innerHTML = `
+  <div class="card">
+    ${cabeceraItem()}
+    <p class="preg">¿Verdadero o falso?</p>
+    <div class="contexto">${esc(it.p)}</div>
+    <div class="optsVF">
+      <button class="opt" id="vV" onclick="respVF(true)">✅ Verdadero</button>
+      <button class="opt" id="vF" onclick="respVF(false)">❌ Falso</button>
+    </div>
+    <div id="zonaFB"></div>
+  </div>
+  ${barraTextos()}`;
+}
+function respVF(v){
+  if(S.respondida) return;
+  S.respondida = true;
+  const it = ITEMS[S.idx];
+  const correcto = (v === it.c);
+  el("vV").disabled = true; el("vF").disabled = true;
+  (it.c ? el("vV") : el("vF")).classList.add("ok");
+  if(!correcto) (v ? el("vV") : el("vF")).classList.add("no");
+  correcto ? sumarAcierto() : sumarError();
+  mostrarFB(correcto, correcto ? esc(it.ok) : esc(it.no));
+}
+
+/* ---------- Ordenar pasos ---------- */
+let ORD = [];
+function pintarOrden(it){
+  ORD = mezclar(it.pasos);
+  // evita que salga ya ordenado
+  if(ORD.join("|") === it.pasos.join("|")) ORD = mezclar(ORD);
+  app().innerHTML = `
+  <div class="card">
+    ${cabeceraItem()}
+    <p class="preg">${esc(it.p)}</p>
+    <p style="font-size:15px;color:var(--gris)">Usa las flechas ▲▼ para mover cada paso hasta dejarlos en el orden correcto.</p>
+    <div class="ordList" id="ordList"></div>
+    <div class="centro"><button class="btn" id="btnOrd" onclick="respOrden()">✔️ Comprobar orden</button></div>
+    <div id="zonaFB"></div>
+  </div>`;
+  pintarLista();
+}
+function pintarLista(){
+  el("ordList").innerHTML = ORD.map((p,i)=>`
+    <div class="ordItem" id="od${i}">
+      <span class="num">${i+1}</span>
+      <span class="txt">${esc(p)}</span>
+      <span class="ordBtns">
+        <button onclick="moverOrd(${i},-1)" aria-label="Subir" ${i===0?"disabled":""}>▲</button>
+        <button onclick="moverOrd(${i},1)" aria-label="Bajar" ${i===ORD.length-1?"disabled":""}>▼</button>
+      </span>
+    </div>`).join("");
+}
+function moverOrd(i,d){
+  if(S.respondida) return;
+  const j = i+d;
+  if(j<0 || j>=ORD.length) return;
+  [ORD[i],ORD[j]] = [ORD[j],ORD[i]];
+  pintarLista();
+}
+function respOrden(){
+  if(S.respondida) return;
+  S.respondida = true;
+  const it = ITEMS[S.idx];
+  const correcto = ORD.every((p,i)=>p === it.pasos[i]);
+  el("btnOrd").disabled = true;
+  ORD.forEach((p,i)=>{
+    el("od"+i).classList.add(p === it.pasos[i] ? "ok" : "no");
+    el("od"+i).querySelectorAll("button").forEach(b=>b.disabled = true);
+  });
+  correcto ? sumarAcierto() : sumarError();
+  let txt = correcto ? esc(it.ok) : esc(it.no);
+  if(!correcto){
+    txt += "<br><br><b style='display:inline'>✅ El orden correcto es:</b><ol style='margin-top:6px'>" +
+      it.pasos.map(p=>`<li>${esc(p)}</li>`).join("") + "</ol>";
+  }
+  mostrarFB(correcto, txt);
+}
+
+/* ---------- Relacionar columnas ---------- */
+let MT = {izq:[], der:[], sel:null, hechos:0, fallos:0};
+function pintarMatch(it){
+  MT = {izq:mezclar(it.pares.map((p,i)=>({t:p[0],i}))),
+        der:mezclar(it.pares.map((p,i)=>({t:p[1],i}))),
+        sel:null, hechos:0, fallos:0};
+  app().innerHTML = `
+  <div class="card">
+    ${cabeceraItem()}
+    <p class="preg">${esc(it.p)}</p>
+    <p style="font-size:15px;color:var(--gris)">Toca una tarjeta de la izquierda y luego su pareja de la derecha.</p>
+    <div class="matchGrid">
+      <div class="matchCol" id="colI">${MT.izq.map((x,p)=>`<button class="mItem" id="mi${p}" onclick="selIzq(${p})">${esc(x.t)}</button>`).join("")}</div>
+      <div class="matchCol" id="colD">${MT.der.map((x,p)=>`<button class="mItem" id="md${p}" onclick="selDer(${p})">${esc(x.t)}</button>`).join("")}</div>
+    </div>
+    <div id="zonaFB"></div>
+  </div>`;
+}
+function selIzq(p){
+  if(S.respondida) return;
+  if(el("mi"+p).classList.contains("hecho")) return;
+  MT.izq.forEach((_,k)=>el("mi"+k).classList.remove("sel"));
+  el("mi"+p).classList.add("sel");
+  MT.sel = p;
+}
+function selDer(p){
+  if(S.respondida) return;
+  if(MT.sel === null){ toast("👉 Elige primero una tarjeta de la izquierda"); return; }
+  if(el("md"+p).classList.contains("hecho")) return;
+  const it = ITEMS[S.idx];
+  const bi = el("mi"+MT.sel), bd = el("md"+p);
+  if(MT.izq[MT.sel].i === MT.der[p].i){
+    bi.classList.remove("sel"); bi.classList.add("hecho"); bd.classList.add("hecho");
+    bi.disabled = true; bd.disabled = true;
+    MT.sel = null; MT.hechos++;
+    toast("✅ ¡Pareja correcta!");
+    if(MT.hechos === it.pares.length){
+      S.respondida = true;
+      const perfecto = MT.fallos === 0;
+      perfecto ? sumarAcierto() : sumarError();
+      let txt = esc(it.ok);
+      if(!perfecto) txt = "Completaste el ejercicio, pero tuviste " + MT.fallos + " intento(s) equivocado(s). Repasa estas parejas:<br><br>" +
+        it.pares.map(p2=>`• <b>${esc(p2[0])}</b> → ${esc(p2[1])}`).join("<br>");
+      mostrarFB(perfecto, txt);
+    }
+  } else {
+    MT.fallos++;
+    bd.classList.add("err");
+    bi.classList.add("err");
+    toast("❌ Esa no es la pareja. ¡Inténtalo de nuevo!");
+    setTimeout(()=>{ bd.classList.remove("err"); bi.classList.remove("err","sel"); }, 700);
+    MT.sel = null;
+  }
+}
+
+/* ---------- Uso de B y V (3 pasos) ---------- */
+let BV = {paso:0, errores:0};
+function pintarBV(it){
+  BV = {paso:0, errores:0};
+  const partes = it.pal.split("__");
+  app().innerHTML = `
+  <div class="card">
+    ${cabeceraItem()}
+    <p class="preg">${esc(it.p)}</p>
+    <div class="palabraGrande" id="palGrande">${esc(partes[0])}<span class="hueco" id="hueco">__</span>${esc(partes[1]||"")}</div>
+    <div id="pasoBV"></div>
+    <div id="zonaFB"></div>
+  </div>`;
+  pasoBVLetra();
+}
+function pasoBVLetra(){
+  el("pasoBV").innerHTML = `
+    <p style="text-align:center;font-weight:bold">Paso 1 · ¿Va con <b>B</b> o con <b>V</b>?</p>
+    <div class="optsVF">
+      <button class="opt" id="bB" onclick="respBVLetra('b')">B</button>
+      <button class="opt" id="bV" onclick="respBVLetra('v')">V</button>
+    </div>`;
+}
+function respBVLetra(l){
+  const it = ITEMS[S.idx];
+  el("bB").disabled = true; el("bV").disabled = true;
+  (it.c === "b" ? el("bB") : el("bV")).classList.add("ok");
+  if(l !== it.c){ (l==="b"?el("bB"):el("bV")).classList.add("no"); BV.errores++; }
+  el("hueco").textContent = it.c.toUpperCase();
+  setTimeout(()=>{
+    const pg = el("palGrande");
+    if(!pg) return;                                    // el usuario ya cambió de pantalla
+    pg.innerHTML = esc(it.res);
+    pasoBVRegla();
+  }, 900);
+}
+function pasoBVRegla(){
+  const it = ITEMS[S.idx];
+  if(!el("pasoBV") || !it || it.t !== "bv") return;   // el usuario ya cambió de pantalla
+  const orden = mezclar(it.opsRegla.map((t,i)=>({t,i})));
+  window._ordBVR = orden;
+  el("pasoBV").innerHTML = `
+    <p style="text-align:center;font-weight:bold">Paso 2 · ¿Qué regla ortográfica lo explica?</p>
+    <div class="opts">${orden.map((o,p)=>`<button class="opt" id="r${p}" onclick="respBVRegla(${p})">${esc(o.t)}</button>`).join("")}</div>`;
+}
+function respBVRegla(p){
+  const it = ITEMS[S.idx];
+  const orden = window._ordBVR;
+  orden.forEach((o,k)=>{
+    el("r"+k).disabled = true;
+    if(o.i === it.cRegla) el("r"+k).classList.add("ok");
+    else if(k === p) el("r"+k).classList.add("no");
+  });
+  if(orden[p].i !== it.cRegla) BV.errores++;
+  setTimeout(pasoBVEjemplo, 900);
+}
+function pasoBVEjemplo(){
+  const it = ITEMS[S.idx];
+  if(!el("pasoBV") || !it || it.t !== "bv") return;   // el usuario ya cambió de pantalla
+  const orden = mezclar(it.opsEj.map((t,i)=>({t,i})));
+  window._ordBVE = orden;
+  el("pasoBV").innerHTML = `
+    <p style="text-align:center;font-weight:bold">Paso 3 · ¿Qué ejemplo justifica esa misma regla?</p>
+    <div class="opts">${orden.map((o,p)=>`<button class="opt" id="e${p}" onclick="respBVEjemplo(${p})">${esc(o.t)}</button>`).join("")}</div>`;
+}
+function respBVEjemplo(p){
+  if(S.respondida) return;
+  S.respondida = true;
+  const it = ITEMS[S.idx];
+  const orden = window._ordBVE;
+  orden.forEach((o,k)=>{
+    el("e"+k).disabled = true;
+    if(o.i === it.cEj) el("e"+k).classList.add("ok");
+    else if(k === p) el("e"+k).classList.add("no");
+  });
+  if(orden[p].i !== it.cEj) BV.errores++;
+  const perfecto = BV.errores === 0;
+  perfecto ? sumarAcierto() : sumarError();
+  const txt = `Se escribe <b style="display:inline">${esc(it.res)}</b>.<br>
+    <b style="display:inline">Regla:</b> ${esc(it.regla)}<br>
+    <b style="display:inline">Ejemplo que la justifica:</b> ${esc(it.ej)}` +
+    (perfecto ? "" : `<br><br>Tuviste ${BV.errores} error(es) en los tres pasos. ¡Repasa esta regla y vuelve a intentarlo!`);
+  mostrarFB(perfecto, txt);
+}
+
+/* ============================================================
+   FIN DE NIVEL Y PANTALLA FINAL
+   ============================================================ */
+function finNivel(){
+  const esDesafio = S.nivel >= IDX_DESAFIO;
+  if(!S.completados.includes(S.nivel)) S.completados.push(S.nivel);
+  const d = S.aciertosNivel[S.nivel] || {ok:0,total:0};
+  const pct = d.total ? Math.round(d.ok/d.total*100) : 0;
+  const n = esDesafio ? DESAFIO : NIVELES[S.nivel];
+  let msg, emo;
+  if(pct === 100){ msg = "¡PUNTAJE PERFECTO! Dominas este contenido por completo."; emo="🌟🏆🌟"; S.xp += 50; }
+  else if(pct >= 80){ msg = "¡Muy buen trabajo! Solo te falta afinar algunos detalles."; emo="🎉"; S.xp += 25; }
+  else if(pct >= 60){ msg = "¡Vas bien! Te recomiendo repasar la teoría de este nivel y volver a intentarlo."; emo="💪"; }
+  else { msg = "Este contenido necesita más práctica. Vuelve a leer la teoría y repite el nivel: ¡lo vas a lograr!"; emo="🌱"; }
+  actualizarHUD();
+
+  app().innerHTML = `
+  <div class="card centro">
+    <div style="font-size:56px">${emo}</div>
+    <h1>${esDesafio?"":"Nivel completado: "}${n.nombre}</h1>
+    <div class="resGrid">
+      <div class="resBox"><span class="n">${d.ok}/${d.total}</span><span class="l">Aciertos</span></div>
+      <div class="resBox"><span class="n">${pct}%</span><span class="l">Logro del nivel</span></div>
+      <div class="resBox"><span class="n">${S.xp}</span><span class="l">XP total</span></div>
+      <div class="resBox"><span class="n">${S.mejorRacha}</span><span class="l">Mejor racha 🔥</span></div>
+    </div>
+    <p style="font-size:18px">${msg}</p>
+    <div style="margin-top:14px">
+      ${esDesafio
+        ? `<button class="btn verde" onclick="pantallaFinal()">📊 Ver mis resultados finales</button>`
+        : `<button class="btn naranjo" onclick="irAlMapa()">🗺️ Ir al mapa</button>`}
+      <button class="btn chico" onclick="${esDesafio?"abrirDesafio()":"abrirNivel("+S.nivel+")"}">🔁 Repetir este nivel</button>
+    </div>
+  </div>
+  ${medallero()}`;
+  window.scrollTo(0,0);
+}
+
+function pantallaFinal(){
+  const tot = S.correctas + S.incorrectas;
+  const pct = tot ? Math.round(S.correctas/tot*100) : 0;
+  const seg = Math.round((Date.now() - (S.inicio||Date.now()))/1000);
+  const min = Math.floor(seg/60), sg = seg%60;
+  const m = medallas().filter(x=>x.ok);
+
+  let rango, ico;
+  if(pct>=90){ rango="MAESTRO DEL LENGUAJE"; ico="👑"; }
+  else if(pct>=75){ rango="EXPERTO LECTOR"; ico="🏆"; }
+  else if(pct>=60){ rango="APRENDIZ AVANZADO"; ico="🥈"; }
+  else { rango="EXPLORADOR EN ENTRENAMIENTO"; ico="🌱"; }
+
+  // Recomendaciones según los niveles más débiles
+  const debiles = [];
+  NIVELES.forEach((n,i)=>{
+    const d = S.aciertosNivel[i];
+    if(!d || d.total===0){ debiles.push({n:n.nombre, sub:n.sub, p:-1}); return; }
+    const p = d.ok/d.total;
+    if(p < 0.8) debiles.push({n:n.nombre, sub:n.sub, p:Math.round(p*100)});
+  });
+  const recos = debiles.length
+    ? "<ul>" + debiles.map(d=>`<li><b>${esc(d.n)}</b> (${esc(d.sub)}) — ${d.p<0?"¡aún no lo has jugado! Complétalo antes de la prueba.":"lograste "+d.p+"%. Vuelve a leer la teoría y repite el nivel."}</li>`).join("") + "</ul>"
+    : "<p>🎉 ¡Todos tus niveles están sobre el 80%! Estás muy bien preparado. Repasa las tarjetas una última vez el día antes de la prueba.</p>";
+
+  app().innerHTML = `
+  <div class="card centro">
+    <div style="font-size:64px">${ico}</div>
+    <h1>${rango}</h1>
+    <p style="font-size:19px">Terminaste la Guía Interactiva de Lenguaje 4° Básico.</p>
+    <div class="resGrid">
+      <div class="resBox"><span class="n">${S.xp}</span><span class="l">XP total</span></div>
+      <div class="resBox"><span class="n">${pct}%</span><span class="l">Logro general</span></div>
+      <div class="resBox"><span class="n">${S.correctas}</span><span class="l">Correctas ✅</span></div>
+      <div class="resBox"><span class="n">${S.incorrectas}</span><span class="l">Incorrectas ❌</span></div>
+      <div class="resBox"><span class="n">${min}:${String(sg).padStart(2,"0")}</span><span class="l">Tiempo</span></div>
+      <div class="resBox"><span class="n">${S.mejorRacha}</span><span class="l">Mejor racha 🔥</span></div>
+      <div class="resBox"><span class="n">${m.length}</span><span class="l">Medallas 🏅</span></div>
+      <div class="resBox"><span class="n">${S.completados.length}/${NIVELES.length+1}</span><span class="l">Niveles</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>📚 Qué repasar antes de la prueba</h2>
+    ${recos}
+    <div class="resumen"><b>✅ Checklist final:</b>
+      <ul>
+        <li>Diferencio texto <b>instructivo</b> (cómo hacer) de <b>normativo</b> (cómo actuar).</li>
+        <li>Reconozco la estructura: <b>título → ingredientes → preparación</b>.</li>
+        <li>Distingo información <b>explícita</b> de <b>implícita</b> y sé inferir.</li>
+        <li>Cuento <b>versos</b> y <b>estrofas</b>, y sé qué es la rima y el hablante lírico.</li>
+        <li>Identifico <b>comparación, metáfora, personificación, hipérbole y aliteración</b>.</li>
+        <li>Aplico las reglas de <b>B y V</b> ("M con B, N con V").</li>
+        <li>Deduzco el significado de palabras <b>por el contexto</b>.</li>
+      </ul>
+    </div>
+  </div>
+  ${medallero()}
+  <div class="card centro">
+    <button class="btn naranjo" onclick="reiniciar()">🔄 Volver a jugar desde cero</button>
+    <button class="btn chico gris" onclick="irAlMapa()">🗺️ Volver al mapa</button>
+  </div>
+  <div class="pie">¡Mucho éxito en tu prueba de Lenguaje y Comunicación! 🍀</div>`;
+  window.scrollTo(0,0);
+}
+
+function reiniciar(){
+  S.xp=0; S.racha=0; S.mejorRacha=0; S.correctas=0; S.incorrectas=0;
+  S.nivel=0; S.idx=0; S.completados=[]; S.aciertosNivel={}; S.inicio=null; S.respondida=false;
+  actualizarHUD();
+  pantallaBienvenida();
+}
+
+/* ---------- Arranque ---------- */
+pantallaBienvenida();
+</script>
+</body>
+</html>
