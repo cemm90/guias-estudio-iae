@@ -42,19 +42,69 @@ const ESTILOS = [
   {re:/religi|filosof|[ée]tica/i,                emoji:"🕊️", color:"#7A8B3D", nombre:"Religión"}
 ];
 
+const TEXTO_EJEMPLO = "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.";
+
 function estiloDe(texto){
   return ESTILOS.find(e => e.re.test(texto)) ||
          {emoji:"📘", color:"#6C3FB5", nombre:null};
 }
 
-/* --- Lee datos del HTML de una guía para proponer valores iniciales --- */
+/* --- Quita etiquetas HTML y normaliza espacios --- */
+function limpiar(txt){
+  return txt.replace(/<[^>]+>/g, "")
+            .replace(/&nbsp;/g, " ")
+            .replace(/&amp;/g, "&")
+            .replace(/\s+/g, " ")
+            .trim();
+}
+
+/* --- Deduce la descripción leyendo el HTML de la guía ---
+   Prioridad:
+     1. <meta name="description" content="...">
+     2. La lista que sigue a "vas a practicar" en la pantalla de bienvenida
+     3. null (se usa el texto de ejemplo)                              */
+function descripcionDe(html){
+  const meta = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']+)["']/i);
+  if(meta) return limpiar(meta[1]);
+
+  const bloque = html.match(/vas a practicar[\s\S]{0,120}?<ul>([\s\S]*?)<\/ul>/i);
+  if(bloque){
+    const puntos = (bloque[1].match(/<li>([\s\S]*?)<\/li>/gi) || [])
+      .map(li => limpiar(li))
+      .filter(Boolean);
+    /* Suma puntos completos hasta ~200 caracteres, sin cortar frases a la mitad */
+    if(puntos.length){
+      const elegidos = [];
+      let largo = 0;
+      for(const p of puntos){
+        if(elegidos.length && largo + p.length > 200) break;
+        elegidos.push(p);
+        largo += p.length + 3;
+      }
+      return elegidos.join(" · ") + (elegidos.length < puntos.length ? " y más." : "");
+    }
+  }
+  return null;
+}
+
+/* --- Lee datos del HTML de una guía --- */
 function analizarGuia(html){
   const titulo = (html.match(/<title>([\s\S]*?)<\/title>/i) || [,""])[1].trim();
   const actividades = (html.match(/\{\s*t\s*:\s*["'](?:mc|vf|orden|match|bv)["']/g) || []).length;
   const tarjetas    = (html.match(/\{\s*f\s*:\s*["']/g) || []).length;
   const niveles     = (html.match(/\bteoria\s*:\s*\{/g) || []).length;
   const desafio     = /const\s+DESAFIO\s*=/.test(html) ? 1 : 0;
-  return {titulo, actividades, tarjetas, niveles: niveles + desafio};
+  return {titulo, actividades, tarjetas, niveles: niveles + desafio, desc: descripcionDe(html)};
+}
+
+/* --- Etiquetas con el conteo de contenidos --- */
+function etiquetasDe(info){
+  const plural = (n, sing, plu) => n + " " + (n === 1 ? sing : plu);
+  const tags = [];
+  if(info.actividades) tags.push(plural(info.actividades, "actividad", "actividades"));
+  if(info.tarjetas)    tags.push(plural(info.tarjetas, "tarjeta", "tarjetas"));
+  if(info.niveles)     tags.push(plural(info.niveles, "nivel", "niveles"));
+  return tags.length ? tags : ["Guía de repaso"];
 }
 
 /* --- Crea un guia.json inicial a partir de la carpeta y su HTML --- */
@@ -66,21 +116,17 @@ function proponerFicha(carpeta, html){
   const partes = info.titulo.split(/\s*[·|–-]\s*/).filter(Boolean);
   const curso  = (info.titulo.match(/\d+\s*°?\s*(?:B[áa]sico|Medio)/i) || [""])[0].trim();
 
-  const plural = (n, sing, plu) => n + " " + (n === 1 ? sing : plu);
-  const tags = [];
-  if(info.actividades) tags.push(plural(info.actividades, "actividad", "actividades"));
-  if(info.tarjetas)    tags.push(plural(info.tarjetas, "tarjeta", "tarjetas"));
-  if(info.niveles)     tags.push(plural(info.niveles, "nivel", "niveles"));
-
   return {
     asignatura: est.nombre || partes[1] || carpeta.replace(/[-_]/g," "),
     curso: curso || "Sin curso",
     unidad: partes[partes.length-1] || "Sin unidad",
     emoji: est.emoji,
     color: est.color,
-    desc: "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
-    tags: tags.length ? tags : ["Guía de repaso"],
-    listo: true
+    desc: info.desc || TEXTO_EJEMPLO,
+    tags: etiquetasDe(info),
+    listo: true,
+    autoDesc: true,
+    autoTags: true
   };
 }
 
@@ -103,6 +149,8 @@ function buscarGuias(){
     const fichaPath = path.join(dir, "guia.json");
     let ficha;
 
+    const html = fs.readFileSync(htmlPath, "utf8");
+
     if(fs.existsSync(fichaPath)){
       try{
         ficha = JSON.parse(fs.readFileSync(fichaPath, "utf8"));
@@ -112,13 +160,40 @@ function buscarGuias(){
         process.exitCode = 1;
         continue;
       }
+
+      /* Campos en modo automático: se refrescan leyendo la guía.
+         Pon "autoDesc": false o "autoTags": false en el guia.json
+         para que respete lo que escribiste a mano.                */
+      const info = analizarGuia(html);
+      const cambios = [];
+
+      const descAuto = ficha.autoDesc !== false &&
+                       (ficha.desc === undefined || ficha.desc === TEXTO_EJEMPLO || ficha.autoDesc === true);
+      if(descAuto && info.desc && info.desc !== ficha.desc){
+        ficha.desc = info.desc;
+        cambios.push("descripción");
+      }
+
+      if(ficha.autoTags !== false){
+        const tags = etiquetasDe(info);
+        if(JSON.stringify(tags) !== JSON.stringify(ficha.tags)){
+          ficha.tags = tags;
+          cambios.push("contenidos");
+        }
+      }
+
+      if(cambios.length && !SOLO_VER){
+        fs.writeFileSync(fichaPath, JSON.stringify(ficha, null, 2) + "\n", "utf8");
+        console.log(`   🔄 ${nombre}/ — se actualizó ${cambios.join(" y ")} desde la guía`);
+      }
     }else{
-      ficha = proponerFicha(nombre, fs.readFileSync(htmlPath, "utf8"));
+      ficha = proponerFicha(nombre, html);
       if(!SOLO_VER){
         fs.writeFileSync(fichaPath, JSON.stringify(ficha, null, 2) + "\n", "utf8");
       }
       nuevas.push(nombre);
-      console.log(`   ✨ ${nombre}/ — guía nueva detectada, se creó su guia.json`);
+      const avisoDesc = ficha.desc === TEXTO_EJEMPLO ? " (falta escribir la descripción)" : "";
+      console.log(`   ✨ ${nombre}/ — guía nueva detectada, se creó su guia.json${avisoDesc}`);
     }
 
     ficha.carpeta = nombre;                       // siempre manda la carpeta real
@@ -196,9 +271,10 @@ actualizarPortada(ordenar(guias));
 console.log(`\n✅ Portada actualizada con ${guias.length} guía(s):`);
 guias.forEach(g => console.log(`   ${g.listo ? "🟢" : "⚪️"} ${g.asignatura} — ${g.curso} (${g.carpeta}/)`));
 
-if(nuevas.length && !SOLO_VER){
-  console.log(`\n📝 Revisa la descripción y los datos de: ${nuevas.map(n => n + "/guia.json").join(", ")}`);
-  console.log("   Luego vuelve a ejecutar el script para reflejar los cambios.");
+const sinDesc = guias.filter(g => g.desc === TEXTO_EJEMPLO).map(g => g.carpeta);
+if(sinDesc.length && !SOLO_VER){
+  console.log(`\n📝 No pude deducir la descripción de: ${sinDesc.map(n => n + "/guia.json").join(", ")}`);
+  console.log("   Escríbela a mano en ese archivo (el resto se mantiene automático).");
 }
 
 console.log("\n👉 Para publicar:  git add . && git commit -m \"Nueva guía\" && git push\n");
