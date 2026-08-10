@@ -14,7 +14,6 @@
   --morado-osc:#4A2680;
   --morado-claro:#EDE4FF;
   --naranjo:#FF8A3D;
-  --amarillo:#FFC93C;
   --verde:#2FA84F;
   --gris:#5B5B6B;
   --texto:#26243B;
@@ -29,7 +28,6 @@ body{
 }
 a{text-decoration:none;color:inherit}
 
-/* ---------- Encabezado ---------- */
 header{
   background:linear-gradient(135deg,var(--morado),#8E5BD6);
   color:#fff;padding:38px 20px 32px;text-align:center;
@@ -41,7 +39,6 @@ header p{font-size:18px;opacity:.93}
 
 .wrap{max-width:960px;margin:0 auto;padding:24px 16px;width:100%;flex:1}
 
-/* ---------- Filtros ---------- */
 .filtros{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
 .filtro{
   background:#fff;border:3px solid var(--morado-claro);color:var(--morado-osc);
@@ -52,7 +49,6 @@ header p{font-size:18px;opacity:.93}
 .filtro.activo{background:var(--morado);border-color:var(--morado);color:#fff}
 .filtro:focus-visible{outline:3px solid var(--naranjo);outline-offset:2px}
 
-/* ---------- Tarjetas ---------- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:17px}
 .guia{
   background:#fff;border-radius:18px;padding:20px;box-shadow:var(--sombra);
@@ -74,7 +70,6 @@ header p{font-size:18px;opacity:.93}
 }
 .guia:hover .accion{background:#F97C28}
 
-/* Estado: próximamente */
 .guia.pronto{border-top-color:#C9C6D8;opacity:.72;cursor:default}
 .guia.pronto:hover{transform:none;box-shadow:var(--sombra)}
 .guia.pronto .accion{background:#B4B1C4;box-shadow:0 3px 0 #93909F;cursor:default}
@@ -86,10 +81,7 @@ header p{font-size:18px;opacity:.93}
 
 .vacio{text-align:center;color:var(--gris);padding:40px 12px;font-size:17px}
 
-/* ---------- Pie ---------- */
-footer{
-  text-align:center;padding:22px 16px 30px;color:var(--gris);font-size:14px;
-}
+footer{text-align:center;padding:22px 16px 30px;color:var(--gris);font-size:14px}
 footer b{color:var(--morado-osc)}
 
 @media(max-width:620px){
@@ -120,56 +112,17 @@ footer b{color:var(--morado-osc)}
 
 <script>
 /* ============================================================
-   👇 PARA AGREGAR UNA GUÍA NUEVA: copia un bloque y edítalo.
-   - carpeta: nombre exacto de la carpeta dentro del repositorio
-   - listo:   true = publicada · false = aparece como "Próximamente"
+   NO EDITES EL BLOQUE DE ABAJO A MANO.
+   Lo genera el script `actualizar-portada.js` a partir del
+   archivo `guia.json` que hay dentro de la carpeta de cada guía.
+
+   Para agregar o cambiar una guía:
+     1. Edita el guia.json de su carpeta
+     2. Ejecuta:  node actualizar-portada.js
    ============================================================ */
-const GUIAS = [
-  {
-    asignatura:"Lenguaje y Comunicación",
-    curso:"4° Básico",
-    unidad:"Unidad 2 · Lecciones 1, 2 y 3",
-    emoji:"🪄",
-    color:"#6C3FB5",
-    desc:"Textos instructivos y normativos, comprensión lectora, poemas, figuras literarias, uso de B-V y vocabulario por contexto.",
-    tags:["115 actividades","58 tarjetas","7 niveles"],
-    carpeta:"lenguaje-s2-u2",
-    listo:true
-  },
-  {
-    asignatura:"Matemática",
-    curso:"4° Básico",
-    unidad:"Próxima unidad",
-    emoji:"🔢",
-    color:"#1E88E5",
-    desc:"Aquí irá la próxima guía de Matemática. Edita este bloque cuando la agregues.",
-    tags:["Por crear"],
-    carpeta:"matematica-u3",
-    listo:true
-  },
-  {
-    asignatura:"Historia y Geografía",
-    curso:"4° Básico",
-    unidad:"Próxima unidad",
-    emoji:"🗺️",
-    color:"#E0713A",
-    desc:"Aquí irá la próxima guía de Historia. Edita este bloque cuando la agregues.",
-    tags:["Por crear"],
-    carpeta:"historia-u1",
-    listo:false
-  },
-  {
-    asignatura:"Ciencias Naturales",
-    curso:"4° Básico",
-    unidad:"Cuerpo Humano",
-    emoji:"🔬",
-    color:"#2FA84F",
-    desc:"Aquí irá la próxima guía de Ciencias. Edita este bloque cuando la agregues.",
-    tags:["Por crear"],
-    carpeta:"ciencias-cuerpo-humano",
-    listo:true
-  }
-];
+/* GUIAS:INICIO */
+const GUIAS = [];
+/* GUIAS:FIN */
 
 /* ---------- Lógica de la portada ---------- */
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
@@ -190,7 +143,7 @@ function pintarGuias(){
   const grid = document.getElementById("grid");
 
   if(!lista.length){
-    grid.innerHTML = `<p class="vacio">Todavía no hay guías para este curso.</p>`;
+    grid.innerHTML = `<p class="vacio">Todavía no hay guías publicadas.</p>`;
     return;
   }
 
@@ -198,7 +151,7 @@ function pintarGuias(){
     const tags = (g.tags||[]).map(t => `<span class="tag">${esc(t)}</span>`).join("");
     const interior = `
       <span class="estado">${g.listo ? "Disponible" : "Próximamente"}</span>
-      <span class="emo">${g.emoji}</span>
+      <span class="emo">${g.emoji||"📘"}</span>
       <span class="asig">${esc(g.asignatura)}</span>
       <span class="curso">${esc(g.curso)} · ${esc(g.unidad)}</span>
       <span class="desc">${esc(g.desc)}</span>
@@ -206,7 +159,7 @@ function pintarGuias(){
       <span class="accion">${g.listo ? "▶️ Empezar a repasar" : "🔒 Aún no disponible"}</span>`;
 
     return g.listo
-      ? `<a class="guia" style="border-top-color:${esc(g.color)}" href="${esc(g.carpeta)}/">${interior}</a>`
+      ? `<a class="guia" style="border-top-color:${esc(g.color||"#6C3FB5")}" href="${esc(g.carpeta)}/">${interior}</a>`
       : `<div class="guia pronto" aria-disabled="true">${interior}</div>`;
   }).join("");
 }
