@@ -1,0 +1,38 @@
+name: Actualizar portada
+
+# Se ejecuta solo cuando subes cambios a main,
+# y también a mano desde la pestaña Actions (botón "Run workflow").
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Regenerar la lista de guías
+        run: node actualizar-portada.js
+
+      - name: Guardar los cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "La portada ya estaba al día. No hay nada que guardar."
+          else
+            git add index.html */guia.json
+            git commit -m "Actualizar portada automáticamente"
+            git push
+          fi
