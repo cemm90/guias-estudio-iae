@@ -1,1 +1,1042 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misión Matemática · 4º Básico · Prueba 1</title>
+<style>
+/* ============ ESTILOS ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --azul:#2563eb; --azul-osc:#1e40af; --morado:#7c3aed; --verde:#16a34a;
+  --rojo:#dc2626; --amarillo:#f59e0b; --rosa:#ec4899; --cyan:#0891b2;
+  --fondo:#0f172a; --card:#ffffff; --texto:#1e293b; --gris:#64748b;
+}
+body{
+  font-family:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  background:linear-gradient(160deg,#1e3a8a 0%,#4c1d95 50%,#831843 100%);
+  background-attachment:fixed; color:var(--texto); min-height:100vh; padding:12px;
+  -webkit-font-smoothing:antialiased;
+}
+.app{max-width:840px;margin:0 auto}
+.card{background:var(--card);border-radius:20px;padding:22px;box-shadow:0 12px 32px rgba(0,0,0,.35);margin-bottom:14px}
+h1{font-size:2rem;color:var(--azul-osc);margin-bottom:8px;line-height:1.15}
+h2{font-size:1.45rem;color:var(--morado);margin-bottom:10px}
+h3{font-size:1.1rem;color:var(--azul-osc);margin:14px 0 6px}
+p{line-height:1.6;margin-bottom:10px;font-size:1.05rem}
+.oculto{display:none !important}
 
+/* Barra superior */
+.hud{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.95);border-radius:16px;padding:10px 14px;margin-bottom:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);position:sticky;top:6px;z-index:50}
+.hud-item{font-weight:bold;font-size:.95rem;display:flex;align-items:center;gap:5px}
+.barra{width:100%;height:14px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-top:8px}
+.barra-int{height:100%;width:0;background:linear-gradient(90deg,var(--verde),var(--cyan));
+  border-radius:99px;transition:width .5s ease}
+
+/* Botones */
+button{font-family:inherit;cursor:pointer;border:none;font-size:1rem}
+.btn{background:var(--azul);color:#fff;padding:14px 26px;border-radius:14px;font-weight:bold;
+  font-size:1.1rem;box-shadow:0 5px 0 var(--azul-osc);transition:transform .12s,box-shadow .12s;margin:6px 4px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--azul-osc)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--azul-osc)}
+.btn:focus-visible{outline:4px solid var(--amarillo);outline-offset:3px}
+.btn-verde{background:var(--verde);box-shadow:0 5px 0 #14532d}
+.btn-verde:hover{box-shadow:0 7px 0 #14532d}
+.btn-morado{background:var(--morado);box-shadow:0 5px 0 #4c1d95}
+.btn-morado:hover{box-shadow:0 7px 0 #4c1d95}
+.btn-gris{background:var(--gris);box-shadow:0 5px 0 #334155}
+
+/* Opciones */
+.opciones{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media(max-width:560px){.opciones{grid-template-columns:1fr}}
+.opcion{background:#f1f5f9;border:3px solid #cbd5e1;border-radius:14px;padding:16px;
+  text-align:left;font-size:1.05rem;font-weight:600;color:var(--texto);
+  transition:all .15s;display:flex;align-items:center;gap:10px;min-height:60px}
+.opcion:hover:not(:disabled){border-color:var(--azul);background:#dbeafe;transform:translateY(-2px)}
+.opcion:focus-visible{outline:4px solid var(--amarillo);outline-offset:2px}
+.opcion:disabled{cursor:default}
+.opcion.correcta{background:#dcfce7;border-color:var(--verde);color:#14532d}
+.opcion.incorrecta{background:#fee2e2;border-color:var(--rojo);color:#7f1d1d}
+.letra{background:var(--azul);color:#fff;width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:bold}
+
+/* Feedback */
+.feedback{margin-top:16px;padding:16px;border-radius:14px;font-size:1.02rem;line-height:1.55;
+  animation:aparecer .35s ease}
+.fb-ok{background:#dcfce7;border-left:6px solid var(--verde);color:#14532d}
+.fb-mal{background:#fef3c7;border-left:6px solid var(--amarillo);color:#78350f}
+@keyframes aparecer{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* Niveles */
+.niveles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:14px}
+.nivel-card{border-radius:16px;padding:16px;color:#fff;text-align:left;font-weight:bold;
+  box-shadow:0 6px 16px rgba(0,0,0,.2);transition:transform .15s;position:relative;overflow:hidden}
+.nivel-card:hover:not(.bloq){transform:translateY(-4px) scale(1.02)}
+.nivel-card.bloq{background:#94a3b8 !important;cursor:not-allowed;opacity:.75}
+.nivel-emoji{font-size:2rem;display:block;margin-bottom:6px}
+.nivel-sub{font-weight:normal;font-size:.85rem;opacity:.95;display:block;margin-top:4px}
+.check{position:absolute;top:10px;right:12px;font-size:1.4rem}
+
+/* Teoría */
+.teoria-box{background:#eff6ff;border-left:6px solid var(--azul);border-radius:12px;padding:16px;margin:12px 0}
+.resumen-box{background:#f5f3ff;border-left:6px solid var(--morado);border-radius:12px;padding:16px;margin:12px 0}
+.dato-box{background:#fffbeb;border-left:6px solid var(--amarillo);border-radius:12px;padding:16px;margin:12px 0}
+.ejemplo{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:12px;padding:12px;margin:8px 0;
+  font-family:'Courier New',monospace;font-size:1.05rem;white-space:pre-wrap;line-height:1.5}
+
+/* Grillas de figuras */
+.grilla{display:inline-grid;gap:2px;background:#334155;padding:2px;border-radius:6px;margin:4px}
+.celda{width:26px;height:26px;background:#fff;border-radius:3px}
+.celda.on{background:linear-gradient(135deg,#fbbf24,#f59e0b)}
+.celda.off{background:#f1f5f9;opacity:.35}
+.figura{text-align:center;margin:14px 0}
+
+/* Input completar */
+.input-resp{font-size:1.4rem;padding:12px 16px;border:3px solid #cbd5e1;border-radius:12px;
+  width:200px;text-align:center;font-family:inherit;font-weight:bold}
+.input-resp:focus{outline:none;border-color:var(--azul);background:#eff6ff}
+
+/* Relacionar */
+.rel-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.rel-col{display:flex;flex-direction:column;gap:8px}
+.rel-item{background:#f1f5f9;border:3px solid #cbd5e1;border-radius:12px;padding:12px;
+  font-weight:600;text-align:center;transition:all .15s}
+.rel-item:hover:not(:disabled){border-color:var(--morado)}
+.rel-item.sel{background:#ede9fe;border-color:var(--morado)}
+.rel-item.hecho{background:#dcfce7;border-color:var(--verde);opacity:.7;cursor:default}
+.rel-item.error{background:#fee2e2;border-color:var(--rojo)}
+
+/* Ordenar */
+.ord-zona{min-height:56px;background:#f8fafc;border:3px dashed #cbd5e1;border-radius:12px;
+  padding:10px;margin:10px 0;display:flex;flex-wrap:wrap;gap:8px}
+.ord-chip{background:var(--morado);color:#fff;border-radius:10px;padding:10px 14px;font-weight:bold}
+.ord-chip.pool{background:#e2e8f0;color:var(--texto)}
+
+/* Flashcard */
+.flash{perspective:1200px;margin:16px auto;max-width:520px;height:230px}
+.flash-int{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}
+.flash.girada .flash-int{transform:rotateY(180deg)}
+.flash-cara{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;
+  font-size:1.2rem;font-weight:bold;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.flash-frente{background:linear-gradient(135deg,#3b82f6,#7c3aed);color:#fff}
+.flash-atras{background:linear-gradient(135deg,#10b981,#0891b2);color:#fff;transform:rotateY(180deg)}
+
+/* Medallas y final */
+.medallas{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;justify-content:center}
+.medalla{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#78350f;border-radius:14px;
+  padding:10px 14px;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,.2);font-size:.95rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
+.stat{background:#f1f5f9;border-radius:14px;padding:14px;text-align:center}
+.stat-num{font-size:1.9rem;font-weight:bold;color:var(--azul-osc);display:block}
+.stat-lab{font-size:.85rem;color:var(--gris)}
+.centro{text-align:center}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--verde);color:#fff;
+  padding:12px 22px;border-radius:99px;font-weight:bold;z-index:200;box-shadow:0 6px 18px rgba(0,0,0,.3);
+  animation:subir 2s ease forwards;pointer-events:none}
+@keyframes subir{0%{opacity:0;transform:translate(-50%,-20px)}15%{opacity:1;transform:translate(-50%,0)}
+  80%{opacity:1}100%{opacity:0;transform:translate(-50%,-16px)}}
+.chip{display:inline-block;background:#e0e7ff;color:var(--azul-osc);border-radius:99px;
+  padding:5px 12px;font-size:.85rem;font-weight:bold;margin:3px}
+ul,ol{margin:0 0 12px 22px;line-height:1.7}
+.reloj{display:block;margin:10px auto}
+.digital{font-family:'Courier New',monospace;font-size:2.4rem;font-weight:bold;background:#0f172a;
+  color:#4ade80;padding:10px 22px;border-radius:12px;display:inline-block;letter-spacing:3px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HUD -->
+  <div id="hud" class="hud oculto">
+    <div class="hud-item">⭐ <span id="hud-xp">0</span> XP</div>
+    <div class="hud-item">🎯 <span id="hud-nivel">-</span></div>
+    <div class="hud-item">🔥 Racha: <span id="hud-racha">0</span></div>
+    <div class="hud-item">🏅 <span id="hud-med">0</span></div>
+    <div style="width:100%"><div class="barra"><div id="barra" class="barra-int"></div></div></div>
+  </div>
+
+  <div id="pantalla"></div>
+</div>
+
+<script>
+/* =======================================================================
+   1. UTILIDADES DE DIBUJO (figuras, relojes, grillas)
+   ======================================================================= */
+
+/** Dibuja una grilla de cuadrados. celdas = array de 0/1 (1 = pintado). */
+function G(filas, cols, celdas, tam){
+  tam = tam || 26;
+  let h = '<div class="grilla" style="grid-template-columns:repeat('+cols+','+tam+'px)">';
+  for(let i=0;i<filas*cols;i++){
+    h += '<div class="celda '+(celdas[i]?'on':'off')+'" style="width:'+tam+'px;height:'+tam+'px"></div>';
+  }
+  return h+'</div>';
+}
+
+/** Reloj analógico SVG a partir de hora y minutos. */
+function reloj(h, m, tam){
+  tam = tam || 180;
+  const cx=100, cy=100, r=88;
+  const angMin = (m/60)*360 - 90;
+  const angHor = (((h%12)+m/60)/12)*360 - 90;
+  const px=(ang,largo)=>[cx+largo*Math.cos(ang*Math.PI/180), cy+largo*Math.sin(ang*Math.PI/180)];
+  const [mx,my]=px(angMin,68), [hx,hy]=px(angHor,48);
+  let marcas='';
+  for(let i=0;i<60;i++){
+    const a=i*6-90, largo=(i%5===0)?10:4;
+    const [x1,y1]=px(a,r), [x2,y2]=px(a,r-largo);
+    marcas+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#475569" stroke-width="${i%5===0?3:1.5}"/>`;
+  }
+  let nums='';
+  for(let i=1;i<=12;i++){
+    const a=i*30-90; const [x,y]=px(a,r-26);
+    nums+=`<text x="${x}" y="${y+6}" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">${i}</text>`;
+  }
+  return `<svg class="reloj" width="${tam}" height="${tam}" viewBox="0 0 200 200" role="img"
+    aria-label="Reloj analógico"><circle cx="100" cy="100" r="94" fill="#fff" stroke="#1e40af" stroke-width="6"/>
+    ${marcas}${nums}
+    <line x1="100" y1="100" x2="${hx}" y2="${hy}" stroke="#1e40af" stroke-width="7" stroke-linecap="round"/>
+    <line x1="100" y1="100" x2="${mx}" y2="${my}" stroke="#dc2626" stroke-width="4.5" stroke-linecap="round"/>
+    <circle cx="100" cy="100" r="6" fill="#1e293b"/></svg>`;
+}
+
+/** Reloj digital. */
+function digital(h,m){
+  return '<div class="centro"><span class="digital">'+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+'</span></div>';
+}
+
+/** Operación vertical en formato monoespaciado. */
+function vert(a, b, signo){
+  const ancho = Math.max(String(a).length, String(b).length)+2;
+  return '<div class="ejemplo">'+String(a).padStart(ancho)+'\n'+signo+String(b).padStart(ancho-1)+'\n'+'—'.repeat(ancho)+'</div>';
+}
+
+/* =======================================================================
+   2. BANCO DE CONTENIDOS
+   Cada nivel: teoría + actividades. Tipos de actividad:
+     mc  = selección múltiple      vf  = verdadero/falso
+     comp= completar               rel = relacionar columnas
+     ord = ordenar pasos           flash = flashcard
+   ======================================================================= */
+
+const NIVELES = [
+{
+  id:1, nombre:"Explorador de Números", emoji:"🔢", color:"linear-gradient(135deg,#0891b2,#2563eb)",
+  tema:"Valor posicional (repaso base)",
+  teoria:{
+    explicacion:`Cada cifra de un número vale distinto según <b>el lugar</b> donde está. De derecha a izquierda:
+      unidades (U), decenas (D), centenas (C) y unidades de mil (UM). Por eso en 4.376 el 4 no vale "cuatro":
+      vale <b>4.000</b>, porque está en las unidades de mil.`,
+    resumen:`El lugar manda: U vale 1, D vale 10, C vale 100 y UM vale 1.000. Descomponer un número es
+      escribirlo como la suma del valor de cada cifra.`,
+    ejemplos:[
+      "4.376 = 4.000 + 300 + 70 + 6\n   4 → UM (4.000)\n   3 → C  (300)\n   7 → D  (70)\n   6 → U  (6)",
+      "Comparar 3.897 y 3.879:\n  Miran igual, pero comparamos de izquierda a derecha:\n  3=3, 8=8, 9>7 → 3.897 es MAYOR"
+    ],
+    dato:`Truco del punto: en Chile el punto separa los miles. Si ves 4.376, el número que está antes del punto
+      te dice cuántos miles hay. ¡Es como un semáforo que avisa "aquí empiezan los miles"!`
+  },
+  actividades:[
+    {tipo:'mc', p:'¿Cuál es el valor de la cifra <b>7</b> en el número 4.376?', ops:['70','7','700','7.000'], ok:0,
+      porQue:['','El 7 no está en las unidades: las unidades son el 6.','Para valer 700 el 7 tendría que estar en las centenas, pero ahí está el 3.','Para valer 7.000 tendría que estar en el primer lugar, pero ahí está el 4.'],
+      ref:'¡Exacto! El 7 está en las decenas, así que vale 7 × 10 = 70.'},
+    {tipo:'mc', p:'¿Cómo se descompone 3.897?', ops:['3.000 + 800 + 90 + 7','300 + 80 + 9 + 7','3.000 + 80 + 90 + 7','3.000 + 800 + 9 + 7'], ok:0,
+      porQue:['','Le faltó un cero a cada valor: el 3 vale 3.000, no 300.','El 8 está en las centenas, así que vale 800, no 80.','El 9 está en las decenas, así que vale 90, no 9.'],
+      ref:'¡Muy bien! Cada cifra aportó su valor según su lugar.'},
+    {tipo:'comp', p:'Escribe el número que corresponde a: 9 UM + 0 C + 0 D + 0 U', resp:['9000','9.000'],
+      pista:'Solo hay unidades de mil.', ref:'¡Correcto! 9.000, igual que en el ejercicio de la prueba.'},
+    {tipo:'vf', p:'En el número 652, la cifra 5 vale 50.', ok:true,
+      exp:'Verdadero: el 5 está en las decenas, así que vale 5 × 10 = 50.'},
+    {tipo:'vf', p:'El número 879 es mayor que el número 897.', ok:false,
+      exp:'Falso: ambos empiezan con 8, pero luego 7 < 9, así que 879 es MENOR que 897.'},
+    {tipo:'mc', p:'¿Cuál de estos números es el <b>mayor</b>?', ops:['8.273','8.237','8.723','8.732'], ok:3,
+      porQue:['Después del 8 viene un 2, y hay opciones con 7 en ese lugar.','Es el más pequeño de los cuatro.','8.723 y 8.732 empiezan igual, pero 3 > 2 en las decenas... revisa la tercera cifra.',''],
+      ref:'¡Perfecto! 8.732 gana porque comparamos cifra a cifra desde la izquierda.'},
+    {tipo:'comp', p:'¿Cuántas centenas tiene el número 763?', resp:['7','7 centenas','siete'],
+      pista:'Mira la cifra del lugar de las centenas.', ref:'¡Bien! El 7 ocupa el lugar de las centenas.'},
+    {tipo:'ord', p:'Ordena estos números de MENOR a MAYOR:', items:['652','763','879','9.000'],
+      ref:'¡Excelente! Primero se comparan la cantidad de cifras y después cifra por cifra.'},
+    {tipo:'rel', p:'Une cada cifra destacada con su valor (número 5.418):',
+      pares:[['5 (UM)','5.000'],['4 (C)','400'],['1 (D)','10'],['8 (U)','8']],
+      ref:'¡Genial! Ya dominas el valor posicional.'}
+  ]
+},
+{
+  id:2, nombre:"Domador de Tablas", emoji:"✖️", color:"linear-gradient(135deg,#7c3aed,#ec4899)",
+  tema:"Tablas de multiplicar y división básica (repaso base)",
+  teoria:{
+    explicacion:`Multiplicar es <b>sumar el mismo número varias veces</b>: 4 × 3 es lo mismo que 4 + 4 + 4 = 12.
+      Dividir es la operación contraria: repartir en grupos iguales. Si sabes que 4 × 3 = 12, entonces
+      12 : 3 = 4 y 12 : 4 = 3. ¡Son familia!`,
+    resumen:`Multiplicación y división son operaciones inversas. Saber las tablas de memoria hace que dividir
+      sea rapidísimo, porque solo tienes que preguntarte: "¿por cuánto multiplico para llegar cerca?".`,
+    ejemplos:[
+      "Familia del 12:\n  3 × 4 = 12      4 × 3 = 12\n  12 : 3 = 4      12 : 4 = 3",
+      "División con resto:\n  13 : 4 → 4 × 3 = 12 (me paso con 4×4=16)\n  13 - 12 = 1\n  Resultado: 3 y sobra 1 (resto 1)"
+    ],
+    dato:`Truco de la tabla del 9 con los dedos: baja el dedo número que multiplicas. Los dedos a la izquierda
+      son las decenas y los de la derecha las unidades. Para 9 × 4 bajas el 4º dedo: quedan 3 y 6 → 36.`
+  },
+  actividades:[
+    {tipo:'mc', p:'¿Cuánto es 8 × 7?', ops:['56','54','63','48'], ok:0,
+      porQue:['','54 es 6 × 9. Cuidado con confundir tablas parecidas.','63 es 9 × 7, una más que 8 × 7.','48 es 8 × 6, te faltó un grupo de 8.'],
+      ref:'¡Sí! 8 × 7 = 56. Una de las más preguntadas en las pruebas.'},
+    {tipo:'comp', p:'Completa: 6 × ___ = 42', resp:['7','siete'], pista:'Piensa en la tabla del 6.',
+      ref:'¡Correcto! 6 × 7 = 42, y por eso 42 : 6 = 7.'},
+    {tipo:'vf', p:'Si 5 × 9 = 45, entonces 45 : 9 = 5.', ok:true,
+      exp:'Verdadero: multiplicar y dividir son operaciones inversas, son de la misma familia.'},
+    {tipo:'mc', p:'En la división 89 : 3, ¿cuál multiplicación te ayuda a <b>no pasarte</b>?', ops:['3 × 29 = 87','3 × 30 = 90','3 × 28 = 84','3 × 31 = 93'], ok:0,
+      porQue:['','90 es mayor que 89: te pasaste.','84 sirve, pero todavía sobran 5 y podrías repartir un grupo más.','93 se pasa por mucho.'],
+      ref:'¡Muy bien! 3 × 29 = 87 y sobran 2, entonces 89 : 3 = 29 con resto 2.'},
+    {tipo:'comp', p:'¿Cuál es el resto de 75 : 2?', resp:['1','uno','resto 1'], pista:'2 × 37 = 74.',
+      ref:'¡Exacto! 75 : 2 = 37 y sobra 1, porque 75 es impar.'},
+    {tipo:'vf', p:'Todos los números pares se dividen exactamente por 2 (resto 0).', ok:true,
+      exp:'Verdadero: ser par significa justamente que se puede repartir en dos grupos iguales sin que sobre nada.'},
+    {tipo:'rel', p:'Une cada división con su resultado:',
+      pares:[['24 : 4','6'],['32 : 4','8'],['45 : 5','9'],['56 : 8','7']],
+      ref:'¡Genial! Recordar las tablas te ahorra muchísimo tiempo.'},
+    {tipo:'mc', p:'¿Cuánto es 9 × 5?', ops:['45','40','54','35'], ok:0,
+      porQue:['','40 es 8 × 5.','54 es 9 × 6.','35 es 7 × 5.'],
+      ref:'¡Perfecto! Todos los resultados de la tabla del 5 terminan en 0 o en 5.'},
+    {tipo:'comp', p:'Completa: 4 × ___ = 32', resp:['8','ocho'], pista:'La tabla del 4 avanza de 4 en 4.',
+      ref:'¡Bien! 4 × 8 = 32.'}
+  ]
+},
+{
+  id:3, nombre:"Arquitecto de Vistas 3D", emoji:"🧊", color:"linear-gradient(135deg,#16a34a,#0891b2)",
+  tema:"Vistas de figuras 3D",
+  teoria:{
+    explicacion:`Cuando miras un cuerpo hecho de cubos desde distintos lugares, ves <b>figuras planas distintas</b>.
+      Las tres vistas más usadas son: <b>vista frontal</b> (de frente), <b>vista lateral</b> (desde el lado) y
+      <b>vista superior</b> (desde arriba, como un pájaro). En una vista NO se ve la profundidad: los cubos que
+      están uno detrás del otro se ven como un solo cuadrado.`,
+    resumen:`Vista frontal = lo que ves de frente. Vista lateral = desde el costado. Vista superior = desde arriba.
+      Cada vista es un dibujo plano formado por cuadrados.`,
+    ejemplos:[
+      "Cuerpo: 3 cubos en fila, con 1 cubo encima del cubo de la izquierda.\n  Vista frontal → una fila de 3 cuadrados con 1 cuadrado arriba a la izquierda.\n  Vista superior → una fila de 3 cuadrados (¡el de arriba se esconde!).",
+      "Cuerpo: una torre de 2 cubos.\n  Vista frontal → 2 cuadrados uno sobre otro.\n  Vista superior → 1 solo cuadrado."
+    ],
+    dato:`Los arquitectos dibujan justo estas tres vistas para construir edificios: la vista superior se llama
+      "planta" y es la que usan para saber dónde va cada muro. ¡Estás haciendo trabajo de arquitecto!`
+  },
+  actividades:[
+    {tipo:'mc', p:'Un cuerpo está formado por <b>3 cubos en una fila</b> y <b>1 cubo encima del cubo de la izquierda</b>. ¿Cuál es la vista <b>frontal</b>?',
+      ops:[G(2,3,[1,0,0, 1,1,1]), G(2,3,[0,0,1, 1,1,1]), G(1,3,[1,1,1]), G(2,3,[1,1,1, 1,1,1])], ok:0,
+      porQue:['','El cubo extra está sobre el de la IZQUIERDA, no sobre el de la derecha.','Esa es la vista superior: de frente sí se ve el cubo de arriba.','No hay cubos arriba de todos; solo sobre uno.'],
+      ref:'¡Excelente! De frente ves la fila de 3 y el cubo que sobresale a la izquierda.'},
+    {tipo:'mc', p:'Del mismo cuerpo (3 cubos en fila + 1 encima a la izquierda), ¿cuál es la vista <b>superior</b>?',
+      ops:[G(1,3,[1,1,1]), G(2,3,[1,0,0, 1,1,1]), G(1,1,[1]), G(2,2,[1,1, 1,0])], ok:0,
+      porQue:['','Esa es la vista frontal. Desde arriba no se ve la altura.','Desde arriba se ven los 3 cubos de la fila, no uno solo.','El cuerpo no tiene cubos hacia atrás.'],
+      ref:'¡Muy bien! Desde arriba el cubo apilado se esconde detrás del de abajo.'},
+    {tipo:'vf', p:'La vista superior de una torre de 4 cubos apilados es un solo cuadrado.', ok:true,
+      exp:'Verdadero: desde arriba solo ves la cara del cubo más alto, y los demás quedan tapados.'},
+    {tipo:'vf', p:'La vista frontal y la vista superior de un cuerpo son siempre iguales.', ok:false,
+      exp:'Falso: casi siempre son distintas, porque desde arriba no se ve la altura y de frente no se ve la profundidad.'},
+    {tipo:'mc', p:'¿Cuántos cuadrados tiene la vista <b>frontal</b> de un cubo grande formado por 2×2×2 cubos pequeños?',
+      ops:['4','8','6','2'], ok:0,
+      porQue:['','8 son los cubos del cuerpo completo, no los cuadrados de una vista.','6 son las caras de un cubo.','2 es solo una fila.'],
+      ref:'¡Correcto! Ves una cara cuadrada de 2 × 2 = 4 cuadrados.'},
+    {tipo:'mc', p:'Un cuerpo se ve así desde arriba: '+G(2,2,[1,1,1,0])+' ¿Cuántos cubos tiene <b>al menos</b> ese cuerpo?',
+      ops:['3','4','2','6'], ok:0,
+      porQue:['','La vista superior muestra 3 cuadrados, no 4.','Se ven 3 cuadrados, así que hay mínimo 3 cubos.','Nada indica que haya 6.'],
+      ref:'¡Bien pensado! Cada cuadrado de la vista superior es al menos un cubo.'},
+    {tipo:'rel', p:'Une cada vista con su nombre:',
+      pares:[['Desde arriba','Vista superior'],['De frente','Vista frontal'],['Desde el costado','Vista lateral']],
+      ref:'¡Perfecto! Ya tienes los tres nombres claros.'},
+    {tipo:'comp', p:'¿Cómo se llama la vista que se obtiene mirando el cuerpo desde arriba? (una palabra)',
+      resp:['superior','vista superior','planta','de arriba'], pista:'Empieza con "s".',
+      ref:'¡Correcto! Vista superior, también llamada "planta".'},
+    {tipo:'mc', p:'Un cuerpo tiene esta vista frontal: '+G(2,2,[0,1,1,1])+' ¿Dónde está el "escalón"?',
+      ops:['Arriba a la izquierda falta un cubo','Abajo a la derecha falta un cubo','Faltan dos cubos','No falta ningún cubo'], ok:0,
+      porQue:['','El espacio vacío está en la fila de ARRIBA, a la izquierda.','Solo falta uno.','Sí falta uno: el cuadrado gris.'],
+      ref:'¡Muy bien observado! El cuadrado apagado indica el espacio vacío.'}
+  ]
+},
+{
+  id:4, nombre:"Maestro de Redes", emoji:"📦", color:"linear-gradient(135deg,#f59e0b,#dc2626)",
+  tema:"Redes de armado de figuras 3D",
+  teoria:{
+    explicacion:`Una <b>red de armado</b> (o plantilla) es la figura 3D "desarmada y aplanada", como cuando abres
+      una caja de cereal. Para saber qué cuerpo se arma, cuenta las caras y mira qué forma tienen:
+      <b>6 cuadrados</b> → cubo · <b>2 cuadrados + 4 rectángulos</b> → prisma rectangular ·
+      <b>1 cuadrado + 4 triángulos</b> → pirámide de base cuadrada · <b>2 círculos + 1 rectángulo</b> → cilindro ·
+      <b>1 círculo + 1 sector</b> → cono · <b>4 triángulos</b> → pirámide de base triangular (tetraedro).`,
+    resumen:`Cuenta las caras de la red y fíjate en su forma. La cantidad y el tipo de caras te dicen exactamente
+      qué cuerpo geométrico se arma.`,
+    ejemplos:[
+      "Cubo: 6 caras cuadradas, 12 aristas y 8 vértices.\nRed típica en forma de cruz:\n"+
+      "   ⬜\n⬜⬜⬜⬜\n   ⬜",
+      "Pirámide de base cuadrada: 5 caras (1 cuadrado + 4 triángulos), 8 aristas y 5 vértices."
+    ],
+    dato:`¡El cubo tiene 11 redes distintas que funcionan! Todas usan 6 cuadrados, pero no cualquier
+      combinación de 6 cuadrados sirve: si dos caras se superponen al doblar, la red no arma.`
+  },
+  actividades:[
+    {tipo:'mc', p:'Observa esta red: '+G(3,4,[0,1,0,0, 1,1,1,1, 0,1,0,0])+' ¿Qué figura 3D se puede armar?',
+      ops:['Un cubo','Una pirámide','Un cilindro','Un cono'], ok:0,
+      porQue:['','La pirámide necesita caras triangulares y aquí todas son cuadradas.','El cilindro necesita 2 círculos.','El cono necesita un círculo y un sector.'],
+      ref:'¡Excelente! 6 caras cuadradas en forma de cruz = cubo.'},
+    {tipo:'mc', p:'Una red tiene <b>1 cuadrado y 4 triángulos</b>. ¿Qué cuerpo se arma?',
+      ops:['Pirámide de base cuadrada','Cubo','Prisma rectangular','Tetraedro'], ok:0,
+      porQue:['','El cubo solo tiene cuadrados.','El prisma solo tiene cuadrados y rectángulos.','El tetraedro tiene 4 triángulos y ningún cuadrado.'],
+      ref:'¡Correcto! La base cuadrada y las 4 caras triangulares que suben a la punta.'},
+    {tipo:'mc', p:'Una red tiene <b>2 círculos y 1 rectángulo</b>. ¿Qué cuerpo se arma?',
+      ops:['Cilindro','Cono','Esfera','Cubo'], ok:0,
+      porQue:['','El cono tiene solo 1 círculo.','La esfera no tiene red plana: no se puede aplanar sin deformarla.','El cubo no tiene círculos.'],
+      ref:'¡Sí! El rectángulo se enrolla y los círculos son las tapas. Piensa en un tarro de conserva.'},
+    {tipo:'comp', p:'¿Cuántas caras tiene un cubo?', resp:['6','seis'], pista:'Cuenta las caras de un dado.',
+      ref:'¡Bien! 6 caras cuadradas, 12 aristas y 8 vértices.'},
+    {tipo:'vf', p:'Una esfera tiene una red de armado con caras planas.', ok:false,
+      exp:'Falso: la esfera es totalmente curva, no se puede aplanar en caras planas. (Por eso los mapas del mundo siempre se deforman un poco.)'},
+    {tipo:'vf', p:'La red de un cono está formada por un círculo y un sector circular (como un trozo de pizza).', ok:true,
+      exp:'Verdadero: el círculo es la base y el sector se enrolla formando la punta.'},
+    {tipo:'rel', p:'Une cada cuerpo con su cantidad de caras:',
+      pares:[['Cubo','6 caras'],['Pirámide de base cuadrada','5 caras'],['Tetraedro','4 caras'],['Cilindro','3 caras']],
+      ref:'¡Genial! Contar caras es la forma más rápida de reconocer una red.'},
+    {tipo:'mc', p:'¿Cuántas <b>aristas</b> tiene un cubo?', ops:['12','8','6','4'], ok:0,
+      porQue:['','8 son los vértices (las esquinas).','6 son las caras.','4 son los lados de una sola cara.'],
+      ref:'¡Perfecto! 12 aristas: 4 arriba, 4 abajo y 4 verticales.'},
+    {tipo:'ord', p:'Ordena los pasos para saber qué figura arma una red:',
+      items:['Contar cuántas caras tiene la red','Ver qué forma tiene cada cara','Comparar con los cuerpos que conoces','Imaginar el doblado y elegir la respuesta'],
+      ref:'¡Ese es el método! Contar, observar, comparar y doblar mentalmente.'},
+    {tipo:'comp', p:'¿Cuántos vértices (esquinas) tiene un cubo?', resp:['8','ocho'], pista:'Cuenta las esquinas de una caja.',
+      ref:'¡Correcto! 8 vértices.'}
+  ]
+},
+{
+  id:5, nombre:"Guardián del Tiempo", emoji:"🕐", color:"linear-gradient(135deg,#2563eb,#7c3aed)",
+  tema:"La hora",
+  teoria:{
+    explicacion:`En el reloj análogo la manecilla <b>corta</b> marca la hora y la <b>larga</b> marca los minutos.
+      La vuelta completa tiene 60 minutos, y cada número del reloj vale <b>5 minutos</b> para la manecilla larga
+      (el 3 son 15 minutos, el 6 son 30, el 9 son 45). Un día tiene 24 horas: usamos <b>AM</b> desde medianoche
+      hasta el mediodía y <b>PM</b> desde el mediodía hasta la medianoche.`,
+    resumen:`Manecilla corta = hora. Manecilla larga = minutos (cada número vale 5). Media hora = 30 min,
+      un cuarto de hora = 15 min. 1 hora = 60 minutos.`,
+    ejemplos:[
+      "Manecilla corta entre el 3 y el 4, larga en el 6:\n  → 3:30 (tres y media)",
+      "¿Cuánto tiempo pasa de 14:20 a 15:05?\n  De 14:20 a 15:00 → 40 minutos\n  De 15:00 a 15:05 → 5 minutos\n  Total: 45 minutos"
+    ],
+    dato:`El reloj se divide en 12 y 60 porque los antiguos babilonios contaban con la base 60. ¡Por eso una hora
+      no tiene 100 minutos! Y por eso también el círculo tiene 360 grados (60 × 6).`
+  },
+  actividades:[
+    {tipo:'mc', p:'¿Qué hora marca este reloj?', visual:reloj(3,15), ops:['3:15','15:03','3:03','4:15'], ok:0,
+      porQue:['','La manecilla larga en el 3 son 15 minutos, no las 3 horas.','La larga está en el 3, que vale 5 × 3 = 15 minutos.','La manecilla corta todavía no llega al 4.'],
+      ref:'¡Excelente! Tres y cuarto: la larga en el 3 son 15 minutos.'},
+    {tipo:'mc', p:'¿Qué hora marca este reloj?', visual:reloj(7,30), ops:['7:30','6:30','7:06','30:07'], ok:0,
+      porQue:['','La manecilla corta ya pasó el 7, va camino al 8.','La larga en el 6 son 30 minutos, no 6.','Las horas van primero y nunca pasan de 24.'],
+      ref:'¡Muy bien! Siete y media.'},
+    {tipo:'comp', p:'Escribe la hora que marca este reloj en formato digital (ejemplo 5:20):', visual:reloj(9,45),
+      resp:['9:45','09:45','21:45'], pista:'La manecilla larga está en el 9: 9 × 5 minutos.',
+      ref:'¡Correcto! 9:45, también se dice "diez para las diez" o "nueve cuarenta y cinco".'},
+    {tipo:'mc', p:'¿Cuántos minutos tiene <b>media hora</b>?', ops:['30','15','60','50'], ok:0,
+      porQue:['','15 minutos es un cuarto de hora.','60 minutos es una hora completa.','Una hora tiene 60 minutos, no 100.'],
+      ref:'¡Sí! Media hora = 30 minutos.'},
+    {tipo:'vf', p:'Cuando la manecilla larga apunta al número 9, han pasado 45 minutos.', ok:true,
+      exp:'Verdadero: cada número vale 5 minutos, y 9 × 5 = 45.'},
+    {tipo:'vf', p:'Las 20:00 horas son las 8 de la mañana.', ok:false,
+      exp:'Falso: 20:00 es 20 − 12 = 8 de la TARDE (8 PM). Las 8 de la mañana son las 08:00.'},
+    {tipo:'mc', p:'El recreo empieza a las 10:15 y dura 20 minutos. ¿A qué hora termina?',
+      ops:['10:35','10:20','11:15','10:45'], ok:0,
+      porQue:['','Le sumaste mal: hay que agregar 20 minutos a los 15 que ya pasaron.','Eso sería sumar una hora, no 20 minutos.','Eso sería sumar 30 minutos.'],
+      ref:'¡Correcto! 15 + 20 = 35, entonces termina a las 10:35.'},
+    {tipo:'comp', p:'¿Cuántos minutos pasan entre las 14:20 y las 15:05?', resp:['45','45 minutos','45 min'],
+      pista:'Primero llega a la hora en punto y luego suma el resto.',
+      ref:'¡Muy bien! 40 minutos hasta las 15:00 y 5 minutos más = 45 minutos.'},
+    {tipo:'mc', p:'¿Qué hora marca este reloj digital?', visual:digital(18,45),
+      ops:['6:45 de la tarde','6:45 de la mañana','8:45 de la tarde','18 minutos para las 45'], ok:0,
+      porQue:['','18 es más que 12, así que ya es tarde (PM).','18 − 12 = 6, no 8.','Los dos puntos separan horas y minutos.'],
+      ref:'¡Perfecto! 18:45 = 6:45 PM. Restas 12 para pasar al formato de 12 horas.'},
+    {tipo:'rel', p:'Une cada hora con su forma de decirla:',
+      pares:[['4:15','Cuatro y cuarto'],['4:30','Cuatro y media'],['4:45','Cuatro cuarenta y cinco'],['4:00','Cuatro en punto']],
+      ref:'¡Genial! Ya lees la hora de las dos maneras.'},
+    {tipo:'comp', p:'Una película empieza a las 16:00 y dura 1 hora y 30 minutos. ¿A qué hora termina? (formato 17:00)',
+      resp:['17:30','5:30'], pista:'Suma primero la hora y después los minutos.',
+      ref:'¡Correcto! 16:00 + 1 h = 17:00, y + 30 min = 17:30.'}
+  ]
+},
+{
+  id:6, nombre:"Campeón de Operatoria", emoji:"➕", color:"linear-gradient(135deg,#dc2626,#f59e0b)",
+  tema:"Suma, resta, multiplicación y división",
+  teoria:{
+    explicacion:`En la <b>suma</b> y la <b>resta</b> escribimos los números uno debajo del otro alineando las
+      unidades con las unidades. Si en la suma una columna pasa de 9, se <b>lleva</b> (reserva) 1 a la columna
+      siguiente. Si en la resta una cifra de arriba es menor que la de abajo, se <b>pide prestado</b> a la
+      columna vecina. En la <b>multiplicación</b> por una cifra multiplicas de derecha a izquierda llevando las
+      reservas. En la <b>división</b> repartes desde la izquierda y lo que sobra al final es el <b>resto</b>
+      (el resto siempre es menor que el divisor).`,
+    resumen:`Alinea, opera de derecha a izquierda y no olvides las reservas. En la división el resto siempre
+      tiene que ser menor que el número por el que divides.`,
+    ejemplos:[
+      "  4.376\n+ 3.897\n———————\n  8.273     (6+7=13, escribo 3 llevo 1...)",
+      "  9.000\n− 3.789\n———————\n  5.211     (hay que pedir prestado varias veces)",
+      "  879 × 3 = 2.637\n  9×3=27 → escribo 7, llevo 2\n  7×3=21, +2 = 23 → escribo 3, llevo 2\n  8×3=24, +2 = 26 → escribo 26",
+      "  89 : 3\n  3 × 29 = 87 ; 89 − 87 = 2\n  Resultado: 29, resto 2"
+    ],
+    dato:`Truco para comprobar una resta: suma el resultado con el número que restaste. Si te da el número de
+      arriba, ¡está correcta! 5.211 + 3.789 = 9.000 ✔`
+  },
+  actividades:[
+    {tipo:'comp', p:'Resuelve: <b>4.376 + 3.897</b>', visual:vert('4.376','3.897','+'),
+      resp:['8273','8.273'], pista:'6+7=13, escribes 3 y llevas 1.',
+      ref:'¡Excelente! 8.273. Este ejercicio sale tal cual en la guía del colegio.'},
+    {tipo:'comp', p:'Resuelve: <b>9.000 − 3.789</b>', visual:vert('9.000','3.789','−'),
+      resp:['5211','5.211'], pista:'Tienes que pedir prestado varias veces seguidas.',
+      ref:'¡Muy bien! 5.211. Compruébalo: 5.211 + 3.789 = 9.000 ✔'},
+    {tipo:'mc', p:'¿Cuál es el resultado de <b>89 : 3</b>?', ops:['29 y resto 2','29 y resto 3','30 y resto 1','28 y resto 5'], ok:0,
+      porQue:['','El resto nunca puede ser igual al divisor: si sobran 3 se puede repartir un grupo más.','3 × 30 = 90, te pasaste de 89.','Sobran 5, que es mayor que 3: falta repartir un grupo más.'],
+      ref:'¡Correcto! 3 × 29 = 87 y sobran 2.'},
+    {tipo:'comp', p:'Resuelve: <b>879 × 3</b>', resp:['2637','2.637'], pista:'9×3=27, escribes 7 y llevas 2.',
+      ref:'¡Perfecto! 879 × 3 = 2.637.'},
+    {tipo:'comp', p:'Resuelve: <b>652 × 5</b>', resp:['3260','3.260'], pista:'2×5=10, escribes 0 y llevas 1.',
+      ref:'¡Muy bien! 652 × 5 = 3.260.'},
+    {tipo:'comp', p:'Resuelve: <b>763 × 4</b>', resp:['3052','3.052'], pista:'3×4=12, escribes 2 y llevas 1.',
+      ref:'¡Excelente! 763 × 4 = 3.052.'},
+    {tipo:'mc', p:'¿Cuál es el resultado de <b>97 : 4</b>?', ops:['24 y resto 1','23 y resto 5','25 y resto 3','24 y resto 3'], ok:0,
+      porQue:['','El resto 5 es mayor que 4: cabe otro grupo.','4 × 25 = 100, te pasaste.','4 × 24 = 96 y 97 − 96 = 1, no 3.'],
+      ref:'¡Sí! 4 × 24 = 96 y sobra 1.'},
+    {tipo:'mc', p:'¿Cuál es el resultado de <b>95 : 4</b>?', ops:['23 y resto 3','24 y resto 1','23 y resto 4','22 y resto 7'], ok:0,
+      porQue:['','4 × 24 = 96, que es mayor que 95.','El resto no puede ser igual al divisor.','Sobran 7, que es más que 4: falta un grupo.'],
+      ref:'¡Correcto! 4 × 23 = 92 y sobran 3.'},
+    {tipo:'comp', p:'¿Cuál es el <b>cociente</b> de 75 : 2? (solo el número entero, sin el resto)',
+      resp:['37','treinta y siete'], pista:'2 × 37 = 74.',
+      ref:'¡Bien! 75 : 2 = 37 con resto 1.'},
+    {tipo:'vf', p:'En una división, el resto puede ser mayor que el divisor.', ok:false,
+      exp:'Falso: si el resto fuera mayor o igual al divisor, todavía se podría repartir otro grupo. El resto SIEMPRE es menor.'},
+    {tipo:'vf', p:'Para comprobar una resta, sumo el resultado con el número que resté y debe darme el número de arriba.', ok:true,
+      exp:'Verdadero: es el mejor truco para revisar tus respuestas en la prueba.'},
+    {tipo:'ord', p:'Ordena los pasos para resolver una suma con reserva:',
+      items:['Alinear los números por las unidades','Sumar la columna de las unidades','Escribir la unidad y llevar la decena a la columna siguiente','Seguir sumando columna por columna hacia la izquierda'],
+      ref:'¡Ese es el orden correcto! Siempre de derecha a izquierda.'},
+    {tipo:'mc', p:'En la suma 4.376 + 3.897, ¿cuánto vale la columna de las <b>unidades</b> y qué se lleva?',
+      ops:['13 → escribo 3 y llevo 1','13 → escribo 1 y llevo 3','12 → escribo 2 y llevo 1','13 → escribo 13'], ok:0,
+      porQue:['','Se escribe la unidad (3) y se lleva la decena (1), no al revés.','6 + 7 = 13, no 12.','En cada columna solo se escribe UNA cifra.'],
+      ref:'¡Perfecto! 6 + 7 = 13: escribes 3 y llevas 1.'}
+  ]
+},
+{
+  id:7, nombre:"Genio de los Problemas", emoji:"🧠", color:"linear-gradient(135deg,#ec4899,#7c3aed)",
+  tema:"Resolución de problemas y unidades de medida",
+  teoria:{
+    explicacion:`Para resolver un problema: <b>1)</b> lee dos veces y subraya los datos, <b>2)</b> pregúntate
+      qué te están preguntando, <b>3)</b> decide la operación (juntar → suma; quitar o comparar → resta;
+      grupos iguales → multiplicación; repartir → división), <b>4)</b> calcula y <b>5)</b> revisa si la
+      respuesta tiene sentido. Recuerda las medidas: 1 m = 100 cm, 1 km = 1.000 m, 1 kg = 1.000 g,
+      1 L = 1.000 mL, 1 h = 60 min.`,
+    resumen:`Palabras clave: "en total" → sumar; "cuánto más / cuánto queda" → restar; "cada uno" → multiplicar;
+      "repartir en partes iguales" → dividir. Siempre revisa que la respuesta sea razonable.`,
+    ejemplos:[
+      "Problema: Hay 89 lápices para repartir en 3 cajas iguales.\n  Operación: 89 : 3 = 29 y sobran 2\n  Respuesta: 29 lápices por caja y sobran 2.",
+      "Problema: Un libro tiene 652 páginas y hay 5 libros iguales.\n  Operación: 652 × 5 = 3.260\n  Respuesta: 3.260 páginas en total."
+    ],
+    dato:`Casi siempre puedes estimar antes de calcular: 879 × 3 es "más o menos 900 × 3 = 2.700". Si te da un
+      resultado muy lejos de eso, seguro hubo un error. ¡Estimar es tu detector de errores!`
+  },
+  actividades:[
+    {tipo:'mc', p:'En un colegio hay 4.376 lápices y compran 3.897 más. ¿Cuántos lápices hay <b>en total</b>?',
+      ops:['8.273','479','8.163','7.263'], ok:0,
+      porQue:['','Eso sería restar, pero la palabra "en total" pide sumar.','Revisa las reservas de la suma.','Falta sumar bien las centenas.'],
+      ref:'¡Excelente! "En total" indica suma: 4.376 + 3.897 = 8.273.'},
+    {tipo:'mc', p:'Una tienda tenía 9.000 stickers y vendió 3.789. ¿Cuántos <b>quedan</b>?',
+      ops:['5.211','12.789','6.211','5.311'], ok:0,
+      porQue:['','Eso es sumar; si vendió, hay que restar.','Revisa los préstamos de la resta.','Revisa la columna de las centenas.'],
+      ref:'¡Correcto! "Quedan" indica resta: 9.000 − 3.789 = 5.211.'},
+    {tipo:'mc', p:'Cada caja trae 763 clips y hay 4 cajas. ¿Cuántos clips hay en total?',
+      ops:['3.052','767','759','2.289'], ok:0,
+      porQue:['','Eso sería sumar 763 + 4, pero hay 4 grupos de 763.','Eso sería restar.','Eso es 763 × 3; hay 4 cajas.'],
+      ref:'¡Muy bien! Grupos iguales → multiplicación: 763 × 4 = 3.052.'},
+    {tipo:'comp', p:'Se reparten 75 galletas entre 2 cursos en partes iguales. ¿Cuántas galletas recibe cada curso y cuántas sobran? (escribe así: 37 y 1)',
+      resp:['37 y 1','37y1','37 1','37 resto 1'], pista:'2 × 37 = 74.',
+      ref:'¡Perfecto! 37 galletas para cada curso y sobra 1.'},
+    {tipo:'vf', p:'Si un problema dice "repartir en partes iguales", la operación que corresponde es la división.', ok:true,
+      exp:'Verdadero: repartir en grupos iguales es exactamente lo que hace la división.'},
+    {tipo:'vf', p:'2 metros son 20 centímetros.', ok:false,
+      exp:'Falso: 1 metro = 100 cm, así que 2 metros = 200 cm.'},
+    {tipo:'comp', p:'¿Cuántos gramos hay en 1 kilogramo?', resp:['1000','1.000','mil'], pista:'"Kilo" significa mil.',
+      ref:'¡Correcto! 1 kg = 1.000 g.'},
+    {tipo:'rel', p:'Une cada palabra clave con su operación:',
+      pares:[['"En total"','Suma'],['"Cuánto queda"','Resta'],['"Cada uno tiene"','Multiplicación'],['"Repartir en partes iguales"','División']],
+      ref:'¡Genial! Estas palabras clave te ayudan a elegir la operación correcta.'},
+    {tipo:'ord', p:'Ordena los pasos para resolver un problema:',
+      items:['Leer el problema y subrayar los datos','Identificar la pregunta','Elegir la operación','Calcular','Revisar si la respuesta tiene sentido'],
+      ref:'¡Ese es el método! Nunca calcules antes de entender la pregunta.'},
+    {tipo:'mc', p:'Sofía estimó que 879 × 3 debe dar "más o menos 2.700". ¿Por qué?',
+      ops:['Porque 879 es cercano a 900 y 900 × 3 = 2.700','Porque 879 + 3 = 882','Porque 2.700 es un número redondo','Porque 879 es cercano a 800'],
+      ok:0, porQue:['','Estimar no es sumar, es redondear y multiplicar.','Un número redondo no basta: tiene que salir de un cálculo.','800 × 3 daría 2.400, más lejos del resultado real.'],
+      ref:'¡Muy bien! Estimar redondeando te avisa si tu resultado exacto es razonable.'},
+    {tipo:'comp', p:'Un tren sale a las 09:30 y llega a las 11:00. ¿Cuánto dura el viaje en minutos?',
+      resp:['90','90 minutos','90 min'], pista:'30 minutos hasta las 10:00 y luego 1 hora completa.',
+      ref:'¡Correcto! 30 + 60 = 90 minutos (una hora y media).'}
+  ]
+}
+];
+
+/* ---- Flashcards de repaso rápido ---- */
+const FLASHCARDS = [
+  ["¿Cuánto vale el 7 en 4.376?","70 (está en las decenas)"],
+  ["Descompón 3.897","3.000 + 800 + 90 + 7"],
+  ["8 × 7","56"],
+  ["9 × 6","54"],
+  ["7 × 7","49"],
+  ["6 × 8","48"],
+  ["42 : 6","7"],
+  ["56 : 8","7"],
+  ["¿Cómo se llama la vista desde arriba?","Vista superior (o planta)"],
+  ["¿Cuántas caras tiene un cubo?","6 caras cuadradas"],
+  ["¿Cuántas aristas tiene un cubo?","12 aristas"],
+  ["¿Cuántos vértices tiene un cubo?","8 vértices"],
+  ["Red con 1 cuadrado y 4 triángulos","Pirámide de base cuadrada"],
+  ["Red con 2 círculos y 1 rectángulo","Cilindro"],
+  ["Red con 1 círculo y 1 sector","Cono"],
+  ["Red con 4 triángulos","Tetraedro (pirámide de base triangular)"],
+  ["¿Cuántas caras tiene una pirámide de base cuadrada?","5 caras"],
+  ["¿Cuántos minutos vale cada número del reloj?","5 minutos"],
+  ["¿Cuántos minutos tiene media hora?","30 minutos"],
+  ["¿Cuántos minutos tiene un cuarto de hora?","15 minutos"],
+  ["Manecilla larga en el 9 = ¿cuántos minutos?","45 minutos"],
+  ["¿Qué hora es 20:00 en formato de 12 horas?","8:00 PM (8 de la tarde)"],
+  ["4.376 + 3.897","8.273"],
+  ["9.000 − 3.789","5.211"],
+  ["879 × 3","2.637"],
+  ["652 × 5","3.260"],
+  ["763 × 4","3.052"],
+  ["89 : 3","29 y resto 2"],
+  ["97 : 4","24 y resto 1"],
+  ["95 : 4","23 y resto 3"],
+  ["75 : 2","37 y resto 1"],
+  ["¿El resto puede ser mayor que el divisor?","No, siempre es menor"],
+  ["1 metro = ¿cuántos cm?","100 cm"],
+  ["1 kilogramo = ¿cuántos gramos?","1.000 g"],
+  ["1 litro = ¿cuántos mL?","1.000 mL"]
+];
+
+/* Mensajes de refuerzo positivo variados */
+const APLAUSOS = ["¡Excelente! 🎉","¡Muy bien! 🌟","¡Lo lograste! 💪","¡Increíble! 🚀","¡Sigue así! ⭐",
+  "¡Perfecto! 🏆","¡Vas volando! ✨","¡Crack de la mate! 🧠"];
+const ANIMOS = ["Casi… ¡revisa la explicación! 🤔","No pasa nada, así se aprende 💡","¡Ojo con este! Léelo de nuevo 👀",
+  "Tranquilo, el error enseña 🌱"];
+
+/* =======================================================================
+   3. ESTADO DEL JUEGO
+   ======================================================================= */
+const estado = {
+  xp:0, racha:0, mejorRacha:0, correctas:0, incorrectas:0,
+  medallas:[], desbloqueado:1, completados:[], inicio:null,
+  nivelActual:null, idxAct:0, aciertosNivel:0, errorPorNivel:{}
+};
+
+const $ = id => document.getElementById(id);
+const pantalla = () => $('pantalla');
+const mezclar = a => { const c=a.slice(); for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];} return c; };
+const totalActividades = () => NIVELES.reduce((s,n)=>s+n.actividades.length,0);
+
+function toast(txt){
+  const t=document.createElement('div'); t.className='toast'; t.textContent=txt;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),2000);
+}
+function medalla(nombre){
+  if(!estado.medallas.includes(nombre)){ estado.medallas.push(nombre); toast('🏅 Medalla: '+nombre); actualizarHUD(); }
+}
+function sumarXP(n){ estado.xp+=n; actualizarHUD(); }
+
+function actualizarHUD(){
+  $('hud-xp').textContent=estado.xp;
+  $('hud-racha').textContent=estado.racha;
+  $('hud-med').textContent=estado.medallas.length;
+  $('hud-nivel').textContent = estado.nivelActual ? 'Nivel '+estado.nivelActual.id+'/'+NIVELES.length : 'Mapa';
+  const hechas = estado.correctas + estado.incorrectas;
+  $('barra').style.width = Math.min(100,(hechas/totalActividades())*100)+'%';
+}
+
+/* =======================================================================
+   4. PANTALLAS
+   ======================================================================= */
+function pantallaInicio(){
+  $('hud').classList.add('oculto');
+  pantalla().innerHTML = `
+  <div class="card centro">
+    <div style="font-size:4rem">🧮</div>
+    <h1>Misión Matemática</h1>
+    <p style="font-size:1.2rem"><b>Prueba 1 · 4º Básico · 2026</b></p>
+    <p>¡Hola, matemático! Vas a entrenar los 7 niveles que necesitas para la prueba:
+       valor posicional, tablas, vistas 3D, redes de armado, la hora, operatoria y problemas.</p>
+    <div style="margin:14px 0">
+      <span class="chip">🔢 Valor posicional</span><span class="chip">✖️ Tablas</span>
+      <span class="chip">🧊 Vistas 3D</span><span class="chip">📦 Redes</span>
+      <span class="chip">🕐 La hora</span><span class="chip">➕ Operatoria</span>
+      <span class="chip">🧠 Problemas</span>
+    </div>
+    <p style="color:var(--gris)">Ganas XP por cada respuesta correcta, medallas por tus logros
+       y desbloqueas un nivel nuevo cada vez que completas el anterior.</p>
+    <button class="btn btn-verde" onclick="empezar()">🚀 ¡Comenzar misión!</button>
+    <button class="btn btn-morado" onclick="verFlashcards()">🃏 Repaso rápido con flashcards</button>
+  </div>`;
+}
+
+function empezar(){
+  estado.inicio = Date.now();
+  $('hud').classList.remove('oculto');
+  mapa();
+}
+
+function mapa(){
+  estado.nivelActual=null; actualizarHUD();
+  let cards='';
+  NIVELES.forEach(n=>{
+    const bloq = n.id > estado.desbloqueado;
+    const hecho = estado.completados.includes(n.id);
+    cards += `<button class="nivel-card ${bloq?'bloq':''}" style="background:${n.color}"
+      ${bloq?'disabled aria-disabled="true"':''} onclick="abrirNivel(${n.id})">
+      ${hecho?'<span class="check">✅</span>':''}${bloq?'<span class="check">🔒</span>':''}
+      <span class="nivel-emoji">${n.emoji}</span>
+      Nivel ${n.id}: ${n.nombre}
+      <span class="nivel-sub">${n.tema}</span>
+      <span class="nivel-sub">${n.actividades.length} actividades</span>
+    </button>`;
+  });
+  const todosListos = estado.completados.length === NIVELES.length;
+  pantalla().innerHTML = `
+  <div class="card">
+    <h1>🗺️ Mapa de la misión</h1>
+    <p>Elige un nivel. Los niveles se desbloquean en orden: ¡completa uno para abrir el siguiente!</p>
+    <div class="niveles">${cards}</div>
+    <div class="centro" style="margin-top:18px">
+      <button class="btn btn-morado" onclick="verFlashcards()">🃏 Flashcards</button>
+      <button class="btn ${todosListos?'btn-verde':'btn-gris'}" onclick="${todosListos?'desafioFinal()':'toast(\'Completa los 7 niveles primero 🔒\')'}">
+        ${todosListos?'🏆 ¡Desafío final!':'🔒 Desafío final'}
+      </button>
+      <button class="btn btn-gris" onclick="pantallaFinal()">📊 Ver mis resultados</button>
+    </div>
+  </div>`;
+}
+
+function abrirNivel(id){
+  const n = NIVELES.find(x=>x.id===id);
+  if(id > estado.desbloqueado){ toast('Nivel bloqueado 🔒'); return; }
+  estado.nivelActual = n; estado.idxAct = 0; estado.aciertosNivel = 0;
+  actualizarHUD();
+  verTeoria();
+}
+
+function verTeoria(){
+  const n = estado.nivelActual;
+  const ejemplos = n.teoria.ejemplos.map(e=>'<div class="ejemplo">'+e+'</div>').join('');
+  pantalla().innerHTML = `
+  <div class="card">
+    <h2>${n.emoji} Nivel ${n.id}: ${n.nombre}</h2>
+    <p><span class="chip">${n.tema}</span></p>
+    <div class="teoria-box"><h3>📘 ¿De qué se trata?</h3><p>${n.teoria.explicacion}</p></div>
+    <div class="resumen-box"><h3>⚡ Resumen express</h3><p>${n.teoria.resumen}</p></div>
+    <h3>✏️ Ejemplos</h3>${ejemplos}
+    <div class="dato-box"><h3>💡 Dato curioso / truco</h3><p>${n.teoria.dato}</p></div>
+    <div class="centro">
+      <button class="btn btn-gris" onclick="mapa()">⬅️ Volver al mapa</button>
+      <button class="btn btn-verde" onclick="verActividad()">▶️ ¡A practicar! (${n.actividades.length})</button>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+
+/* =======================================================================
+   5. MOTOR DE ACTIVIDADES
+   ======================================================================= */
+function verActividad(){
+  const n = estado.nivelActual;
+  if(estado.idxAct >= n.actividades.length){ finNivel(); return; }
+  const act = n.actividades[estado.idxAct];
+  const cab = `<div class="card">
+    <p style="color:var(--gris);font-weight:bold">${n.emoji} Nivel ${n.id} · Actividad ${estado.idxAct+1} de ${n.actividades.length}</p>
+    <h2 style="font-size:1.25rem;margin-top:8px">${act.p}</h2>
+    ${act.visual? '<div class="figura">'+act.visual+'</div>' : ''}
+    <div id="cuerpo"></div><div id="fb"></div>
+    <div id="siguiente" class="centro"></div></div>`;
+  pantalla().innerHTML = cab;
+  ({mc:renderMC, vf:renderVF, comp:renderComp, rel:renderRel, ord:renderOrd})[act.tipo](act);
+  window.scrollTo(0,0);
+}
+
+function registrar(ok, expl){
+  const act = estado.nivelActual.actividades[estado.idxAct];
+  const nid = estado.nivelActual.id;
+  if(ok){
+    estado.correctas++; estado.racha++; estado.aciertosNivel++;
+    estado.mejorRacha = Math.max(estado.mejorRacha, estado.racha);
+    let xp = 10, extra='';
+    if(estado.racha>0 && estado.racha%3===0){ xp+=5; extra=' <b>+5 XP por racha de '+estado.racha+' 🔥</b>'; }
+    sumarXP(xp);
+    if(estado.racha===5) medalla('Racha de 5 🔥');
+    if(estado.racha===10) medalla('Racha de 10 ⚡');
+    $('fb').innerHTML = `<div class="feedback fb-ok">${APLAUSOS[Math.floor(Math.random()*APLAUSOS.length)]}
+      ${act.ref||''}${extra} <span style="opacity:.8">(+${xp} XP)</span></div>`;
+  }else{
+    estado.incorrectas++; estado.racha=0;
+    estado.errorPorNivel[nid] = (estado.errorPorNivel[nid]||0)+1;
+    actualizarHUD();
+    $('fb').innerHTML = `<div class="feedback fb-mal">${ANIMOS[Math.floor(Math.random()*ANIMOS.length)]}<br>${expl||''}</div>`;
+  }
+  actualizarHUD();
+  const ultima = estado.idxAct === estado.nivelActual.actividades.length-1;
+  $('siguiente').innerHTML = `<button class="btn btn-verde" id="btn-next">${ultima?'🏁 Terminar nivel':'Siguiente ➡️'}</button>`;
+  $('btn-next').onclick = ()=>{ estado.idxAct++; verActividad(); };
+  $('btn-next').focus();
+}
+
+/* --- Selección múltiple --- */
+function renderMC(act){
+  const idx = mezclar(act.ops.map((_,i)=>i));
+  const letras='ABCD';
+  $('cuerpo').innerHTML = '<div class="opciones">'+idx.map((orig,pos)=>
+    `<button class="opcion" data-o="${orig}"><span class="letra">${letras[pos]}</span><span>${act.ops[orig]}</span></button>`
+  ).join('')+'</div>';
+  $('cuerpo').querySelectorAll('.opcion').forEach(b=>{
+    b.onclick = ()=>{
+      const o = +b.dataset.o, ok = (o===act.ok);
+      $('cuerpo').querySelectorAll('.opcion').forEach(x=>{
+        x.disabled=true;
+        if(+x.dataset.o===act.ok) x.classList.add('correcta');
+      });
+      if(!ok) b.classList.add('incorrecta');
+      registrar(ok, ok?'':'<b>Por qué no:</b> '+(act.porQue[o]||'')+'<br><b>Respuesta correcta:</b> '+act.ops[act.ok]);
+    };
+  });
+}
+
+/* --- Verdadero / Falso --- */
+function renderVF(act){
+  $('cuerpo').innerHTML = `<div class="opciones">
+    <button class="opcion" data-v="1"><span class="letra">V</span><span>Verdadero</span></button>
+    <button class="opcion" data-v="0"><span class="letra">F</span><span>Falso</span></button></div>`;
+  $('cuerpo').querySelectorAll('.opcion').forEach(b=>{
+    b.onclick=()=>{
+      const v = b.dataset.v==='1', ok = (v===act.ok);
+      $('cuerpo').querySelectorAll('.opcion').forEach(x=>{
+        x.disabled=true;
+        if((x.dataset.v==='1')===act.ok) x.classList.add('correcta');
+      });
+      if(!ok) b.classList.add('incorrecta');
+      registrar(ok, act.exp);
+    };
+  });
+}
+
+/* --- Completar --- */
+function normalizar(s){
+  return String(s).toLowerCase().trim().replace(/\s+/g,' ').replace(/\.$/,'');
+}
+function renderComp(act){
+  $('cuerpo').innerHTML = `<div class="centro" style="margin-top:14px">
+    <input class="input-resp" id="inp" autocomplete="off" aria-label="Tu respuesta" placeholder="?">
+    <div><button class="btn" id="btn-comp">Comprobar ✔️</button></div>
+    ${act.pista?'<p style="color:var(--gris);font-size:.95rem;margin-top:8px">💡 Pista: '+act.pista+'</p>':''}
+  </div>`;
+  const comprobar = ()=>{
+    const v = normalizar($('inp').value);
+    if(!v){ toast('Escribe una respuesta ✏️'); return; }
+    const ok = act.resp.some(r=>normalizar(r)===v || normalizar(r).replace(/\./g,'')===v.replace(/\./g,''));
+    $('inp').disabled=true; $('btn-comp').disabled=true;
+    $('inp').style.borderColor = ok? 'var(--verde)':'var(--rojo)';
+    registrar(ok, ok?'':'<b>Respuesta correcta:</b> '+act.resp[0]+(act.ref?'<br>'+act.ref:''));
+  };
+  $('btn-comp').onclick = comprobar;
+  $('inp').addEventListener('keydown', e=>{ if(e.key==='Enter') comprobar(); });
+  $('inp').focus();
+}
+
+/* --- Relacionar columnas --- */
+function renderRel(act){
+  const izq = mezclar(act.pares.map((p,i)=>({t:p[0],i})));
+  const der = mezclar(act.pares.map((p,i)=>({t:p[1],i})));
+  $('cuerpo').innerHTML = `<div class="rel-wrap">
+    <div class="rel-col">${izq.map(x=>`<button class="rel-item" data-lado="i" data-i="${x.i}">${x.t}</button>`).join('')}</div>
+    <div class="rel-col">${der.map(x=>`<button class="rel-item" data-lado="d" data-i="${x.i}">${x.t}</button>`).join('')}</div>
+  </div><p class="centro" style="color:var(--gris);margin-top:10px">Toca una tarjeta de la izquierda y luego su pareja de la derecha.</p>`;
+  let sel=null, hechos=0, fallos=0;
+  $('cuerpo').querySelectorAll('.rel-item').forEach(b=>{
+    b.onclick=()=>{
+      if(b.classList.contains('hecho')) return;
+      if(!sel){ if(b.dataset.lado!=='i'){ toast('Empieza por la izquierda 👈'); return; }
+        $('cuerpo').querySelectorAll('.rel-item').forEach(x=>x.classList.remove('sel'));
+        b.classList.add('sel'); sel=b; return; }
+      if(b.dataset.lado!=='d'){ $('cuerpo').querySelectorAll('.rel-item').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); sel=b; return; }
+      if(b.dataset.i===sel.dataset.i){
+        b.classList.add('hecho'); sel.classList.add('hecho'); sel.classList.remove('sel'); sel=null; hechos++;
+        if(hechos===act.pares.length){
+          $('cuerpo').querySelectorAll('.rel-item').forEach(x=>x.disabled=true);
+          registrar(fallos===0, 'Uniste todo, pero con '+fallos+' intento(s) fallido(s). Repasa las parejas:<br>'+
+            act.pares.map(p=>'• <b>'+p[0]+'</b> → '+p[1]).join('<br>'));
+        }
+      }else{
+        fallos++; b.classList.add('error'); setTimeout(()=>b.classList.remove('error'),600);
+        sel.classList.remove('sel'); sel=null; toast('Esa no es la pareja 🤔');
+      }
+    };
+  });
+}
+
+/* --- Ordenar --- */
+function renderOrd(act){
+  const pool = mezclar(act.items);
+  $('cuerpo').innerHTML = `<div class="ord-zona" id="zona-resp" aria-label="Tu orden"></div>
+    <p style="color:var(--gris)">Toca los pasos en el orden correcto:</p>
+    <div class="ord-zona" id="zona-pool">${pool.map(t=>`<button class="ord-chip pool" data-t="${t}">${t}</button>`).join('')}</div>
+    <div class="centro"><button class="btn" id="btn-ord">Comprobar ✔️</button>
+    <button class="btn btn-gris" id="btn-reset">↺ Reiniciar</button></div>`;
+  let elegidos=[];
+  const pintar=()=>{
+    $('zona-resp').innerHTML = elegidos.map((t,i)=>`<span class="ord-chip">${i+1}. ${t}</span>`).join('');
+  };
+  const bind=()=>{
+    $('zona-pool').querySelectorAll('.ord-chip').forEach(b=>{
+      b.onclick=()=>{ elegidos.push(b.dataset.t); b.remove(); pintar(); };
+    });
+  };
+  bind();
+  $('btn-reset').onclick=()=>{ elegidos=[]; renderOrd(act); };
+  $('btn-ord').onclick=()=>{
+    if(elegidos.length!==act.items.length){ toast('Faltan pasos por ordenar'); return; }
+    const ok = elegidos.every((t,i)=>t===act.items[i]);
+    $('btn-ord').disabled=true; $('btn-reset').disabled=true;
+    $('zona-pool').querySelectorAll('.ord-chip').forEach(b=>b.disabled=true);
+    registrar(ok, ok?'':'<b>Orden correcto:</b><br>'+act.items.map((t,i)=>(i+1)+'. '+t).join('<br>'));
+  };
+}
+
+/* =======================================================================
+   6. FIN DE NIVEL, FLASHCARDS, DESAFÍO FINAL Y PANTALLA FINAL
+   ======================================================================= */
+function finNivel(){
+  const n = estado.nivelActual;
+  const esNivel = typeof n.id === 'number';
+  const total = n.actividades.length;
+  const perfecto = estado.aciertosNivel === total;
+  let bonus = 50; let msg = '¡Nivel completado! +50 XP';
+  if(perfecto){ bonus += 100; msg = '¡PUNTAJE PERFECTO! +150 XP 🏆'; medalla('Perfecto en '+n.nombre); }
+  sumarXP(bonus);
+  medalla(n.emoji+' '+n.nombre);
+  if(esNivel){
+    if(!estado.completados.includes(n.id)) estado.completados.push(n.id);
+    if(estado.desbloqueado < n.id+1) estado.desbloqueado = Math.min(n.id+1, NIVELES.length);
+    if(estado.completados.length===NIVELES.length) medalla('Los 7 niveles 🌟');
+  }
+  const pct = Math.round(estado.aciertosNivel/total*100);
+  const estrellas = pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐':pct>=50?'⭐':'✨';
+  pantalla().innerHTML = `<div class="card centro">
+    <div style="font-size:3.4rem">${perfecto?'🏆':'🎉'}</div>
+    <h1>${msg}</h1>
+    <p style="font-size:1.5rem">${estrellas}</p>
+    <div class="stats">
+      <div class="stat"><span class="stat-num">${estado.aciertosNivel}/${total}</span><span class="stat-lab">Correctas en este nivel</span></div>
+      <div class="stat"><span class="stat-num">${pct}%</span><span class="stat-lab">Logro del nivel</span></div>
+      <div class="stat"><span class="stat-num">${estado.xp}</span><span class="stat-lab">XP total</span></div>
+    </div>
+    <p>${pct>=70?'¡Dominas este tema! Sigue con el siguiente nivel.':'Te recomiendo repasar la teoría de este nivel antes de la prueba.'}</p>
+    ${esNivel? `<button class="btn btn-gris" onclick="verTeoria()">📘 Releer la teoría</button>
+    <button class="btn btn-morado" onclick="abrirNivel(${n.id})">🔁 Repetir nivel</button>`
+    : `<button class="btn btn-morado" onclick="desafioFinal()">🔁 Otro desafío final</button>`}
+    <button class="btn btn-verde" onclick="mapa()">🗺️ Ir al mapa</button>
+    <button class="btn btn-gris" onclick="pantallaFinal()">📊 Ver resultados</button>
+  </div>`;
+  window.scrollTo(0,0);
+}
+
+/* --- Flashcards --- */
+let fcMazo=[], fcIdx=0;
+function verFlashcards(){
+  $('hud').classList.remove('oculto');
+  fcMazo = mezclar(FLASHCARDS); fcIdx = 0;
+  pintarFlash();
+}
+function pintarFlash(){
+  const c = fcMazo[fcIdx];
+  pantalla().innerHTML = `<div class="card">
+    <h2>🃏 Repaso rápido</h2>
+    <p style="color:var(--gris)">Tarjeta ${fcIdx+1} de ${fcMazo.length} · toca la tarjeta para darla vuelta</p>
+    <div class="flash" id="flash" tabindex="0" role="button" aria-label="Voltear tarjeta">
+      <div class="flash-int">
+        <div class="flash-cara flash-frente">${c[0]}</div>
+        <div class="flash-cara flash-atras">${c[1]}</div>
+      </div>
+    </div>
+    <div class="centro">
+      <button class="btn btn-gris" onclick="moverFlash(-1)">⬅️ Anterior</button>
+      <button class="btn" onclick="moverFlash(1)">Siguiente ➡️</button>
+      <button class="btn btn-morado" onclick="verFlashcards()">🔀 Mezclar</button>
+    </div>
+    <div class="centro"><button class="btn btn-verde" onclick="mapa()">🗺️ Volver al mapa</button></div>
+  </div>`;
+  const f = $('flash');
+  const girar = ()=>f.classList.toggle('girada');
+  f.onclick = girar;
+  f.onkeydown = e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); girar(); } };
+}
+function moverFlash(d){
+  fcIdx = (fcIdx + d + fcMazo.length) % fcMazo.length;
+  pintarFlash();
+}
+
+/* --- Desafío final: 12 preguntas mezcladas de todos los niveles --- */
+function desafioFinal(){
+  const todas = [];
+  NIVELES.forEach(n => n.actividades.forEach(a => { if(a.tipo==='mc'||a.tipo==='vf'||a.tipo==='comp') todas.push({a,n}); }));
+  const sel = mezclar(todas).slice(0,12);
+  estado.nivelActual = {
+    id:'★', emoji:'🏆', nombre:'Desafío Final', tema:'Todos los temas',
+    teoria:NIVELES[0].teoria, actividades: sel.map(x=>x.a)
+  };
+  estado.idxAct=0; estado.aciertosNivel=0;
+  actualizarHUD();
+  verActividad();
+}
+
+/* --- Pantalla final con estadísticas y recomendaciones --- */
+function pantallaFinal(){
+  const total = estado.correctas + estado.incorrectas;
+  const pct = total? Math.round(estado.correctas/total*100):0;
+  const seg = estado.inicio? Math.round((Date.now()-estado.inicio)/1000):0;
+  const min = Math.floor(seg/60), s = seg%60;
+  const debiles = Object.entries(estado.errorPorNivel).sort((a,b)=>b[1]-a[1]).slice(0,3)
+    .map(([id,e])=>{ const n=NIVELES.find(x=>String(x.id)===String(id)); return n? '• <b>'+n.tema+'</b> ('+e+' error'+(e>1?'es':'')+')':null; })
+    .filter(Boolean);
+  const rec = debiles.length
+    ? 'Te recomiendo repasar antes de la prueba:<br>'+debiles.join('<br>')
+    : '¡No tienes temas débiles registrados! Repasa las flashcards para mantener todo fresco. 🌟';
+  const rango = pct>=90?'🏆 Maestro Matemático':pct>=75?'🥇 Experto':pct>=60?'🥈 Buen aprendiz':pct>=40?'🥉 En camino':'🌱 Recién empezando';
+  pantalla().innerHTML = `<div class="card centro">
+    <div style="font-size:3.4rem">📊</div>
+    <h1>Tus resultados</h1>
+    <p style="font-size:1.35rem"><b>${rango}</b></p>
+    <div class="stats">
+      <div class="stat"><span class="stat-num">${estado.xp}</span><span class="stat-lab">XP total</span></div>
+      <div class="stat"><span class="stat-num">${estado.correctas}</span><span class="stat-lab">Correctas</span></div>
+      <div class="stat"><span class="stat-num">${estado.incorrectas}</span><span class="stat-lab">Incorrectas</span></div>
+      <div class="stat"><span class="stat-num">${pct}%</span><span class="stat-lab">Logro</span></div>
+      <div class="stat"><span class="stat-num">${min}:${String(s).padStart(2,'0')}</span><span class="stat-lab">Tiempo jugado</span></div>
+      <div class="stat"><span class="stat-num">${estado.mejorRacha}</span><span class="stat-lab">Mejor racha</span></div>
+      <div class="stat"><span class="stat-num">${estado.completados.length}/${NIVELES.length}</span><span class="stat-lab">Niveles completados</span></div>
+      <div class="stat"><span class="stat-num">${estado.medallas.length}</span><span class="stat-lab">Medallas</span></div>
+    </div>
+    <h3>🏅 Medallas obtenidas</h3>
+    <div class="medallas">${estado.medallas.length? estado.medallas.map(m=>'<span class="medalla">'+m+'</span>').join('') : '<p style="color:var(--gris)">Todavía ninguna: ¡completa un nivel!</p>'}</div>
+    <div class="resumen-box" style="text-align:left;margin-top:18px"><h3>📌 Recomendaciones de estudio</h3><p>${rec}</p></div>
+    <button class="btn btn-verde" onclick="mapa()">🗺️ Seguir practicando</button>
+    <button class="btn btn-gris" onclick="reiniciar()">🔄 Volver a jugar desde cero</button>
+  </div>`;
+  window.scrollTo(0,0);
+}
+
+function reiniciar(){
+  Object.assign(estado,{xp:0,racha:0,mejorRacha:0,correctas:0,incorrectas:0,medallas:[],
+    desbloqueado:1,completados:[],inicio:null,nivelActual:null,idxAct:0,aciertosNivel:0,errorPorNivel:{}});
+  actualizarHUD();
+  pantallaInicio();
+}
+
+/* Arranque */
+pantallaInicio();
+</script>
+</body>
+</html>
