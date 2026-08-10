@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guías de Estudio Interactivas</title>
+<style>
+/* ============================================================
+   PORTADA — Índice de guías de estudio interactivas
+   Un solo archivo, sin dependencias externas (funciona offline)
+   ============================================================ */
+:root{
+  --morado:#6C3FB5;
+  --morado-osc:#4A2680;
+  --morado-claro:#EDE4FF;
+  --naranjo:#FF8A3D;
+  --amarillo:#FFC93C;
+  --verde:#2FA84F;
+  --gris:#5B5B6B;
+  --texto:#26243B;
+  --fondo:#F5F1FF;
+  --sombra:0 6px 18px rgba(76,38,128,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Trebuchet MS","Verdana","Segoe UI",sans-serif;
+  background:var(--fondo);color:var(--texto);line-height:1.55;font-size:17px;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+a{text-decoration:none;color:inherit}
+
+/* ---------- Encabezado ---------- */
+header{
+  background:linear-gradient(135deg,var(--morado),#8E5BD6);
+  color:#fff;padding:38px 20px 32px;text-align:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.18);
+}
+header .emo{font-size:52px;display:block;margin-bottom:6px}
+header h1{font-size:33px;line-height:1.2;margin-bottom:6px}
+header p{font-size:18px;opacity:.93}
+
+.wrap{max-width:960px;margin:0 auto;padding:24px 16px;width:100%;flex:1}
+
+/* ---------- Filtros ---------- */
+.filtros{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+.filtro{
+  background:#fff;border:3px solid var(--morado-claro);color:var(--morado-osc);
+  border-radius:24px;padding:8px 18px;font-size:15.5px;font-weight:bold;
+  font-family:inherit;cursor:pointer;transition:.15s;
+}
+.filtro:hover{background:var(--morado-claro)}
+.filtro.activo{background:var(--morado);border-color:var(--morado);color:#fff}
+.filtro:focus-visible{outline:3px solid var(--naranjo);outline-offset:2px}
+
+/* ---------- Tarjetas ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:17px}
+.guia{
+  background:#fff;border-radius:18px;padding:20px;box-shadow:var(--sombra);
+  border-top:7px solid var(--morado);display:flex;flex-direction:column;
+  transition:transform .16s, box-shadow .16s;position:relative;
+}
+.guia:hover{transform:translateY(-5px);box-shadow:0 12px 26px rgba(76,38,128,.22)}
+.guia:focus-visible{outline:3px solid var(--naranjo);outline-offset:3px}
+.guia .emo{font-size:40px;line-height:1;margin-bottom:8px}
+.guia .asig{font-size:20px;font-weight:bold;color:var(--morado-osc);margin-bottom:2px}
+.guia .curso{font-size:14.5px;color:var(--gris);margin-bottom:9px}
+.guia .desc{font-size:15.5px;flex:1;margin-bottom:13px}
+.guia .metas{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:13px}
+.tag{background:var(--morado-claro);color:var(--morado-osc);border-radius:14px;
+  padding:2px 10px;font-size:12.5px;font-weight:bold}
+.guia .accion{
+  background:var(--naranjo);color:#fff;text-align:center;font-weight:bold;
+  padding:11px;border-radius:12px;font-size:16.5px;box-shadow:0 3px 0 #C9631F;
+}
+.guia:hover .accion{background:#F97C28}
+
+/* Estado: próximamente */
+.guia.pronto{border-top-color:#C9C6D8;opacity:.72;cursor:default}
+.guia.pronto:hover{transform:none;box-shadow:var(--sombra)}
+.guia.pronto .accion{background:#B4B1C4;box-shadow:0 3px 0 #93909F;cursor:default}
+.guia .estado{
+  position:absolute;top:14px;right:14px;font-size:12px;font-weight:bold;
+  background:var(--verde);color:#fff;border-radius:14px;padding:3px 10px;
+}
+.guia.pronto .estado{background:#B4B1C4}
+
+.vacio{text-align:center;color:var(--gris);padding:40px 12px;font-size:17px}
+
+/* ---------- Pie ---------- */
+footer{
+  text-align:center;padding:22px 16px 30px;color:var(--gris);font-size:14px;
+}
+footer b{color:var(--morado-osc)}
+
+@media(max-width:620px){
+  header h1{font-size:26px}
+  header .emo{font-size:42px}
+  body{font-size:16px}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="emo">📚</span>
+  <h1>Guías de Estudio Interactivas</h1>
+  <p>Repasa jugando y llega preparado a la prueba</p>
+</header>
+
+<div class="wrap">
+  <div class="filtros" id="filtros"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<footer>
+  Material de repaso creado a partir de las guías del colegio.<br>
+  Funciona en computador, tablet y celular · <b>no necesita internet una vez abierta</b>.
+</footer>
+
+<script>
+/* ============================================================
+   👇 PARA AGREGAR UNA GUÍA NUEVA: copia un bloque y edítalo.
+   - carpeta: nombre exacto de la carpeta dentro del repositorio
+   - listo:   true = publicada · false = aparece como "Próximamente"
+   ============================================================ */
+const GUIAS = [
+  {
+    asignatura:"Lenguaje y Comunicación",
+    curso:"4° Básico",
+    unidad:"Unidad 2 · Lecciones 1, 2 y 3",
+    emoji:"🪄",
+    color:"#6C3FB5",
+    desc:"Textos instructivos y normativos, comprensión lectora, poemas, figuras literarias, uso de B-V y vocabulario por contexto.",
+    tags:["115 actividades","58 tarjetas","7 niveles"],
+    carpeta:"lenguaje-u2",
+    listo:true
+  },
+  {
+    asignatura:"Matemática",
+    curso:"4° Básico",
+    unidad:"Próxima unidad",
+    emoji:"🔢",
+    color:"#1E88E5",
+    desc:"Aquí irá la próxima guía de Matemática. Edita este bloque cuando la agregues.",
+    tags:["Por crear"],
+    carpeta:"matematica-u3",
+    listo:false
+  },
+  {
+    asignatura:"Historia y Geografía",
+    curso:"4° Básico",
+    unidad:"Próxima unidad",
+    emoji:"🗺️",
+    color:"#E0713A",
+    desc:"Aquí irá la próxima guía de Historia. Edita este bloque cuando la agregues.",
+    tags:["Por crear"],
+    carpeta:"historia-u1",
+    listo:false
+  },
+  {
+    asignatura:"Ciencias Naturales",
+    curso:"4° Básico",
+    unidad:"Próxima unidad",
+    emoji:"🔬",
+    color:"#2FA84F",
+    desc:"Aquí irá la próxima guía de Ciencias. Edita este bloque cuando la agregues.",
+    tags:["Por crear"],
+    carpeta:"ciencias-u2",
+    listo:false
+  }
+];
+
+/* ---------- Lógica de la portada ---------- */
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+let filtroActivo = "Todas";
+
+function cursos(){
+  return ["Todas", ...new Set(GUIAS.map(g => g.curso))];
+}
+
+function pintarFiltros(){
+  const c = cursos();
+  document.getElementById("filtros").innerHTML = c.length <= 2 ? "" :
+    c.map(x => `<button class="filtro ${x===filtroActivo?"activo":""}" onclick="filtrar('${esc(x)}')">${esc(x)}</button>`).join("");
+}
+
+function pintarGuias(){
+  const lista = GUIAS.filter(g => filtroActivo === "Todas" || g.curso === filtroActivo);
+  const grid = document.getElementById("grid");
+
+  if(!lista.length){
+    grid.innerHTML = `<p class="vacio">Todavía no hay guías para este curso.</p>`;
+    return;
+  }
+
+  grid.innerHTML = lista.map(g => {
+    const tags = (g.tags||[]).map(t => `<span class="tag">${esc(t)}</span>`).join("");
+    const interior = `
+      <span class="estado">${g.listo ? "Disponible" : "Próximamente"}</span>
+      <span class="emo">${g.emoji}</span>
+      <span class="asig">${esc(g.asignatura)}</span>
+      <span class="curso">${esc(g.curso)} · ${esc(g.unidad)}</span>
+      <span class="desc">${esc(g.desc)}</span>
+      <span class="metas">${tags}</span>
+      <span class="accion">${g.listo ? "▶️ Empezar a repasar" : "🔒 Aún no disponible"}</span>`;
+
+    return g.listo
+      ? `<a class="guia" style="border-top-color:${esc(g.color)}" href="${esc(g.carpeta)}/">${interior}</a>`
+      : `<div class="guia pronto" aria-disabled="true">${interior}</div>`;
+  }).join("");
+}
+
+function filtrar(c){
+  filtroActivo = c;
+  pintarFiltros();
+  pintarGuias();
+}
+
+pintarFiltros();
+pintarGuias();
+</script>
+
+</body>
+</html>
