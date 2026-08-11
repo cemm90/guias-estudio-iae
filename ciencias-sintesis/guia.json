@@ -1,0 +1,15 @@
+{
+  "asignatura": "Ciencias Naturales",
+  "curso": "4° Básico",
+  "semestre": "Primer Semestre",
+  "unidad": "Síntesis · Materia y Fuerza",
+  "emoji": "🔬",
+  "color": "#2FA84F",
+  "desc": "Guía de estudio interactiva y gamificada de Ciencias Naturales para 4° Básico: la materia y sus propiedades físicas, los tres estados de la materia, y la fuerza y sus efectos, con flashcards y ejercicios.",
+  "tags": [
+    "Guía de repaso"
+  ],
+  "listo": true,
+  "autoDesc": true,
+  "autoTags": true
+}
