@@ -1,14 +1,15 @@
 {
   "asignatura": "Lenguaje y Comunicación",
-  "curso": "Sin curso",
-  "unidad": "Sin unidad",
+  "curso": "4° Básico",
+  "unidad": "Síntesis · Primer Semestre",
   "emoji": "🪄",
   "color": "#6C3FB5",
-  "desc": "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
+  "desc": "Guía interactiva de síntesis de Lenguaje y Comunicación para 4° Básico: acentuación y tildes, tipos de texto, comprensión lectora y escritura, organizada en niveles con desafíos.",
   "tags": [
     "Guía de repaso"
   ],
   "listo": true,
   "autoDesc": true,
-  "autoTags": true
+  "autoTags": true,
+  "semestre": "Primer Semestre"
 }
