@@ -1,1 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Guía interactiva de Matemática para 4° Básico: números hasta 10.000, valor posicional, descomposición aditiva, secuencias numéricas, las cuatro operaciones y resolución de problemas.">
+<meta name="curso" content="4° Básico">
+<meta name="asignatura" content="Matemática">
+<meta name="unidad" content="Síntesis · Números y Operaciones">
+<meta name="semestre" content="Primer Semestre">
+<meta name="theme-color" content="#0F1F3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="🚀 Misión Matemática — Guía de Estudio 4° Básico">
+<meta property="og:description" content="Guía interactiva de Matemática para 4° Básico: números hasta 10.000, valor posicional, descomposición aditiva, secuencias numéricas, las cuatro operaciones y resolución de problemas.">
+<meta property="og:locale" content="es_CL">
+<title>🚀 Misión Matemática — Guía de Estudio 4° Básico</title>
+<style>
+  :root{
+    --bg:#0f1f3d;
+    --grid:#1c3a5e;
+    --paper:#fdfcf7;
+    --ink:#16324f;
+    --blue:#2f6fed;
+    --blue-d:#1d4ed8;
+    --cyan:#06b6d4;
+    --green:#16a34a;
+    --green-l:#22c55e;
+    --red:#ef4444;
+    --amber:#f59e0b;
+    --purple:#7c3aed;
+    --pink:#ec4899;
+    --shadow:rgba(16,32,64,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 20% 10%, #1a3a6b 0, transparent 40%),
+      radial-gradient(circle at 80% 90%, #16324f 0, transparent 45%),
+      #0f1f3d;
+    min-height:100vh;
+    padding-bottom:60px;
+  }
+  /* floating math symbols */
+  .sky{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+  .sym{position:absolute;color:rgba(255,255,255,.07);font-weight:bold;animation:float 14s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-30px) rotate(12deg)}}
 
+  .wrap{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:18px}
+
+  /* ===== HEADER ===== */
+  header{
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    border-radius:22px;padding:22px 24px;color:#fff;
+    box-shadow:0 12px 30px var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  header::before{
+    content:"+ − × ÷ = √ % π";
+    position:absolute;top:-10px;right:-10px;font-size:60px;opacity:.12;letter-spacing:8px;font-weight:bold;
+  }
+  header h1{font-size:1.9rem;line-height:1.1;text-shadow:2px 2px 0 rgba(0,0,0,.18)}
+  header .sub{margin-top:6px;font-size:1rem;opacity:.95}
+  .namebox{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .namebox input{
+    border:none;border-radius:12px;padding:8px 14px;font-size:1rem;font-family:inherit;
+    background:rgba(255,255,255,.92);color:var(--ink);font-weight:bold;min-width:200px;
+  }
+
+  /* ===== HUD / stats ===== */
+  .hud{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;
+  }
+  .stat{
+    background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);
+    border-radius:14px;padding:10px;text-align:center;color:#fff;backdrop-filter:blur(4px);
+  }
+  .stat .v{font-size:1.4rem;font-weight:bold;line-height:1}
+  .stat .l{font-size:.72rem;opacity:.9;margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+  .xpwrap{margin-top:14px;background:rgba(0,0,0,.22);border-radius:30px;height:24px;overflow:hidden;position:relative}
+  .xpbar{height:100%;width:0;background:linear-gradient(90deg,var(--green-l),var(--cyan));transition:width .6s cubic-bezier(.2,.9,.3,1);border-radius:30px}
+  .xptext{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:.85rem;text-shadow:1px 1px 2px rgba(0,0,0,.4)}
+
+  /* medals */
+  .medals{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+  .medal{font-size:1.5rem;filter:grayscale(1);opacity:.35;transition:.4s;cursor:default}
+  .medal.won{filter:none;opacity:1;transform:scale(1.05);animation:pop .5s}
+  @keyframes pop{0%{transform:scale(.4) rotate(-20deg)}60%{transform:scale(1.25) rotate(8deg)}100%{transform:scale(1.05)}}
+
+  /* ===== map / nav ===== */
+  .map{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:18px 0}
+  .planet{
+    background:var(--paper);border-radius:18px;padding:14px 10px;text-align:center;cursor:pointer;
+    box-shadow:0 6px 16px var(--shadow);border:3px solid transparent;transition:.25s;position:relative;
+  }
+  .planet:hover{transform:translateY(-4px);border-color:var(--cyan)}
+  .planet .ic{font-size:1.9rem}
+  .planet .nm{font-weight:bold;font-size:.82rem;margin-top:4px;color:var(--ink)}
+  .planet .pc{font-size:.72rem;color:#5a708a;margin-top:3px}
+  .planet .done{position:absolute;top:6px;right:8px;font-size:1rem;opacity:0;transition:.3s}
+  .planet.complete .done{opacity:1}
+  .planet.complete{border-color:var(--green-l);background:#f0fdf4}
+
+  /* ===== sections ===== */
+  section{
+    background:var(--paper);border-radius:20px;padding:22px;margin:18px 0;
+    box-shadow:0 8px 24px var(--shadow);
+    background-image:
+      linear-gradient(rgba(47,111,237,.06) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(47,111,237,.06) 1px,transparent 1px);
+    background-size:26px 26px;
+    scroll-margin-top:16px;
+  }
+  .sec-head{display:flex;align-items:center;gap:12px;border-bottom:3px dashed var(--blue);padding-bottom:12px;margin-bottom:6px}
+  .sec-head .badge{font-size:2rem;background:linear-gradient(135deg,var(--blue),var(--cyan));width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px var(--shadow)}
+  .sec-head h2{font-size:1.3rem;color:var(--ink)}
+  .sec-head .tag{font-size:.78rem;color:#5a708a;font-weight:normal}
+  .lesson{
+    background:#eaf2ff;border-left:5px solid var(--blue);border-radius:10px;
+    padding:12px 14px;margin:14px 0;font-size:.95rem;line-height:1.5;
+  }
+  .lesson b{color:var(--blue-d)}
+
+  /* exercises */
+  .q{background:#fff;border:2px solid #e2e8f0;border-radius:14px;padding:14px;margin:12px 0;transition:.25s}
+  .q.ok{border-color:var(--green-l);background:#f0fdf4}
+  .q.bad{border-color:var(--red);background:#fef2f2;animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .q .qp{font-weight:bold;margin-bottom:10px;line-height:1.45}
+  .q .qp .pts{font-size:.72rem;background:var(--amber);color:#fff;padding:2px 8px;border-radius:20px;margin-left:6px;font-weight:bold;white-space:nowrap}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  input.ans{
+    border:2px solid #cbd5e1;border-radius:10px;padding:9px 12px;font-size:1rem;font-family:inherit;
+    width:160px;font-weight:bold;color:var(--ink);text-align:center;
+  }
+  input.ans:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(47,111,237,.2)}
+  input.ans.wide{width:240px;text-align:left}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .opt{
+    border:2px solid #cbd5e1;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:bold;
+    background:#fff;transition:.18s;user-select:none;
+  }
+  .opt:hover{border-color:var(--blue);background:#eaf2ff}
+  .opt.sel{border-color:var(--blue);background:var(--blue);color:#fff}
+  .opt.right{border-color:var(--green);background:var(--green-l);color:#fff}
+  .opt.wrong{border-color:var(--red);background:var(--red);color:#fff}
+  .btn{
+    border:none;border-radius:10px;padding:9px 18px;font-size:.92rem;font-weight:bold;cursor:pointer;
+    font-family:inherit;background:var(--blue);color:#fff;transition:.18s;box-shadow:0 3px 8px var(--shadow);
+  }
+  .btn:hover{background:var(--blue-d);transform:translateY(-1px)}
+  .btn:active{transform:translateY(1px)}
+  .btn.sm{padding:6px 12px;font-size:.82rem}
+  .btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+  .fb{margin-top:8px;font-weight:bold;font-size:.92rem;display:none}
+  .fb.show{display:block;animation:pop .35s}
+  .fb.good{color:var(--green)}
+  .fb.no{color:var(--red)}
+  .hint{font-size:.82rem;color:#7c3aed;margin-top:6px;display:none}
+  .hint.show{display:block}
+  .colsum{font-family:'Courier New',monospace;font-size:1.5rem;font-weight:bold;letter-spacing:3px;background:#fffbe9;border:2px dashed var(--amber);border-radius:10px;padding:10px 14px;display:inline-block;line-height:1.5;text-align:right;white-space:pre}
+
+  /* boss */
+  .boss{background:linear-gradient(135deg,#3b0764,#7c3aed,#ec4899);color:#fff;border:none}
+  .boss .sec-head{border-color:rgba(255,255,255,.5)}
+  .boss .sec-head h2,.boss .sec-head .tag{color:#fff}
+  .boss .lesson{background:rgba(255,255,255,.14);border-color:#fff;color:#fff}
+  .boss .lesson b{color:#ffe08a}
+  .boss .q{background:rgba(255,255,255,.95)}
+
+  /* finale */
+  #finale{display:none;text-align:center;background:linear-gradient(135deg,var(--green),var(--cyan));color:#fff}
+  #finale h2{font-size:1.8rem}
+  .big{font-size:3rem;margin:10px 0}
+
+  /* confetti */
+  .confetti{position:fixed;width:10px;height:14px;z-index:50;top:-20px;pointer-events:none;border-radius:2px}
+
+  footer{text-align:center;color:rgba(255,255,255,.5);font-size:.8rem;margin-top:24px;padding:0 16px}
+
+  .toast{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120px);
+    background:var(--ink);color:#fff;padding:12px 22px;border-radius:30px;font-weight:bold;
+    box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:60;transition:transform .4s cubic-bezier(.2,.9,.3,1);font-size:.95rem;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+
+  .reset{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:20px;padding:5px 12px;font-size:.78rem;cursor:pointer;font-family:inherit}
+  @media(max-width:560px){
+    .hud{grid-template-columns:repeat(2,1fr)}
+    header h1{font-size:1.5rem}
+  }
+</style>
+</head>
+<body>
+<div class="sky" id="sky"></div>
+
+<div class="wrap">
+
+  <!-- ============ HEADER ============ -->
+  <header>
+    <h1>🚀 Misión Matemática</h1>
+    <div class="sub">Guía de estudio interactiva · Prueba de Síntesis · 4° Básico 2026</div>
+    <div class="namebox">
+      <span>👋 Astronauta:</span>
+      <input id="studentName" placeholder="Escribe tu nombre" value="">
+    </div>
+
+    <div class="hud">
+      <div class="stat"><div class="v" id="hPts">0</div><div class="l">Puntos ⭐</div></div>
+      <div class="stat"><div class="v" id="hLvl">1</div><div class="l">Nivel 🪐</div></div>
+      <div class="stat"><div class="v" id="hStreak">0</div><div class="l">Racha 🔥</div></div>
+      <div class="stat"><div class="v" id="hPct">0%</div><div class="l">Misión ✅</div></div>
+    </div>
+
+    <div class="xpwrap"><div class="xpbar" id="xpbar"></div><div class="xptext" id="xptext">0 / 0 ⭐</div></div>
+
+    <div class="medals" id="medals">
+      <span class="medal" data-m="start" title="Despegue: responde tu 1ª pregunta">🎖️</span>
+      <span class="medal" data-m="streak5" title="Racha de 5 correctas seguidas">🔥</span>
+      <span class="medal" data-m="numbers" title="Dominas los números">🔢</span>
+      <span class="medal" data-m="ops" title="Maestro de las operaciones">➗</span>
+      <span class="medal" data-m="problems" title="Resuelve-problemas">🧠</span>
+      <span class="medal" data-m="boss" title="Venciste al Desafío Final">👑</span>
+      <span class="medal" data-m="perfect" title="¡Misión 100% completa!">🏆</span>
+    </div>
+    <div style="margin-top:12px;text-align:right"><button class="reset" onclick="resetAll()">↺ Reiniciar progreso</button></div>
+  </header>
+
+  <!-- ============ MAP ============ -->
+  <div class="map" id="map"></div>
+
+  <!-- ============ SECTIONS ============ -->
+  <div id="sections"></div>
+
+  <!-- ============ FINALE ============ -->
+  <section id="finale">
+    <h2>🏆 ¡MISIÓN COMPLETADA!</h2>
+    <div class="big">🎉🚀🎉</div>
+    <p style="font-size:1.1rem;line-height:1.5">¡Felicidades, <span id="finName">astronauta</span>! Has dominado toda la materia y estás <b>100% listo/a</b> para la prueba de síntesis.</p>
+    <p style="margin-top:10px;font-size:1.4rem;font-weight:bold" id="finScore"></p>
+    <button class="btn" style="margin-top:16px;background:#fff;color:var(--green)" onclick="party()">🎊 ¡Celebrar otra vez!</button>
+  </section>
+
+  <footer>Hecho con 💙 para tu prueba de síntesis · Las respuestas se guardan en este dispositivo.</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   DATOS DE LA GUÍA  (basados en la guía de la profesora
+   + ejercicios extra de refuerzo)
+   tipos: "num"  -> respuesta numérica/texto exacto
+          "mc"   -> opción múltiple
+   ========================================================= */
+const SECTIONS = [
+{
+  id:"s1", icon:"🔢", name:"Números hasta 10.000", tag:"Nivel 1 · Lee y escribe números",
+  lesson:`Un número de 4 cifras tiene <b>Unidades de mil (UM)</b>, <b>Centenas (C)</b>, <b>Decenas (D)</b> y <b>Unidades (U)</b>.
+  Ej: <b>5.234</b> = 5 UM, 2 C, 3 D, 4 U → "cinco mil doscientos treinta y cuatro". El punto separa los miles: <b>5.234</b>.`,
+  medal:"numbers",
+  qs:[
+    {p:"Escribe con cifras: «Cinco mil doscientos treinta y cuatro»", t:"num", a:["5234","5.234"], pts:10, hint:"5 mil + 234"},
+    {p:"Escribe con cifras: «Nueve mil ocho»", t:"num", a:["9008","9.008"], pts:10, hint:"Cuidado con los ceros del medio: 9 _ _ 8"},
+    {p:"Escribe con cifras: «Siete mil ciento cuarenta»", t:"num", a:["7140","7.140"], pts:10, hint:"7 mil + 140"},
+    {p:"Escribe con cifras: «Diez mil»", t:"num", a:["10000","10.000"], pts:10, hint:"El número más grande de la unidad"},
+    {p:"¿Cómo se escribe 4.582 con palabras?", t:"mc", a:0, pts:10,
+       o:["Cuatro mil quinientos ochenta y dos","Cuatro mil quinientos veintiocho","Cuarenta mil quinientos ochenta","Cuatro mil ochocientos cincuenta y dos"]},
+    {p:"¿Cómo se escribe 9.006 con palabras?", t:"mc", a:2, pts:10,
+       o:["Noventa mil seis","Nueve mil sesenta","Nueve mil seis","Nueve mil sesenta y seis"]},
+    {p:"¿Cómo se escribe 7.350 con palabras?", t:"mc", a:1, pts:10,
+       o:["Siete mil treinta y cinco","Siete mil trescientos cincuenta","Setenta mil trescientos","Siete mil trescientos quince"]},
+    /* extra */
+    {p:"⭐ EXTRA · Escribe con cifras: «Seis mil novecientos doce»", t:"num", a:["6912","6.912"], pts:15, hint:"6 mil + 912"},
+    {p:"⭐ EXTRA · Escribe con cifras: «Ocho mil cuarenta»", t:"num", a:["8040","8.040"], pts:15, hint:"8 mil, 0 centenas, 40"},
+    {p:"⭐ EXTRA · ¿Cuál es mayor: 7.401 o 7.041?", t:"mc", a:0, pts:15, o:["7.401","7.041","Son iguales"]},
+    {p:"⭐ EXTRA · Ordena de menor a mayor: 3.210 · 3.012 · 3.120. El menor es…", t:"mc", a:1, pts:15, o:["3.210","3.012","3.120"]},
+  ]
+},
+{
+  id:"s2", icon:"📍", name:"Valor y posición", tag:"Nivel 2 · ¿Cuánto vale cada dígito?",
+  lesson:`El <b>valor posicional</b> depende del lugar del dígito. En <b>6.483</b>: el 6 vale 6.000 (UM), el 4 vale 400 (C), el 8 vale 80 (D) y el 3 vale 3 (U).`,
+  qs:[
+    {p:"En 8.246, ¿cuál es el valor del dígito 8?", t:"mc", a:3, pts:10, o:["8","80","800","8.000"]},
+    {p:"En 5.791, ¿cuál es el valor del dígito 7?", t:"mc", a:2, pts:10, o:["7","70","700","7.000"]},
+    {p:"En 3.458, ¿cuál es el valor del dígito 5?", t:"mc", a:1, pts:10, o:["5","50","500","5.000"]},
+    {p:"En 9.632, ¿cuál es el valor del dígito 2?", t:"mc", a:0, pts:10, o:["2","20","200","2.000"]},
+    /* extra */
+    {p:"⭐ EXTRA · En 4.815, ¿qué dígito está en la posición de las CENTENAS?", t:"mc", a:1, pts:15, o:["4","8","1","5"]},
+    {p:"⭐ EXTRA · En 7.260, ¿cuál es el valor del dígito 6?", t:"mc", a:1, pts:15, o:["6","60","600","6.000"]},
+    {p:"⭐ EXTRA · ¿En qué número el 3 vale 3.000?", t:"mc", a:2, pts:15, o:["1.300","4.300","3.451","6.530"]},
+  ]
+},
+{
+  id:"s3", icon:"🧩", name:"Descomposición aditiva", tag:"Nivel 3 · Arma y desarma números",
+  lesson:`<b>Descomponer</b> es separar un número en sus valores. Ej: <b>5.432 = 5.000 + 400 + 30 + 2</b>. <b>Componer</b> es lo contrario: juntarlos.`,
+  qs:[
+    {p:"Compón: 3.000 + 600 + 20 + 4 =", t:"num", a:["3624","3.624"], pts:10},
+    {p:"Compón: 7.000 + 500 + 80 + 1 =", t:"num", a:["7581","7.581"], pts:10},
+    {p:"Compón: 8.000 + 300 + 9 =", t:"num", a:["8309","8.309"], pts:10, hint:"No hay decenas → un 0"},
+    {p:"Compón: 4.000 + 900 + 70 + 5 =", t:"num", a:["4975","4.975"], pts:10},
+    {p:"Descompón 7.261. La parte de las CENTENAS es…", t:"mc", a:1, pts:10, o:["20","200","2.000","7.000"]},
+    {p:"Descompón 8.905. La parte de las DECENAS es…", t:"mc", a:0, pts:10, o:["0","5","900","8.000"]},
+    /* extra */
+    {p:"⭐ EXTRA · Compón: 6.000 + 40 + 7 =", t:"num", a:["6047","6.047"], pts:15, hint:"No hay centenas → 0"},
+    {p:"⭐ EXTRA · ¿Cuál es la descomposición correcta de 5.208?", t:"mc", a:2, pts:15,
+       o:["5.000 + 200 + 80","5.000 + 28","5.000 + 200 + 8","500 + 20 + 8"]},
+    {p:"⭐ EXTRA · Compón: 9.000 + 900 + 90 + 9 =", t:"num", a:["9999","9.999"], pts:15},
+  ]
+},
+{
+  id:"s4", icon:"🔗", name:"Secuencias numéricas", tag:"Nivel 4 · Descubre el patrón",
+  lesson:`En una <b>secuencia</b> los números aumentan o disminuyen con un patrón fijo. Descubre <b>cuánto suma o resta</b> cada paso y continúa.`,
+  qs:[
+    {p:"Continúa: 120 – 130 – 140 – 150 – 160 – ___ (suma 10)", t:"num", a:["170"], pts:10},
+    {p:"Continúa: 2.000 – 2.100 – 2.200 – ___ (suma 100)", t:"num", a:["2300","2.300"], pts:10},
+    {p:"Continúa: 5.000 – 4.900 – 4.800 – ___ (resta 100)", t:"num", a:["4700","4.700"], pts:10},
+    {p:"Continúa: 45 – 50 – 55 – ___ (suma 5)", t:"num", a:["60"], pts:10},
+    {p:"En 25 – 30 – 35 – 40 – 45 – ___ ¿qué número ocupa el SEXTO lugar?", t:"num", a:["50"], pts:10},
+    {p:"En 100 – 200 – 300 … ¿qué número ocupa el OCTAVO lugar?", t:"num", a:["800"], pts:10},
+    /* extra */
+    {p:"⭐ EXTRA · ¿Cuál es el patrón de 3 – 9 – 27 – 81?", t:"mc", a:2, pts:15, o:["suma 6","suma 18","multiplica por 3","multiplica por 2"]},
+    {p:"⭐ EXTRA · Continúa: 1.000 – 1.250 – 1.500 – ___ (suma 250)", t:"num", a:["1750","1.750"], pts:15},
+    {p:"⭐ EXTRA · Cuenta hacia atrás de 4 en 4: 24 – 20 – 16 – ___", t:"num", a:["12"], pts:15},
+  ]
+},
+{
+  id:"s5", icon:"➗", name:"Las 4 operaciones", tag:"Nivel 5 · +  −  ×  ÷",
+  lesson:`<b>Adición</b> (juntar), <b>Sustracción</b> (quitar), <b>Multiplicación</b> (sumar grupos iguales) y <b>División</b> (repartir en partes iguales). Recuerda: en la suma y la resta, <b>alinea las cifras</b> y trabaja de derecha a izquierda llevando o pidiendo prestado.`,
+  medal:"ops",
+  qs:[
+    {p:"➕ Suma:  2.458 + 1.367 =", t:"num", a:["3825","3.825"], pts:10, hint:"Se lleva: 8+7=15…"},
+    {p:"➕ Suma:  3.789 + 1.367 =", t:"num", a:["5156","5.156"], pts:10},
+    {p:"➖ Resta:  8.524 − 3.216 =", t:"num", a:["5308","5.308"], pts:10, hint:"Pide prestado en las unidades"},
+    {p:"➖ Resta:  7.000 − 2.458 =", t:"num", a:["4542","4.542"], pts:10, hint:"Restar a un número con ceros"},
+    {p:"✖️ Multiplica:  34 × 5 =", t:"num", a:["170"], pts:10},
+    {p:"✖️ Multiplica:  26 × 7 =", t:"num", a:["182"], pts:10},
+    {p:"✖️ Multiplica:  125 × 4 =", t:"num", a:["500"], pts:10},
+    {p:"✖️ Multiplica:  213 × 3 =", t:"num", a:["639"], pts:10},
+    {p:"➗ Divide:  48 ÷ 6 =", t:"num", a:["8"], pts:10},
+    {p:"➗ Divide:  72 ÷ 8 =", t:"num", a:["9"], pts:10},
+    {p:"➗ Divide:  90 ÷ 9 =", t:"num", a:["10"], pts:10},
+    {p:"➗ Divide:  56 ÷ 7 =", t:"num", a:["8"], pts:10},
+    /* extra */
+    {p:"⭐ EXTRA · Suma: 4.605 + 2.398 =", t:"num", a:["7003","7.003"], pts:15},
+    {p:"⭐ EXTRA · Resta: 6.300 − 1.745 =", t:"num", a:["4555","4.555"], pts:15},
+    {p:"⭐ EXTRA · Multiplica: 48 × 6 =", t:"num", a:["288"], pts:15},
+    {p:"⭐ EXTRA · Divide: 64 ÷ 8 =", t:"num", a:["8"], pts:15},
+    {p:"⭐ EXTRA · Divide: 81 ÷ 9 =", t:"num", a:["9"], pts:15},
+    {p:"⭐ EXTRA · ¿Cuál es el resultado de 7 × 8?", t:"mc", a:2, pts:15, o:["54","63","56","49"]},
+  ]
+},
+{
+  id:"s6", icon:"🧠", name:"Resolución de problemas", tag:"Nivel 6 · Piensa y resuelve",
+  lesson:`Para resolver un problema: <b>1)</b> lee con calma, <b>2)</b> piensa qué te preguntan, <b>3)</b> decide la operación (¿juntar? ¿quitar? ¿repartir? ¿grupos iguales?) y <b>4)</b> calcula y revisa.`,
+  medal:"problems",
+  qs:[
+    {p:"📚 En la biblioteca hay 2.345 libros de cuentos y 1.876 informativos. ¿Cuántos hay en total?", t:"num", a:["4221","4.221"], pts:15, hint:"En total = sumar"},
+    {p:"📄 Un colegio tenía 5.000 hojas y usó 2.348. ¿Cuántas quedaron?", t:"num", a:["2652","2.652"], pts:15, hint:"Quedaron = restar"},
+    {p:"🐔 Una granja tiene 24 corrales con 6 gallinas cada uno. ¿Cuántas gallinas hay?", t:"num", a:["144"], pts:15, hint:"Grupos iguales = multiplicar"},
+    {p:"✏️ La profesora reparte 48 lápices en partes iguales entre 6 grupos. ¿Cuántos recibe cada grupo?", t:"num", a:["8"], pts:15, hint:"Repartir = dividir"},
+    /* extra */
+    {p:"⭐ EXTRA · Un cine vendió 1.250 entradas el sábado y 1.480 el domingo. ¿Cuántas vendió en total?", t:"num", a:["2730","2.730"], pts:20, hint:"En total = sumar"},
+    {p:"⭐ EXTRA · Un avión lleva 320 pasajeros. Si bajan 185, ¿cuántos quedan?", t:"num", a:["135"], pts:20, hint:"Quedan = restar"},
+    {p:"⭐ EXTRA · En una caja entran 8 chocolates. ¿Cuántos chocolates hay en 9 cajas?", t:"num", a:["72"], pts:20, hint:"Grupos iguales = multiplicar"},
+    {p:"⭐ EXTRA · 56 estudiantes se reparten en 7 equipos iguales. ¿Cuántos hay por equipo?", t:"num", a:["8"], pts:20, hint:"Repartir = dividir"},
+    {p:"⭐ EXTRA · Ana tiene $3.500 y compra un cuento de $1.890. ¿Cuánto le sobra?", t:"num", a:["1610","1.610"], pts:20, hint:"Le sobra = restar"},
+  ]
+}
+];
+
+/* ===== JEFE FINAL ===== */
+const BOSS = {
+  id:"boss", icon:"👑", name:"DESAFÍO FINAL", tag:"¡Vence al Jefe de la galaxia!",
+  lesson:`Este reto tiene <b>varios pasos</b>. ¡Concéntrate, lee bien y úsalo todo lo aprendido! 💪`,
+  qs:[
+    {p:"🛒 Un supermercado recibió 2.350 cajas de jugo el lunes y 1.875 el martes. <b>Paso 1:</b> ¿Cuántas cajas tiene en total?", t:"num", a:["4225","4.225"], pts:25, hint:"Sumar lo del lunes y el martes"},
+    {p:"🛒 Luego vendió 2.120 cajas. <b>Paso 2:</b> ¿Cuántas cajas quedaron al final?", t:"num", a:["2105","2.105"], pts:25, hint:"Al total (4.225) réstale lo vendido (2.120)"},
+    {p:"🎯 RETO MAESTRO · Compón el número y resuelve: (5.000+300+20) − 1.150 =", t:"num", a:["4170","4.170"], pts:30, hint:"Primero compón 5.320, luego resta 1.150"},
+  ]
+};
+
+/* =========================================================
+   ESTADO / LÓGICA
+   ========================================================= */
+let state = { answered:{}, pts:0, streak:0, bestStreak:0, medals:{}, name:"" };
+const ALL = [...SECTIONS, BOSS];
+const TOTAL_QS = ALL.reduce((n,s)=>n+s.qs.length,0);
+let MAX_PTS = 0;
+
+function norm(v){
+  return String(v).toLowerCase().trim()
+    .replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i')
+    .replace(/[óòö]/g,'o').replace(/[úùü]/g,'u')
+    .replace(/\s+/g,' ').replace(/[.\s]/g,'');
+}
+
+/* ---- persistencia ---- */
+function save(){ try{ localStorage.setItem('misionMate', JSON.stringify(state)); }catch(e){} }
+function load(){ try{ const d=localStorage.getItem('misionMate'); if(d) state=JSON.parse(d); }catch(e){} }
+
+/* ---- construir DOM ---- */
+function buildSky(){
+  const syms="+−×÷=√%π∑∞<>".split('');
+  let h="";
+  for(let i=0;i<22;i++){
+    const s=syms[Math.floor(Math.random()*syms.length)];
+    h+=`<span class="sym" style="left:${Math.random()*100}%;top:${Math.random()*100}%;font-size:${20+Math.random()*46}px;animation-delay:${Math.random()*8}s">${s}</span>`;
+  }
+  document.getElementById('sky').innerHTML=h;
+}
+
+function buildMap(){
+  const m=document.getElementById('map');
+  m.innerHTML = ALL.map(s=>`
+    <div class="planet" id="map-${s.id}" onclick="document.getElementById('${s.id}').scrollIntoView()">
+      <span class="done">✅</span>
+      <div class="ic">${s.icon}</div>
+      <div class="nm">${s.name}</div>
+      <div class="pc" id="pc-${s.id}">0%</div>
+    </div>`).join('');
+}
+
+function qHTML(sec, q, idx){
+  const key = sec.id+"-"+idx;
+  const done = state.answered[key];
+  let input;
+  if(q.t==="mc"){
+    input = `<div class="opts" id="opts-${key}">` + q.o.map((o,i)=>
+      `<div class="opt" data-i="${i}" onclick="pickOpt('${key}',${i})">${o}</div>`).join('') + `</div>`;
+  } else {
+    input = `<div class="row">
+        <input class="ans ${q.wide?'wide':''}" id="in-${key}" placeholder="?"
+          onkeydown="if(event.key==='Enter')check('${key}')" inputmode="numeric">
+        <button class="btn sm" onclick="check('${key}')">Comprobar ✔</button>
+        ${q.hint?`<button class="btn sm ghost" onclick="toggleHint('${key}')">💡 Pista</button>`:''}
+      </div>`;
+  }
+  return `<div class="q ${done?'ok':''}" id="q-${key}">
+      <div class="qp">${q.p}<span class="pts">+${q.pts}⭐</span></div>
+      ${input}
+      ${q.hint?`<div class="hint" id="hint-${key}">💡 ${q.hint}</div>`:''}
+      <div class="fb ${done?'good show':''}" id="fb-${key}">${done?'✅ ¡Correcto! Ya lo resolviste.':''}</div>
+    </div>`;
+}
+
+function buildSections(){
+  const root=document.getElementById('sections');
+  root.innerHTML = ALL.map(sec=>{
+    const boss = sec.id==='boss';
+    return `<section id="${sec.id}" class="${boss?'boss':''}">
+      <div class="sec-head">
+        <div class="badge">${sec.icon}</div>
+        <div><h2>${sec.name}</h2><div class="tag">${sec.tag}</div></div>
+      </div>
+      <div class="lesson">${sec.lesson}</div>
+      ${sec.qs.map((q,i)=>qHTML(sec,q,i)).join('')}
+    </section>`;
+  }).join('');
+}
+
+/* ---- interacción ---- */
+function pickOpt(key, i){
+  if(state.answered[key]) return;
+  const wrap=document.getElementById('opts-'+key);
+  [...wrap.children].forEach(c=>c.classList.remove('sel'));
+  wrap.children[i].classList.add('sel');
+  // auto-check for MC
+  checkMC(key, i);
+}
+
+function checkMC(key, picked){
+  const [sid,idx]=key.split('-'); const sec=ALL.find(s=>s.id===sid); const q=sec.qs[+idx];
+  const wrap=document.getElementById('opts-'+key);
+  const fb=document.getElementById('fb-'+key);
+  const qbox=document.getElementById('q-'+key);
+  if(picked===q.a){
+    wrap.children[picked].classList.add('right');
+    [...wrap.children].forEach(c=>c.style.pointerEvents='none');
+    win(key,q,fb,qbox);
+  } else {
+    wrap.children[picked].classList.add('wrong');
+    fb.className='fb no show'; fb.textContent='❌ Casi… inténtalo otra vez. ¡Tú puedes!';
+    qbox.classList.add('bad'); setTimeout(()=>qbox.classList.remove('bad'),400);
+    state.streak=0; updateHUD(); save();
+    setTimeout(()=>{wrap.children[picked].classList.remove('wrong','sel');fb.className='fb';},1200);
+  }
+}
+
+function check(key){
+  if(state.answered[key]) return;
+  const [sid,idx]=key.split('-'); const sec=ALL.find(s=>s.id===sid); const q=sec.qs[+idx];
+  const val=document.getElementById('in-'+key).value;
+  if(val.trim()===''){ return; }
+  const fb=document.getElementById('fb-'+key);
+  const qbox=document.getElementById('q-'+key);
+  const ok = q.a.some(ans=>norm(ans)===norm(val));
+  if(ok){
+    win(key,q,fb,qbox);
+    document.getElementById('in-'+key).disabled=true;
+  } else {
+    fb.className='fb no show';
+    fb.textContent='❌ Mmm, no es esa. Revisa tu cálculo e intenta de nuevo 💪';
+    qbox.classList.add('bad'); setTimeout(()=>qbox.classList.remove('bad'),400);
+    state.streak=0; updateHUD(); save();
+  }
+}
+
+const CHEERS=['¡Excelente! 🌟','¡Lo lograste! 🚀','¡Genial! 🎉','¡Crack de las mates! 🧠','¡Sigue así! 🔥','¡Brillante! ✨','¡Perfecto! 💯'];
+
+function win(key,q,fb,qbox){
+  state.answered[key]=true;
+  state.pts+=q.pts;
+  state.streak++;
+  if(state.streak>state.bestStreak) state.bestStreak=state.streak;
+  qbox.classList.add('ok');
+  fb.className='fb good show';
+  fb.textContent='✅ '+CHEERS[Math.floor(Math.random()*CHEERS.length)]+' (+'+q.pts+'⭐)';
+  toast('+'+q.pts+'⭐  '+(state.streak>1?('🔥 Racha x'+state.streak):''));
+  miniConfetti();
+  updateHUD(); checkMedals(); save();
+}
+
+function toggleHint(key){ document.getElementById('hint-'+key).classList.toggle('show'); }
+
+/* ---- HUD ---- */
+function levelFor(p){ return Math.max(1, Math.floor(p/120)+1); }
+function updateHUD(){
+  const answered=Object.keys(state.answered).length;
+  const pct=Math.round(answered/TOTAL_QS*100);
+  document.getElementById('hPts').textContent=state.pts;
+  document.getElementById('hLvl').textContent=levelFor(state.pts);
+  document.getElementById('hStreak').textContent=state.streak;
+  document.getElementById('hPct').textContent=pct+'%';
+  const xp=Math.min(100, Math.round(state.pts/MAX_PTS*100));
+  document.getElementById('xpbar').style.width=xp+'%';
+  document.getElementById('xptext').textContent=state.pts+' / '+MAX_PTS+' ⭐';
+  // map progress
+  ALL.forEach(sec=>{
+    const tot=sec.qs.length;
+    const got=sec.qs.filter((_,i)=>state.answered[sec.id+'-'+i]).length;
+    const p=Math.round(got/tot*100);
+    document.getElementById('pc-'+sec.id).textContent=p+'%';
+    document.getElementById('map-'+sec.id).classList.toggle('complete',p===100);
+  });
+  if(answered===TOTAL_QS){ showFinale(); }
+}
+
+/* ---- medals ---- */
+function award(m){
+  if(state.medals[m]) return;
+  state.medals[m]=true;
+  const el=document.querySelector('.medal[data-m="'+m+'"]');
+  if(el) el.classList.add('won');
+  toast('🏅 ¡Medalla nueva desbloqueada!');
+  party();
+}
+function checkMedals(){
+  const answered=Object.keys(state.answered).length;
+  if(answered>=1) award('start');
+  if(state.bestStreak>=5) award('streak5');
+  const secDone=id=>{const s=ALL.find(x=>x.id===id);return s.qs.every((_,i)=>state.answered[id+'-'+i]);};
+  if(secDone('s1')&&secDone('s2')&&secDone('s3')&&secDone('s4')) award('numbers');
+  if(secDone('s5')) award('ops');
+  if(secDone('s6')) award('problems');
+  if(secDone('boss')) award('boss');
+  if(answered===TOTAL_QS) award('perfect');
+  // restore visual on load
+  Object.keys(state.medals).forEach(m=>{const el=document.querySelector('.medal[data-m="'+m+'"]');if(el)el.classList.add('won');});
+}
+
+/* ---- finale ---- */
+function showFinale(){
+  const f=document.getElementById('finale'); f.style.display='block';
+  document.getElementById('finName').textContent=state.name||'astronauta';
+  document.getElementById('finScore').textContent='⭐ '+state.pts+' puntos · 🪐 Nivel '+levelFor(state.pts)+' · 🔥 Mejor racha: '+state.bestStreak;
+  party();
+}
+
+/* ---- name ---- */
+const nameInput=document.getElementById('studentName');
+nameInput.addEventListener('input',e=>{state.name=e.target.value;save();});
+
+/* ---- reset ---- */
+function resetAll(){
+  if(!confirm('¿Seguro que quieres reiniciar TODO tu progreso?')) return;
+  state={answered:{},pts:0,streak:0,bestStreak:0,medals:{},name:state.name};
+  save(); location.reload();
+}
+
+/* ---- toast ---- */
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),1600);
+}
+
+/* ---- confetti ---- */
+function spawnConfetti(n){
+  const colors=['#2f6fed','#06b6d4','#16a34a','#f59e0b','#ec4899','#7c3aed'];
+  for(let i=0;i<n;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.transform='rotate('+Math.random()*360+'deg)';
+    document.body.appendChild(c);
+    const dur=1400+Math.random()*1200;
+    c.animate([{transform:c.style.transform,top:'-20px',opacity:1},
+               {top:'100vh',opacity:.9}],{duration:dur,easing:'ease-in'});
+    setTimeout(()=>c.remove(),dur);
+  }
+}
+function miniConfetti(){ spawnConfetti(14); }
+function party(){ spawnConfetti(70); }
+
+/* ===== INIT ===== */
+function init(){
+  MAX_PTS = ALL.reduce((n,s)=>n+s.qs.reduce((a,q)=>a+q.pts,0),0);
+  load();
+  buildSky(); buildMap(); buildSections();
+  nameInput.value=state.name||'';
+  updateHUD(); checkMedals();
+}
+init();
+</script>
+</body>
+</html>
