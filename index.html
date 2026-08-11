@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Guías de estudio interactivas y gamificadas para repasar antes de las pruebas: Lenguaje, Matemática, Ciencias, Historia e Inglés.">
+<meta name="theme-color" content="#6C3FB5">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Guías de Estudio Interactivas">
+<meta property="og:description" content="Guías de estudio interactivas y gamificadas para repasar antes de las pruebas: Lenguaje, Matemática, Ciencias, Historia e Inglés.">
+<meta property="og:locale" content="es_CL">
 <title>Guías de Estudio Interactivas</title>
 <style>
 /* ============================================================
@@ -39,16 +45,35 @@ header p{font-size:18px;opacity:.93}
 
 .wrap{max-width:960px;margin:0 auto;padding:24px 16px;width:100%;flex:1}
 
-.filtros{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+/* ---------- Filtros ---------- */
+.filtroGrupo{margin-bottom:14px}
+.filtroTit{
+  font-size:13px;font-weight:bold;color:var(--gris);text-transform:uppercase;
+  letter-spacing:.6px;text-align:center;margin-bottom:7px;
+}
+.filtros{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
 .filtro{
   background:#fff;border:3px solid var(--morado-claro);color:var(--morado-osc);
-  border-radius:24px;padding:8px 18px;font-size:15.5px;font-weight:bold;
-  font-family:inherit;cursor:pointer;transition:.15s;
+  border-radius:24px;padding:7px 16px;font-size:15px;font-weight:bold;
+  font-family:inherit;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px;
 }
 .filtro:hover{background:var(--morado-claro)}
 .filtro.activo{background:var(--morado);border-color:var(--morado);color:#fff}
 .filtro:focus-visible{outline:3px solid var(--naranjo);outline-offset:2px}
+.filtro .n{
+  background:var(--morado-claro);color:var(--morado-osc);border-radius:12px;
+  padding:0 7px;font-size:12.5px;min-width:20px;text-align:center;
+}
+.filtro.activo .n{background:rgba(255,255,255,.28);color:#fff}
+.filtro:disabled{opacity:.35;cursor:not-allowed}
 
+.resumen{text-align:center;color:var(--gris);font-size:14.5px;margin-bottom:16px}
+.limpiar{
+  background:none;border:none;color:var(--morado);font-family:inherit;
+  font-size:14.5px;font-weight:bold;text-decoration:underline;cursor:pointer;padding:2px 6px;
+}
+
+/* ---------- Tarjetas ---------- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:17px}
 .guia{
   background:#fff;border-radius:18px;padding:20px;box-shadow:var(--sombra);
@@ -89,6 +114,7 @@ footer b{color:var(--morado-osc)}
   header .emo{font-size:42px}
   body{font-size:16px}
   .grid{grid-template-columns:1fr}
+  .filtro{font-size:14px;padding:6px 13px}
 }
 </style>
 </head>
@@ -101,7 +127,8 @@ footer b{color:var(--morado-osc)}
 </header>
 
 <div class="wrap">
-  <div class="filtros" id="filtros"></div>
+  <div id="zonaFiltros"></div>
+  <p class="resumen" id="resumen"></p>
   <div class="grid" id="grid"></div>
 </div>
 
@@ -121,84 +148,93 @@ footer b{color:var(--morado-osc)}
      2. Ejecuta:  node actualizar-portada.js
    ============================================================ */
 /* GUIAS:INICIO */
-const GUIAS = [
-  {
-    "asignatura": "Ciencias Naturales",
-    "curso": "4° Básico",
-    "unidad": "Ciencias Naturales 4° Básico",
-    "emoji": "🔬",
-    "color": "#2FA84F",
-    "desc": "Guía de estudio interactiva y gamificada para la Prueba de Ciencias Naturales: sistema esquelético, muscular, nervioso y efectos del alcohol.",
-    "tags": [
-      "Guía de repaso"
-    ],
-    "carpeta": "ciencias-cuerpo-humano",
-    "listo": true
-  },
-  {
-    "asignatura": "Historia y Geografía",
-    "curso": "4° Básico",
-    "unidad": "4° Básico B",
-    "emoji": "🗺️",
-    "color": "#E0713A",
-    "desc": "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
-    "tags": [
-      "15 tarjetas"
-    ],
-    "carpeta": "historia-mayas",
-    "listo": true
-  },
-  {
-    "asignatura": "Lenguaje y Comunicación",
-    "curso": "4° Básico",
-    "unidad": "Unidad 2",
-    "emoji": "🪄",
-    "color": "#6C3FB5",
-    "desc": "Comprensión de textos literarios y no literarios (información explícita, implícita e inferencias) · Textos instructivos y normativos: estructura y propósito comunicativo y más.",
-    "tags": [
-      "115 actividades",
-      "58 tarjetas",
-      "7 niveles"
-    ],
-    "carpeta": "lenguaje-s2-u2",
-    "listo": true
-  },
-  {
-    "asignatura": "Matemática",
-    "curso": "Sin curso",
-    "unidad": "Sin unidad",
-    "emoji": "🔢",
-    "color": "#1E88E5",
-    "desc": "Guía interactiva de Matemática para 4° Básico: números, tablas de multiplicar, vistas 3D, redes de cuerpos geométricos, medición del tiempo, operatoria y resolución de problemas.",
-    "tags": [
-      "7 niveles"
-    ],
-    "carpeta": "matematicas-operatorias-problemas-hora",
-    "listo": true
-  }
-];
+const GUIAS = [];
 /* GUIAS:FIN */
 
-/* ---------- Lógica de la portada ---------- */
-const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-let filtroActivo = "Todas";
+/* ---------- Filtros ----------
+   Para agregar un filtro nuevo basta con sumar una línea a GRUPOS:
+   el campo debe existir en los datos de la guía (lo pone el guia.json).  */
+const TODOS = "__todos__";
 
-function cursos(){
-  return ["Todas", ...new Set(GUIAS.map(g => g.curso))];
+const GRUPOS = [
+  { campo:"curso",      titulo:"Curso",      todos:"Todos los cursos" },
+  { campo:"asignatura", titulo:"Asignatura", todos:"Todas" },
+  { campo:"semestre",   titulo:"Semestre",   todos:"Todos" }
+];
+
+/* Estado inicial: ningún filtro aplicado (se arma desde GRUPOS para
+   que nunca quede un campo sin inicializar).                        */
+const filtros = Object.fromEntries(GRUPOS.map(gr => [gr.campo, TODOS]));
+
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+/* Guías que pasan los filtros, ignorando opcionalmente uno de ellos.
+   Sirve para contar cuántas quedarían al tocar cada botón.        */
+function filtrar(exceptoCampo){
+  return GUIAS.filter(g =>
+    GRUPOS.every(gr =>
+      gr.campo === exceptoCampo ||
+      filtros[gr.campo] === TODOS ||
+      g[gr.campo] === filtros[gr.campo]
+    )
+  );
+}
+
+function valoresDe(campo){
+  return [...new Set(GUIAS.map(g => g[campo]).filter(Boolean))]
+         .sort((a,b) => String(a).localeCompare(String(b), "es"));
 }
 
 function pintarFiltros(){
-  const c = cursos();
-  document.getElementById("filtros").innerHTML = c.length <= 2 ? "" :
-    c.map(x => `<button class="filtro ${x===filtroActivo?"activo":""}" onclick="filtrar('${esc(x)}')">${esc(x)}</button>`).join("");
+  const zona = document.getElementById("zonaFiltros");
+
+  const html = GRUPOS.map(gr => {
+    const valores = valoresDe(gr.campo);
+    if(valores.length < 2) return "";           // con un solo valor no tiene sentido filtrar
+
+    const base = filtrar(gr.campo);             // resto de filtros ya aplicados
+    const activo = filtros[gr.campo];
+
+    const botones = [
+      `<button class="filtro ${activo===TODOS?"activo":""}"
+               aria-pressed="${activo===TODOS}"
+               onclick="elegir('${gr.campo}','${TODOS}')">
+         ${esc(gr.todos)} <span class="n">${base.length}</span>
+       </button>`,
+      ...valores.map(v => {
+        const n = base.filter(g => g[gr.campo] === v).length;
+        return `<button class="filtro ${activo===v?"activo":""}"
+                        aria-pressed="${activo===v}"
+                        ${n===0 && activo!==v ? "disabled" : ""}
+                        onclick="elegir('${gr.campo}','${esc(v)}')">
+                  ${esc(v)} <span class="n">${n}</span>
+                </button>`;
+      })
+    ].join("");
+
+    return `<div class="filtroGrupo">
+              <p class="filtroTit">${esc(gr.titulo)}</p>
+              <div class="filtros">${botones}</div>
+            </div>`;
+  }).join("");
+
+  zona.innerHTML = html;
 }
 
 function pintarGuias(){
-  const lista = GUIAS.filter(g => filtroActivo === "Todas" || g.curso === filtroActivo);
+  const lista = filtrar();
   const grid = document.getElementById("grid");
+  const resumen = document.getElementById("resumen");
+
+  const hayFiltro = GRUPOS.some(gr => filtros[gr.campo] !== TODOS);
+  resumen.innerHTML = !GUIAS.length ? "" :
+    `Mostrando <b>${lista.length}</b> de <b>${GUIAS.length}</b> guías` +
+    (hayFiltro ? ` · <button class="limpiar" onclick="limpiarFiltros()">Ver todas</button>` : "");
 
   if(!lista.length){
-    grid.innerHTML = `<p class="vacio">Todavía no hay guías publicadas.</p>`;
+    grid.innerHTML = `<p class="vacio">${GUIAS.length
+      ? "No hay guías que coincidan con esta combinación de filtros."
+      : "Todavía no hay guías publicadas."}</p>`;
     return;
   }
 
@@ -219,14 +255,22 @@ function pintarGuias(){
   }).join("");
 }
 
-function filtrar(c){
-  filtroActivo = c;
+function elegir(campo, valor){
+  filtros[campo] = (filtros[campo] === valor) ? TODOS : valor;   // volver a tocarlo lo desactiva
+  render();
+}
+
+function limpiarFiltros(){
+  GRUPOS.forEach(gr => filtros[gr.campo] = TODOS);
+  render();
+}
+
+function render(){
   pintarFiltros();
   pintarGuias();
 }
 
-pintarFiltros();
-pintarGuias();
+render();
 </script>
 
 </body>

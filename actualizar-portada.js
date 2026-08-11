@@ -58,6 +58,12 @@ function limpiar(txt){
             .trim();
 }
 
+/* --- Lee el contenido de una etiqueta <meta name="..."> --- */
+function meta(html, nombre){
+  const m = html.match(new RegExp('<meta\\s+name=["\']' + nombre + '["\']\\s+content=["\']([^"\']+)["\']', "i"));
+  return m ? limpiar(m[1]) : null;
+}
+
 /* --- Deduce la descripción leyendo el HTML de la guía ---
    Prioridad:
      1. <meta name="description" content="...">
@@ -94,7 +100,15 @@ function analizarGuia(html){
   const tarjetas    = (html.match(/\{\s*f\s*:\s*["']/g) || []).length;
   const niveles     = (html.match(/\bteoria\s*:\s*\{/g) || []).length;
   const desafio     = /const\s+DESAFIO\s*=/.test(html) ? 1 : 0;
-  return {titulo, actividades, tarjetas, niveles: niveles + desafio, desc: descripcionDe(html)};
+  return {
+    titulo, actividades, tarjetas,
+    niveles: niveles + desafio,
+    desc: descripcionDe(html),
+    curso: meta(html, "curso"),
+    semestre: meta(html, "semestre"),
+    asignatura: meta(html, "asignatura"),
+    unidad: meta(html, "unidad")
+  };
 }
 
 /* --- Etiquetas con el conteo de contenidos --- */
@@ -110,16 +124,17 @@ function etiquetasDe(info){
 /* --- Crea un guia.json inicial a partir de la carpeta y su HTML --- */
 function proponerFicha(carpeta, html){
   const info = analizarGuia(html);
-  const est  = estiloDe(carpeta + " " + info.titulo);
+  const est  = estiloDe([info.asignatura, carpeta, info.titulo].filter(Boolean).join(" "));
 
   /* Intenta separar "Asignatura · Curso · Unidad" desde el <title> */
   const partes = info.titulo.split(/\s*[·|–-]\s*/).filter(Boolean);
   const curso  = (info.titulo.match(/\d+\s*°?\s*(?:B[áa]sico|Medio)/i) || [""])[0].trim();
 
   return {
-    asignatura: est.nombre || partes[1] || carpeta.replace(/[-_]/g," "),
-    curso: curso || "Sin curso",
-    unidad: partes[partes.length-1] || "Sin unidad",
+    asignatura: info.asignatura || est.nombre || partes[1] || carpeta.replace(/[-_]/g," "),
+    curso: info.curso || curso || "Sin curso",
+    semestre: info.semestre || undefined,
+    unidad: info.unidad || partes[partes.length-1] || "Sin unidad",
     emoji: est.emoji,
     color: est.color,
     desc: info.desc || TEXTO_EJEMPLO,
@@ -172,6 +187,15 @@ function buscarGuias(){
       if(descAuto && info.desc && info.desc !== ficha.desc){
         ficha.desc = info.desc;
         cambios.push("descripción");
+      }
+
+      /* Curso, asignatura y unidad se leen siempre de la metadata del HTML:
+         así basta editar el <meta> de la guía para corregirlos.          */
+      for(const campo of ["curso","asignatura","unidad","semestre"]){
+        if(info[campo] && info[campo] !== ficha[campo]){
+          ficha[campo] = info[campo];
+          cambios.push(campo);
+        }
       }
 
       if(ficha.autoTags !== false){
@@ -231,7 +255,7 @@ function actualizarPortada(guias){
     process.exit(1);
   }
 
-  const campos = ["asignatura","curso","unidad","emoji","color","desc","tags","carpeta","listo"];
+  const campos = ["asignatura","curso","semestre","unidad","emoji","color","desc","tags","carpeta","listo"];
   const limpias = guias.map(g => {
     const o = {};
     campos.forEach(k => { if(g[k] !== undefined) o[k] = g[k]; });
