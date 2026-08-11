@@ -1,12 +1,13 @@
 {
   "asignatura": "Matemática",
-  "curso": "Sin curso",
-  "unidad": "Sin unidad",
+  "curso": "4° Básico",
+  "unidad": "Prueba 1",
   "emoji": "🔢",
   "color": "#1E88E5",
   "desc": "Guía interactiva de Matemática para 4° Básico: números, tablas de multiplicar, vistas 3D, redes de cuerpos geométricos, medición del tiempo, operatoria y resolución de problemas.",
   "tags": [
     "7 niveles"
   ],
-  "listo": true
+  "listo": true,
+  "semestre": "Segundo Semestre"
 }
