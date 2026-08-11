@@ -1,1 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Guía interactiva de síntesis de Lenguaje y Comunicación para 4° Básico: acentuación y tildes, tipos de texto, comprensión lectora y escritura, organizada en niveles con desafíos.">
+<meta name="curso" content="4° Básico">
+<meta name="asignatura" content="Lenguaje y Comunicación">
+<meta name="unidad" content="Síntesis · Primer Semestre">
+<meta name="semestre" content="Primer Semestre">
+<meta name="theme-color" content="#2B6CB0">
+<meta property="og:type" content="website">
+<meta property="og:title" content="🚀 Misión Síntesis · Lenguaje y Comunicación · 4° Básico">
+<meta property="og:description" content="Guía interactiva de síntesis de Lenguaje y Comunicación para 4° Básico: acentuación y tildes, tipos de texto, comprensión lectora y escritura, organizada en niveles con desafíos.">
+<meta property="og:locale" content="es_CL">
+<title>🚀 Misión Síntesis · Lenguaje y Comunicación · 4° Básico</title>
+<style>
+  :root{
+    --azul:#2b6cb0; --azul2:#4299e1; --morado:#6b46c1; --verde:#38a169;
+    --verde2:#48bb78; --rojo:#e53e3e; --amarillo:#f6c445; --naranjo:#ed8936;
+    --rosa:#ed64a6; --fondo:#0f2747; --panel:#ffffff; --texto:#1a202c;
+    --suave:#edf2f7; --borde:#cbd5e0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:"Comic Sans MS","Trebuchet MS",Verdana,sans-serif;
+    color:var(--texto);
+    background:
+      radial-gradient(circle at 12% 18%, rgba(246,196,69,.25), transparent 40%),
+      radial-gradient(circle at 88% 12%, rgba(237,100,166,.25), transparent 40%),
+      radial-gradient(circle at 50% 95%, rgba(72,187,120,.25), transparent 45%),
+      linear-gradient(160deg,#0f2747,#1a365d 60%,#2a4365);
+    min-height:100vh;
+  }
+  /* ====== BARRA SUPERIOR FIJA ====== */
+  #hud{
+    position:sticky; top:0; z-index:50;
+    background:rgba(15,39,71,.96); backdrop-filter:blur(6px);
+    color:#fff; padding:10px 16px; box-shadow:0 4px 14px rgba(0,0,0,.35);
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  #hud .titulo{font-weight:bold; font-size:1rem; display:flex; align-items:center; gap:6px;}
+  #barraWrap{flex:1; min-width:160px; background:rgba(255,255,255,.18); border-radius:20px; height:22px; overflow:hidden; position:relative;}
+  #barra{height:100%; width:0%; background:linear-gradient(90deg,var(--amarillo),var(--verde2)); transition:width .5s ease; border-radius:20px;}
+  #barraTxt{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:bold; color:#0f2747;}
+  .chip{background:#fff; color:var(--azul); border-radius:16px; padding:5px 12px; font-weight:bold; font-size:.9rem; display:flex; align-items:center; gap:5px; white-space:nowrap;}
+  .chip.estrellas{color:var(--naranjo);}
+  /* ====== CONTENEDOR ====== */
+  main{max-width:920px; margin:0 auto; padding:18px 14px 80px;}
+  .pantalla{display:none; animation:fade .4s ease;}
+  .pantalla.activa{display:block;}
+  @keyframes fade{from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:none;}}
+  /* ====== PORTADA ====== */
+  .portada{background:var(--panel); border-radius:24px; padding:30px 24px; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.3);}
+  .portada h1{color:var(--azul); margin:.2em 0; font-size:1.9rem; line-height:1.2;}
+  .portada .sub{color:var(--morado); font-weight:bold; font-size:1.05rem;}
+  .cohete{font-size:4rem; display:inline-block; animation:flota 2.5s ease-in-out infinite;}
+  @keyframes flota{0%,100%{transform:translateY(0) rotate(-4deg);}50%{transform:translateY(-12px) rotate(4deg);}}
+  .escuela{color:#718096; font-size:.85rem; margin-top:14px;}
+  /* ====== TARJETAS DE NIVEL (MAPA) ====== */
+  .mapa{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-top:22px;}
+  .nivelCard{background:var(--panel); border-radius:20px; padding:18px; text-align:left; box-shadow:0 8px 24px rgba(0,0,0,.2); border:4px solid transparent; cursor:pointer; transition:transform .15s, border .15s; position:relative;}
+  .nivelCard:hover{transform:translateY(-5px) scale(1.02); border-color:var(--amarillo);}
+  .nivelCard .num{position:absolute; top:-14px; left:-10px; background:var(--morado); color:#fff; width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1rem; box-shadow:0 4px 10px rgba(0,0,0,.3);}
+  .nivelCard .ico{font-size:2.4rem;}
+  .nivelCard h3{margin:.3em 0; color:var(--azul); font-size:1.1rem;}
+  .nivelCard p{margin:.2em 0; font-size:.82rem; color:#4a5568;}
+  .nivelCard .pts{display:inline-block; margin-top:8px; background:var(--suave); border-radius:12px; padding:3px 10px; font-size:.78rem; font-weight:bold; color:var(--naranjo);}
+  .nivelCard .done{position:absolute; top:10px; right:12px; font-size:1.5rem; opacity:0; transition:.3s;}
+  .nivelCard.completo .done{opacity:1;}
+  .nivelCard.completo{border-color:var(--verde2);}
+  /* ====== SECCIONES NIVEL ====== */
+  .nivelHead{background:var(--panel); border-radius:20px 20px 0 0; padding:18px 22px; box-shadow:0 6px 20px rgba(0,0,0,.2);}
+  .nivelHead h2{margin:0; color:var(--azul); display:flex; align-items:center; gap:10px; font-size:1.4rem;}
+  .nivelHead .obj{background:#fffaf0; border-left:5px solid var(--amarillo); padding:10px 14px; border-radius:8px; margin-top:12px; font-size:.9rem;}
+  .nivelHead .obj b{color:var(--naranjo);}
+  .nivelBody{background:#f7fafc; padding:18px 22px; box-shadow:0 6px 20px rgba(0,0,0,.2);}
+  .nivelBody:last-child{border-radius:0 0 20px 20px; padding-bottom:26px;}
+  .leccion{background:#fff; border-radius:16px; padding:16px 18px; margin-bottom:18px; box-shadow:0 3px 10px rgba(0,0,0,.08);}
+  .leccion h3{color:var(--morado); margin-top:0; font-size:1.15rem; display:flex; align-items:center; gap:8px;}
+  .leccion h4{color:var(--azul); margin:.8em 0 .3em; font-size:1rem;}
+  .leccion p{line-height:1.55; font-size:.95rem;}
+  .dato{background:#ebf8ff; border-radius:12px; padding:12px 14px; margin:10px 0; font-size:.9rem; border-left:5px solid var(--azul2);}
+  .dato b{color:var(--azul);}
+  .ejemplo{background:#f0fff4; border-radius:12px; padding:10px 14px; margin:8px 0; font-size:.9rem; border-left:5px solid var(--verde2);}
+  .truco{background:#fffaf0; border-radius:12px; padding:10px 14px; margin:8px 0; font-size:.9rem; border-left:5px solid var(--amarillo);}
+  table.def{width:100%; border-collapse:collapse; margin:10px 0; font-size:.88rem;}
+  table.def th{background:var(--azul); color:#fff; padding:8px; border-radius:0;}
+  table.def td{border:1px solid var(--borde); padding:8px; vertical-align:top;}
+  table.def tr:nth-child(even){background:#f7fafc;}
+  .tilde-roja{color:var(--rojo); font-weight:bold;}
+  /* ====== ACTIVIDADES ====== */
+  .actividad{background:#fff; border:3px dashed var(--azul2); border-radius:16px; padding:16px 18px; margin-bottom:18px;}
+  .actividad .head{display:flex; align-items:center; gap:8px; margin-bottom:6px;}
+  .actividad .head .ico{font-size:1.4rem;}
+  .actividad .head h4{margin:0; color:var(--azul); font-size:1.05rem;}
+  .actividad .head .pj{margin-left:auto; background:var(--amarillo); color:#7b341e; font-weight:bold; border-radius:12px; padding:3px 10px; font-size:.78rem; white-space:nowrap;}
+  .instr{font-size:.85rem; color:#718096; margin:0 0 12px;}
+  .pregunta{margin-bottom:16px;}
+  .pregunta .q{font-weight:bold; margin-bottom:8px; font-size:.95rem; display:flex; gap:6px;}
+  .pregunta .q .n{color:var(--morado);}
+  .lectura{background:#fffdf7; border:2px solid var(--amarillo); border-radius:14px; padding:14px 16px; margin-bottom:14px; font-size:.92rem; line-height:1.55;}
+  .lectura h5{margin:0 0 8px; color:var(--naranjo); font-size:1.05rem;}
+  .opciones{display:flex; flex-direction:column; gap:8px;}
+  .opt{text-align:left; background:var(--suave); border:2px solid transparent; border-radius:12px; padding:10px 14px; cursor:pointer; font-family:inherit; font-size:.92rem; transition:.15s; display:flex; align-items:center; gap:8px;}
+  .opt:hover{background:#e2e8f0; transform:translateX(3px);}
+  .opt .letra{background:#fff; border-radius:8px; width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; font-weight:bold; color:var(--azul); flex-shrink:0;}
+  .opt.ok{background:#c6f6d5; border-color:var(--verde); cursor:default;}
+  .opt.ok .letra{background:var(--verde); color:#fff;}
+  .opt.no{background:#fed7d7; border-color:var(--rojo);}
+  .opt.bloq{cursor:default; opacity:.65;}
+  .fb{margin-top:8px; font-size:.85rem; font-weight:bold; min-height:1em;}
+  .fb.ok{color:var(--verde);}
+  .fb.no{color:var(--rojo);}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+  .shake{animation:shake .35s;}
+  /* clasificar botones */
+  .clasWord{font-size:1.5rem; font-weight:bold; color:var(--morado); text-align:center; margin:6px 0;}
+  .clasBtns{display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+  .clasBtns button, .tildeBtns button{font-family:inherit; cursor:pointer; border:2px solid var(--azul2); background:#fff; color:var(--azul); border-radius:12px; padding:8px 14px; font-weight:bold; font-size:.9rem; transition:.15s;}
+  .clasBtns button:hover, .tildeBtns button:hover{background:var(--azul2); color:#fff;}
+  .clasBtns button.ok,.tildeBtns button.ok{background:var(--verde); color:#fff; border-color:var(--verde);}
+  .clasBtns button.no,.tildeBtns button.no{background:var(--rojo); color:#fff; border-color:var(--rojo);}
+  .tildeRow{display:flex; flex-direction:column; align-items:center; gap:6px; margin-bottom:10px;}
+  .tildeBtns{display:flex; gap:4px; flex-wrap:wrap; justify-content:center;}
+  .tildeBtns .sil{min-width:42px;}
+  /* unir / arrastrar */
+  .match{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media(max-width:560px){.match{grid-template-columns:1fr;}}
+  .pool{display:flex; flex-direction:column; gap:8px;}
+  .ficha{background:linear-gradient(135deg,var(--azul2),var(--morado)); color:#fff; border-radius:12px; padding:9px 12px; font-weight:bold; font-size:.88rem; cursor:grab; box-shadow:0 3px 8px rgba(0,0,0,.2); text-align:center; user-select:none;}
+  .ficha.sel{outline:4px solid var(--amarillo);}
+  .ficha.usada{opacity:.35; cursor:default;}
+  .slots{display:flex; flex-direction:column; gap:8px;}
+  .slot{border:2px dashed var(--borde); border-radius:12px; padding:9px 12px; font-size:.85rem; min-height:46px; display:flex; flex-direction:column; gap:4px; background:#fff;}
+  .slot .def{color:#4a5568;}
+  .slot .drop{min-height:24px; border-radius:8px; background:var(--suave); display:flex; align-items:center; justify-content:center; font-size:.82rem; color:#a0aec0; padding:4px;}
+  .slot.lleno .drop{background:#c6f6d5; color:#22543d; font-weight:bold;}
+  .slot.malo .drop{background:#fed7d7; color:#822727;}
+  .slot.dragover{border-color:var(--azul2); background:#ebf8ff;}
+  /* navegación */
+  .nav{display:flex; justify-content:space-between; gap:10px; margin-top:18px; flex-wrap:wrap;}
+  .btn{font-family:inherit; cursor:pointer; border:none; border-radius:14px; padding:12px 20px; font-weight:bold; font-size:.95rem; transition:.15s; box-shadow:0 4px 10px rgba(0,0,0,.2);}
+  .btn:hover{transform:translateY(-2px);}
+  .btn.prim{background:linear-gradient(135deg,var(--verde2),var(--verde)); color:#fff;}
+  .btn.sec{background:#fff; color:var(--azul); border:2px solid var(--azul);}
+  .btn.big{font-size:1.15rem; padding:16px 30px; background:linear-gradient(135deg,var(--naranjo),var(--rosa)); color:#fff;}
+  .btn.full{width:100%; margin-top:14px;}
+  /* meta final */
+  .meta{background:var(--panel); border-radius:24px; padding:30px 22px; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.3);}
+  .meta .trofeo{font-size:5rem; animation:flota 2.5s infinite;}
+  .meta h2{color:var(--naranjo); font-size:1.8rem;}
+  .scoreBig{font-size:3rem; font-weight:bold; color:var(--azul); margin:.2em 0;}
+  .medalla{font-size:1.3rem; font-weight:bold; padding:10px 20px; border-radius:16px; display:inline-block; margin:10px 0;}
+  .estrellasFinal{font-size:2.4rem; letter-spacing:6px;}
+  .desglose{text-align:left; max-width:420px; margin:18px auto; }
+  .desglose .row{display:flex; justify-content:space-between; padding:8px 12px; border-bottom:1px solid var(--suave); font-size:.92rem;}
+  .desglose .row b{color:var(--azul);}
+  /* confeti */
+  .confeti{position:fixed; top:-10px; font-size:1.4rem; z-index:100; pointer-events:none; animation:cae linear forwards;}
+  @keyframes cae{to{transform:translateY(105vh) rotate(540deg); opacity:.9;}}
+  .toast{position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(120px); background:var(--verde); color:#fff; padding:12px 22px; border-radius:16px; font-weight:bold; z-index:80; box-shadow:0 6px 20px rgba(0,0,0,.3); transition:transform .35s; font-size:.95rem;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
 
+<!-- ===== HUD ===== -->
+<div id="hud">
+  <div class="titulo">🚀 Misión Síntesis</div>
+  <div id="barraWrap"><div id="barra"></div><div id="barraTxt">0%</div></div>
+  <div class="chip">🏆 <span id="hudPts">0</span>/<span id="hudMax">0</span> pts</div>
+  <div class="chip estrellas">⭐ <span id="hudStars">0</span></div>
+</div>
+
+<main>
+
+<!-- ===== PORTADA / MAPA ===== -->
+<section id="p-inicio" class="pantalla activa">
+  <div class="portada">
+    <div class="cohete">🚀</div>
+    <h1>Misión Síntesis</h1>
+    <div class="sub">Lenguaje y Comunicación · 4° Básico</div>
+    <p style="max-width:560px;margin:14px auto;font-size:.95rem;color:#4a5568;">
+      ¡Hola, explorador del lenguaje! 🌟 Aquí repasarás <b>todo lo que aprendiste el primer semestre</b>.
+      Avanza por los 4 niveles, completa las misiones y suma puntos para llegar a la <b>meta final</b>.
+      Cada respuesta correcta te acerca a la medalla de oro. ¡Tú puedes!
+    </p>
+    <div class="dato" style="max-width:560px;margin:0 auto;">
+      🎯 <b>Tu objetivo:</b> conseguir la mayor cantidad de puntos. La prueba real tiene <b>64 puntos</b>.
+      ¡Practica aquí hasta sentirte un campeón!
+    </div>
+    <div class="escuela">Instituto Alonso de Ercilla · Hermanos Maristas · Depto. de Lenguaje y Comunicación</div>
+  </div>
+
+  <div class="mapa" id="mapaNiveles"></div>
+
+  <div style="text-align:center;margin-top:24px;">
+    <button class="btn big" onclick="irA('n1')">▶️ ¡Comenzar la misión!</button>
+  </div>
+</section>
+
+<!-- Los niveles se generan con JS -->
+<section id="p-n1" class="pantalla"></section>
+<section id="p-n2" class="pantalla"></section>
+<section id="p-n3" class="pantalla"></section>
+<section id="p-n4" class="pantalla"></section>
+
+<!-- ===== META FINAL ===== -->
+<section id="p-meta" class="pantalla">
+  <div class="meta">
+    <div class="trofeo">🏆</div>
+    <h2>¡LLEGASTE A LA META!</h2>
+    <p style="color:#4a5568;">¡Felicitaciones! Completaste tu entrenamiento para la Prueba de Síntesis.</p>
+    <div class="scoreBig"><span id="metaPts">0</span> / <span id="metaMax">0</span></div>
+    <div class="estrellasFinal" id="metaStars">⭐</div>
+    <div class="medalla" id="metaMedalla"></div>
+    <div class="desglose" id="metaDesglose"></div>
+    <p id="metaMsg" style="font-weight:bold;color:var(--morado);"></p>
+    <button class="btn sec" onclick="irA('inicio')">🗺️ Volver al mapa</button>
+    <button class="btn prim" onclick="reiniciar()">🔄 Jugar de nuevo</button>
+  </div>
+</section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   MOTOR DEL JUEGO
+========================================================= */
+const awarded = new Set();        // ids ya puntuados
+let score = 0;
+let stars = 0;
+const nivelPts = {n1:0,n2:0,n3:0,n4:0};   // puntos logrados por nivel
+const nivelMax = {n1:0,n2:0,n3:0,n4:0};   // puntos máximos por nivel
+let MAXTOTAL = 0;
+
+function $(id){return document.getElementById(id);}
+
+function updateHUD(){
+  $('hudPts').textContent = score;
+  $('hudMax').textContent = MAXTOTAL;
+  $('hudStars').textContent = stars;
+  const pct = MAXTOTAL? Math.round(score/MAXTOTAL*100):0;
+  $('barra').style.width = pct+'%';
+  $('barraTxt').textContent = pct+'%';
+  // marcar niveles completos en el mapa
+  ['n1','n2','n3','n4'].forEach(n=>{
+    const c=$('card-'+n);
+    if(c && nivelMax[n]>0 && nivelPts[n]>=nivelMax[n]) c.classList.add('completo');
+  });
+}
+
+function award(id, pts, nivel){
+  if(awarded.has(id)) return false;
+  awarded.add(id);
+  score += pts;
+  if(nivel){ nivelPts[nivel]+=pts; }
+  stars += 1;
+  updateHUD();
+  estrellita();
+  return true;
+}
+
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1600);
+}
+const elogios=['¡Excelente! 🌟','¡Muy bien! 🎉','¡Lo lograste! 💪','¡Genial! 🚀','¡Eres un crack! ⭐','¡Correcto! 👏','¡Súper! 🦸'];
+function estrellita(){ toast(elogios[Math.floor(Math.random()*elogios.length)]); }
+
+/* ---- Navegación ---- */
+function irA(donde){
+  document.querySelectorAll('.pantalla').forEach(p=>p.classList.remove('activa'));
+  const map={inicio:'p-inicio',n1:'p-n1',n2:'p-n2',n3:'p-n3',n4:'p-n4',meta:'p-meta'};
+  $(map[donde]).classList.add('activa');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(donde==='meta') pintarMeta();
+}
+
+/* =========================================================
+   COMPONENTE: PREGUNTA DE ALTERNATIVAS / V-F / CLASIFICAR-TEXTO
+   q: {id, texto, opciones:[...], correcta:index, pts, nivel}
+========================================================= */
+function preguntaMultiple(q){
+  const cont=document.createElement('div'); cont.className='pregunta';
+  const letras=['a','b','c','d','e'];
+  let html=`<div class="q"><span class="n">${q.num?q.num+'.':'•'}</span><span>${q.texto}</span></div><div class="opciones">`;
+  q.opciones.forEach((op,i)=>{
+    html+=`<button class="opt" data-i="${i}"><span class="letra">${q.vf?'':letras[i]}</span><span>${op}</span></button>`;
+  });
+  html+=`</div><div class="fb"></div>`;
+  cont.innerHTML=html;
+  const fb=cont.querySelector('.fb');
+  cont.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(awarded.has(q.id)) return;
+      const i=+btn.dataset.i;
+      if(i===q.correcta){
+        btn.classList.add('ok');
+        cont.querySelectorAll('.opt').forEach(b=>{b.classList.add('bloq');});
+        fb.className='fb ok'; fb.textContent='✅ ¡Correcto! +'+q.pts+(q.pts>1?' pts':' pt');
+        award(q.id,q.pts,q.nivel);
+      } else {
+        btn.classList.add('no','shake');
+        setTimeout(()=>btn.classList.remove('shake'),350);
+        fb.className='fb no'; fb.textContent='❌ Inténtalo otra vez. ¡Tú puedes!';
+        setTimeout(()=>btn.classList.remove('no'),900);
+      }
+    });
+  });
+  return cont;
+}
+
+/* =========================================================
+   COMPONENTE: CLASIFICAR PALABRA (Aguda/Grave/Esdrújula)
+   item:{id,word,tipo:'aguda'|'grave'|'esdrujula',pts,nivel}
+========================================================= */
+function clasificarPalabra(item){
+  const cont=document.createElement('div'); cont.className='pregunta';
+  cont.innerHTML=`<div class="clasWord">${item.word}</div>
+    <div class="clasBtns">
+      <button data-t="aguda">Aguda</button>
+      <button data-t="grave">Grave</button>
+      <button data-t="esdrujula">Esdrújula</button>
+    </div><div class="fb" style="text-align:center"></div>`;
+  const fb=cont.querySelector('.fb');
+  cont.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      if(awarded.has(item.id)) return;
+      if(b.dataset.t===item.tipo){
+        b.classList.add('ok');
+        cont.querySelectorAll('button').forEach(x=>x.disabled=true);
+        fb.className='fb ok'; fb.textContent='✅ ¡Sí! +'+item.pts+' pt';
+        award(item.id,item.pts,item.nivel);
+      }else{
+        b.classList.add('no','shake');
+        setTimeout(()=>{b.classList.remove('shake','no');},500);
+        fb.className='fb no'; fb.textContent='❌ Ups, esa no es. Cuenta las sílabas de nuevo.';
+      }
+    });
+  });
+  return cont;
+}
+
+/* =========================================================
+   COMPONENTE: MARCAR LA TILDE (clic en la sílaba tónica)
+   item:{id,sils:[..],idx,pts,nivel}
+========================================================= */
+function marcarTilde(item){
+  const cont=document.createElement('div'); cont.className='tildeRow';
+  let html='<div class="tildeBtns">';
+  item.sils.forEach((s,i)=>{ html+=`<button class="sil" data-i="${i}">${s}</button>`; });
+  html+='</div><div class="fb"></div>';
+  cont.innerHTML=html;
+  const fb=cont.querySelector('.fb');
+  cont.querySelectorAll('.sil').forEach(b=>{
+    b.addEventListener('click',()=>{
+      if(awarded.has(item.id)) return;
+      if(+b.dataset.i===item.idx){
+        b.classList.add('ok'); b.textContent=item.tildada;
+        cont.querySelectorAll('.sil').forEach(x=>x.disabled=true);
+        fb.className='fb ok'; fb.textContent='✅ ¡La tilde va ahí! +'+item.pts+' pt';
+        award(item.id,item.pts,item.nivel);
+      }else{
+        b.classList.add('no','shake');
+        setTimeout(()=>{b.classList.remove('shake','no');},500);
+        fb.className='fb no'; fb.textContent='❌ Esa no suena más fuerte. Pronuncia la palabra en voz alta.';
+      }
+    });
+  });
+  return cont;
+}
+
+/* =========================================================
+   COMPONENTE: UNIR / ARRASTRAR (concepto -> definición)
+   data:{id, pts, nivel, pares:[{c:'concepto', d:'definición'}], baraja:true}
+   Soporta arrastrar (mouse) y tocar-tocar (tap concepto, tap slot).
+========================================================= */
+function unir(data){
+  const cont=document.createElement('div');
+  const wrap=document.createElement('div'); wrap.className='match';
+  // ordenar fichas al azar
+  const fichas=data.pares.map((p,i)=>({txt:p.c, key:i})).sort(()=>Math.random()-0.5);
+  // slots = definiciones en orden mezclado distinto
+  const slotsData=data.pares.map((p,i)=>({def:p.d, key:i})).sort(()=>Math.random()-0.5);
+
+  const pool=document.createElement('div'); pool.className='pool';
+  pool.innerHTML='<div style="font-size:.78rem;font-weight:bold;color:#718096;">🧲 Conceptos (arrástralos o tócalos)</div>';
+  const slotsBox=document.createElement('div'); slotsBox.className='slots';
+  slotsBox.innerHTML='<div style="font-size:.78rem;font-weight:bold;color:#718096;">📌 Definiciones</div>';
+
+  let selected=null;
+  let aciertos=0; const totalPares=data.pares.length;
+  const ptsPorPar=data.pts; // pts por cada acierto
+
+  fichas.forEach(f=>{
+    const el=document.createElement('div'); el.className='ficha'; el.textContent=f.txt; el.draggable=true; el.dataset.key=f.key;
+    el.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain',f.key); });
+    el.addEventListener('click',()=>{
+      if(el.classList.contains('usada')) return;
+      if(selected===el){ el.classList.remove('sel'); selected=null; return; }
+      pool.querySelectorAll('.ficha').forEach(x=>x.classList.remove('sel'));
+      el.classList.add('sel'); selected=el;
+    });
+    pool.appendChild(el);
+  });
+
+  function intentar(slot, fichaEl){
+    if(slot.classList.contains('lleno')) return;
+    const ok = (+fichaEl.dataset.key === +slot.dataset.key);
+    if(ok){
+      slot.classList.add('lleno');
+      slot.querySelector('.drop').textContent='✅ '+fichaEl.textContent;
+      fichaEl.classList.add('usada'); fichaEl.classList.remove('sel'); selected=null;
+      const idPar=data.id+'-'+slot.dataset.key;
+      if(award(idPar, ptsPorPar, data.nivel)){ aciertos++; }
+      if(aciertos===totalPares){ fbBox.className='fb ok'; fbBox.textContent='🎉 ¡Uniste todos correctamente!'; confeti(14); }
+    }else{
+      slot.classList.add('malo','shake');
+      slot.querySelector('.drop').textContent='❌ Esa no es...';
+      setTimeout(()=>{ slot.classList.remove('malo','shake'); slot.querySelector('.drop').textContent='Suelta aquí'; },900);
+    }
+  }
+
+  slotsData.forEach(s=>{
+    const slot=document.createElement('div'); slot.className='slot'; slot.dataset.key=s.key;
+    slot.innerHTML=`<div class="def">${s.def}</div><div class="drop">Suelta aquí</div>`;
+    slot.addEventListener('dragover',e=>{e.preventDefault(); slot.classList.add('dragover');});
+    slot.addEventListener('dragleave',()=>slot.classList.remove('dragover'));
+    slot.addEventListener('drop',e=>{
+      e.preventDefault(); slot.classList.remove('dragover');
+      const key=e.dataTransfer.getData('text/plain');
+      const fichaEl=pool.querySelector('.ficha[data-key="'+key+'"]');
+      if(fichaEl && !fichaEl.classList.contains('usada')) intentar(slot,fichaEl);
+    });
+    slot.addEventListener('click',()=>{ if(selected) intentar(slot,selected); });
+    slotsBox.appendChild(slot);
+  });
+
+  wrap.appendChild(pool); wrap.appendChild(slotsBox);
+  const fbBox=document.createElement('div'); fbBox.className='fb';
+  cont.appendChild(wrap); cont.appendChild(fbBox);
+  return cont;
+}
+
+/* ---- helper para construir una actividad con encabezado ---- */
+function actividad(ico,titulo,instr,maxPts){
+  const a=document.createElement('div'); a.className='actividad';
+  a.innerHTML=`<div class="head"><span class="ico">${ico}</span><h4>${titulo}</h4><span class="pj">⭐ ${maxPts} pts</span></div><p class="instr">${instr}</p>`;
+  return a;
+}
+
+/* ---- confeti ---- */
+function confeti(n=24){
+  const ems=['🎉','⭐','🎊','🌟','✨','🏅','💛'];
+  for(let i=0;i<n;i++){
+    const c=document.createElement('div'); c.className='confeti';
+    c.textContent=ems[Math.floor(Math.random()*ems.length)];
+    c.style.left=Math.random()*100+'vw';
+    c.style.animationDuration=(2+Math.random()*2)+'s';
+    c.style.fontSize=(1+Math.random()*1.4)+'rem';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4200);
+  }
+}
+</script>
+
+<script>
+/* =========================================================
+   CONTENIDO DE LOS NIVELES
+========================================================= */
+
+/* ---------- NIVEL 1: ACENTUACIÓN ---------- */
+function buildNivel1(){
+  const sec=$('p-n1');
+  const head=document.createElement('div'); head.className='nivelHead';
+  head.innerHTML=`<h2>🎯 Nivel 1 · Las tildes mágicas</h2>
+    <div class="obj"><b>Objetivo:</b> Comprender y aplicar las reglas de acentuación de palabras
+    <b>agudas, graves y esdrújulas</b>, y reconocer la sílaba tónica.</div>`;
+  const body=document.createElement('div'); body.className='nivelBody';
+
+  // LECCIÓN
+  const lec=document.createElement('div'); lec.className='leccion';
+  lec.innerHTML=`
+    <h3>📚 ¡A estudiar primero!</h3>
+    <p>Cada palabra tiene una sílaba que suena <b>más fuerte</b>: es la <b>sílaba tónica</b>.
+    Según dónde esté esa sílaba, las palabras se clasifican en agudas, graves o esdrújulas.</p>
+    <div class="dato">🔎 <b>Sílaba tónica:</b> es la que se pronuncia con mayor fuerza.
+    Ejemplo: ma‑ri‑<b>PO</b>‑sa. Di la palabra en voz alta y escucha cuál suena más fuerte.</div>
+
+    <table class="def">
+      <tr><th>Tipo</th><th>¿Dónde está la fuerza?</th><th>¿Cuándo lleva tilde?</th><th>Ejemplos</th></tr>
+      <tr><td><b>Agudas</b></td><td>En la <b>última</b> sílaba</td><td>Cuando terminan en <b>vocal, n o s</b></td><td>so‑<span class="tilde-roja">fá</span>, ca‑<span class="tilde-roja">mión</span>, ja‑<span class="tilde-roja">más</span></td></tr>
+      <tr><td><b>Graves</b></td><td>En la <b>penúltima</b> sílaba</td><td>Cuando terminan en <b>consonante</b> (menos n o s)</td><td><span class="tilde-roja">ár</span>‑bol, <span class="tilde-roja">lá</span>‑piz, <span class="tilde-roja">cés</span>‑ped</td></tr>
+      <tr><td><b>Esdrújulas</b></td><td>En la <b>antepenúltima</b> sílaba</td><td><b>¡SIEMPRE!</b> llevan tilde</td><td><span class="tilde-roja">pá</span>‑ja‑ro, <span class="tilde-roja">mú</span>‑si‑ca, <span class="tilde-roja">lám</span>‑pa‑ra</td></tr>
+    </table>
+    <div class="truco">💡 <b>Truco para recordar:</b> A‑G‑E → <b>A</b>guda (última), <b>G</b>rave (penúltima), <b>E</b>sdrújula (antepenúltima).
+    Cuenta las sílabas <b>desde el final</b>: 1ª última, 2ª penúltima, 3ª antepenúltima.</div>
+    <div class="ejemplo">✏️ Las palabras graves también se llaman <b>llanas</b>. ¡Son las más comunes del español!</div>`;
+  body.appendChild(lec);
+
+  // ACTIVIDAD 1: clasificar
+  const a1=actividad('🗂️','Misión 1 · Clasifica las palabras','Lee la palabra y elige si es Aguda, Grave o Esdrújula. (¡Igual que en tu guía!)',14);
+  const palabras=[
+    {word:'RELIGIÓN',tipo:'aguda'},{word:'MATEMÁTICA',tipo:'esdrujula'},
+    {word:'ÁNGEL',tipo:'grave'},{word:'SOFÁ',tipo:'aguda'},
+    {word:'VIRUS',tipo:'grave'},{word:'CANTAR',tipo:'aguda'},
+    {word:'CÉSPED',tipo:'grave'},{word:'LÁMPARA',tipo:'esdrujula'},
+    {word:'PÁJARO',tipo:'esdrujula'},{word:'CAMIÓN',tipo:'aguda'},
+    {word:'LÁPIZ',tipo:'grave'},{word:'TELÉFONO',tipo:'esdrujula'},
+    {word:'RELOJ',tipo:'aguda'},{word:'AZÚCAR',tipo:'grave'}
+  ];
+  palabras.forEach((p,i)=>a1.appendChild(clasificarPalabra({id:'n1c'+i,word:p.word,tipo:p.tipo,pts:1,nivel:'n1'})));
+  body.appendChild(a1);
+
+  // ACTIVIDAD 2: marcar la tilde
+  const a2=actividad('🔴','Misión 2 · Pon la tilde','Estas palabras necesitan tilde. Haz clic en la sílaba que suena más fuerte (la sílaba tónica).',10);
+  const tildes=[
+    {sils:['co','ra','zon'],idx:2,tildada:'zón'},
+    {sils:['ar','bol'],idx:0,tildada:'ár'},
+    {sils:['pa','ja','ro'],idx:0,tildada:'pá'},
+    {sils:['ca','fe'],idx:1,tildada:'fé'},
+    {sils:['la','piz'],idx:0,tildada:'lá'},
+    {sils:['mu','si','ca'],idx:0,tildada:'mú'},
+    {sils:['so','fa'],idx:1,tildada:'fá'},
+    {sils:['an','gel'],idx:0,tildada:'án'},
+    {sils:['te','le','fo','no'],idx:1,tildada:'lé'},
+    {sils:['me','lon'],idx:1,tildada:'lón'}
+  ];
+  tildes.forEach((t,i)=>a2.appendChild(marcarTilde({id:'n1t'+i,sils:t.sils,idx:t.idx,tildada:t.tildada,pts:1,nivel:'n1'})));
+  body.appendChild(a2);
+
+  // ACTIVIDAD 3: Verdadero o Falso
+  const a3=actividad('⚖️','Misión 3 · ¿Verdadero o Falso?','Decide si la afirmación es Verdadera o Falsa.',6);
+  const vf=[
+    {texto:'Las palabras esdrújulas <b>siempre</b> llevan tilde.',op:['Verdadero','Falso'],c:0},
+    {texto:'Las palabras agudas <b>siempre</b> llevan tilde.',op:['Verdadero','Falso'],c:1},
+    {texto:'La sílaba tónica es la que se pronuncia con <b>mayor fuerza</b>.',op:['Verdadero','Falso'],c:0},
+    {texto:'Las palabras graves llevan tilde cuando terminan en <b>n o s</b>.',op:['Verdadero','Falso'],c:1},
+    {texto:'“Lámpara” es una palabra <b>esdrújula</b>.',op:['Verdadero','Falso'],c:0},
+    {texto:'“Cantar” es una palabra <b>grave</b>.',op:['Verdadero','Falso'],c:1}
+  ];
+  vf.forEach((q,i)=>a3.appendChild(preguntaMultiple({id:'n1vf'+i,num:i+1,texto:q.texto,opciones:q.op,correcta:q.c,pts:1,nivel:'n1',vf:true})));
+  body.appendChild(a3);
+
+  // ACTIVIDAD 4: unir conceptos
+  const a4=actividad('🧲','Misión 4 · Une cada concepto con su definición','Arrastra (o toca) cada concepto y suéltalo sobre la definición correcta.',4);
+  a4.appendChild(unir({id:'n1u',pts:1,nivel:'n1',pares:[
+    {c:'Palabra aguda',d:'Su sílaba tónica es la última. Lleva tilde si termina en vocal, n o s.'},
+    {c:'Palabra grave',d:'Su sílaba tónica es la penúltima. Lleva tilde si termina en consonante distinta de n o s.'},
+    {c:'Palabra esdrújula',d:'Su sílaba tónica es la antepenúltima. ¡Siempre lleva tilde!'},
+    {c:'Sílaba tónica',d:'Es la sílaba que se pronuncia con mayor fuerza dentro de una palabra.'}
+  ]}));
+  body.appendChild(a4);
+
+  // NAV
+  const nav=document.createElement('div'); nav.className='nav';
+  nav.innerHTML=`<button class="btn sec" onclick="irA('inicio')">🗺️ Mapa</button>
+    <button class="btn prim" onclick="irA('n2')">Nivel 2 · Tipos de texto ▶️</button>`;
+  body.appendChild(nav);
+
+  sec.appendChild(head); sec.appendChild(body);
+}
+
+/* ---------- NIVEL 2: TIPOS DE TEXTO ---------- */
+function buildNivel2(){
+  const sec=$('p-n2');
+  const head=document.createElement('div'); head.className='nivelHead';
+  head.innerHTML=`<h2>📖 Nivel 2 · El mundo de los textos</h2>
+    <div class="obj"><b>Objetivo:</b> Reconocer y diferenciar los <b>tipos de texto</b>: mito, fábula, cuento, leyenda,
+    artículo informativo, infografía, afiche y noticia.</div>`;
+  const body=document.createElement('div'); body.className='nivelBody';
+
+  const lec=document.createElement('div'); lec.className='leccion';
+  lec.innerHTML=`
+    <h3>📚 ¡A estudiar primero!</h3>
+    <h4>📕 Textos literarios (cuentan historias para entretener o enseñar)</h4>
+    <table class="def">
+      <tr><th>Texto</th><th>¿Cómo es?</th></tr>
+      <tr><td>🐢 <b>Fábula</b></td><td>Narración breve. Sus personajes son <b>animales, plantas o cosas</b> que actúan como personas. Siempre deja una <b>moraleja</b> (enseñanza).</td></tr>
+      <tr><td>🐉 <b>Mito</b></td><td>Relato fantástico con <b>dioses o héroes</b>. Explica el <b>origen del mundo</b> o de fenómenos naturales.</td></tr>
+      <tr><td>🏔️ <b>Leyenda</b></td><td>Narración de carácter <b>local</b>, con personajes <b>humanos</b>, ambientada en lugares reales. Se transmite de <b>generación en generación</b>.</td></tr>
+      <tr><td>📗 <b>Cuento</b></td><td>Narración breve de hechos <b>ficticios</b>, con <b>inicio, desarrollo y desenlace</b>. Busca entretener.</td></tr>
+    </table>
+    <div class="truco">💡 Las narraciones tienen 3 partes: <b>inicio</b> (presenta personajes y ambiente),
+    <b>desarrollo</b> (ocurre el problema/conflicto) y <b>desenlace</b> (se resuelve el problema).</div>
+
+    <h4>📰 Textos no literarios (informan o convencen)</h4>
+    <table class="def">
+      <tr><th>Texto</th><th>¿Cómo es?</th></tr>
+      <tr><td>📄 <b>Artículo informativo</b></td><td>Entrega <b>datos y explicaciones</b> sobre un tema (ej.: los delfines). Su propósito es <b>informar</b>.</td></tr>
+      <tr><td>🗞️ <b>Noticia</b></td><td>Texto periodístico sobre hechos <b>reales y recientes</b>. Responde: <b>¿qué?, ¿quién?, ¿cuándo?, ¿dónde?, ¿por qué?</b></td></tr>
+      <tr><td>📊 <b>Infografía</b></td><td>Combina <b>imágenes y texto breve</b> para explicar información de forma <b>visual</b> y sencilla.</td></tr>
+      <tr><td>📣 <b>Afiche</b></td><td>Texto publicitario de <b>gran formato</b>, con imágenes llamativas y mensajes breves para comunicar algo al público.</td></tr>
+    </table>`;
+  body.appendChild(lec);
+
+  // Quiz tipos
+  const a1=actividad('🕵️','Misión 1 · ¿Qué tipo de texto es?','Lee la pista y elige el tipo de texto correcto.',8);
+  const q=[
+    {t:'Tiene personajes que son animales y deja una <b>moraleja</b>.',op:['Cuento','Fábula','Noticia','Afiche'],c:1},
+    {t:'Relato fantástico con <b>dioses o héroes</b> que explica el origen del mundo.',op:['Mito','Leyenda','Artículo informativo','Infografía'],c:0},
+    {t:'Informa sobre un hecho <b>real y reciente</b> respondiendo qué, quién, cuándo y dónde.',op:['Cuento','Mito','Noticia','Fábula'],c:2},
+    {t:'Combina <b>imágenes y poco texto</b> para explicar algo de forma visual.',op:['Afiche','Infografía','Leyenda','Noticia'],c:1},
+    {t:'Usa <b>imágenes llamativas</b> y frases cortas para promocionar o comunicar algo.',op:['Afiche','Artículo informativo','Cuento','Mito'],c:0},
+    {t:'Narración <b>local</b>, con personajes humanos, en lugares reales (ej.: Los socavones de Pica).',op:['Fábula','Mito','Leyenda','Noticia'],c:2},
+    {t:'Entrega <b>datos y explicaciones</b> sobre un tema, como “Los delfines”.',op:['Artículo informativo','Afiche','Cuento','Invitación'],c:0},
+    {t:'Narración breve de hechos <b>inventados</b> para entretener, con inicio, desarrollo y desenlace.',op:['Noticia','Cuento','Infografía','Mito'],c:1}
+  ];
+  q.forEach((x,i)=>a1.appendChild(preguntaMultiple({id:'n2q'+i,num:i+1,texto:x.t,opciones:x.op,correcta:x.c,pts:1,nivel:'n2'})));
+  body.appendChild(a1);
+
+  // Términos pareados tipos de texto
+  const a2=actividad('🧲','Misión 2 · Términos pareados','Une cada tipo de texto con su definición. ¡Arrástralos o tócalos!',8);
+  a2.appendChild(unir({id:'n2u',pts:1,nivel:'n2',pares:[
+    {c:'Mito',d:'Relato fantástico protagonizado por dioses o héroes que explica el origen del mundo o de fenómenos naturales.'},
+    {c:'Leyenda',d:'Narración de carácter local, con personajes humanos, en lugares reales, transmitida de generación en generación.'},
+    {c:'Fábula',d:'Narración breve con animales, plantas o cosas que actúan como personas y termina con una moraleja.'},
+    {c:'Cuento',d:'Narración breve de hechos ficticios con inicio, desarrollo y desenlace, que busca entretener.'},
+    {c:'Artículo informativo',d:'Texto no literario que entrega datos y explicaciones sobre un tema de forma organizada.'},
+    {c:'Infografía',d:'Combina imágenes y texto breve para explicar información de manera visual y sencilla.'},
+    {c:'Afiche',d:'Texto publicitario de gran formato que usa imágenes llamativas y mensajes breves.'},
+    {c:'Noticia',d:'Texto periodístico que informa hechos recientes y reales (qué, quién, cuándo, dónde, por qué).'}
+  ]}));
+  body.appendChild(a2);
+
+  const nav=document.createElement('div'); nav.className='nav';
+  nav.innerHTML=`<button class="btn sec" onclick="irA('n1')">◀️ Nivel 1</button>
+    <button class="btn prim" onclick="irA('n3')">Nivel 3 · Comprensión ▶️</button>`;
+  body.appendChild(nav);
+  sec.appendChild(head); sec.appendChild(body);
+}
+
+/* ---------- NIVEL 3: COMPRENSIÓN LECTORA ---------- */
+function buildNivel3(){
+  const sec=$('p-n3');
+  const head=document.createElement('div'); head.className='nivelHead';
+  head.innerHTML=`<h2>🔍 Nivel 3 · Detective lector</h2>
+    <div class="obj"><b>Objetivo:</b> Leer textos literarios y no literarios para <b>localizar información explícita</b>,
+    <b>inferir información implícita</b>, comparar personajes y reconocer el problema y la solución.</div>`;
+  const body=document.createElement('div'); body.className='nivelBody';
+
+  const tip=document.createElement('div'); tip.className='leccion';
+  tip.innerHTML=`<h3>💡 Consejos del buen detective</h3>
+    <div class="dato">📌 <b>Información explícita:</b> está escrita tal cual en el texto. ¡La encuentras leyendo con calma!</div>
+    <div class="dato">🕵️ <b>Información implícita:</b> no está escrita, pero la <b>deduces</b> uniendo pistas. Pregúntate: “¿qué quiso decir el autor?”.</div>
+    <div class="truco">✅ Lee el texto <b>completo</b> antes de responder. Si dudas, ¡vuelve a leer el párrafo!</div>`;
+  body.appendChild(tip);
+
+  // ---- LECTURA 1: Fábula ----
+  const a1=actividad('🐝','Texto 1 · Fábula','Lee la fábula y responde. Reconoce personajes, problema, solución y moraleja.',7);
+  const lec1=document.createElement('div'); lec1.className='lectura';
+  lec1.innerHTML=`<h5>Los zánganos y las abejas</h5>
+    <p>Un grupo de abejas había terminado de construir su panal cuando un enjambre de zánganos se apropió de él para comerse la miel.</p>
+    <p>Las abejas decidieron llevar el caso ante la justicia. La avispa, que era jueza, llamó a testificar a las hormigas que vivían cerca del lugar. Las hormigas dijeron que solo habían visto alrededor del panal a unos insectos de color negro con amarillo. La declaración no le sirvió de mucho a la avispa, pues abejas y zánganos compartían las mismas cualidades. Entonces, la jueza dijo:</p>
+    <p>—Como abejas y zánganos son tan parecidos en colores y forma, deberé tomar mi decisión por el arte de su labor. Propongo que cada grupo construya su panal y que destilen la miel. Así, probando la miel y viendo la forma de las celdillas, podré decidir a quién pertenece el panal.</p>
+    <p>Las abejas aceptaron gustosas, mas los zánganos se rehusaron, demostrando que esa labor era superior a su destreza. Fue así como el veredicto de la avispa favoreció a las abejas, quienes vieron devuelto el fruto de su trabajo.</p>`;
+  a1.appendChild(lec1);
+  const p1=[
+    {t:'¿Quién se apropió del panal?',op:['Avispas','Abejas','Zánganos','Hormigas'],c:2},
+    {t:'¿Cuál de estas es una característica de una fábula?',op:['Sus personajes son animales','Está escrita en versos','Sucede en épocas remotas','Va de generación en generación'],c:0},
+    {t:'¿Por qué las abejas decidieron llevar el caso ante la justicia?',op:['Para regalar el panal a los zánganos','Querían probar que el panal era de ellas','Pensaban vender el panal','Querían construir otro panal'],c:1},
+    {t:'¿Quiénes fueron a testificar ante la justicia?',op:['Las avispas','Los zánganos','El moscardón','Las hormigas'],c:3},
+    {t:'¿Cómo se llama la enseñanza que deja la fábula?',op:['Moraleja','Experiencia','Engaño','Costumbre'],c:0},
+    {t:'¿Qué solución dio la jueza avispa?',op:['Hacer un sorteo','Que cada grupo construya un panal y destile la miel','Regalar el panal a las hormigas','Vender el panal'],c:1},
+    {t:'¿Cómo reaccionaron los zánganos ante la decisión?',op:['Se rehusaron, pues esa labor superaba su destreza','Aceptaron gustosos','Se negaron para dormir bajo un árbol','Estaban felices porque era su trabajo'],c:0}
+  ];
+  p1.forEach((x,i)=>a1.appendChild(preguntaMultiple({id:'n3a'+i,num:i+1,texto:x.t,opciones:x.op,correcta:x.c,pts:1,nivel:'n3'})));
+  body.appendChild(a1);
+
+  // ---- LECTURA 2: Leyenda ----
+  const a2=actividad('🏜️','Texto 2 · Leyenda','Lee la leyenda chilena y responde.',6);
+  const lec2=document.createElement('div'); lec2.className='lectura';
+  lec2.innerHTML=`<h5>Los socavones de Pica</h5>
+    <p>Cuando los españoles vinieron a establecerse en estos lugares, no tuvieron acogida por los indígenas piqueños, por lo que se trasladaron a Matilla, donde fundaron una población.</p>
+    <p>Uno de estos pobladores se enamoró de la hija del cacique de Pica y la solicitó en matrimonio, a lo cual el cacique se negó. Dámaso Morales, que así se llamaba el español, insistió y obtuvo mejor resultado, pero con una condición muy difícil.</p>
+    <p>El cacique le dijo que le cedería la mano de su hija siempre que hiciera florecer el valle entre Pica y Matilla, lo cual fue para él más terrible que la negativa anterior.</p>
+    <p>Dámaso Morales construyó el primer socavón de estos lugares, obtuvo agua, hizo florecer el valle y se casó con la hija del cacique. Los indígenas juntaban hilos de agua en represas llamadas <b>cochas</b>. El español perforó la piedra y aumentó su caudal. El valle reverdeció y fue “una flor en la arena”, que es lo que significa Pica.</p>`;
+  a2.appendChild(lec2);
+  const p2=[
+    {t:'¿A qué lugar tuvieron que trasladarse los españoles?',op:['Matilla','Pica','Iquique','Codpa'],c:0},
+    {t:'¿Qué característica tiene una leyenda?',op:['Carácter universal','Sus personajes son dioses','Es de carácter local','Tiene una moraleja'],c:2},
+    {t:'¿Por qué el cacique no dejaba que su hija se casara?',op:['El novio era de la India','Su enamorado era español','No estaba preparada','Tenía muy poca edad'],c:1},
+    {t:'¿Qué le pidió el cacique a Dámaso Morales?',op:['Buscar las flores más hermosas','Comprar un vestido bello','Hacer florecer el valle entre Pica y Matilla','Buscar un caballo blanco'],c:2},
+    {t:'¿Qué tuvo que hacer Dámaso para obtener agua?',op:['Buscar una laguna','Construir un socavón','Sacar agua del mar','Esperar que lloviera'],c:1},
+    {t:'¿Cómo se llaman esos pozos de aguas subterráneas?',op:['Estanques','Canales','Acequias','Cochas'],c:3}
+  ];
+  p2.forEach((x,i)=>a2.appendChild(preguntaMultiple({id:'n3b'+i,num:i+1,texto:x.t,opciones:x.op,correcta:x.c,pts:1,nivel:'n3'})));
+  body.appendChild(a2);
+
+  // ---- LECTURA 3: Artículo informativo ----
+  const a3=actividad('🐬','Texto 3 · Artículo informativo','Lee el artículo y responde. ¡Aquí debes inferir e interpretar!',9);
+  const lec3=document.createElement('div'); lec3.className='lectura';
+  lec3.innerHTML=`<h5>Los delfines</h5>
+    <p>Los delfines son mamíferos acuáticos que habitan en casi todos los mares del planeta. Existen distintas especies que se diferencian por su color, tamaño y forma de la cabeza. Cuentan con una cola o aleta caudal aplanada que les permite desplazarse hasta 45 km por hora. Se alimentan principalmente de peces, calamares y pulpos.</p>
+    <p>Estos animales han logrado establecer una estrecha relación con el hombre, gracias a su gran inteligencia. Pescadores de todo el mundo los describen como amistosos, juguetones y buenos compañeros, ya que los acompañan en las jornadas de pesca.</p>
+    <p>Algunos investigadores postulan que su inteligencia se debe a su capacidad de comunicación mediante sonidos de baja frecuencia, codificados, como un tipo de lenguaje complejo. Algunos sonidos los percibe el oído humano y otros no.</p>
+    <p>El astuto delfín puede darse cuenta del tamaño, textura y densidad de los objetos a partir de los ecos que percibe. Por eso algunos terapeutas dicen que es capaz de identificar tumores en el ser humano gracias a su desarrollado sistema auditivo.</p>`;
+  a3.appendChild(lec3);
+  const p3=[
+    {t:'El texto que leíste es:',op:['Una noticia','Una biografía','Una infografía','Un artículo informativo'],c:3},
+    {t:'Este texto tiene como finalidad:',op:['Informar','Entretener','Ser representado','Expresar sentimientos'],c:0},
+    {t:'¿Qué otro título sería adecuado para el texto?',op:['Un mamífero amistoso e inteligente','Los delfines y los pescadores','Distintos tipos de delfines','Los delfines y la pesca'],c:0},
+    {t:'Según los pescadores, ¿por qué los delfines son amistosos?',op:['Porque los acompañan a pescar','Porque se comunican por sonidos','Porque son muy inteligentes','Porque son muy adorables'],c:0},
+    {t:'Las distintas especies de delfín se diferencian por:',op:['Los sonidos que emiten','El color, tamaño y forma de la cabeza','El tipo de aletas y cola','La forma de identificar tumores'],c:1},
+    {t:'¿De qué se alimentan principalmente los delfines?',op:['Algas','Peces','Crustáceos','Estrellas de mar'],c:1},
+    {t:'Según lo leído, los delfines son animales que:',op:['Tienen un gran tamaño','Son vegetarianos','Han sido estudiados por el hombre','Deben estar alejados del ser humano'],c:2},
+    {t:'¿Cuál alternativa muestra dos características del delfín?',op:['Astuto e inteligente','Mamífero y carroñero','Tiene piel y emite sonidos','Enojón y amistoso'],c:0},
+    {t:'El párrafo N°2 nos entrega contenido sobre:',op:['El hábitat de los delfines','La relación entre el hombre y los delfines','Lo astuto que es el delfín','La capacidad de comunicación'],c:1}
+  ];
+  p3.forEach((x,i)=>a3.appendChild(preguntaMultiple({id:'n3c'+i,num:i+1,texto:x.t,opciones:x.op,correcta:x.c,pts:1,nivel:'n3'})));
+  body.appendChild(a3);
+
+  // ---- LECTURA 4: Noticia ----
+  const a4=actividad('🛝','Texto 4 · Noticia','Lee la noticia y responde. También repasarás el uso del punto y las mayúsculas.',7);
+  const lec4=document.createElement('div'); lec4.className='lectura';
+  lec4.innerHTML=`<h5>Una plaza renovada para jugar</h5>
+    <p>¡Buenas noticias para los niños y niñas del barrio El Bosque! Este fin de semana se inauguró una nueva plaza con juegos infantiles, áreas verdes y una zona especial para bicicletas. La Municipalidad trabajó durante dos meses para construir un lugar más bonito y seguro para todas las familias.</p>
+    <p>El alcalde dijo que esta plaza busca que los niños puedan jugar al aire libre, compartir con sus amigos y hacer deporte. Muchos vecinos asistieron a la inauguración y estaban muy contentos. Los juegos más populares fueron el resbalín gigante y el columpio doble.</p>
+    <p>“Estoy feliz porque ahora tengo un lugar donde jugar después de la escuela”, dijo Sofía, una niña de 9 años que vive cerca de la plaza.</p>`;
+  a4.appendChild(lec4);
+  const p4=[
+    {t:'¿Qué se inauguró en el barrio El Bosque?',op:['Una escuela nueva','Una plaza con juegos','Una tienda de juguetes','Una biblioteca'],c:1},
+    {t:'¿Cuánto tiempo duraron los trabajos para construir la plaza?',op:['Un mes','Cuatro semanas','Dos meses','Una semana'],c:2},
+    {t:'¿Qué quiere el alcalde con esta nueva plaza?',op:['Que los niños estudien más','Que los niños viajen','Que los niños jueguen y hagan deporte','Que los niños vean televisión'],c:2},
+    {t:'¿Cuál fue uno de los juegos más populares?',op:['El pasamanos','El tobogán pequeño','El resbalín gigante','La rueda'],c:2},
+    {t:'¿Qué dijo Sofía sobre la nueva plaza?',op:['Que no le gustó','Que prefiere quedarse en casa','Que irá solo los domingos','Que está feliz porque puede jugar después de la escuela'],c:3},
+    {t:'En “Este fin de semana se inauguró…”, ¿por qué “Este” lleva mayúscula?',op:['Porque está al principio del texto/oración','Porque es importante','Porque es un nombre','Porque habla del fin de semana'],c:0},
+    {t:'Entre dos oraciones del mismo tema, ¿por qué hay punto seguido?',op:['Porque cambia el tema','Porque empieza un párrafo nuevo','Porque son ideas del mismo tema','Porque viene una lista'],c:2}
+  ];
+  p4.forEach((x,i)=>a4.appendChild(preguntaMultiple({id:'n3d'+i,num:i+1,texto:x.t,opciones:x.op,correcta:x.c,pts:1,nivel:'n3'})));
+  body.appendChild(a4);
+
+  const nav=document.createElement('div'); nav.className='nav';
+  nav.innerHTML=`<button class="btn sec" onclick="irA('n2')">◀️ Nivel 2</button>
+    <button class="btn prim" onclick="irA('n4')">Nivel 4 · Escritura ▶️</button>`;
+  body.appendChild(nav);
+  sec.appendChild(head); sec.appendChild(body);
+}
+
+/* ---------- NIVEL 4: ESCRITURA ---------- */
+function buildNivel4(){
+  const sec=$('p-n4');
+  const head=document.createElement('div'); head.className='nivelHead';
+  head.innerHTML=`<h2>✍️ Nivel 4 · Maestro de la escritura</h2>
+    <div class="obj"><b>Objetivo:</b> Aplicar el <b>punto seguido, aparte y final</b>, usar bien las <b>mayúsculas</b>
+    y diferenciar <b>ahí, hay</b> y <b>ay</b>.</div>`;
+  const body=document.createElement('div'); body.className='nivelBody';
+
+  const lec=document.createElement('div'); lec.className='leccion';
+  lec.innerHTML=`
+    <h3>📚 ¡A estudiar primero!</h3>
+    <h4>🔵 El uso del punto</h4>
+    <table class="def">
+      <tr><th>Punto</th><th>¿Cuándo se usa?</th></tr>
+      <tr><td><b>Punto seguido</b></td><td>Separa oraciones <b>dentro de un mismo párrafo</b> que tratan ideas relacionadas. La escritura <b>continúa en la misma línea</b>.</td></tr>
+      <tr><td><b>Punto aparte</b></td><td>Separa <b>párrafos</b> que tratan ideas distintas. Después se escribe en una <b>línea nueva</b>.</td></tr>
+      <tr><td><b>Punto final</b></td><td>Cierra <b>todo el texto</b>. Va al final de la última oración del escrito.</td></tr>
+    </table>
+
+    <h4>🔠 Las mayúsculas</h4>
+    <div class="dato">Se escribe con mayúscula: al <b>inicio de un texto</b> u oración, <b>después de un punto</b>,
+    y en los <b>nombres propios</b> (personas, ciudades, países: Sofía, Pica, Chile).</div>
+
+    <h4>🔤 ¡Ojo! ahí · hay · ay</h4>
+    <table class="def">
+      <tr><th>Palabra</th><th>Significado</th><th>Ejemplo</th></tr>
+      <tr><td><b>ahí</b></td><td>Adverbio de <b>lugar</b> (indica un sitio).</td><td>El libro está <b>ahí</b>.</td></tr>
+      <tr><td><b>hay</b></td><td>Del verbo <b>haber</b> (indica que algo existe).</td><td><b>Hay</b> muchos niños en la plaza.</td></tr>
+      <tr><td><b>ay</b></td><td>Interjección de <b>dolor o sorpresa</b>.</td><td>¡<b>Ay</b>, me duele la rodilla!</td></tr>
+    </table>
+    <div class="truco">💡 Truco: <b>h<u>A</u>Y</b> tiene la “h” del verbo <b>h</b>aber. <b>ahí</b> señala un lugar (“está ahí”). <b>ay</b> es un grito (¡ay!).</div>`;
+  body.appendChild(lec);
+
+  // Quiz punto + mayúsculas
+  const a1=actividad('🔵','Misión 1 · El punto y las mayúsculas','Elige la respuesta correcta.',6);
+  const q1=[
+    {t:'¿Qué punto separa oraciones del mismo tema y continúa en la misma línea?',op:['Punto seguido','Punto aparte','Punto final'],c:0},
+    {t:'¿Qué punto separa párrafos con ideas distintas y se sigue en línea nueva?',op:['Punto seguido','Punto aparte','Punto final'],c:1},
+    {t:'¿Qué punto cierra todo el texto, al final del escrito?',op:['Punto seguido','Punto aparte','Punto final'],c:2},
+    {t:'Después de un punto, la siguiente palabra se escribe con…',op:['minúscula','mayúscula','letra cursiva'],c:1},
+    {t:'¿Cuál de estas palabras SIEMPRE se escribe con mayúscula por ser nombre propio?',op:['perro','Chile','plaza','árbol'],c:1},
+    {t:'En “El alcalde dijo…”, “El” lleva mayúscula porque…',op:['es un nombre propio','comienza la oración después de un punto','es una palabra importante','es un adjetivo'],c:1}
+  ];
+  q1.forEach((x,i)=>a1.appendChild(preguntaMultiple({id:'n4a'+i,num:i+1,texto:x.t,opciones:x.op,correcta:x.c,pts:1,nivel:'n4'})));
+  body.appendChild(a1);
+
+  // ahí/hay/ay
+  const a2=actividad('🔤','Misión 2 · ¿ahí, hay o ay?','Completa cada oración con la palabra correcta.',5);
+  const q2=[
+    {t:'____ un gato durmiendo en el techo.',op:['Ahí','Hay','Ay'],c:1},
+    {t:'Tu mochila está ____, sobre la silla.',op:['ahí','hay','ay'],c:0},
+    {t:'¡____! Me golpeé el dedo con la mesa.',op:['Ahí','Hay','Ay'],c:2},
+    {t:'En la biblioteca ____ muchos libros nuevos.',op:['ahí','hay','ay'],c:1},
+    {t:'Mira ____, ¡detrás del árbol se escondió el perro!',op:['ahí','hay','ay'],c:0}
+  ];
+  q2.forEach((x,i)=>a2.appendChild(preguntaMultiple({id:'n4b'+i,num:i+1,texto:x.t,opciones:x.op,correcta:x.c,pts:1,nivel:'n4'})));
+  body.appendChild(a2);
+
+  // unir punto + ahí/hay/ay
+  const a3=actividad('🧲','Misión 3 · Une los conceptos','Arrastra (o toca) cada concepto con su definición.',7);
+  a3.appendChild(unir({id:'n4u1',pts:1,nivel:'n4',pares:[
+    {c:'Punto seguido',d:'Separa oraciones del mismo párrafo; la escritura sigue en la misma línea.'},
+    {c:'Punto aparte',d:'Separa párrafos con ideas distintas; se escribe en una línea nueva.'},
+    {c:'Punto final',d:'Cierra el texto completo, al final de la última oración.'},
+    {c:'Mayúscula',d:'Se usa al inicio del texto, después de un punto y en los nombres propios.'}
+  ]}));
+  a3.appendChild(unir({id:'n4u2',pts:1,nivel:'n4',pares:[
+    {c:'ahí',d:'Adverbio de lugar. Ej.: “El libro está ahí”.'},
+    {c:'hay',d:'Forma del verbo haber; indica que algo existe. Ej.: “Hay niños”.'},
+    {c:'ay',d:'Interjección de dolor o sorpresa. Ej.: “¡Ay, me caí!”.'}
+  ]}));
+  body.appendChild(a3);
+
+  const nav=document.createElement('div'); nav.className='nav';
+  nav.innerHTML=`<button class="btn sec" onclick="irA('n3')">◀️ Nivel 3</button>
+    <button class="btn big" onclick="irA('meta')">🏁 ¡Ir a la META!</button>`;
+  body.appendChild(nav);
+  sec.appendChild(head); sec.appendChild(body);
+}
+
+/* =========================================================
+   MAPA DE NIVELES (portada)
+========================================================= */
+const NIVELES=[
+  {id:'n1',num:1,ico:'🎯',t:'Las tildes mágicas',d:'Palabras agudas, graves y esdrújulas + la sílaba tónica.',pts:34},
+  {id:'n2',num:2,ico:'📖',t:'El mundo de los textos',d:'Mito, fábula, cuento, leyenda, artículo, infografía, afiche y noticia.',pts:16},
+  {id:'n3',num:3,ico:'🔍',t:'Detective lector',d:'Comprensión de las 4 lecturas: fábula, leyenda, artículo y noticia.',pts:29},
+  {id:'n4',num:4,ico:'✍️',t:'Maestro de la escritura',d:'El punto, las mayúsculas y ahí / hay / ay.',pts:18}
+];
+function buildMapa(){
+  const m=$('mapaNiveles');
+  NIVELES.forEach(n=>{
+    const c=document.createElement('div'); c.className='nivelCard'; c.id='card-'+n.id;
+    c.onclick=()=>irA(n.id);
+    c.innerHTML=`<div class="num">${n.num}</div><div class="done">✅</div>
+      <div class="ico">${n.ico}</div><h3>${n.t}</h3><p>${n.d}</p>
+      <span class="pts">⭐ ${n.pts} pts</span>`;
+    m.appendChild(c);
+  });
+}
+
+/* =========================================================
+   META FINAL
+========================================================= */
+function pintarMeta(){
+  $('metaPts').textContent=score;
+  $('metaMax').textContent=MAXTOTAL;
+  const pct=MAXTOTAL?score/MAXTOTAL:0;
+  // estrellas 1-5
+  let nEstrellas=Math.max(1,Math.round(pct*5));
+  if(score===0) nEstrellas=0;
+  $('metaStars').textContent='⭐'.repeat(nEstrellas)+'☆'.repeat(5-nEstrellas);
+  // medalla
+  const med=$('metaMedalla');
+  let txt,color,msg;
+  if(pct>=0.9){txt='🥇 ¡MEDALLA DE ORO!';color='linear-gradient(135deg,#f6c445,#ed8936)';msg='¡Increíble! Estás más que listo para tu Prueba de Síntesis. 🌟';}
+  else if(pct>=0.7){txt='🥈 ¡MEDALLA DE PLATA!';color='linear-gradient(135deg,#cbd5e0,#a0aec0)';msg='¡Muy bien! Repasa lo poquito que falta y serás imparable. 💪';}
+  else if(pct>=0.5){txt='🥉 ¡MEDALLA DE BRONCE!';color='linear-gradient(135deg,#ed8936,#c05621)';msg='¡Buen avance! Vuelve a practicar los niveles para subir tu puntaje. 🚀';}
+  else {txt='🎖️ ¡SIGUE ENTRENANDO!';color='linear-gradient(135deg,#90cdf4,#4299e1)';msg='¡Vas comenzando! Repasa el contenido y juega otra vez. ¡Tú puedes! 😀';}
+  med.textContent=txt; med.style.background=color; med.style.color='#fff';
+  $('metaMsg').textContent=msg;
+  // desglose
+  const d=$('metaDesglose'); d.innerHTML='';
+  NIVELES.forEach(n=>{
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML=`<span>${n.ico} Nivel ${n.num}</span><b>${nivelPts[n.id]} / ${nivelMax[n.id]} pts</b>`;
+    d.appendChild(row);
+  });
+  if(pct>=0.7) confeti(30);
+}
+
+function reiniciar(){
+  awarded.clear(); score=0; stars=0;
+  ['n1','n2','n3','n4'].forEach(n=>nivelPts[n]=0);
+  document.querySelectorAll('.nivelCard').forEach(c=>c.classList.remove('completo'));
+  // limpiar y reconstruir niveles
+  ['p-n1','p-n2','p-n3','p-n4'].forEach(id=>$(id).innerHTML='');
+  buildNivel1(); buildNivel2(); buildNivel3(); buildNivel4();
+  updateHUD();
+  irA('inicio');
+}
+
+/* =========================================================
+   INICIO
+========================================================= */
+function calcularMax(){
+  // calcula el máximo por nivel sumando los pts de cada actividad (= 1 por ítem)
+  nivelMax.n1=14+10+6+4;   // clasificar+tilde+vf+unir = 34
+  nivelMax.n2=8+8;         // quiz + pareados = 16
+  nivelMax.n3=7+6+9+7;     // 4 lecturas = 29
+  nivelMax.n4=6+5+4+3;     // punto/may + ahi + unir(4)+unir(3) = 18
+  MAXTOTAL=nivelMax.n1+nivelMax.n2+nivelMax.n3+nivelMax.n4; // 97
+  $('metaMax').textContent=MAXTOTAL;
+}
+
+buildMapa();
+buildNivel1(); buildNivel2(); buildNivel3(); buildNivel4();
+calcularMax();
+updateHUD();
+</script>
+</body>
+</html>
