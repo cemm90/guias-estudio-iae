@@ -1,1 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Guía interactiva de síntesis de Ciencias Sociales para 4° Básico: líneas imaginarias de la Tierra, los poderes del Estado de Chile, el voto y los derechos de los niños y las niñas.">
+<meta name="curso" content="4° Básico">
+<meta name="asignatura" content="Historia y Cs. Sociales">
+<meta name="unidad" content="Síntesis · Tierra, Estado y Derechos">
+<meta name="semestre" content="Primer Semestre">
+<meta name="theme-color" content="#2563EB">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Guía Interactiva – Ciencias Sociales 4° Básico">
+<meta property="og:description" content="Guía interactiva de síntesis de Ciencias Sociales para 4° Básico: líneas imaginarias de la Tierra, los poderes del Estado de Chile, el voto y los derechos de los niños y las niñas.">
+<meta property="og:locale" content="es_CL">
+<title>Guía Interactiva – Ciencias Sociales 4° Básico</title>
+  <style>
+    :root {
+      --azul: #2563eb;
+      --azul-claro: #dbeafe;
+      --verde: #16a34a;
+      --verde-claro: #dcfce7;
+      --rojo: #dc2626;
+      --rojo-claro: #fee2e2;
+      --amarillo: #f59e0b;
+      --amarillo-claro: #fef3c7;
+      --gris: #f1f5f9;
+      --texto: #1e293b;
+    }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f2fe 0%, #ede9fe 100%);
+      min-height: 100vh;
+      color: var(--texto);
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+      color: white;
+      border-radius: 20px;
+      padding: 28px 20px 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+    header h1 { font-size: 1.9em; margin-bottom: 6px; }
+    header p  { font-size: 1em; opacity: 0.85; }
+    header .emoji-row { font-size: 2em; margin-bottom: 10px; }
+
+    /* Progress bar */
+    #progress-wrap {
+      background: white;
+      border-radius: 14px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    #progress-label { font-weight: 700; white-space: nowrap; color: var(--azul); }
+    #progress-bar-bg {
+      flex: 1;
+      background: #e2e8f0;
+      border-radius: 99px;
+      height: 16px;
+      overflow: hidden;
+    }
+    #progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb, #7c3aed);
+      border-radius: 99px;
+      transition: width 0.4s;
+      width: 0%;
+    }
+    #progress-pct { font-weight: 700; color: #64748b; white-space: nowrap; }
+
+    /* Section cards */
+    .section-card {
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--azul-claro);
+    }
+    .section-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7em;
+      flex-shrink: 0;
+    }
+    .icon-geo   { background: #dbeafe; }
+    .icon-poder { background: #fce7f3; }
+    .icon-voto  { background: #dcfce7; }
+    .icon-ninos { background: #fef3c7; }
+
+    .section-header h2 { font-size: 1.2em; color: var(--azul); }
+    .section-header p  { font-size: 0.88em; color: #64748b; margin-top: 2px; }
+
+    /* Info box */
+    .info-box {
+      background: var(--gris);
+      border-left: 4px solid var(--azul);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      font-size: 0.93em;
+      line-height: 1.6;
+    }
+    .info-box b { color: var(--azul); }
+
+    /* SVG Illustrations */
+    .illustration { text-align: center; margin: 14px 0 20px; }
+    .illustration svg { max-width: 100%; }
+
+    /* Question blocks */
+    .question-block {
+      background: var(--gris);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      transition: box-shadow 0.2s;
+    }
+    .question-block:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+    .question-block.answered-correct { background: var(--verde-claro); border-left: 4px solid var(--verde); }
+    .question-block.answered-wrong   { background: var(--rojo-claro);  border-left: 4px solid var(--rojo); }
+
+    .question-num {
+      display: inline-block;
+      background: var(--azul);
+      color: white;
+      border-radius: 99px;
+      padding: 2px 10px;
+      font-size: 0.8em;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .question-type {
+      display: inline-block;
+      background: var(--amarillo);
+      color: white;
+      border-radius: 99px;
+      padding: 2px 10px;
+      font-size: 0.78em;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+    .question-text { font-weight: 600; font-size: 1em; margin-bottom: 12px; line-height: 1.5; }
+
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .option-btn {
+      display: flex; align-items: center; gap: 10px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.95em;
+      font-family: inherit;
+      transition: all 0.18s;
+      width: 100%;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--azul);
+      background: var(--azul-claro);
+      transform: translateX(3px);
+    }
+    .option-btn .opt-letter {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--azul-claro);
+      color: var(--azul);
+      font-weight: 700; font-size: 0.9em;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .option-btn.correct-choice { border-color: var(--verde); background: var(--verde-claro); }
+    .option-btn.correct-choice .opt-letter { background: var(--verde); color: white; }
+    .option-btn.wrong-choice   { border-color: var(--rojo); background: var(--rojo-claro); }
+    .option-btn.wrong-choice .opt-letter   { background: var(--rojo); color: white; }
+    .option-btn:disabled { cursor: default; transform: none; }
+
+    /* VF options horizontal */
+    .vf-options { display: flex; gap: 10px; }
+    .vf-options .option-btn { flex: 1; justify-content: center; font-weight: 700; font-size: 1em; }
+
+    /* Feedback box */
+    .feedback-box {
+      margin-top: 12px;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.9em;
+      line-height: 1.5;
+      display: none;
+    }
+    .feedback-box.show { display: block; }
+    .feedback-box.ok   { background: var(--verde-claro); border-left: 4px solid var(--verde); color: #166534; }
+    .feedback-box.err  { background: var(--rojo-claro);  border-left: 4px solid var(--rojo);  color: #991b1b; }
+    .feedback-box .fb-icon { font-size: 1.3em; margin-right: 6px; }
+
+    /* Submit button */
+    #btn-submit {
+      display: block;
+      margin: 30px auto 10px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 16px 50px;
+      font-size: 1.15em;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    #btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,99,235,0.5); }
+    #btn-submit:active { transform: translateY(0); }
+    #btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Results panel */
+    #results-panel {
+      display: none;
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-top: 20px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+    #results-panel.show { display: block; }
+    .result-score-circle {
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      margin: 0 auto 18px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-size: 2.2em; font-weight: 900;
+      color: white;
+    }
+    .result-score-circle span { font-size: 0.4em; font-weight: 500; margin-top: -4px; }
+    .score-great  { background: linear-gradient(135deg, #16a34a, #15803d); }
+    .score-good   { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .score-low    { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+    #result-msg { font-size: 1.1em; margin-bottom: 20px; }
+    #result-detail { text-align: left; }
+    .res-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.9em;
+    }
+    .res-icon { font-size: 1.3em; flex-shrink: 0; margin-top: 1px; }
+    .res-q    { font-weight: 600; margin-bottom: 3px; }
+    .res-ans  { color: #475569; }
+    .res-just { color: #64748b; font-style: italic; margin-top: 3px; }
+
+    #btn-retry {
+      margin-top: 24px;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 40px;
+      font-size: 1em;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    #btn-retry:hover { opacity: 0.9; }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      header h1 { font-size: 1.4em; }
+      .section-card { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="emoji-row">🌎 🏛️ 🗳️ 👧🏽👦🏽</div>
+  <h1>Ciencias Sociales – 4° Básico</h1>
+  <p>Prueba de Síntesis · Profesora Daniela Alvarado & Dayzie Miranda</p>
+</header>
+
+<!-- Progress -->
+<div id="progress-wrap">
+  <span id="progress-label">Progreso:</span>
+  <div id="progress-bar-bg"><div id="progress-bar-fill"></div></div>
+  <span id="progress-pct">0 / 20</span>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECCIÓN 1: Líneas imaginarias
+     ══════════════════════════════════════════ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="section-icon icon-geo">🗺️</div>
+    <div>
+      <h2>1. Líneas imaginarias de la Tierra</h2>
+      <p>Paralelos, meridianos y coordenadas geográficas</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    🌐 <b>Recuerda:</b> Las <b>líneas imaginarias</b> nos ayudan a ubicar lugares en el planeta.<br>
+    Los <b>paralelos</b> (180 en total) rodean la Tierra horizontalmente. El más importante es el <b>Ecuador</b>.<br>
+    Los <b>meridianos</b> (360 en total) van de polo a polo. El más importante es el <b>Meridiano de Greenwich</b>.<br>
+    Las <b>coordenadas geográficas</b> (latitud y longitud) sirven para ubicar un punto exacto, se miden en grados.
+  </div>
+
+  <!-- Ilustración SVG Tierra con líneas -->
+  <div class="illustration">
+    <svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" width="320" height="220">
+      <!-- Globo -->
+      <circle cx="160" cy="110" r="95" fill="#bfdbfe" stroke="#2563eb" stroke-width="2.5"/>
+      <!-- Meridianos verticales -->
+      <ellipse cx="160" cy="110" rx="30" ry="95" fill="none" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="5,3"/>
+      <ellipse cx="160" cy="110" rx="60" ry="95" fill="none" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="5,3"/>
+      <ellipse cx="160" cy="110" rx="80" ry="95" fill="none" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="5,3"/>
+      <!-- Paralelos horizontales -->
+      <ellipse cx="160" cy="75"  rx="85" ry="12" fill="none" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="5,3"/>
+      <ellipse cx="160" cy="145" rx="85" ry="12" fill="none" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="5,3"/>
+      <!-- Ecuador -->
+      <ellipse cx="160" cy="110" rx="95" ry="18" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+      <!-- Meridiano Greenwich -->
+      <ellipse cx="160" cy="110" rx="0" ry="95" fill="none" stroke="#dc2626" stroke-width="0"/>
+      <line x1="160" y1="15" x2="160" y2="205" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6,3"/>
+      <!-- Etiquetas -->
+      <text x="260" y="115" font-size="11" fill="#b45309" font-weight="bold">Ecuador</text>
+      <text x="163" y="30"  font-size="11" fill="#dc2626" font-weight="bold">Meridiano</text>
+      <text x="166" y="42"  font-size="11" fill="#dc2626" font-weight="bold">Greenwich</text>
+      <!-- Hemisferios -->
+      <text x="75" y="100"  font-size="10" fill="#1d4ed8">Norte</text>
+      <text x="75" y="130"  font-size="10" fill="#1d4ed8">Sur</text>
+      <text x="105" y="182" font-size="10" fill="#166534">Oeste</text>
+      <text x="185" y="182" font-size="10" fill="#166534">Este</text>
+    </svg>
+  </div>
+
+  <!-- Pregunta 1 -->
+  <div class="question-block" id="qb-1">
+    <span class="question-num">Pregunta 1</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Cómo se llama el paralelo más importante de la Tierra?</p>
+    <div class="options" id="opts-1">
+      <button class="option-btn" onclick="answer(1,'A')"><span class="opt-letter">A</span> Meridiano de Greenwich</button>
+      <button class="option-btn" onclick="answer(1,'B')"><span class="opt-letter">B</span> Línea del Ecuador</button>
+      <button class="option-btn" onclick="answer(1,'C')"><span class="opt-letter">C</span> Trópico de Cáncer</button>
+      <button class="option-btn" onclick="answer(1,'D')"><span class="opt-letter">D</span> Círculo Polar Ártico</button>
+    </div>
+    <div class="feedback-box" id="fb-1"></div>
+  </div>
+
+  <!-- Pregunta 2 -->
+  <div class="question-block" id="qb-2">
+    <span class="question-num">Pregunta 2</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿En cuántos hemisferios divide la Línea del Ecuador a la Tierra?</p>
+    <div class="options" id="opts-2">
+      <button class="option-btn" onclick="answer(2,'A')"><span class="opt-letter">A</span> Este y Oeste</button>
+      <button class="option-btn" onclick="answer(2,'B')"><span class="opt-letter">B</span> Norte y Sur</button>
+      <button class="option-btn" onclick="answer(2,'C')"><span class="opt-letter">C</span> Polar y Tropical</button>
+      <button class="option-btn" onclick="answer(2,'D')"><span class="opt-letter">D</span> No divide la Tierra</button>
+    </div>
+    <div class="feedback-box" id="fb-2"></div>
+  </div>
+
+  <!-- Pregunta 3 -->
+  <div class="question-block" id="qb-3">
+    <span class="question-num">Pregunta 3</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Para qué sirven las coordenadas geográficas?</p>
+    <div class="options" id="opts-3">
+      <button class="option-btn" onclick="answer(3,'A')"><span class="opt-letter">A</span> Para medir la temperatura de un lugar</button>
+      <button class="option-btn" onclick="answer(3,'B')"><span class="opt-letter">B</span> Para contar cuántos países hay en el mundo</button>
+      <button class="option-btn" onclick="answer(3,'C')"><span class="opt-letter">C</span> Para ubicar un punto exacto en la Tierra usando latitud y longitud</button>
+      <button class="option-btn" onclick="answer(3,'D')"><span class="opt-letter">D</span> Para saber cuántos continentes existen</button>
+    </div>
+    <div class="feedback-box" id="fb-3"></div>
+  </div>
+
+  <!-- Pregunta 4 VF -->
+  <div class="question-block" id="qb-4">
+    <span class="question-num">Pregunta 4</span>
+    <span class="question-type">Verdadero o Falso</span>
+    <p class="question-text">El Meridiano de Greenwich divide la Tierra en hemisferio Norte y Sur.</p>
+    <div class="vf-options options" id="opts-4">
+      <button class="option-btn" onclick="answer(4,'A')"><span class="opt-letter">V</span> Verdadero</button>
+      <button class="option-btn" onclick="answer(4,'B')"><span class="opt-letter">F</span> Falso</button>
+    </div>
+    <div class="feedback-box" id="fb-4"></div>
+  </div>
+
+  <!-- Pregunta 5 VF -->
+  <div class="question-block" id="qb-5">
+    <span class="question-num">Pregunta 5</span>
+    <span class="question-type">Verdadero o Falso</span>
+    <p class="question-text">Los meridianos son semicírculos que van de polo a polo y en total son 360.</p>
+    <div class="vf-options options" id="opts-5">
+      <button class="option-btn" onclick="answer(5,'A')"><span class="opt-letter">V</span> Verdadero</button>
+      <button class="option-btn" onclick="answer(5,'B')"><span class="opt-letter">F</span> Falso</button>
+    </div>
+    <div class="feedback-box" id="fb-5"></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SECCIÓN 2: Poderes del Estado
+     ══════════════════════════════════════════ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="section-icon icon-poder">🏛️</div>
+    <div>
+      <h2>2. Los Poderes del Estado de Chile</h2>
+      <p>Ejecutivo, Legislativo y Judicial</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    ⚖️ <b>Recuerda:</b> Chile tiene <b>tres poderes del Estado</b> para que nadie tenga todo el poder:<br>
+    • <b>Poder Ejecutivo:</b> Administra el país. Lo dirige el <b>Presidente de la República</b>.<br>
+    • <b>Poder Legislativo:</b> Elabora, aprueba y modifica las leyes. Lo forman <b>senadores y diputados</b> en el Congreso.<br>
+    • <b>Poder Judicial:</b> Aplica las leyes y administra justicia. Lo representan los <b>jueces</b> en los tribunales.
+  </div>
+
+  <!-- Ilustración SVG Poderes -->
+  <div class="illustration">
+    <svg viewBox="0 0 340 160" xmlns="http://www.w3.org/2000/svg" width="340" height="160">
+      <!-- Ejecutivo -->
+      <rect x="10" y="40" width="95" height="90" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+      <text x="57" y="30" font-size="22" text-anchor="middle">🏠</text>
+      <text x="57" y="76" font-size="10" font-weight="bold" fill="#1d4ed8" text-anchor="middle">EJECUTIVO</text>
+      <text x="57" y="91" font-size="9" fill="#374151" text-anchor="middle">Administra</text>
+      <text x="57" y="104" font-size="9" fill="#374151" text-anchor="middle">el país</text>
+      <text x="57" y="117" font-size="8.5" fill="#6b7280" text-anchor="middle">Presidente</text>
+      <!-- Legislativo -->
+      <rect x="122" y="40" width="95" height="90" rx="12" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+      <text x="169" y="30" font-size="22" text-anchor="middle">📜</text>
+      <text x="169" y="76" font-size="10" font-weight="bold" fill="#9d174d" text-anchor="middle">LEGISLATIVO</text>
+      <text x="169" y="91" font-size="9" fill="#374151" text-anchor="middle">Crea y</text>
+      <text x="169" y="104" font-size="9" fill="#374151" text-anchor="middle">modifica leyes</text>
+      <text x="169" y="117" font-size="8.5" fill="#6b7280" text-anchor="middle">Senadores y Diputados</text>
+      <!-- Judicial -->
+      <rect x="234" y="40" width="95" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="281" y="30" font-size="22" text-anchor="middle">⚖️</text>
+      <text x="281" y="76" font-size="10" font-weight="bold" fill="#166534" text-anchor="middle">JUDICIAL</text>
+      <text x="281" y="91" font-size="9" fill="#374151" text-anchor="middle">Aplica las</text>
+      <text x="281" y="104" font-size="9" fill="#374151" text-anchor="middle">leyes</text>
+      <text x="281" y="117" font-size="8.5" fill="#6b7280" text-anchor="middle">Jueces y Tribunales</text>
+    </svg>
+  </div>
+
+  <!-- Pregunta 6 -->
+  <div class="question-block" id="qb-6">
+    <span class="question-num">Pregunta 6</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Qué poder del Estado crea y aprueba las leyes en Chile?</p>
+    <div class="options" id="opts-6">
+      <button class="option-btn" onclick="answer(6,'A')"><span class="opt-letter">A</span> Poder Ejecutivo</button>
+      <button class="option-btn" onclick="answer(6,'B')"><span class="opt-letter">B</span> Poder Judicial</button>
+      <button class="option-btn" onclick="answer(6,'C')"><span class="opt-letter">C</span> Poder Legislativo</button>
+      <button class="option-btn" onclick="answer(6,'D')"><span class="opt-letter">D</span> Poder Militar</button>
+    </div>
+    <div class="feedback-box" id="fb-6"></div>
+  </div>
+
+  <!-- Pregunta 7 -->
+  <div class="question-block" id="qb-7">
+    <span class="question-num">Pregunta 7</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Quién dirige el Poder Ejecutivo en Chile?</p>
+    <div class="options" id="opts-7">
+      <button class="option-btn" onclick="answer(7,'A')"><span class="opt-letter">A</span> El Alcalde</button>
+      <button class="option-btn" onclick="answer(7,'B')"><span class="opt-letter">B</span> El Presidente de la República</button>
+      <button class="option-btn" onclick="answer(7,'C')"><span class="opt-letter">C</span> Un juez del tribunal</button>
+      <button class="option-btn" onclick="answer(7,'D')"><span class="opt-letter">D</span> El Senado</button>
+    </div>
+    <div class="feedback-box" id="fb-7"></div>
+  </div>
+
+  <!-- Pregunta 8 -->
+  <div class="question-block" id="qb-8">
+    <span class="question-num">Pregunta 8</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Dónde trabajan los senadores y diputados que forman el Poder Legislativo?</p>
+    <div class="options" id="opts-8">
+      <button class="option-btn" onclick="answer(8,'A')"><span class="opt-letter">A</span> En La Moneda</button>
+      <button class="option-btn" onclick="answer(8,'B')"><span class="opt-letter">B</span> En los tribunales de justicia</button>
+      <button class="option-btn" onclick="answer(8,'C')"><span class="opt-letter">C</span> En el Congreso Nacional</button>
+      <button class="option-btn" onclick="answer(8,'D')"><span class="opt-letter">D</span> En las comisarías</button>
+    </div>
+    <div class="feedback-box" id="fb-8"></div>
+  </div>
+
+  <!-- Pregunta 9 VF -->
+  <div class="question-block" id="qb-9">
+    <span class="question-num">Pregunta 9</span>
+    <span class="question-type">Verdadero o Falso</span>
+    <p class="question-text">Los poderes del Estado existen para que una sola persona tenga todo el poder.</p>
+    <div class="vf-options options" id="opts-9">
+      <button class="option-btn" onclick="answer(9,'A')"><span class="opt-letter">V</span> Verdadero</button>
+      <button class="option-btn" onclick="answer(9,'B')"><span class="opt-letter">F</span> Falso</button>
+    </div>
+    <div class="feedback-box" id="fb-9"></div>
+  </div>
+
+  <!-- Pregunta 10 VF -->
+  <div class="question-block" id="qb-10">
+    <span class="question-num">Pregunta 10</span>
+    <span class="question-type">Verdadero o Falso</span>
+    <p class="question-text">El Poder Judicial aplica las leyes y administra justicia a través de los jueces.</p>
+    <div class="vf-options options" id="opts-10">
+      <button class="option-btn" onclick="answer(10,'A')"><span class="opt-letter">V</span> Verdadero</button>
+      <button class="option-btn" onclick="answer(10,'B')"><span class="opt-letter">F</span> Falso</button>
+    </div>
+    <div class="feedback-box" id="fb-10"></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SECCIÓN 3: El voto en Chile
+     ══════════════════════════════════════════ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="section-icon icon-voto">🗳️</div>
+    <div>
+      <h2>3. El Voto en Chile</h2>
+      <p>Democracia y participación ciudadana</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    🗳️ <b>Recuerda:</b> El <b>voto</b> permite elegir autoridades (senadores, diputados, alcaldes…) y participar en decisiones importantes. Favorece la <b>democracia</b>.<br>
+    En Chile pueden votar quienes tengan <b>18 años o más</b> y sean chilenos o residentes por <b>5 años</b>.<br>
+    El voto en Chile es <b>secreto, personal y obligatorio</b>.
+  </div>
+
+  <!-- Ilustración SVG Urna -->
+  <div class="illustration">
+    <svg viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg" width="300" height="170">
+      <!-- Urna -->
+      <rect x="90" y="70" width="120" height="90" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2.5"/>
+      <rect x="80" y="60" width="140" height="20" rx="6" fill="#2563eb"/>
+      <!-- Ranura -->
+      <rect x="135" y="65" width="30" height="6" rx="3" fill="#1e3a8a"/>
+      <!-- Papeleta -->
+      <rect x="143" y="40" width="14" height="28" rx="3" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="147" y1="47" x2="153" y2="47" stroke="#d97706" stroke-width="1.2"/>
+      <line x1="147" y1="52" x2="153" y2="52" stroke="#d97706" stroke-width="1.2"/>
+      <!-- Mano -->
+      <ellipse cx="150" cy="38" rx="10" ry="6" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+      <!-- Texto características -->
+      <text x="150" y="107" font-size="11" font-weight="bold" fill="#1d4ed8" text-anchor="middle">SECRETO</text>
+      <text x="150" y="122" font-size="11" font-weight="bold" fill="#1d4ed8" text-anchor="middle">PERSONAL</text>
+      <text x="150" y="137" font-size="11" font-weight="bold" fill="#1d4ed8" text-anchor="middle">OBLIGATORIO</text>
+      <!-- Etiqueta -->
+      <text x="150" y="175" font-size="9" fill="#64748b" text-anchor="middle">Urna de votación</text>
+    </svg>
+  </div>
+
+  <!-- Pregunta 11 -->
+  <div class="question-block" id="qb-11">
+    <span class="question-num">Pregunta 11</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Para qué sirve el voto en Chile?</p>
+    <div class="options" id="opts-11">
+      <button class="option-btn" onclick="answer(11,'A')"><span class="opt-letter">A</span> Para ganar premios y regalos</button>
+      <button class="option-btn" onclick="answer(11,'B')"><span class="opt-letter">B</span> Para elegir autoridades y participar en decisiones importantes, favoreciendo la democracia</button>
+      <button class="option-btn" onclick="answer(11,'C')"><span class="opt-letter">C</span> Para pagar menos impuestos</button>
+      <button class="option-btn" onclick="answer(11,'D')"><span class="opt-letter">D</span> Para obtener la nacionalidad chilena</button>
+    </div>
+    <div class="feedback-box" id="fb-11"></div>
+  </div>
+
+  <!-- Pregunta 12 -->
+  <div class="question-block" id="qb-12">
+    <span class="question-num">Pregunta 12</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Cuántos años debe tener una persona para poder votar en Chile?</p>
+    <div class="options" id="opts-12">
+      <button class="option-btn" onclick="answer(12,'A')"><span class="opt-letter">A</span> 16 años</button>
+      <button class="option-btn" onclick="answer(12,'B')"><span class="opt-letter">B</span> 21 años</button>
+      <button class="option-btn" onclick="answer(12,'C')"><span class="opt-letter">C</span> 18 años</button>
+      <button class="option-btn" onclick="answer(12,'D')"><span class="opt-letter">D</span> 25 años</button>
+    </div>
+    <div class="feedback-box" id="fb-12"></div>
+  </div>
+
+  <!-- Pregunta 13 -->
+  <div class="question-block" id="qb-13">
+    <span class="question-num">Pregunta 13</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Cuántos años debe llevar viviendo en Chile un extranjero para poder votar?</p>
+    <div class="options" id="opts-13">
+      <button class="option-btn" onclick="answer(13,'A')"><span class="opt-letter">A</span> 1 año</button>
+      <button class="option-btn" onclick="answer(13,'B')"><span class="opt-letter">B</span> 5 años</button>
+      <button class="option-btn" onclick="answer(13,'C')"><span class="opt-letter">C</span> 10 años</button>
+      <button class="option-btn" onclick="answer(13,'D')"><span class="opt-letter">D</span> Los extranjeros nunca pueden votar en Chile</button>
+    </div>
+    <div class="feedback-box" id="fb-13"></div>
+  </div>
+
+  <!-- Pregunta 14 VF -->
+  <div class="question-block" id="qb-14">
+    <span class="question-num">Pregunta 14</span>
+    <span class="question-type">Verdadero o Falso</span>
+    <p class="question-text">El voto en Chile es voluntario: cada persona decide si quiere votar o no.</p>
+    <div class="vf-options options" id="opts-14">
+      <button class="option-btn" onclick="answer(14,'A')"><span class="opt-letter">V</span> Verdadero</button>
+      <button class="option-btn" onclick="answer(14,'B')"><span class="opt-letter">F</span> Falso</button>
+    </div>
+    <div class="feedback-box" id="fb-14"></div>
+  </div>
+
+  <!-- Pregunta 15 VF -->
+  <div class="question-block" id="qb-15">
+    <span class="question-num">Pregunta 15</span>
+    <span class="question-type">Verdadero o Falso</span>
+    <p class="question-text">El voto es secreto porque nadie puede saber a quién votaste.</p>
+    <div class="vf-options options" id="opts-15">
+      <button class="option-btn" onclick="answer(15,'A')"><span class="opt-letter">V</span> Verdadero</button>
+      <button class="option-btn" onclick="answer(15,'B')"><span class="opt-letter">F</span> Falso</button>
+    </div>
+    <div class="feedback-box" id="fb-15"></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SECCIÓN 4: Derechos de los Niños
+     ══════════════════════════════════════════ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="section-icon icon-ninos">👧🏽</div>
+    <div>
+      <h2>4. Derechos de los Niños y las Niñas</h2>
+      <p>Convención sobre los Derechos del Niño – ONU 1989</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    👦🏽 <b>Recuerda:</b> Todos los niños y niñas tienen derechos que deben ser respetados y protegidos.<br>
+    Algunos derechos: identidad, educación, recreación, familia, alimentación saludable, salud, protección contra el trabajo infantil, participación, no discriminación y cuidados especiales.<br>
+    La <b>Convención sobre los Derechos del Niño</b> fue aprobada por la <b>ONU en 1989</b>. Chile la ratificó en <b>1990</b>.
+  </div>
+
+  <!-- Ilustración SVG Derechos -->
+  <div class="illustration">
+    <svg viewBox="0 0 340 160" xmlns="http://www.w3.org/2000/svg" width="340" height="160">
+      <!-- Derechos en círculos -->
+      <circle cx="50"  cy="70" r="35" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="50" y="60" font-size="18" text-anchor="middle">🏫</text>
+      <text x="50" y="77" font-size="8.5" font-weight="bold" fill="#92400e" text-anchor="middle">Educación</text>
+
+      <circle cx="130" cy="70" r="35" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+      <text x="130" y="60" font-size="18" text-anchor="middle">🏠</text>
+      <text x="130" y="77" font-size="8.5" font-weight="bold" fill="#1e40af" text-anchor="middle">Familia</text>
+
+      <circle cx="210" cy="70" r="35" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="210" y="60" font-size="18" text-anchor="middle">🏥</text>
+      <text x="210" y="77" font-size="8.5" font-weight="bold" fill="#166534" text-anchor="middle">Salud</text>
+
+      <circle cx="290" cy="70" r="35" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+      <text x="290" y="60" font-size="18" text-anchor="middle">⚽</text>
+      <text x="290" y="77" font-size="8.5" font-weight="bold" fill="#9d174d" text-anchor="middle">Recreación</text>
+
+      <text x="170" y="130" font-size="10" fill="#64748b" text-anchor="middle">¡Todos los niños y niñas tienen estos derechos! 💛</text>
+    </svg>
+  </div>
+
+  <!-- Pregunta 16 -->
+  <div class="question-block" id="qb-16">
+    <span class="question-num">Pregunta 16</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Cuál de los siguientes es un derecho de los niños y niñas?</p>
+    <div class="options" id="opts-16">
+      <button class="option-btn" onclick="answer(16,'A')"><span class="opt-letter">A</span> Derecho a trabajar en fábricas</button>
+      <button class="option-btn" onclick="answer(16,'B')"><span class="opt-letter">B</span> Derecho a la educación</button>
+      <button class="option-btn" onclick="answer(16,'C')"><span class="opt-letter">C</span> Derecho a no estudiar</button>
+      <button class="option-btn" onclick="answer(16,'D')"><span class="opt-letter">D</span> Derecho a votar</button>
+    </div>
+    <div class="feedback-box" id="fb-16"></div>
+  </div>
+
+  <!-- Pregunta 17 -->
+  <div class="question-block" id="qb-17">
+    <span class="question-num">Pregunta 17</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿En qué año fue aprobada la Convención sobre los Derechos del Niño por la ONU?</p>
+    <div class="options" id="opts-17">
+      <button class="option-btn" onclick="answer(17,'A')"><span class="opt-letter">A</span> 1975</button>
+      <button class="option-btn" onclick="answer(17,'B')"><span class="opt-letter">B</span> 1989</button>
+      <button class="option-btn" onclick="answer(17,'C')"><span class="opt-letter">C</span> 2000</button>
+      <button class="option-btn" onclick="answer(17,'D')"><span class="opt-letter">D</span> 1990</button>
+    </div>
+    <div class="feedback-box" id="fb-17"></div>
+  </div>
+
+  <!-- Pregunta 18 -->
+  <div class="question-block" id="qb-18">
+    <span class="question-num">Pregunta 18</span>
+    <span class="question-type">Selección múltiple</span>
+    <p class="question-text">¿Por qué es importante respetar los derechos de los niños y niñas?</p>
+    <div class="options" id="opts-18">
+      <button class="option-btn" onclick="answer(18,'A')"><span class="opt-letter">A</span> Para que los adultos tengan menos responsabilidades</button>
+      <button class="option-btn" onclick="answer(18,'B')"><span class="opt-letter">B</span> Para protegerlos de injusticias y asegurar que crezcan y se desarrollen plenamente</button>
+      <button class="option-btn" onclick="answer(18,'C')"><span class="opt-letter">C</span> Para que los niños no tengan que obedecer a sus padres</button>
+      <button class="option-btn" onclick="answer(18,'D')"><span class="opt-letter">D</span> Porque solo los niños ricos tienen derechos</button>
+    </div>
+    <div class="feedback-box" id="fb-18"></div>
+  </div>
+
+  <!-- Pregunta 19 VF -->
+  <div class="question-block" id="qb-19">
+    <span class="question-num">Pregunta 19</span>
+    <span class="question-type">Verdadero o Falso</span>
+    <p class="question-text">Solo algunos niños y niñas tienen derechos, dependiendo de su familia.</p>
+    <div class="vf-options options" id="opts-19">
+      <button class="option-btn" onclick="answer(19,'A')"><span class="opt-letter">V</span> Verdadero</button>
+      <button class="option-btn" onclick="answer(19,'B')"><span class="opt-letter">F</span> Falso</button>
+    </div>
+    <div class="feedback-box" id="fb-19"></div>
+  </div>
+
+  <!-- Pregunta 20 VF -->
+  <div class="question-block" id="qb-20">
+    <span class="question-num">Pregunta 20</span>
+    <span class="question-type">Verdadero o Falso</span>
+    <p class="question-text">Chile firmó y se comprometió a proteger los derechos de los niños al ratificar la Convención en 1990.</p>
+    <div class="vf-options options" id="opts-20">
+      <button class="option-btn" onclick="answer(20,'A')"><span class="opt-letter">V</span> Verdadero</button>
+      <button class="option-btn" onclick="answer(20,'B')"><span class="opt-letter">F</span> Falso</button>
+    </div>
+    <div class="feedback-box" id="fb-20"></div>
+  </div>
+</div>
+
+
+<!-- Botón enviar -->
+<button id="btn-submit" onclick="showResults()">Ver mis resultados 🎉</button>
+
+<!-- Panel de resultados -->
+<div id="results-panel">
+  <div id="result-score-circle" class="result-score-circle"></div>
+  <p id="result-msg"></p>
+  <div id="result-detail"></div>
+  <button id="btn-retry" onclick="retryQuiz()">🔄 Intentar de nuevo</button>
+</div>
+
+<script>
+  // ── Datos de preguntas ──────────────────────────────────────────────────
+  const QUESTIONS = {
+    1:  { correct: 'B', justOk: '¡Correcto! La Línea del Ecuador es el paralelo principal y más importante de la Tierra.', justErr: 'Incorrecto. La respuesta correcta es la Línea del Ecuador. El Meridiano de Greenwich es el meridiano principal, no un paralelo.' },
+    2:  { correct: 'B', justOk: '¡Correcto! El Ecuador divide la Tierra en hemisferio Norte y hemisferio Sur.', justErr: 'Incorrecto. El Ecuador divide la Tierra en hemisferio Norte y Sur. El Meridiano de Greenwich divide en hemisferio Este y Oeste.' },
+    3:  { correct: 'C', justOk: '¡Muy bien! Las coordenadas geográficas (latitud y longitud) permiten ubicar un punto exacto en la Tierra.', justErr: 'Incorrecto. Las coordenadas geográficas sirven para ubicar un punto exacto en la Tierra usando la latitud y la longitud, medidas en grados.' },
+    4:  { correct: 'B', justOk: '¡Correcto! Eso es falso. El Meridiano de Greenwich divide la Tierra en hemisferio Este y Oeste, no Norte y Sur.', justErr: 'Incorrecto. Es FALSO porque el Meridiano de Greenwich divide la Tierra en hemisferio Este y hemisferio Oeste. El Ecuador divide en Norte y Sur.' },
+    5:  { correct: 'A', justOk: '¡Excelente! Es verdadero: los meridianos van de polo a polo y son 360 en total.', justErr: 'Incorrecto. Es VERDADERO: los meridianos son semicírculos que van de polo a polo y en total hay 360.' },
+    6:  { correct: 'C', justOk: '¡Correcto! El Poder Legislativo elabora, aprueba y modifica las leyes.', justErr: 'Incorrecto. El Poder Legislativo es quien crea y aprueba las leyes, formado por senadores y diputados en el Congreso Nacional.' },
+    7:  { correct: 'B', justOk: '¡Muy bien! El Poder Ejecutivo está dirigido por el Presidente de la República.', justErr: 'Incorrecto. El Poder Ejecutivo es dirigido por el Presidente de la República, quien además elige a sus ministros.' },
+    8:  { correct: 'C', justOk: '¡Correcto! Los senadores y diputados trabajan en el Congreso Nacional.', justErr: 'Incorrecto. Los senadores y diputados trabajan en el Congreso Nacional, que es la sede del Poder Legislativo.' },
+    9:  { correct: 'B', justOk: '¡Correcto! Es FALSO. Los poderes del Estado existen PRECISAMENTE para que nadie tenga todo el poder y las decisiones sean más justas.', justErr: 'Incorrecto. Es FALSO. Los poderes del Estado existen para evitar que una sola persona o institución acumule todo el poder.' },
+    10: { correct: 'A', justOk: '¡Excelente! Es verdadero: el Poder Judicial aplica las leyes y administra justicia a través de jueces y tribunales.', justErr: 'Incorrecto. Es VERDADERO: el Poder Judicial aplica las leyes y administra justicia, representado por jueces en los tribunales.' },
+    11: { correct: 'B', justOk: '¡Muy bien! El voto sirve para elegir autoridades y participar en decisiones importantes, fortaleciendo la democracia.', justErr: 'Incorrecto. El voto sirve para elegir autoridades (senadores, alcaldes, etc.) y participar en decisiones importantes, favoreciendo la democracia.' },
+    12: { correct: 'C', justOk: '¡Correcto! En Chile se puede votar a partir de los 18 años.', justErr: 'Incorrecto. En Chile se puede votar a partir de los 18 años de edad.' },
+    13: { correct: 'B', justOk: '¡Muy bien! Los extranjeros residentes en Chile por al menos 5 años pueden votar.', justErr: 'Incorrecto. Los extranjeros que llevan 5 años o más de residencia en Chile sí pueden votar.' },
+    14: { correct: 'B', justOk: '¡Correcto! Es FALSO. El voto en Chile es OBLIGATORIO, no voluntario.', justErr: 'Incorrecto. Es FALSO. El voto en Chile es obligatorio, no voluntario. También es secreto y personal.' },
+    15: { correct: 'A', justOk: '¡Excelente! Es verdadero: el voto es secreto para que nadie sepa a quién votaste y puedas votar con total libertad.', justErr: 'Incorrecto. Es VERDADERO: el voto es secreto precisamente para proteger la libertad de las personas al momento de votar.' },
+    16: { correct: 'B', justOk: '¡Correcto! El derecho a la educación es uno de los derechos fundamentales de todos los niños y niñas.', justErr: 'Incorrecto. El derecho a la educación es un derecho reconocido de los niños. Los niños también tienen el derecho a ser PROTEGIDOS del trabajo infantil, no a trabajar.' },
+    17: { correct: 'B', justOk: '¡Muy bien! La Convención sobre los Derechos del Niño fue aprobada por la ONU en 1989.', justErr: 'Incorrecto. La Convención fue aprobada por la ONU en 1989. Chile la ratificó en 1990.' },
+    18: { correct: 'B', justOk: '¡Excelente! Los derechos protegen a los niños de injusticias y aseguran que crezcan y se desarrollen plenamente.', justErr: 'Incorrecto. Los derechos de los niños son importantes para protegerlos de injusticias y garantizar que puedan desarrollarse y crecer de forma plena.' },
+    19: { correct: 'B', justOk: '¡Correcto! Es FALSO. TODOS los niños y niñas tienen derechos, sin importar su familia, origen o situación.', justErr: 'Incorrecto. Es FALSO. Todos los niños y niñas tienen derechos sin excepción, sin importar su familia, origen o condición social.' },
+    20: { correct: 'A', justOk: '¡Muy bien! Es verdadero: Chile ratificó la Convención en 1990 y se comprometió a proteger los derechos de todos los niños.', justErr: 'Incorrecto. Es VERDADERO: Chile ratificó la Convención en 1990 y se comprometió a respetar y proteger los derechos de todos los niños, niñas y adolescentes.' },
+  };
+
+  const TOTAL = Object.keys(QUESTIONS).length;
+  let answered = {};
+
+  // ── Responder pregunta ──────────────────────────────────────────────────
+  function answer(qNum, chosen) {
+    if (answered[qNum] !== undefined) return;
+    answered[qNum] = chosen;
+
+    const q = QUESTIONS[qNum];
+    const isOk = chosen === q.correct;
+    const block = document.getElementById('qb-' + qNum);
+    const fb    = document.getElementById('fb-' + qNum);
+    const btns  = document.querySelectorAll('#opts-' + qNum + ' .option-btn');
+
+    // Map A/B/C/D to 0/1/2/3
+    const idx = { A:0, B:1, C:2, D:3 };
+
+    btns.forEach((btn, i) => {
+      btn.disabled = true;
+      const letter = Object.keys(idx).find(k => idx[k] === i);
+      if (letter === q.correct) btn.classList.add('correct-choice');
+      else if (letter === chosen) btn.classList.add('wrong-choice');
+    });
+
+    block.classList.add(isOk ? 'answered-correct' : 'answered-wrong');
+    fb.className = 'feedback-box show ' + (isOk ? 'ok' : 'err');
+    fb.innerHTML = '<span class="fb-icon">' + (isOk ? '✅' : '❌') + '</span>' + (isOk ? q.justOk : q.justErr);
+
+    updateProgress();
+  }
+
+  // ── Barra de progreso ──────────────────────────────────────────────────
+  function updateProgress() {
+    const done = Object.keys(answered).length;
+    const pct  = Math.round((done / TOTAL) * 100);
+    document.getElementById('progress-bar-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = done + ' / ' + TOTAL;
+    document.getElementById('progress-label').textContent = 'Progreso:';
+  }
+
+  // ── Mostrar resultados ─────────────────────────────────────────────────
+  function showResults() {
+    const unanswered = TOTAL - Object.keys(answered).length;
+    if (unanswered > 0) {
+      alert('¡Aún te faltan ' + unanswered + ' preguntas por responder! 😊');
+      return;
+    }
+
+    let score = 0;
+    for (let q in answered) {
+      if (answered[q] === QUESTIONS[q].correct) score++;
+    }
+
+    const panel  = document.getElementById('results-panel');
+    const circle = document.getElementById('result-score-circle');
+    const msg    = document.getElementById('result-msg');
+    const detail = document.getElementById('result-detail');
+
+    const pct = Math.round((score / TOTAL) * 100);
+    circle.textContent = '';
+    circle.innerHTML = score + '/' + TOTAL + '<span>' + pct + '%</span>';
+    circle.className = 'result-score-circle ' + (pct >= 70 ? (pct >= 85 ? 'score-great' : 'score-good') : 'score-low');
+
+    if      (pct >= 85) msg.textContent = '🌟 ¡Felicitaciones! ¡Excelente trabajo! Estás muy bien preparado para la prueba.';
+    else if (pct >= 70) msg.textContent = '👍 ¡Muy bien! Tienes un buen manejo del contenido. Repasa los temas donde te equivocaste.';
+    else                msg.textContent = '💪 ¡Ánimo! Repasa la guía con calma y vuelve a intentarlo. ¡Tú puedes!';
+
+    // Detalle por pregunta
+    const qLabels = {
+      1:'¿Cuál es el paralelo más importante?', 2:'¿En qué hemisferios divide el Ecuador?',
+      3:'¿Para qué sirven las coordenadas geográficas?', 4:'VF: Greenwich divide Norte-Sur',
+      5:'VF: Meridianos son 360', 6:'¿Qué poder crea las leyes?',
+      7:'¿Quién dirige el Poder Ejecutivo?', 8:'¿Dónde trabajan senadores y diputados?',
+      9:'VF: Poderes existen para dar todo el poder a una persona', 10:'VF: El Judicial aplica leyes',
+      11:'¿Para qué sirve el voto?', 12:'¿A qué edad se puede votar?',
+      13:'¿Cuántos años de residencia necesita un extranjero para votar?', 14:'VF: El voto es voluntario',
+      15:'VF: El voto es secreto', 16:'¿Cuál es un derecho de los niños?',
+      17:'¿En qué año aprobó la ONU la Convención?', 18:'¿Por qué son importantes los derechos?',
+      19:'VF: Solo algunos niños tienen derechos', 20:'VF: Chile ratificó la Convención en 1990'
+    };
+
+    let html = '';
+    for (let q = 1; q <= TOTAL; q++) {
+      const ok = answered[q] === QUESTIONS[q].correct;
+      const just = ok ? QUESTIONS[q].justOk : QUESTIONS[q].justErr;
+      html += `
+        <div class="res-item">
+          <div class="res-icon">${ok ? '✅' : '❌'}</div>
+          <div>
+            <div class="res-q">Pregunta ${q}: ${qLabels[q]}</div>
+            <div class="res-just">${just}</div>
+          </div>
+        </div>`;
+    }
+    detail.innerHTML = html;
+
+    panel.classList.add('show');
+    document.getElementById('btn-submit').disabled = true;
+    panel.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── Reiniciar ──────────────────────────────────────────────────────────
+  function retryQuiz() {
+    answered = {};
+    document.getElementById('results-panel').classList.remove('show');
+    document.getElementById('btn-submit').disabled = false;
+    document.getElementById('progress-bar-fill').style.width = '0%';
+    document.getElementById('progress-pct').textContent = '0 / ' + TOTAL;
+
+    for (let q = 1; q <= TOTAL; q++) {
+      const block = document.getElementById('qb-' + q);
+      const fb    = document.getElementById('fb-' + q);
+      block.classList.remove('answered-correct', 'answered-wrong');
+      fb.className = 'feedback-box';
+      fb.textContent = '';
+      document.querySelectorAll('#opts-' + q + ' .option-btn').forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove('correct-choice', 'wrong-choice');
+      });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
