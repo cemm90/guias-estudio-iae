@@ -1,1 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Interactive English study guide for Unit 5, 4th grade: school places, asking for directions, object pronouns, must and must not, and going to school, with flashcards, matching and memory games.">
+<meta name="curso" content="4° Básico">
+<meta name="asignatura" content="Inglés">
+<meta name="unidad" content="Unit 5 · School Life">
+<meta name="semestre" content="Segundo Semestre">
+<meta name="theme-color" content="#6C4EE3">
+<meta property="og:type" content="website">
+<meta property="og:title" content="School Life Quest — English Unit 5 Study Guide">
+<meta property="og:description" content="Interactive English study guide for Unit 5, 4th grade: school places, asking for directions, object pronouns, must and must not, and going to school, with flashcards, matching and memory games.">
+<meta property="og:locale" content="en_US">
+<title>School Life Quest — English Unit 5 Study Guide</title>
+<style>
+:root{
+  --purple:#6C4EE3;
+  --purple-dark:#4E33B0;
+  --pink:#FF5DA2;
+  --blue:#2FB8E0;
+  --yellow:#FFC93C;
+  --green:#3ECF8E;
+  --red:#FF6B6B;
+  --bg1:#F4F1FF;
+  --bg2:#FFFFFF;
+  --text:#2B2A4C;
+  --muted:#8785A6;
+  --radius:20px;
+  --shadow: 0 8px 24px rgba(76,50,180,0.18);
+  --shadow-sm: 0 4px 10px rgba(76,50,180,0.12);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Segoe UI', Verdana, Tahoma, sans-serif;
+  background:linear-gradient(160deg,#EFEBFF 0%,#F9F6FF 45%,#EAF7FF 100%);
+  color:var(--text);
+  min-height:100vh;
+  padding:16px;
+}
+.app{max-width:960px;margin:0 auto;}
+button{font-family:inherit;cursor:pointer;border:none;outline:none;}
+button:focus-visible, .clickable:focus-visible{outline:3px solid var(--blue); outline-offset:2px;}
+.hidden{display:none !important;}
 
+/* ---------- TOP BAR ---------- */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#fff;border-radius:16px;padding:10px 18px;
+  box-shadow:var(--shadow-sm);margin-bottom:16px;flex-wrap:wrap;gap:8px;
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--purple-dark);font-size:1.05rem;}
+.brand .emoji{font-size:1.6rem;}
+.stats{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.stat-pill{
+  display:flex;align-items:center;gap:6px;background:var(--bg1);
+  padding:6px 12px;border-radius:999px;font-weight:700;font-size:0.85rem;color:var(--purple-dark);
+}
+.progress-outer{
+  width:100%;background:#EDE9FB;border-radius:999px;height:14px;overflow:hidden;margin-top:4px;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,0.08);
+}
+.progress-inner{
+  height:100%;background:linear-gradient(90deg,var(--pink),var(--purple));
+  border-radius:999px;transition:width .5s ease;
+}
+
+/* ---------- CARD / SCREEN ---------- */
+.screen{
+  background:var(--bg2);border-radius:var(--radius);padding:28px;
+  box-shadow:var(--shadow);animation:fadeIn .4s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+h1{font-size:1.8rem;margin:0 0 6px;color:var(--purple-dark);}
+h2{font-size:1.4rem;margin:0 0 10px;color:var(--purple-dark);}
+h3{margin:0 0 8px;color:var(--purple-dark);}
+p{line-height:1.5;}
+
+/* ---------- WELCOME ---------- */
+.welcome-hero{text-align:center;padding:10px 0 20px;}
+.welcome-hero .big-emoji{font-size:4rem;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;font-weight:800;font-size:1rem;
+  padding:14px 28px;border-radius:999px;box-shadow:0 6px 16px rgba(255,93,162,0.35);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 22px rgba(255,93,162,0.45);}
+.btn:active{transform:translateY(0) scale(0.98);}
+.btn.secondary{background:linear-gradient(135deg,var(--blue),var(--purple));box-shadow:0 6px 16px rgba(47,184,224,0.3);}
+.btn.ghost{background:#EDE9FB;color:var(--purple-dark);box-shadow:none;}
+.btn.small{padding:9px 18px;font-size:0.9rem;}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
+
+.info-box{
+  background:var(--bg1);border-radius:14px;padding:14px 18px;margin:14px 0;
+  border-left:5px solid var(--purple);
+}
+.info-box.tip{border-left-color:var(--yellow);background:#FFF9E9;}
+
+/* ---------- LEVEL MAP ---------- */
+.level-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+.level-card{
+  background:linear-gradient(160deg,#fff,#F7F4FF);
+  border-radius:18px;padding:18px;box-shadow:var(--shadow-sm);
+  border:2px solid transparent;transition:transform .15s ease, border-color .15s;
+  cursor:pointer;position:relative;
+}
+.level-card:hover{transform:translateY(-3px);border-color:var(--purple);}
+.level-card.locked{opacity:0.55;cursor:not-allowed;}
+.level-card.locked:hover{transform:none;border-color:transparent;}
+.level-card .icon{font-size:2.4rem;}
+.level-card .stars{font-size:1.1rem;margin-top:6px;letter-spacing:2px;}
+.level-card .topic-tag{
+  display:inline-block;background:var(--bg1);color:var(--purple-dark);
+  font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:999px;margin-top:6px;
+}
+.level-card .lock-emoji{position:absolute;top:14px;right:16px;font-size:1.3rem;}
+
+/* ---------- FLASHCARDS ---------- */
+.flash-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:10px;}
+.flashcard{
+  width:100%;max-width:420px;height:230px;perspective:1200px;
+}
+.flashcard-inner{
+  position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;
+  cursor:pointer;border-radius:18px;
+}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+.flashcard-face{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;
+  box-shadow:var(--shadow-sm);font-weight:700;font-size:1.3rem;
+}
+.flashcard-front{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;}
+.flashcard-back{background:linear-gradient(135deg,var(--blue),var(--green));color:#fff;transform:rotateY(180deg);font-size:1.05rem;font-weight:600;}
+.flash-controls{display:flex;gap:10px;align-items:center;}
+.flash-counter{font-weight:700;color:var(--muted);}
+
+/* ---------- QUIZ ---------- */
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.question-text{font-size:1.15rem;font-weight:700;margin:12px 0 18px;}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:560px){.options{grid-template-columns:1fr;}}
+.option{
+  background:var(--bg1);border-radius:14px;padding:14px 16px;font-weight:700;font-size:1rem;
+  text-align:left;transition:background .15s, transform .1s;border:2px solid transparent;
+}
+.option:hover{background:#E4DEFF;transform:translateY(-1px);}
+.option.correct{background:#D6F7E7;border-color:var(--green);color:#146C43;}
+.option.incorrect{background:#FFE0E0;border-color:var(--red);color:#A32020;}
+.tf-options{display:flex;gap:16px;}
+.tf-options .option{flex:1;text-align:center;font-size:1.1rem;}
+
+.feedback{margin-top:14px;padding:12px 16px;border-radius:12px;font-weight:700;display:flex;gap:10px;align-items:center;}
+.feedback.good{background:#D6F7E7;color:#146C43;}
+.feedback.bad{background:#FFE7E7;color:#A32020;}
+.feedback .explain{font-weight:500;display:block;margin-top:4px;}
+
+.fill-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px;}
+.fill-row input{
+  flex:1;min-width:160px;padding:12px 14px;border-radius:12px;border:2px solid #DCD5F7;
+  font-size:1rem;font-weight:700;color:var(--purple-dark);
+}
+.fill-row input:focus{border-color:var(--purple);}
+
+.quiz-footer{display:flex;justify-content:space-between;margin-top:20px;align-items:center;}
+
+/* ---------- MATCH ---------- */
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:12px;}
+@media(max-width:560px){.match-wrap{grid-template-columns:1fr;}}
+.match-col{display:flex;flex-direction:column;gap:10px;}
+.match-item{
+  background:var(--bg1);border-radius:12px;padding:12px 14px;font-weight:700;
+  border:2px solid transparent;transition:all .15s;text-align:left;
+}
+.match-item.selected{border-color:var(--purple);background:#E4DEFF;}
+.match-item.matched{background:#D6F7E7;border-color:var(--green);color:#146C43;cursor:default;}
+.match-item.wrong-flash{background:#FFE0E0;border-color:var(--red);}
+
+/* ---------- ORDER ---------- */
+.order-pool{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.order-chip{
+  background:var(--bg1);border-radius:12px;padding:10px 14px;font-weight:700;
+  border:2px solid transparent;
+}
+.order-chip.picked{opacity:0.35;}
+.order-slots{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.order-slot{
+  min-height:44px;border:2px dashed #CBC0F5;border-radius:12px;padding:10px 14px;
+  display:flex;align-items:center;font-weight:700;color:var(--purple-dark);background:#FBFAFF;
+}
+.order-slot.filled{border-style:solid;border-color:var(--purple);background:#EFE9FF;}
+
+/* ---------- MEMORY ---------- */
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;}
+@media(max-width:480px){.memory-grid{grid-template-columns:repeat(3,1fr);}}
+.memory-card{
+  aspect-ratio:1/1;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;
+  font-size:0.85rem;text-align:center;padding:6px;cursor:pointer;box-shadow:var(--shadow-sm);
+  transition:transform .15s;
+}
+.memory-card.flipped, .memory-card.matched{background:#fff;color:var(--purple-dark);border:2px solid var(--purple);}
+.memory-card.matched{background:#D6F7E7;border-color:var(--green);color:#146C43;cursor:default;}
+.memory-card.hidden-text{color:transparent;}
+
+/* ---------- LEVEL COMPLETE ---------- */
+.complete-wrap{text-align:center;}
+.complete-wrap .trophy{font-size:4.2rem;}
+.stars-big{font-size:2.4rem;letter-spacing:8px;margin:10px 0;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:18px 0;}
+.summary-item{background:var(--bg1);border-radius:14px;padding:14px;}
+.summary-item .num{font-size:1.5rem;font-weight:800;color:var(--purple-dark);}
+.summary-item .lbl{font-size:0.8rem;color:var(--muted);font-weight:700;}
+
+/* ---------- FINAL RESULTS ---------- */
+.medal-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;}
+.medal{background:var(--bg1);border-radius:14px;padding:10px 16px;font-weight:700;font-size:0.9rem;}
+
+.toast{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  background:var(--purple-dark);color:#fff;padding:10px 20px;border-radius:999px;
+  font-weight:700;box-shadow:var(--shadow);z-index:999;animation:toastIn .3s ease;
+}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,-10px);}to{opacity:1;transform:translate(-50%,0);}}
+
+.timer-pill{background:var(--red);color:#fff;font-weight:800;padding:6px 14px;border-radius:999px;}
+
+.act-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.act-nav .dot{width:10px;height:10px;border-radius:50%;background:#DCD5F7;}
+.act-nav .dot.active{background:var(--purple);}
+.act-nav .dot.done{background:var(--green);}
+footer.credit{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar" id="topbar">
+    <div class="brand"><span class="emoji">🏫</span> School Life Quest</div>
+    <div class="stats">
+      <div class="stat-pill">⭐ <span id="xpVal">0</span> XP</div>
+      <div class="stat-pill">🔥 <span id="streakVal">0</span> streak</div>
+      <div class="stat-pill">🏅 <span id="starsVal">0</span>/18 stars</div>
+    </div>
+  </div>
+
+  <div id="root"></div>
+
+  <footer class="credit">Unit 5 · School Life — Interactive Study Guide · Prueba Inglés 1</footer>
+</div>
+
+<script>
+/* =========================================================
+   DATA
+========================================================= */
+const TOPICS = [
+{
+  id:1, key:'places', icon:'🏫', levelName:'School Explorer', topic:'School Places',
+  explanation:"In this unit you'll learn the names of important places in a school, like the library, gym, and cafeteria. Knowing these words helps you find your way around and talk about your own school!",
+  summary:"Places in school: music room, art room, computer room, cafeteria, hallway, teachers' lounge, gym, field, and library.",
+  example:"“We have a library. We don't have an art room.”",
+  funFact:"💡 Fun fact: In some countries, the cafeteria is also called the “canteen” or “dining hall”!",
+  flashcards:[
+    ["Music room","A room where students play instruments and learn music."],
+    ["Art room","A room where students paint, draw, and create art."],
+    ["Computer room","A room with computers for schoolwork."],
+    ["Cafeteria","The place where students eat lunch."],
+    ["Hallway","The long path that connects the classrooms."],
+    ["Teachers' lounge","A room where teachers rest and work."],
+    ["Gym","A room for sports and exercise."],
+    ["Field","The outdoor grass area for sports and games."],
+    ["Library","The place with many books where students can read."]
+  ],
+  mc:[
+    ["Where do students go to eat lunch?",["Gym","Cafeteria","Hallway","Art room"],1,"The cafeteria is the place where students eat lunch."],
+    ["Where do students play instruments?",["Music room","Field","Library","Hallway"],0,"The music room is where students play instruments and learn music."],
+    ["Which place has computers for schoolwork?",["Teachers' lounge","Computer room","Gym","Art room"],1,"The computer room has computers for schoolwork."],
+    ["Where do students play soccer outside?",["Hallway","Field","Cafeteria","Library"],1,"The field is the outdoor area for sports and games."],
+    ["Which room do teachers use to rest?",["Teachers' lounge","Gym","Art room","Field"],0,"Teachers rest and work in the teachers' lounge."],
+    ["Where do students paint and draw?",["Art room","Music room","Cafeteria","Gym"],0,"The art room is where students paint and draw."],
+    ["What connects all the classrooms?",["Field","Hallway","Library","Gym"],1,"The hallway is the path that connects classrooms."],
+    ["Where can you borrow books to read?",["Library","Cafeteria","Field","Computer room"],0,"The library has many books to borrow and read."]
+  ],
+  tf:[
+    ["The gym is where students play sports and exercise.",true,"Yes! The gym is used for sports and exercise."],
+    ["The library is where students eat lunch.",false,"The library is for reading books — students eat in the cafeteria."],
+    ["The hallway connects the classrooms.",true,"Correct, the hallway is the path between classrooms."],
+    ["Teachers rest in the field.",false,"Teachers rest in the teachers' lounge, not the field."],
+    ["The art room is where students paint and draw.",true,"That's right, the art room is for painting and drawing."],
+    ["The computer room has books for reading.",false,"Books for reading are in the library, not the computer room."]
+  ],
+  fill:[
+    ["Can I help you? I'm looking for the ___ (the place with computers).","computer room"],
+    ["You must be quiet in the ___ (the place with books).","library"],
+    ["We eat lunch in the ___.","cafeteria"],
+    ["Students play soccer on the ___.","field"]
+  ],
+  match:[
+    ["Music room","play instruments"],
+    ["Art room","paint and draw"],
+    ["Computer room","use computers"],
+    ["Cafeteria","eat lunch"],
+    ["Hallway","walk between classes"],
+    ["Teachers' lounge","teachers rest"],
+    ["Gym","play sports inside"],
+    ["Field","play sports outside"]
+  ]
+},
+{
+  id:2, key:'directions', icon:'🧭', levelName:'Direction Guide', topic:'Asking for Directions',
+  explanation:"Sometimes people get lost at school! You can offer help using polite questions, and give directions using simple phrases like ‘on the left’ or ‘straight ahead’.",
+  summary:"Offer help: “Can I help you? Are you lost?” Ask for a place: “I'm looking for...” Give directions: “It's over there. On the left. On the right. Straight ahead.”",
+  example:"“Can I help you? Are you lost? I'm looking for the gym. It's over there. On the right.”",
+  funFact:"💡 Many schools put maps and signs in the hallways to help new students find their way!",
+  flashcards:[
+    ["Can I help you?","A polite way to offer help to someone."],
+    ["Are you lost?","Ask this if someone looks confused about where to go."],
+    ["I'm looking for...","Use this to say what place you want to find."],
+    ["It's over there.","Use this to point to a place."],
+    ["On the left. / On the right.","Use this to say which side a place is on."],
+    ["Straight ahead.","Use this to say a place is directly in front of you."]
+  ],
+  mc:[
+    ["What do you say to offer help to someone who looks lost?",["Great, thanks!","Can I help you?","It's over there.","I like it."],1,"“Can I help you?” is a polite way to offer help."],
+    ["Someone says “I'm looking for the cafeteria.” What's a good reply?",["Are you lost?","It's over there. On the right.","Nice to meet you.","We have a library."],1,"You reply with directions, like “It's over there. On the right.”"],
+    ["Which phrase points to something directly in front of you?",["On the left","On the right","Straight ahead","Over there"],2,"“Straight ahead” means directly in front."],
+    ["Complete: “Yes. I'm looking for the ___.”",["find","cafeteria","helping","lost"],1,"“I'm looking for the cafeteria” names the place you want to find."],
+    ["What do you say when someone helps you find a place?",["Are you lost?","Great. Thanks!","Can I help you?","Straight ahead."],1,"“Great. Thanks!” shows you're grateful for the help."],
+    ["Which question asks if a person doesn't know where to go?",["Can I help you?","Are you lost?","Straight ahead?","Over there?"],1,"“Are you lost?” checks if someone needs directions."],
+    ["“It's over there. On the ___.” (place is to the right)",["left","right","ahead","lost"],1,"We say “On the right” when a place is on the right side."],
+    ["What do new students often need help with at school?",["Finding places","Eating lunch","Playing games","Singing songs"],0,"New students often need help finding places like the gym or cafeteria."]
+  ],
+  tf:[
+    ["“Are you lost?” is a question you ask to help someone.",true,"Yes, it's a caring question to offer help."],
+    ["“Straight ahead” means the place is behind you.",false,"“Straight ahead” means the place is directly in front of you."],
+    ["“On the left” and “On the right” describe directions.",true,"Correct, they tell you which side a place is on."],
+    ["“Great, thanks!” is a rude way to say goodbye.",false,"“Great, thanks!” is a polite way to say thank you."],
+    ["“I'm looking for the gym” means you want to find the gym.",true,"That's right — it means you're searching for the gym."],
+    ["You should never help a new student who looks lost.",false,"You should always try to help someone who looks lost."]
+  ],
+  fill:[
+    ["___ I help you? Are you lost?","can"],
+    ["I'm looking ___ the gym.","for"],
+    ["It's over there. On the ___ (pointing right).","right"],
+    ["Great. ___!","thanks"]
+  ],
+  match:[
+    ["Can I help you? Are you lost?","Yes. I'm looking for the cafeteria."],
+    ["It's over there. On the right.","Great. Thanks!"],
+    ["Are you lost?","Yes, I can't find the gym."],
+    ["I'm looking for the library.","It's straight ahead."]
+  ],
+  order:{
+    instructions:"Put Maria and Jim's conversation in the correct order.",
+    lines:["Can I help you? Are you lost?","Yes. I'm looking for the cafeteria.","It's over there. On the right.","Great. Thanks!"]
+  }
+},
+{
+  id:3, key:'pronouns', icon:'🤝', levelName:'Pronoun Helper', topic:'Object Pronouns',
+  explanation:"The object of a sentence can be replaced by a pronoun. Instead of repeating a name, we use words like ‘him’, ‘her’, ‘it’, ‘us’, or ‘them’.",
+  summary:"I → me, you → you, he → him, she → her, it → it, we → us, they → them.",
+  example:"“The woman was lost. They helped her. I can help you. Come with me.”",
+  funFact:"💡 ‘You’ and ‘it’ stay exactly the same whether they are the subject or the object of a sentence!",
+  flashcards:[
+    ["I","Object pronoun: me"],
+    ["you","Object pronoun: you"],
+    ["he","Object pronoun: him"],
+    ["she","Object pronoun: her"],
+    ["it","Object pronoun: it"],
+    ["we","Object pronoun: us"],
+    ["they","Object pronoun: them"]
+  ],
+  mc:[
+    ["The woman was lost. They helped ___.",["she","her","it","them"],1,"We use ‘her’ as the object pronoun for ‘she’."],
+    ["I can help you. Come with ___.",["I","me","my","you"],1,"‘Me’ is the object pronoun for ‘I’."],
+    ["Where's the teachers' lounge? I can't find ___.",["it","him","her","them"],0,"‘It’ replaces ‘the teachers' lounge’."],
+    ["Let's sit with ___. (Andy and Max)",["him","it","them","her"],2,"‘Them’ is used for more than one person."],
+    ["Do you want to sit with ___? (we)",["us","we","our","them"],0,"‘Us’ is the object pronoun for ‘we’."],
+    ["Can you please help ___? (Maria talking about herself)",["I","me","my","mine"],1,"‘Me’ is the object pronoun for ‘I’."],
+    ["Would you like to meet ___? (Mr. Green)",["he","his","him","it"],2,"‘Him’ is the object pronoun for ‘he’."],
+    ["They helped ___. (Anna and me)",["we","us","our","I"],1,"‘Us’ replaces ‘Anna and me’."]
+  ],
+  tf:[
+    ["The object pronoun for ‘he’ is ‘him’.",true,"Correct! he → him."],
+    ["The object pronoun for ‘they’ is ‘they’.",false,"The object pronoun for ‘they’ is ‘them’."],
+    ["‘It’ is the same word for subject and object.",true,"Yes, ‘it’ doesn't change."],
+    ["The object pronoun for ‘we’ is ‘them’.",false,"The object pronoun for ‘we’ is ‘us’."],
+    ["‘Me’ is the object pronoun for ‘I’.",true,"That's right, I → me."],
+    ["The object pronoun for ‘she’ is ‘hers’.",false,"The object pronoun for ‘she’ is ‘her’, not ‘hers’."]
+  ],
+  fill:[
+    ["I couldn't find ___ (the cafeteria).","it"],
+    ["I didn't want to ask ___ (the students).","them"],
+    ["They helped ___ (Anna and me).","us"],
+    ["Anna sits next to ___ (Lily).","me"]
+  ],
+  match:[
+    ["I","me"],
+    ["you","you"],
+    ["he","him"],
+    ["she","her"],
+    ["it","it"],
+    ["we","us"],
+    ["they","them"]
+  ],
+  memory:[
+    ["I","me"],["he","him"],["she","her"],["we","us"],["they","them"],["it","it"]
+  ]
+},
+{
+  id:4, key:'must', icon:'📜', levelName:'Rule Master', topic:'Must and Must Not',
+  explanation:"We use ‘must’ to say something is necessary or a rule we have to follow. We use ‘must not’ to say something is not allowed.",
+  summary:"We must walk inside. We must not shout. We must be quiet. We must not run inside.",
+  example:"“You must share. You must not shout.”",
+  funFact:"💡 ‘Must not’ is often shortened to ‘mustn't’ in spoken English!",
+  flashcards:[
+    ["We must walk inside.","It's a rule: walking (not running) is required inside."],
+    ["We must not shout.","It's a rule: shouting is not allowed."],
+    ["We must be quiet inside.","It's a rule: being quiet is required inside."],
+    ["We must not run inside.","It's a rule: running is not allowed inside."],
+    ["You must share.","It's a rule: sharing with others is required."],
+    ["You must be kind.","It's a rule: being kind to others is required."]
+  ],
+  mc:[
+    ["Which sentence is correct?",["We must not walk inside.","We must walk inside.","We walk must inside.","Must we inside."],1,"‘We must walk inside’ is the correct word order."],
+    ["Which word tells you NOT to do something?",["must","must not","can","do"],1,"‘Must not’ shows something is not allowed."],
+    ["You ___ shout. (not allowed)",["must","must not","can","do"],1,"Shouting is not allowed, so we use ‘must not’."],
+    ["You ___ share. (required)",["must","must not","don't","won't"],0,"Sharing is required, so we use ‘must’."],
+    ["We ___ run inside. (not allowed)",["must","must not","can","will"],1,"Running inside is not allowed, so we use ‘must not’."],
+    ["You ___ be on time. (required)",["must","must not","never","can't"],0,"Being on time is required, so we use ‘must’."],
+    ["What does ‘must not’ mean?",["It's allowed","It's necessary","It's not allowed","It's optional"],2,"‘Must not’ means something is not allowed."],
+    ["You ___ be kind. (required)",["must","must not","mustn't","can't"],0,"Being kind is required, so we use ‘must’."]
+  ],
+  tf:[
+    ["‘Must’ means something is a rule you have to follow.",true,"Correct! ‘Must’ shows something is required."],
+    ["‘Must not’ means you have to do something.",false,"‘Must not’ means something is NOT allowed."],
+    ["‘We must not run inside’ means running inside is allowed.",false,"It actually means running inside is NOT allowed."],
+    ["‘You must share’ means sharing is required.",true,"Yes, sharing is a required rule."],
+    ["‘You must be on time’ is a rule about punctuality.",true,"Correct, it means you must arrive on time."],
+    ["‘Must not’ and ‘must’ mean the same thing.",false,"They are opposites: one is required, the other is not allowed."]
+  ],
+  fill:[
+    ["You ___ shout. (not allowed)","must not"],
+    ["You ___ share. (required)","must"],
+    ["You ___ run. (not allowed)","must not"],
+    ["You ___ be kind. (required)","must"]
+  ],
+  match:[
+    ["We must not shout.","Shouting is not allowed."],
+    ["We must share.","Sharing is required."],
+    ["We must not run inside.","Running inside is not allowed."],
+    ["We must be on time.","Being on time is required."]
+  ]
+},
+{
+  id:5, key:'transport', icon:'🚌', levelName:'Transportation Expert', topic:'Going to School',
+  explanation:"Students go to school in different ways! Let's learn how to talk about how you get to school, just like Lewis from Canada.",
+  summary:"on foot, by school bus, by car, on public transportation. Ask: “How do you go to school?” Answer: “I usually go to school by car.”",
+  example:"“How do you go to school? I usually go to school by car. How about you?”",
+  funFact:"💡 In Canada and Switzerland, many students travel to school by school bus or public transportation!",
+  flashcards:[
+    ["on foot","walking to school"],
+    ["by school bus","riding a yellow school bus to school"],
+    ["by car","traveling to school in a car"],
+    ["on public transportation","using a bus, tram, or train that anyone can ride"]
+  ],
+  mc:[
+    ["How do you say “walking to school” in English?",["by car","on foot","by bus","on public transportation"],1,"‘On foot’ means walking."],
+    ["A big yellow vehicle that takes many students to school is a...",["car","school bus","tram","bike"],1,"That's the school bus!"],
+    ["Which is an example of “public transportation”?",["your family's car","a city tram","walking","a bicycle"],1,"A tram that anyone can ride is public transportation."],
+    ["“How do you go to school?” is a question about...",["food","transportation","rules","places"],1,"It asks about the way you travel to school."],
+    ["I usually go to school ___ car.",["on","by","at","in"],1,"We say ‘by car’ for transportation."],
+    ["Which country is mentioned along with Canada for school transportation?",["Mexico","Switzerland","Brazil","Japan"],1,"Switzerland is the other country mentioned."]
+  ],
+  tf:[
+    ["‘On foot’ means walking.",true,"Correct, ‘on foot’ means walking."],
+    ["A school bus is a type of car.",false,"A school bus is its own vehicle, different from a car."],
+    ["A tram is an example of public transportation.",true,"Yes, trams are public transportation."],
+    ["‘By car’ means traveling on foot.",false,"‘By car’ means traveling inside a car, not walking."],
+    ["Students around the world go to school in different ways.",true,"That's right, transportation varies by country and city."]
+  ],
+  fill:[
+    ["I usually go to school ___ car.","by"],
+    ["How do you go ___ school?","to"],
+    ["Some students go to school ___ foot.","on"]
+  ],
+  match:[
+    ["on foot","walking to school"],
+    ["by school bus","riding a yellow bus to school"],
+    ["by car","traveling in a car"],
+    ["on public transportation","riding a bus, tram, or train"]
+  ]
+}
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+const state = {
+  screen:'welcome',
+  currentTopicIndex:0,
+  activityIndex:0,
+  xp:0,
+  streak:0,
+  bestStreak:0,
+  progress:TOPICS.map(()=>({unlocked:false,stars:0,correct:0,total:0,completed:false})),
+  runtime:{}, // per-activity runtime data
+  startTime:Date.now(),
+  globalCorrect:0,
+  globalTotal:0
+};
+state.progress[0].unlocked = true;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function saveXP(n){
+  state.xp += n;
+  document.getElementById('xpVal').textContent = state.xp;
+}
+function updateStreak(correct){
+  if(correct){
+    state.streak++;
+    if(state.streak>state.bestStreak) state.bestStreak = state.streak;
+    if(state.streak>0 && state.streak%3===0){
+      saveXP(5);
+      showToast("🔥 Streak bonus! +5 XP");
+    }
+  } else {
+    state.streak = 0;
+  }
+  document.getElementById('streakVal').textContent = state.streak;
+}
+function totalStars(){
+  return state.progress.reduce((s,p)=>s+p.stars,0);
+}
+function refreshTopStats(){
+  document.getElementById('xpVal').textContent = state.xp;
+  document.getElementById('streakVal').textContent = state.streak;
+  document.getElementById('starsVal').textContent = totalStars();
+}
+function showToast(msg){
+  const t=document.createElement('div');
+  t.className='toast';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),1600);
+}
+
+/* =========================================================
+   RENDER ROOT ROUTER
+========================================================= */
+const root = document.getElementById('root');
+
+function render(){
+  refreshTopStats();
+  root.innerHTML='';
+  if(state.screen==='welcome') renderWelcome();
+  else if(state.screen==='map') renderMap();
+  else if(state.screen==='intro') renderIntro();
+  else if(state.screen==='activity') renderActivity();
+  else if(state.screen==='levelComplete') renderLevelComplete();
+  else if(state.screen==='final') renderFinal();
+}
+
+/* ---------------- WELCOME ---------------- */
+function renderWelcome(){
+  const div=document.createElement('div');
+  div.className='screen welcome-hero';
+  div.innerHTML=`
+    <div class="big-emoji">🏫🌟</div>
+    <h1>School Life Quest</h1>
+    <p style="max-width:520px;margin:0 auto 14px;color:var(--muted);font-weight:600;">
+      Get ready for your English test on Unit 5: <strong>School Life</strong>! Explore school places,
+      learn to give directions, master object pronouns, discover school rules, and talk about how you get to school.
+    </p>
+    <div class="info-box tip" style="text-align:left;max-width:520px;margin:16px auto;">
+      🎓 <strong>How it works:</strong> Complete each level to earn XP and stars. Learn with flashcards,
+      then test yourself with quizzes, matching games, and more. Finish all 5 levels to unlock the
+      <strong>Final Challenge</strong>!
+    </div>
+    <button class="btn" id="startBtn">🚀 Start the Quest</button>
+  `;
+  root.appendChild(div);
+  document.getElementById('startBtn').addEventListener('click',()=>{
+    state.screen='map';
+    render();
+  });
+}
+
+/* ---------------- LEVEL MAP ---------------- */
+function renderMap(){
+  const div=document.createElement('div');
+  div.className='screen';
+  const doneCount = state.progress.filter(p=>p.completed).length;
+  const pct = Math.round((doneCount/TOPICS.length)*100);
+  div.innerHTML=`
+    <h2>🗺️ Choose Your Level</h2>
+    <p style="color:var(--muted);font-weight:600;margin-top:-6px;">Complete all 5 levels to unlock the Final Challenge.</p>
+    <div class="progress-outer"><div class="progress-inner" style="width:${pct}%"></div></div>
+    <div class="level-grid" id="levelGrid"></div>
+  `;
+  root.appendChild(div);
+  const grid = div.querySelector('#levelGrid');
+
+  TOPICS.forEach((t,i)=>{
+    const p = state.progress[i];
+    const card=document.createElement('div');
+    card.className='level-card'+(p.unlocked?'':' locked');
+    card.innerHTML=`
+      ${p.unlocked?'':'<div class="lock-emoji">🔒</div>'}
+      <div class="icon">${t.icon}</div>
+      <h3 style="margin-top:8px;">Level ${i+1}: ${t.levelName}</h3>
+      <div class="topic-tag">${t.topic}</div>
+      <div class="stars">${starString(p.stars)}</div>
+    `;
+    if(p.unlocked){
+      card.addEventListener('click',()=>{
+        state.currentTopicIndex=i;
+        state.activityIndex=0;
+        state.runtime={};
+        state.screen='intro';
+        render();
+      });
+    }
+    grid.appendChild(card);
+  });
+
+  // Final challenge card
+  const allDone = state.progress.every(p=>p.completed);
+  const finalCard=document.createElement('div');
+  finalCard.className='level-card'+(allDone?'':' locked');
+  finalCard.innerHTML=`
+    ${allDone?'':'<div class="lock-emoji">🔒</div>'}
+    <div class="icon">🏆</div>
+    <h3 style="margin-top:8px;">Final Challenge</h3>
+    <div class="topic-tag">Mixed Review</div>
+    <div class="stars">${starString(state.finalStars||0)}</div>
+  `;
+  if(allDone){
+    finalCard.addEventListener('click',()=>{
+      startFinalChallenge();
+    });
+  }
+  grid.appendChild(finalCard);
+}
+
+function starString(n){
+  let s='';
+  for(let i=0;i<3;i++) s+= i<n ? '⭐' : '☆';
+  return s;
+}
+
+/* ---------------- INTRO ---------------- */
+function renderIntro(){
+  const t = TOPICS[state.currentTopicIndex];
+  const div=document.createElement('div');
+  div.className='screen';
+  div.innerHTML=`
+    <div style="font-size:2.4rem;">${t.icon}</div>
+    <h2>Level ${state.currentTopicIndex+1}: ${t.levelName}</h2>
+    <p><strong>Topic:</strong> ${t.topic}</p>
+    <p>${t.explanation}</p>
+    <div class="info-box"><strong>Quick summary:</strong> ${t.summary}</div>
+    <div class="info-box"><strong>Example:</strong> ${t.example}</div>
+    <div class="info-box tip">${t.funFact}</div>
+    <button class="btn" id="beginBtn">Let's Practice ➡️</button>
+    <button class="btn ghost small" id="backMapBtn" style="margin-left:10px;">← Back to Map</button>
+  `;
+  root.appendChild(div);
+  document.getElementById('beginBtn').addEventListener('click',()=>{
+    buildActivityQueue(t);
+    state.screen='activity';
+    state.activityIndex=0;
+    render();
+  });
+  document.getElementById('backMapBtn').addEventListener('click',()=>{
+    state.screen='map';
+    render();
+  });
+}
+
+/* ---------------- BUILD ACTIVITY QUEUE ---------------- */
+function buildActivityQueue(t){
+  const queue=[{type:'flashcards'}];
+  if(t.mc) queue.push({type:'quiz', mode:'mc'});
+  if(t.tf) queue.push({type:'quiz', mode:'tf'});
+  if(t.fill) queue.push({type:'quiz', mode:'fill'});
+  if(t.match) queue.push({type:'match'});
+  if(t.order) queue.push({type:'order'});
+  if(t.memory) queue.push({type:'memory'});
+  state.runtime.queue = queue;
+  state.runtime.levelCorrect = 0;
+  state.runtime.levelTotal = 0;
+}
+
+/* ---------------- ACTIVITY ROUTER ---------------- */
+function renderActivity(){
+  const t = TOPICS[state.currentTopicIndex];
+  const queue = state.runtime.queue;
+  const act = queue[state.activityIndex];
+
+  const wrap=document.createElement('div');
+  wrap.className='screen';
+  const nav=document.createElement('div');
+  nav.className='act-nav';
+  queue.forEach((a,i)=>{
+    const d=document.createElement('span');
+    d.className='dot'+(i===state.activityIndex?' active':(i<state.activityIndex?' done':''));
+    nav.appendChild(d);
+  });
+  wrap.appendChild(nav);
+
+  const body=document.createElement('div');
+  body.id='activityBody';
+  wrap.appendChild(body);
+  root.appendChild(wrap);
+
+  if(act.type==='flashcards') renderFlashcards(t, body);
+  else if(act.type==='quiz') renderQuiz(t, act.mode, body, ()=>advanceActivity());
+  else if(act.type==='match') renderMatch(t, body, ()=>advanceActivity());
+  else if(act.type==='order') renderOrder(t, body, ()=>advanceActivity());
+  else if(act.type==='memory') renderMemory(t, body, ()=>advanceActivity());
+}
+
+function advanceActivity(){
+  state.activityIndex++;
+  if(state.activityIndex>=state.runtime.queue.length){
+    finishLevel();
+  } else {
+    render();
+  }
+}
+
+function finishLevel(){
+  const p = state.progress[state.currentTopicIndex];
+  const acc = state.runtime.levelTotal>0 ? state.runtime.levelCorrect/state.runtime.levelTotal : 1;
+  let stars = 1;
+  if(acc>=0.9) stars=3;
+  else if(acc>=0.7) stars=2;
+  else if(acc>=0.5) stars=1;
+  else stars=0;
+  p.stars = Math.max(p.stars, stars);
+  p.correct = state.runtime.levelCorrect;
+  p.total = state.runtime.levelTotal;
+  p.completed = true;
+  saveXP(25);
+  if(acc===1) saveXP(30);
+  if(state.currentTopicIndex+1 < state.progress.length){
+    state.progress[state.currentTopicIndex+1].unlocked = true;
+  }
+  state.screen='levelComplete';
+  render();
+}
+
+/* ---------------- FLASHCARDS ---------------- */
+function renderFlashcards(t, container){
+  if(!state.runtime.flashIndex) state.runtime.flashIndex=0;
+  const cards = t.flashcards;
+  const div=document.createElement('div');
+  div.innerHTML=`
+    <h3>🃏 Flashcards — Study First!</h3>
+    <p style="color:var(--muted);font-weight:600;">Tap the card to flip it. Learn all the words before the quiz.</p>
+    <div class="flash-wrap">
+      <div class="flashcard" id="fc"><div class="flashcard-inner">
+        <div class="flashcard-face flashcard-front" id="fcFront"></div>
+        <div class="flashcard-face flashcard-back" id="fcBack"></div>
+      </div></div>
+      <div class="flash-controls">
+        <button class="btn ghost small" id="prevCard">← Prev</button>
+        <span class="flash-counter" id="fcCounter"></span>
+        <button class="btn ghost small" id="nextCard">Next →</button>
+      </div>
+      <button class="btn small" id="shuffleCards">🔀 Shuffle</button>
+      <button class="btn small secondary" id="doneFlash">I'm Ready — Start Quiz ➡️</button>
+    </div>
+  `;
+  container.appendChild(div);
+
+  let order = state.runtime.flashOrder || cards.map((_,i)=>i);
+  state.runtime.flashOrder = order;
+
+  function paint(){
+    const idx = order[state.runtime.flashIndex];
+    document.getElementById('fcFront').textContent = cards[idx][0];
+    document.getElementById('fcBack').textContent = cards[idx][1];
+    document.getElementById('fc').classList.remove('flipped');
+    document.getElementById('fcCounter').textContent = (state.runtime.flashIndex+1)+' / '+cards.length;
+  }
+  paint();
+  document.getElementById('fc').addEventListener('click',()=>{
+    document.getElementById('fc').classList.toggle('flipped');
+  });
+  document.getElementById('prevCard').addEventListener('click',()=>{
+    state.runtime.flashIndex = (state.runtime.flashIndex-1+cards.length)%cards.length;
+    paint();
+  });
+  document.getElementById('nextCard').addEventListener('click',()=>{
+    state.runtime.flashIndex = (state.runtime.flashIndex+1)%cards.length;
+    paint();
+  });
+  document.getElementById('shuffleCards').addEventListener('click',()=>{
+    state.runtime.flashOrder = shuffle(cards.map((_,i)=>i));
+    order = state.runtime.flashOrder;
+    state.runtime.flashIndex=0;
+    paint();
+    showToast('🔀 Cards shuffled!');
+  });
+  document.getElementById('doneFlash').addEventListener('click',()=>{
+    state.runtime.flashIndex=0;
+    state.runtime.flashOrder=null;
+    advanceActivity();
+  });
+}
+
+/* ---------------- QUIZ (mc / tf / fill) ---------------- */
+function renderQuiz(t, mode, container, onDone){
+  const key = 'quiz_'+mode;
+  if(!state.runtime[key]){
+    let items;
+    if(mode==='mc') items = shuffle(t.mc.map(q=>({q:q[0],options:q[1],correct:q[2],explain:q[3]})));
+    else if(mode==='tf') items = shuffle(t.tf.map(q=>({q:q[0],correct:q[1],explain:q[2]})));
+    else if(mode==='fill') items = shuffle(t.fill.map(q=>({q:q[0],answer:q[1]})));
+    state.runtime[key] = {items, index:0, correct:0, answered:false};
+  }
+  const rt = state.runtime[key];
+
+  if(rt.index >= rt.items.length){
+    state.runtime.levelCorrect += rt.correct;
+    state.runtime.levelTotal += rt.items.length;
+    onDone();
+    return;
+  }
+
+  const item = rt.items[rt.index];
+  const titleMap = {mc:'✅ Multiple Choice', tf:'⚖️ True or False', fill:'✏️ Fill in the Blank'};
+
+  const div=document.createElement('div');
+  div.innerHTML=`
+    <div class="quiz-header">
+      <h3 style="margin:0;">${titleMap[mode]}</h3>
+      <span class="stat-pill">${rt.index+1} / ${rt.items.length}</span>
+    </div>
+    <div class="question-text">${item.q}</div>
+    <div id="quizArea"></div>
+    <div id="quizFeedback"></div>
+    <div class="quiz-footer">
+      <span></span>
+      <button class="btn small hidden" id="nextQ">Next ➡️</button>
+    </div>
+  `;
+  container.appendChild(div);
+  const area = div.querySelector('#quizArea');
+  const feedbackBox = div.querySelector('#quizFeedback');
+  const nextBtn = div.querySelector('#nextQ');
+
+  function lockAndFeedback(isCorrect, explain){
+    rt.answered = true;
+    if(isCorrect){
+      rt.correct++;
+      state.globalCorrect++;
+      saveXP(10);
+    }
+    state.globalTotal++;
+    updateStreak(isCorrect);
+    feedbackBox.innerHTML = `<div class="feedback ${isCorrect?'good':'bad'}">
+      ${isCorrect? '🎉 Excellent! That\'s correct!' : '❌ Not quite.'}
+      ${explain? '<span class="explain">'+explain+'</span>':''}
+    </div>`;
+    nextBtn.classList.remove('hidden');
+  }
+
+  if(mode==='mc'){
+    const optsWrap=document.createElement('div');
+    optsWrap.className='options';
+    const shuffledOpts = item.options.map((o,i)=>({o,i}));
+    shuffle(shuffledOpts).forEach(entry=>{
+      const b=document.createElement('button');
+      b.className='option';
+      b.textContent=entry.o;
+      b.addEventListener('click',()=>{
+        if(rt.answered) return;
+        const isCorrect = entry.i===item.correct;
+        [...optsWrap.children].forEach(c=>c.style.pointerEvents='none');
+        b.classList.add(isCorrect?'correct':'incorrect');
+        if(!isCorrect){
+          [...optsWrap.children].forEach((c,ci)=>{
+            if(c.textContent===item.options[item.correct]) c.classList.add('correct');
+          });
+        }
+        lockAndFeedback(isCorrect, item.explain);
+      });
+      optsWrap.appendChild(b);
+    });
+    area.appendChild(optsWrap);
+  } else if(mode==='tf'){
+    const optsWrap=document.createElement('div');
+    optsWrap.className='tf-options';
+    [['True',true],['False',false]].forEach(([label,val])=>{
+      const b=document.createElement('button');
+      b.className='option';
+      b.textContent=(val?'✅ ':'❌ ')+label;
+      b.addEventListener('click',()=>{
+        if(rt.answered) return;
+        const isCorrect = val===item.correct;
+        [...optsWrap.children].forEach(c=>c.style.pointerEvents='none');
+        b.classList.add(isCorrect?'correct':'incorrect');
+        if(!isCorrect){
+          [...optsWrap.children].forEach(c=>{
+            if(c.textContent.includes(item.correct?'True':'False')) c.classList.add('correct');
+          });
+        }
+        lockAndFeedback(isCorrect, item.explain);
+      });
+      optsWrap.appendChild(b);
+    });
+    area.appendChild(optsWrap);
+  } else if(mode==='fill'){
+    const row=document.createElement('div');
+    row.className='fill-row';
+    row.innerHTML = `<input type="text" id="fillInput" placeholder="Type your answer..." autocomplete="off">
+      <button class="btn small" id="checkFill">Check</button>`;
+    area.appendChild(row);
+    const input = row.querySelector('#fillInput');
+    const checkBtn = row.querySelector('#checkFill');
+    function doCheck(){
+      if(rt.answered) return;
+      const val = input.value.trim().toLowerCase();
+      const isCorrect = val===item.answer.toLowerCase();
+      input.disabled = true; checkBtn.disabled=true;
+      lockAndFeedback(isCorrect, isCorrect? null : ('Correct answer: “'+item.answer+'”'));
+    }
+    checkBtn.addEventListener('click',doCheck);
+    input.addEventListener('keydown',e=>{ if(e.key==='Enter') doCheck(); });
+    input.focus();
+  }
+
+  nextBtn.addEventListener('click',()=>{
+    rt.index++;
+    rt.answered=false;
+    container.innerHTML='';
+    renderQuiz(t, mode, container, onDone);
+  });
+}
+
+/* ---------------- MATCH ---------------- */
+function renderMatch(t, container, onDone){
+  if(!state.runtime.matchState){
+    const pairs = t.match.map((p,i)=>({id:i, left:p[0], right:p[1]}));
+    state.runtime.matchState = {
+      pairs,
+      left: shuffle(pairs.map(p=>({id:p.id,text:p.left}))),
+      right: shuffle(pairs.map(p=>({id:p.id,text:p.right}))),
+      matched: new Set(),
+      selectedLeft:null,
+      selectedRight:null,
+      wrongCount:0
+    };
+  }
+  const ms = state.runtime.matchState;
+
+  const div=document.createElement('div');
+  div.innerHTML=`
+    <h3>🔗 Match the Pairs</h3>
+    <p style="color:var(--muted);font-weight:600;">Click one item on the left, then its match on the right.</p>
+    <div class="match-wrap">
+      <div class="match-col" id="colLeft"></div>
+      <div class="match-col" id="colRight"></div>
+    </div>
+    <div class="quiz-footer"><span id="matchStatus" style="font-weight:700;color:var(--muted);"></span>
+      <button class="btn small hidden" id="matchNext">Continue ➡️</button></div>
+  `;
+  container.appendChild(div);
+  const colLeft = div.querySelector('#colLeft');
+  const colRight = div.querySelector('#colRight');
+  const status = div.querySelector('#matchStatus');
+  const nextBtn = div.querySelector('#matchNext');
+
+  function paint(){
+    colLeft.innerHTML=''; colRight.innerHTML='';
+    ms.left.forEach(item=>{
+      const b=document.createElement('button');
+      b.className='match-item'+(ms.matched.has(item.id)?' matched':(ms.selectedLeft===item.id?' selected':''));
+      b.textContent=item.text;
+      if(!ms.matched.has(item.id)){
+        b.addEventListener('click',()=>{
+          ms.selectedLeft=item.id;
+          tryMatch();
+          paint();
+        });
+      }
+      colLeft.appendChild(b);
+    });
+    ms.right.forEach(item=>{
+      const b=document.createElement('button');
+      b.className='match-item'+(ms.matched.has(item.id)?' matched':(ms.selectedRight===item.id?' selected':''));
+      b.textContent=item.text;
+      if(!ms.matched.has(item.id)){
+        b.addEventListener('click',()=>{
+          ms.selectedRight=item.id;
+          tryMatch();
+          paint();
+        });
+      }
+      colRight.appendChild(b);
+    });
+    status.textContent = ms.matched.size+' / '+ms.pairs.length+' matched';
+    if(ms.matched.size===ms.pairs.length){
+      nextBtn.classList.remove('hidden');
+      state.runtime.levelCorrect += Math.max(0, ms.pairs.length - ms.wrongCount);
+      state.runtime.levelTotal += ms.pairs.length;
+    }
+  }
+
+  function tryMatch(){
+    if(ms.selectedLeft!=null && ms.selectedRight!=null){
+      if(ms.selectedLeft===ms.selectedRight){
+        ms.matched.add(ms.selectedLeft);
+        saveXP(15);
+        showToast('✅ Great match!');
+        updateStreak(true);
+      } else {
+        ms.wrongCount++;
+        updateStreak(false);
+        showToast('❌ Try again!');
+      }
+      ms.selectedLeft=null;
+      ms.selectedRight=null;
+    }
+  }
+  paint();
+  nextBtn.addEventListener('click',()=>{
+    state.runtime.matchState=null;
+    onDone();
+  });
+}
+
+/* ---------------- ORDER ---------------- */
+function renderOrder(t, container, onDone){
+  if(!state.runtime.orderState){
+    const lines = t.order.lines;
+    state.runtime.orderState = {
+      pool: shuffle(lines.map((text,i)=>({id:i,text}))),
+      picked: [],
+      correctOrder: lines,
+      checked:false
+    };
+  }
+  const os = state.runtime.orderState;
+
+  const div=document.createElement('div');
+  div.innerHTML=`
+    <h3>🔢 Put It In Order</h3>
+    <p style="color:var(--muted);font-weight:600;">${t.order.instructions} Click the lines in the correct order.</p>
+    <div class="order-slots" id="orderSlots"></div>
+    <div class="order-pool" id="orderPool"></div>
+    <div class="quiz-footer">
+      <span id="orderStatus" style="font-weight:700;color:var(--muted);"></span>
+      <div>
+        <button class="btn ghost small hidden" id="orderReset">↻ Reset</button>
+        <button class="btn small hidden" id="orderNext">Continue ➡️</button>
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+  const slotsEl = div.querySelector('#orderSlots');
+  const poolEl = div.querySelector('#orderPool');
+  const statusEl = div.querySelector('#orderStatus');
+  const nextBtn = div.querySelector('#orderNext');
+  const resetBtn = div.querySelector('#orderReset');
+
+  function paint(){
+    slotsEl.innerHTML='';
+    os.correctOrder.forEach((_,i)=>{
+      const s=document.createElement('div');
+      const picked = os.picked[i];
+      s.className='order-slot'+(picked!=null?' filled':'');
+      s.textContent = picked!=null ? (i+1)+'. '+picked.text : (i+1)+'. ___';
+      slotsEl.appendChild(s);
+    });
+    poolEl.innerHTML='';
+    os.pool.forEach(item=>{
+      const isPicked = os.picked.some(p=>p && p.id===item.id);
+      const chip=document.createElement('button');
+      chip.className='order-chip'+(isPicked?' picked':'');
+      chip.textContent=item.text;
+      if(!isPicked && !os.checked){
+        chip.addEventListener('click',()=>{
+          const emptyIdx = os.picked.findIndex(p=>!p);
+          const slotIdx = emptyIdx===-1 ? os.picked.length : emptyIdx;
+          os.picked[slotIdx]=item;
+          paint();
+          if(os.picked.filter(Boolean).length===os.correctOrder.length){
+            checkOrder();
+          }
+        });
+      }
+      poolEl.appendChild(chip);
+    });
+    resetBtn.classList.toggle('hidden', os.picked.filter(Boolean).length===0);
+  }
+
+  function checkOrder(){
+    os.checked=true;
+    let correctCount=0;
+    os.picked.forEach((p,i)=>{
+      if(p && p.text===os.correctOrder[i]) correctCount++;
+    });
+    const allCorrect = correctCount===os.correctOrder.length;
+    state.runtime.levelCorrect += allCorrect ? os.correctOrder.length : correctCount;
+    state.runtime.levelTotal += os.correctOrder.length;
+    updateStreak(allCorrect);
+    if(allCorrect){
+      saveXP(20);
+      statusEl.textContent = '🎉 Perfect order!';
+    } else {
+      statusEl.textContent = '✨ Good try! Here is the correct order below.';
+      slotsEl.innerHTML='';
+      os.correctOrder.forEach((text,i)=>{
+        const s=document.createElement('div');
+        s.className='order-slot filled';
+        s.textContent=(i+1)+'. '+text;
+        slotsEl.appendChild(s);
+      });
+    }
+    nextBtn.classList.remove('hidden');
+    resetBtn.classList.add('hidden');
+  }
+
+  resetBtn.addEventListener('click',()=>{
+    os.picked=[];
+    os.checked=false;
+    paint();
+  });
+
+  paint();
+  nextBtn.addEventListener('click',()=>{
+    state.runtime.orderState=null;
+    onDone();
+  });
+}
+
+/* ---------------- MEMORY MATCH ---------------- */
+function renderMemory(t, container, onDone){
+  if(!state.runtime.memoryState){
+    let cards=[];
+    t.memory.forEach((pair,i)=>{
+      cards.push({id:i, text:pair[0], pairId:i});
+      cards.push({id:i+1000, text:pair[1], pairId:i});
+    });
+    cards = shuffle(cards);
+    state.runtime.memoryState = {
+      cards, flipped:[], matched:new Set(), moves:0, locked:false
+    };
+  }
+  const msx = state.runtime.memoryState;
+
+  const div=document.createElement('div');
+  div.innerHTML=`
+    <h3>🧠 Memory Match</h3>
+    <p style="color:var(--muted);font-weight:600;">Find the matching subject and object pronoun pairs!</p>
+    <div class="memory-grid" id="memGrid"></div>
+    <div class="quiz-footer">
+      <span style="font-weight:700;color:var(--muted);">Moves: <span id="movesCount">0</span></span>
+      <button class="btn small hidden" id="memNext">Continue ➡️</button>
+    </div>
+  `;
+  container.appendChild(div);
+  const grid = div.querySelector('#memGrid');
+  const movesCount = div.querySelector('#movesCount');
+  const nextBtn = div.querySelector('#memNext');
+
+  function paint(){
+    grid.innerHTML='';
+    msx.cards.forEach((c,idx)=>{
+      const isFlipped = msx.flipped.includes(idx) || msx.matched.has(c.pairId+'_'+ (msx.cards.filter((cc,ci)=>cc.pairId===c.pairId).findIndex(x=>x===c)));
+      const isMatchedCard = matchedContains(idx);
+      const cell=document.createElement('div');
+      cell.className='memory-card'+(isMatchedCard?' matched':(msx.flipped.includes(idx)?' flipped':''));
+      cell.setAttribute('data-pair-id', c.pairId);
+      cell.textContent = (isMatchedCard || msx.flipped.includes(idx)) ? c.text : '❓';
+      if(!isMatchedCard && !msx.flipped.includes(idx) && !msx.locked){
+        cell.addEventListener('click',()=>flipCard(idx));
+      }
+      grid.appendChild(cell);
+    });
+    movesCount.textContent = msx.moves;
+    if(msx.matched.size === msx.cards.length){
+      nextBtn.classList.remove('hidden');
+    }
+  }
+  function matchedContains(idx){
+    return msx.matched.has(idx);
+  }
+  function flipCard(idx){
+    if(msx.flipped.length>=2 || msx.locked) return;
+    msx.flipped.push(idx);
+    if(msx.flipped.length===2){
+      msx.moves++;
+      msx.locked=true;
+      const [i1,i2] = msx.flipped;
+      const c1 = msx.cards[i1], c2 = msx.cards[i2];
+      paint();
+      setTimeout(()=>{
+        if(c1.pairId===c2.pairId && i1!==i2){
+          msx.matched.add(i1); msx.matched.add(i2);
+          saveXP(10);
+          updateStreak(true);
+          showToast('🎉 Match found!');
+        } else {
+          updateStreak(false);
+        }
+        msx.flipped=[];
+        msx.locked=false;
+        paint();
+      },800);
+    } else {
+      paint();
+    }
+  }
+  paint();
+  nextBtn.addEventListener('click',()=>{
+    state.runtime.levelCorrect += msx.cards.length/2;
+    state.runtime.levelTotal += msx.cards.length/2;
+    state.runtime.memoryState=null;
+    onDone();
+  });
+}
+
+/* ---------------- LEVEL COMPLETE ---------------- */
+function renderLevelComplete(){
+  const t = TOPICS[state.currentTopicIndex];
+  const p = state.progress[state.currentTopicIndex];
+  const div=document.createElement('div');
+  div.className='screen complete-wrap';
+  const pct = p.total>0 ? Math.round((p.correct/p.total)*100) : 100;
+  div.innerHTML=`
+    <div class="trophy">${p.stars===3?'🏆':p.stars===2?'🥈':p.stars===1?'🥉':'🎟️'}</div>
+    <h2>Level Complete!</h2>
+    <p style="color:var(--muted);font-weight:700;">${t.levelName} — ${t.topic}</p>
+    <div class="stars-big">${starString(p.stars)}</div>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="num">${pct}%</div><div class="lbl">ACCURACY</div></div>
+      <div class="summary-item"><div class="num">${p.correct}/${p.total}</div><div class="lbl">CORRECT</div></div>
+      <div class="summary-item"><div class="num">${state.xp}</div><div class="lbl">TOTAL XP</div></div>
+      <div class="summary-item"><div class="num">${state.bestStreak}</div><div class="lbl">BEST STREAK</div></div>
+    </div>
+    <button class="btn" id="mapBtn">🗺️ Back to Map</button>
+  `;
+  root.appendChild(div);
+  document.getElementById('mapBtn').addEventListener('click',()=>{
+    state.screen='map';
+    render();
+  });
+}
+
+/* ---------------- FINAL CHALLENGE ---------------- */
+function startFinalChallenge(){
+  let pool=[];
+  TOPICS.forEach(t=>{
+    t.mc.forEach(q=>pool.push({type:'mc', q:q[0], options:q[1], correct:q[2], explain:q[3], topic:t.topic}));
+    t.tf.forEach(q=>pool.push({type:'tf', q:q[0], correct:q[1], explain:q[2], topic:t.topic}));
+  });
+  pool = shuffle(pool).slice(0,15);
+  state.runtime.final = {
+    pool, index:0, correct:0, timeLeft:20, timerId:null,
+    topicStats:{}
+  };
+  state.screen='finalQuiz';
+  renderFinalQuiz();
+}
+
+function renderFinalQuiz(){
+  root.innerHTML='';
+  const fs = state.runtime.final;
+  if(fs.index>=fs.pool.length){
+    finishFinalChallenge();
+    return;
+  }
+  const item = fs.pool[fs.index];
+  const wrap=document.createElement('div');
+  wrap.className='screen';
+  wrap.innerHTML=`
+    <div class="quiz-header">
+      <h2 style="margin:0;">🏆 Final Challenge</h2>
+      <span class="timer-pill" id="timerPill">⏱️ ${fs.timeLeft}s</span>
+    </div>
+    <div class="progress-outer"><div class="progress-inner" style="width:${Math.round((fs.index/fs.pool.length)*100)}%"></div></div>
+    <div class="question-text" style="margin-top:14px;">${item.q}</div>
+    <div id="finalArea"></div>
+    <div id="finalFeedback"></div>
+    <div class="quiz-footer"><span></span><button class="btn small hidden" id="finalNext">Next ➡️</button></div>
+  `;
+  root.appendChild(wrap);
+  const area = wrap.querySelector('#finalArea');
+  const feedbackBox = wrap.querySelector('#finalFeedback');
+  const nextBtn = wrap.querySelector('#finalNext');
+  const timerPill = wrap.querySelector('#timerPill');
+
+  let answered=false;
+  clearInterval(fs.timerId);
+  fs.timeLeft=20;
+  fs.timerId = setInterval(()=>{
+    fs.timeLeft--;
+    if(timerPill) timerPill.textContent = '⏱️ '+fs.timeLeft+'s';
+    if(fs.timeLeft<=0){
+      clearInterval(fs.timerId);
+      if(!answered) lockAnswer(false, null);
+    }
+  },1000);
+
+  function recordTopic(isCorrect){
+    if(!fs.topicStats[item.topic]) fs.topicStats[item.topic]={correct:0,total:0};
+    fs.topicStats[item.topic].total++;
+    if(isCorrect) fs.topicStats[item.topic].correct++;
+  }
+
+  function lockAnswer(isCorrect, chosenEl){
+    if(answered) return;
+    answered=true;
+    clearInterval(fs.timerId);
+    recordTopic(isCorrect);
+    if(isCorrect){ fs.correct++; saveXP(12); }
+    updateStreak(isCorrect);
+    feedbackBox.innerHTML = `<div class="feedback ${isCorrect?'good':'bad'}">
+      ${isCorrect?'🎉 Correct!':'❌ Not quite.'}
+      ${item.explain?'<span class="explain">'+item.explain+'</span>':''}
+    </div>`;
+    nextBtn.classList.remove('hidden');
+    [...area.querySelectorAll('button')].forEach(b=>b.style.pointerEvents='none');
+  }
+
+  if(item.type==='mc'){
+    const optsWrap=document.createElement('div');
+    optsWrap.className='options';
+    const shuffledOpts = item.options.map((o,i)=>({o,i}));
+    shuffle(shuffledOpts).forEach(entry=>{
+      const b=document.createElement('button');
+      b.className='option';
+      b.textContent=entry.o;
+      b.addEventListener('click',()=>{
+        if(answered) return;
+        const isCorrect = entry.i===item.correct;
+        b.classList.add(isCorrect?'correct':'incorrect');
+        if(!isCorrect){
+          [...optsWrap.children].forEach(c=>{ if(c.textContent===item.options[item.correct]) c.classList.add('correct'); });
+        }
+        lockAnswer(isCorrect,b);
+      });
+      optsWrap.appendChild(b);
+    });
+    area.appendChild(optsWrap);
+  } else {
+    const optsWrap=document.createElement('div');
+    optsWrap.className='tf-options';
+    [['True',true],['False',false]].forEach(([label,val])=>{
+      const b=document.createElement('button');
+      b.className='option';
+      b.textContent=(val?'✅ ':'❌ ')+label;
+      b.addEventListener('click',()=>{
+        if(answered) return;
+        const isCorrect = val===item.correct;
+        b.classList.add(isCorrect?'correct':'incorrect');
+        if(!isCorrect){
+          [...optsWrap.children].forEach(c=>{ if(c.textContent.includes(item.correct?'True':'False')) c.classList.add('correct'); });
+        }
+        lockAnswer(isCorrect,b);
+      });
+      optsWrap.appendChild(b);
+    });
+    area.appendChild(optsWrap);
+  }
+
+  nextBtn.addEventListener('click',()=>{
+    fs.index++;
+    renderFinalQuiz();
+  });
+}
+
+function finishFinalChallenge(){
+  const fs = state.runtime.final;
+  const pct = Math.round((fs.correct/fs.pool.length)*100);
+  let stars = pct>=90?3:pct>=70?2:pct>=50?1:0;
+  state.finalStars = stars;
+  saveXP(50);
+  state.screen='final';
+  render();
+}
+
+/* ---------------- FINAL RESULTS ---------------- */
+function renderFinal(){
+  const fs = state.runtime.final;
+  const totalTime = Math.round((Date.now()-state.startTime)/1000);
+  const minutes = Math.floor(totalTime/60);
+  const seconds = totalTime%60;
+
+  // weakest topic recommendation
+  let weakest=null, weakestAcc=2;
+  Object.keys(fs.topicStats).forEach(topic=>{
+    const s = fs.topicStats[topic];
+    const acc = s.total>0? s.correct/s.total : 1;
+    if(acc<weakestAcc){ weakestAcc=acc; weakest=topic; }
+  });
+
+  const div=document.createElement('div');
+  div.className='screen complete-wrap';
+  div.innerHTML=`
+    <div class="trophy">🎉🏆🎉</div>
+    <h1>Quest Complete!</h1>
+    <p style="color:var(--muted);font-weight:700;">You finished the Final Challenge of Unit 5: School Life</p>
+    <div class="stars-big">${starString(state.finalStars)}</div>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="num">${state.xp}</div><div class="lbl">TOTAL XP</div></div>
+      <div class="summary-item"><div class="num">${fs.correct}/${fs.pool.length}</div><div class="lbl">FINAL SCORE</div></div>
+      <div class="summary-item"><div class="num">${minutes}m ${seconds}s</div><div class="lbl">TIME USED</div></div>
+      <div class="summary-item"><div class="num">${state.bestStreak}</div><div class="lbl">BEST STREAK</div></div>
+    </div>
+    <h3>🎖️ Medals Earned</h3>
+    <div class="medal-row" id="medalRow"></div>
+    <div class="info-box tip" style="text-align:left;max-width:520px;margin:18px auto;">
+      📚 <strong>Study tip:</strong> ${weakest? ('Review “'+weakest+'” a bit more before your test — that topic needs a little extra practice!') : 'Great job! You showed strong understanding across every topic. Keep reviewing to stay sharp before your test!'}
+    </div>
+    <button class="btn" id="replayBtn">🔁 Play Again</button>
+    <button class="btn secondary" id="mapBtn2">🗺️ Level Map</button>
+  `;
+  root.appendChild(div);
+
+  const medalRow = div.querySelector('#medalRow');
+  const medals=[];
+  state.progress.forEach((p,i)=>{
+    if(p.stars===3) medals.push('🏅 '+TOPICS[i].levelName+' Master');
+  });
+  if(state.bestStreak>=5) medals.push('🔥 Streak Star');
+  if(state.finalStars===3) medals.push('👑 Champion of School Life');
+  if(medals.length===0) medals.push('🌟 Quest Finisher');
+  medals.forEach(m=>{
+    const d=document.createElement('div');
+    d.className='medal';
+    d.textContent=m;
+    medalRow.appendChild(d);
+  });
+
+  document.getElementById('replayBtn').addEventListener('click',()=>{
+    resetAll();
+  });
+  document.getElementById('mapBtn2').addEventListener('click',()=>{
+    state.screen='map';
+    render();
+  });
+}
+
+function resetAll(){
+  state.screen='welcome';
+  state.currentTopicIndex=0;
+  state.activityIndex=0;
+  state.xp=0;
+  state.streak=0;
+  state.bestStreak=0;
+  state.progress = TOPICS.map(()=>({unlocked:false,stars:0,correct:0,total:0,completed:false}));
+  state.progress[0].unlocked=true;
+  state.runtime={};
+  state.startTime=Date.now();
+  state.globalCorrect=0;
+  state.globalTotal=0;
+  state.finalStars=0;
+  render();
+}
+
+/* ---------------- INIT ---------------- */
+render();
+</script>
+</body>
+</html>
