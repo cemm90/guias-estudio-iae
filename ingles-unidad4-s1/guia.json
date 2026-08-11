@@ -1,14 +1,15 @@
 {
   "asignatura": "Inglés",
-  "curso": "Sin curso",
-  "unidad": "Sin unidad",
+  "curso": "4° Básico",
+  "unidad": "Síntesis · First Semester",
   "emoji": "🌍",
   "color": "#D64545",
-  "desc": "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
+  "desc": "Interactive English study guide for 4th grade: simple past with regular verbs, there is / there are with some and any, frequency expressions, key vocabulary, reading practice and flashcards.",
   "tags": [
     "Guía de repaso"
   ],
   "listo": true,
   "autoDesc": true,
-  "autoTags": true
+  "autoTags": true,
+  "semestre": "Primer Semestre"
 }
