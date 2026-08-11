@@ -1,1 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Guía de estudio interactiva y gamificada de Ciencias Naturales para 4° Básico: la materia y sus propiedades físicas, los tres estados de la materia, y la fuerza y sus efectos, con flashcards y ejercicios.">
+<meta name="curso" content="4° Básico">
+<meta name="asignatura" content="Ciencias Naturales">
+<meta name="unidad" content="Síntesis · Materia y Fuerza">
+<meta name="semestre" content="Primer Semestre">
+<meta name="theme-color" content="#7CC242">
+<meta property="og:type" content="website">
+<meta property="og:title" content="🔬 Guía de Estudio Interactiva · Ciencias Naturales 4° Básico">
+<meta property="og:description" content="Guía de estudio interactiva y gamificada de Ciencias Naturales para 4° Básico: la materia y sus propiedades físicas, los tres estados de la materia, y la fuerza y sus efectos, con flashcards y ejercicios.">
+<meta property="og:locale" content="es_CL">
+<title>🔬 Guía de Estudio Interactiva · Ciencias Naturales 4° Básico</title>
+<style>
+  :root{
+    --verde:#7cc242; --verde-osc:#4e8b1f; --verde-claro:#e8f6da;
+    --azul:#3a9bdc; --azul-osc:#1f6fa8; --azul-claro:#e3f1fb;
+    --naranja:#ff9f43; --rojo:#ff6b6b; --amarillo:#ffd93d;
+    --morado:#9b59b6; --rosado:#ff7eb3;
+    --txt:#2c3e50; --gris:#f4f6f8; --blanco:#ffffff;
+    --sombra:0 6px 18px rgba(0,0,0,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI','Trebuchet MS',system-ui,sans-serif;
+    background:linear-gradient(135deg,#eafbe0 0%,#e3f1fb 100%);
+    color:var(--txt); line-height:1.55; padding-bottom:60px;
+  }
+  /* ---------- HEADER ---------- */
+  header{
+    background:linear-gradient(120deg,var(--verde) 0%,var(--azul) 100%);
+    color:#fff; padding:26px 18px 20px; text-align:center;
+    border-radius:0 0 28px 28px; box-shadow:var(--sombra); position:relative;
+  }
+  header h1{font-size:1.8rem; text-shadow:0 2px 4px rgba(0,0,0,.2);}
+  header p{font-size:1rem; opacity:.95; margin-top:4px;}
+  .mascota{font-size:2.6rem; display:inline-block; animation:flota 3s ease-in-out infinite;}
+  @keyframes flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  /* ---------- PUNTAJE ---------- */
+  .barra-puntaje{
+    max-width:920px; margin:14px auto 0; background:rgba(255,255,255,.25);
+    border-radius:30px; padding:6px; display:flex; align-items:center; gap:10px;
+  }
+  .barra-puntaje .estrella{font-size:1.3rem;}
+  .progreso-cont{flex:1; background:rgba(255,255,255,.35); border-radius:20px; height:18px; overflow:hidden;}
+  .progreso{height:100%; width:0%; background:linear-gradient(90deg,var(--amarillo),var(--naranja)); border-radius:20px; transition:width .5s;}
+  .puntos-txt{font-weight:bold; font-size:1rem; min-width:90px; text-align:right;}
+  /* ---------- NAV ---------- */
+  nav{
+    max-width:980px; margin:18px auto 0; display:flex; flex-wrap:wrap;
+    gap:8px; justify-content:center; padding:0 12px;
+  }
+  nav button{
+    border:none; cursor:pointer; padding:9px 15px; border-radius:30px;
+    font-weight:bold; font-size:.9rem; background:#fff; color:var(--txt);
+    box-shadow:var(--sombra); transition:transform .15s,background .2s;
+  }
+  nav button:hover{transform:translateY(-2px);}
+  nav button.activo{background:var(--verde); color:#fff;}
+  /* ---------- SECCIONES ---------- */
+  main{max-width:920px; margin:22px auto; padding:0 14px;}
+  section{display:none; animation:aparece .4s ease;}
+  section.activa{display:block;}
+  @keyframes aparece{from{opacity:0; transform:translateY(12px)}to{opacity:1; transform:none}}
+  .titulo-seccion{font-size:1.5rem; color:var(--verde-osc); margin-bottom:6px; display:flex; align-items:center; gap:10px;}
+  .titulo-seccion.azul{color:var(--azul-osc);}
+  .subtitulo{color:#666; margin-bottom:18px;}
+  /* ---------- TARJETAS DE CONTENIDO ---------- */
+  .card{
+    background:#fff; border-radius:18px; padding:18px 20px; margin-bottom:16px;
+    box-shadow:var(--sombra); border-left:7px solid var(--verde);
+  }
+  .card.azul{border-left-color:var(--azul);}
+  .card.naranja{border-left-color:var(--naranja);}
+  .card.morado{border-left-color:var(--morado);}
+  .card h3{color:var(--verde-osc); margin-bottom:6px; font-size:1.15rem;}
+  .card.azul h3{color:var(--azul-osc);}
+  .card p{margin-bottom:6px;}
+  .clave{background:var(--amarillo); padding:1px 7px; border-radius:6px; font-weight:bold;}
+  .dato{
+    background:var(--azul-claro); border-radius:14px; padding:12px 14px; margin:10px 0;
+    border-left:5px solid var(--azul); font-size:.95rem;
+  }
+  .dato b{color:var(--azul-osc);}
+  .emoji-grande{font-size:1.4rem;}
+  .grid3{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:10px;}
+  .mini-estado{border-radius:14px; padding:14px; color:#fff; text-align:center;}
+  .mini-estado.solido{background:linear-gradient(135deg,#6c5ce7,#a29bfe);}
+  .mini-estado.liquido{background:linear-gradient(135deg,#0984e3,#74b9ff);}
+  .mini-estado.gas{background:linear-gradient(135deg,#00b894,#55efc4);}
+  .mini-estado h4{font-size:1.05rem; margin-bottom:6px;}
+  .mini-estado .ico{font-size:2rem;}
+  .mini-estado ul{list-style:none; font-size:.85rem; text-align:left; margin-top:8px;}
+  .mini-estado li{margin:3px 0;}
+  /* ---------- FLASHCARDS ---------- */
+  .flash-zona{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;}
+  .flash{
+    perspective:1000px; height:170px; cursor:pointer;
+  }
+  .flash-inner{position:relative; width:100%; height:100%; transition:transform .6s; transform-style:preserve-3d;}
+  .flash.volteada .flash-inner{transform:rotateY(180deg);}
+  .flash-cara{
+    position:absolute; width:100%; height:100%; backface-visibility:hidden;
+    border-radius:18px; padding:16px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; box-shadow:var(--sombra);
+  }
+  .flash-frente{background:linear-gradient(135deg,var(--verde),var(--azul)); color:#fff;}
+  .flash-frente .ico{font-size:2rem; margin-bottom:8px;}
+  .flash-frente .q{font-weight:bold; font-size:1.05rem;}
+  .flash-detras{background:#fff; color:var(--txt); transform:rotateY(180deg); border:3px solid var(--verde);}
+  .flash-detras .a{font-size:.95rem;}
+  .pista{font-size:.78rem; opacity:.85; margin-top:8px;}
+  /* ---------- QUIZ ---------- */
+  .pregunta{background:#fff; border-radius:16px; padding:16px 18px; margin-bottom:14px; box-shadow:var(--sombra);}
+  .pregunta .num{display:inline-block; background:var(--verde); color:#fff; border-radius:50%; width:28px; height:28px; line-height:28px; text-align:center; font-weight:bold; margin-right:8px;}
+  .pregunta .enunciado{font-weight:bold; margin-bottom:10px; display:inline;}
+  .opciones{list-style:none; margin-top:10px;}
+  .opciones li{
+    background:var(--gris); border-radius:12px; padding:10px 14px; margin:7px 0; cursor:pointer;
+    transition:background .2s,transform .1s; border:2px solid transparent;
+  }
+  .opciones li:hover{background:var(--verde-claro); transform:translateX(3px);}
+  .opciones li.correcta{background:#d4f5c4; border-color:var(--verde); font-weight:bold;}
+  .opciones li.incorrecta{background:#ffd6d6; border-color:var(--rojo);}
+  .opciones li.bloqueada{cursor:default; pointer-events:none;}
+  .feedback{margin-top:8px; font-weight:bold; font-size:.92rem; display:none;}
+  .feedback.ok{color:var(--verde-osc);} .feedback.mal{color:var(--rojo);}
+  /* ---------- VERDADERO/FALSO ---------- */
+  .vf{background:#fff; border-radius:16px; padding:14px 16px; margin-bottom:12px; box-shadow:var(--sombra); display:flex; flex-wrap:wrap; align-items:center; gap:10px;}
+  .vf .afirm{flex:1; min-width:200px; font-weight:600;}
+  .vf .btns{display:flex; gap:8px;}
+  .vf button{border:none; cursor:pointer; border-radius:20px; padding:8px 18px; font-weight:bold; color:#fff;}
+  .vf .v{background:var(--verde);} .vf .f{background:var(--rojo);}
+  .vf button.sel-bien{outline:4px solid #2ecc71;}
+  .vf button.sel-mal{outline:4px solid #c0392b; opacity:.6;}
+  .vf .resp{width:100%; font-size:.88rem; color:#555; display:none; margin-top:4px; background:var(--verde-claro); padding:8px 10px; border-radius:10px;}
+  /* ---------- CONECTORES ---------- */
+  .conector-juego{display:flex; gap:24px; flex-wrap:wrap; justify-content:center;}
+  .col-con{flex:1; min-width:240px;}
+  .col-con h4{text-align:center; margin-bottom:10px; color:var(--azul-osc);}
+  .item-con{
+    background:#fff; border-radius:12px; padding:12px 14px; margin:8px 0; box-shadow:var(--sombra);
+    cursor:pointer; border:3px solid transparent; transition:all .15s; font-size:.92rem;
+  }
+  .item-con:hover{border-color:var(--azul);}
+  .item-con.seleccionado{border-color:var(--naranja); background:#fff3e0;}
+  .item-con.emparejado{background:#d4f5c4; border-color:var(--verde); cursor:default; opacity:.8;}
+  /* ---------- TABLA / CLASIFICACIÓN ---------- */
+  table.estados{width:100%; border-collapse:collapse; background:#fff; border-radius:14px; overflow:hidden; box-shadow:var(--sombra);}
+  table.estados th,table.estados td{border:1px solid #e0e6ea; padding:10px; text-align:center; font-size:.9rem;}
+  table.estados th{background:var(--verde); color:#fff;}
+  table.estados select{padding:6px; border-radius:8px; border:2px solid #ccc; font-size:.9rem;}
+  table.estados select.bien{border-color:var(--verde); background:#d4f5c4;}
+  table.estados select.mal{border-color:var(--rojo); background:#ffd6d6;}
+  /* drag clasificación */
+  .clas-banco{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:14px 0; min-height:50px;}
+  .ficha{background:var(--naranja); color:#fff; padding:9px 14px; border-radius:20px; font-weight:bold; cursor:grab; box-shadow:var(--sombra); user-select:none;}
+  .ficha.usada{opacity:.4;}
+  .cajas{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;}
+  .caja{min-height:120px; border-radius:14px; padding:10px; text-align:center; border:3px dashed #aaa; transition:background .2s;}
+  .caja.over{background:var(--verde-claro);}
+  .caja h4{margin-bottom:8px;}
+  .caja .puesta{background:#fff; border-radius:14px; padding:5px 10px; margin:4px auto; display:inline-block; font-size:.82rem; box-shadow:0 2px 5px rgba(0,0,0,.1);}
+  /* ---------- BOTONES ---------- */
+  .btn{
+    border:none; cursor:pointer; background:var(--verde); color:#fff; padding:11px 22px;
+    border-radius:30px; font-weight:bold; font-size:.95rem; box-shadow:var(--sombra); transition:transform .15s;
+  }
+  .btn:hover{transform:translateY(-2px);} .btn.azul{background:var(--azul);} .btn.naranja{background:var(--naranja);}
+  .centro{text-align:center; margin:18px 0;}
+  .resultado-juego{text-align:center; font-weight:bold; font-size:1.1rem; margin-top:14px; min-height:26px;}
+  /* ---------- INSIGNIAS ---------- */
+  .insignias{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:14px; margin-top:16px;}
+  .insignia{background:#fff; border-radius:16px; padding:16px; text-align:center; box-shadow:var(--sombra); opacity:.35; filter:grayscale(1); transition:all .4s;}
+  .insignia.ganada{opacity:1; filter:none; transform:scale(1.03);}
+  .insignia .emo{font-size:2.4rem;}
+  .insignia .nom{font-weight:bold; font-size:.9rem; margin-top:6px;}
+  .insignia .desc{font-size:.75rem; color:#777;}
+  /* confeti */
+  .confeti{position:fixed; top:-10px; font-size:1.4rem; z-index:999; pointer-events:none; animation:caer linear forwards;}
+  @keyframes caer{to{transform:translateY(105vh) rotate(360deg); opacity:0;}}
+  footer{text-align:center; color:#888; font-size:.82rem; margin-top:30px;}
+  .toggle-resp{font-size:.8rem; background:none; border:none; color:var(--azul-osc); cursor:pointer; text-decoration:underline;}
+</style>
+</head>
+<body>
 
+<header>
+  <div class="mascota">🦉🔬</div>
+  <h1>Guía de Estudio Interactiva</h1>
+  <p>Ciencias Naturales · 4° Básico · Prueba de Síntesis</p>
+  <p style="font-size:.85rem; opacity:.9;">Unidad 2: Explorando la Materia &nbsp;•&nbsp; Unidad 3: La Fuerza y sus Efectos</p>
+  <div class="barra-puntaje">
+    <span class="estrella">⭐</span>
+    <div class="progreso-cont"><div class="progreso" id="barraProg"></div></div>
+    <span class="puntos-txt"><span id="puntos">0</span> pts</span>
+  </div>
+</header>
+
+<nav id="menu">
+  <button class="activo" data-s="inicio">🏠 Inicio</button>
+  <button data-s="materia">🧪 La Materia</button>
+  <button data-s="fuerza">💪 La Fuerza</button>
+  <button data-s="flash">🃏 Flashcards</button>
+  <button data-s="conectores">🔗 Conectar</button>
+  <button data-s="tabla">📊 Estados</button>
+  <button data-s="clasifica">🎯 Clasifica</button>
+  <button data-s="alternativas">✅ Alternativas</button>
+  <button data-s="vf">🟢 V o F</button>
+  <button data-s="logros">🏆 Logros</button>
+</nav>
+
+<main>
+
+<!-- ============ INICIO ============ -->
+<section id="inicio" class="activa">
+  <h2 class="titulo-seccion">👋 ¡Hola, futuro científico!</h2>
+  <p class="subtitulo">Prepárate para tu prueba de síntesis jugando y aprendiendo.</p>
+  <div class="card">
+    <h3>🎮 ¿Cómo usar esta guía?</h3>
+    <p>Esta guía tiene <b>todo lo que necesitas saber</b> para tu prueba, dividido en secciones. Usa los botones de arriba para moverte entre ellas.</p>
+    <p>Cada vez que respondes bien una actividad, <b>ganas puntos ⭐</b> y desbloqueas <b>insignias 🏆</b>. ¡Tu meta es llenar la barra de puntos y ganar todas las medallas!</p>
+  </div>
+  <div class="grid3">
+    <div class="mini-estado solido"><div class="ico">📚</div><h4>1. Estudia</h4><p style="font-size:.85rem;">Lee "La Materia" y "La Fuerza".</p></div>
+    <div class="mini-estado liquido"><div class="ico">🃏</div><h4>2. Memoriza</h4><p style="font-size:.85rem;">Repasa con las flashcards.</p></div>
+    <div class="mini-estado gas"><div class="ico">🎯</div><h4>3. Practica</h4><p style="font-size:.85rem;">Resuelve los juegos y quizzes.</p></div>
+  </div>
+  <div class="card naranja" style="margin-top:16px;">
+    <h3>📅 ¿Qué entra en la prueba?</h3>
+    <p><b>Unidad 2 – Explorando la materia:</b> qué es la materia, sus propiedades (masa, volumen, temperatura) y los tres estados (sólido, líquido, gaseoso).</p>
+    <p><b>Unidad 3 – La fuerza y sus efectos:</b> qué es una fuerza, sus características (dirección, sentido, magnitud), sus efectos y los tipos de fuerza (gravitacional, magnética, de roce y muscular).</p>
+  </div>
+  <div class="centro"><button class="btn" onclick="irA('materia')">¡Empezar a estudiar! 🚀</button></div>
+</section>
+
+<!-- ============ LA MATERIA ============ -->
+<section id="materia">
+  <h2 class="titulo-seccion">🧪 Unidad 2: Explorando la Materia</h2>
+  <p class="subtitulo">Todo lo que te rodea está hecho de materia. ¡Vamos a conocerla!</p>
+
+  <div class="card">
+    <h3>🌎 ¿Qué es la materia?</h3>
+    <p>La <span class="clave">materia</span> es todo aquello que puedes ver, tocar u oler, que <b>ocupa espacio</b> y <b>tiene masa</b>. Una mesa, el agua, el aire y hasta tú… ¡todo es materia!</p>
+    <p>La materia está formada por <b>pequeñas partículas</b> unidas por una <span class="clave">fuerza de atracción</span>, que las mantiene cerca y juntas.</p>
+  </div>
+
+  <div class="card azul">
+    <h3>📏 Las propiedades físicas de la materia</h3>
+    <p>Son características que podemos <b>observar y medir</b>. Las principales son:</p>
+    <div class="grid3">
+      <div class="dato"><b>⚖️ Masa</b><br>Cantidad de materia que tiene un cuerpo.<br>Instrumento: <b>balanza</b>.<br>Unidad: <b>kilogramo (kg)</b> y gramo (g).<br>👉 1 kg = 1.000 g</div>
+      <div class="dato"><b>🧴 Volumen</b><br>Espacio que ocupa un cuerpo.<br>Instrumentos: <b>probeta</b>, pipeta, huincha.<br>Unidad: metro cúbico (m³) y <b>litro (L)</b>.<br>👉 1 L = 1.000 mL</div>
+      <div class="dato"><b>🌡️ Temperatura</b><br>Indica el movimiento de las partículas.<br>Instrumento: <b>termómetro</b>.<br>Unidad en Chile: <b>grados Celsius (°C)</b>.<br>👉 Más movimiento = más temperatura</div>
+    </div>
+  </div>
+
+  <div class="card morado">
+    <h3>🧊💧💨 Los tres estados de la materia</h3>
+    <p>La materia puede encontrarse en <b>tres estados físicos</b>. Lo que cambia en cada uno es cómo están <b>ordenadas y se mueven sus partículas</b>:</p>
+    <div class="grid3">
+      <div class="mini-estado solido">
+        <div class="ico">🧊</div><h4>SÓLIDO</h4>
+        <ul>
+          <li>🔹 Partículas <b>ordenadas y juntas</b></li>
+          <li>🔹 Vibran, pero <b>no se desplazan</b></li>
+          <li>🔹 Forma: <b>definida</b></li>
+          <li>🔹 Volumen: <b>definido</b></li>
+          <li>🔹 ¿Fluye? <b>No</b></li>
+          <li>🔹 ¿Se comprime? <b>No</b></li>
+        </ul>
+        <p style="font-size:.78rem; margin-top:6px;">Ej: piedra, madera, hielo</p>
+      </div>
+      <div class="mini-estado liquido">
+        <div class="ico">💧</div><h4>LÍQUIDO</h4>
+        <ul>
+          <li>🔹 Partículas <b>desordenadas</b>, más separadas</li>
+          <li>🔹 Vibran y <b>se desplazan</b></li>
+          <li>🔹 Forma: <b>indefinida</b> (toma la del recipiente)</li>
+          <li>🔹 Volumen: <b>definido</b></li>
+          <li>🔹 ¿Fluye? <b>Sí</b></li>
+          <li>🔹 ¿Se comprime? <b>No</b></li>
+        </ul>
+        <p style="font-size:.78rem; margin-top:6px;">Ej: agua, jugo, leche</p>
+      </div>
+      <div class="mini-estado gas">
+        <div class="ico">💨</div><h4>GASEOSO</h4>
+        <ul>
+          <li>🔹 Partículas <b>muy desordenadas</b> y separadas</li>
+          <li>🔹 Se desplazan <b>libremente</b></li>
+          <li>🔹 Forma: <b>indefinida</b></li>
+          <li>🔹 Volumen: <b>indefinido</b></li>
+          <li>🔹 ¿Fluye? <b>Sí</b></li>
+          <li>🔹 ¿Se comprime y expande? <b>Sí</b></li>
+        </ul>
+        <p style="font-size:.78rem; margin-top:6px;">Ej: aire, vapor, humo</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dato"><b>💡 Dato curioso:</b> ¡El aire también es materia! Aunque no lo veas, ocupa espacio y tiene masa. Por eso un globo inflado pesa un poquito más que uno desinflado.</div>
+  <div class="dato"><b>💡 Dato curioso:</b> Los líquidos cambian de forma pero <b>nunca</b> cambian su volumen al pasarlos de un vaso a otro. ¡El jugo siempre es la misma cantidad!</div>
+
+  <div class="centro"><button class="btn azul" onclick="irA('fuerza')">Siguiente: La Fuerza 💪</button></div>
+</section>
+
+<!-- ============ LA FUERZA ============ -->
+<section id="fuerza">
+  <h2 class="titulo-seccion azul">💪 Unidad 3: La Fuerza y sus Efectos</h2>
+  <p class="subtitulo">Empujar, tirar, deformar… ¡las fuerzas están en todas partes!</p>
+
+  <div class="card azul">
+    <h3>🤔 ¿Qué es una fuerza?</h3>
+    <p>Una <span class="clave">fuerza</span> es una <b>interacción entre dos o más cuerpos</b>. Las fuerzas pueden:</p>
+    <p>🔹 Provocar un <b>cambio en el movimiento</b> de los cuerpos.<br>
+       🔹 <b>Poner en movimiento</b> algo que estaba quieto, o <b>detener</b> algo que se movía.<br>
+       🔹 <b>Cambiar la forma</b> de un cuerpo, es decir, deformarlo.</p>
+    <p>El cuerpo que <b>ejerce</b> la fuerza es el <span class="clave">agente</span> y el que la <b>recibe</b> es el <span class="clave">receptor</span>.</p>
+    <div class="dato"><b>Importante:</b> la fuerza <b>no es algo propio de los cuerpos</b>. Solo aparece cuando dos cuerpos interactúan y desaparece cuando dejan de hacerlo.</div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 Características de las fuerzas</h3>
+    <p>Toda fuerza tiene <b>tres características</b>:</p>
+    <div class="grid3">
+      <div class="dato"><b>↔️ Dirección</b><br>La línea sobre la que actúa: <b>vertical, horizontal o inclinada</b>.</div>
+      <div class="dato"><b>➡️ Sentido</b><br>Hacia dónde apunta: a la <b>derecha, izquierda, arriba o abajo</b>.</div>
+      <div class="dato"><b>📐 Magnitud</b><br>El "tamaño" de la fuerza: grande, mediana o pequeña.<br>Instrumento: <b>dinamómetro</b>.<br>Unidad: <b>newton (N)</b>.</div>
+    </div>
+    <p style="margin-top:10px;">Como las fuerzas no se pueden ver, se representan con <b>flechas</b> 🠖 que muestran su dirección, sentido y magnitud (mientras más larga la flecha, mayor la fuerza).</p>
+  </div>
+
+  <div class="card naranja">
+    <h3>✋ Efectos de las fuerzas: la deformación</h3>
+    <p>Cuando aplicamos fuerza sobre un cuerpo, puede deformarse de dos maneras:</p>
+    <div class="grid3">
+      <div class="dato"><b>🔄 Deformación momentánea</b><br>El cuerpo <b>recupera su forma</b> cuando la fuerza deja de actuar.<br>Ej: estirar un elástico y soltarlo.</div>
+      <div class="dato"><b>🔒 Deformación permanente</b><br>El cambio <b>se mantiene</b> aunque dejes de aplicar la fuerza.<br>Ej: moldear plasticina.</div>
+    </div>
+  </div>
+
+  <div class="card morado">
+    <h3>🧲 Los tipos de fuerza</h3>
+    <p>Existen distintos tipos de fuerza. Algunas actúan <b>al tocarse</b> los cuerpos (contacto) y otras <b>sin tocarse</b> (a distancia):</p>
+    <div class="grid3">
+      <div class="dato"><b>🌍 Gravitacional</b><br><i>(a distancia)</i><br>La Tierra atrae los objetos hacia abajo. Es la que hace que las cosas <b>caigan</b> y determina nuestro <b>peso</b>.</div>
+      <div class="dato"><b>🧲 Magnética</b><br><i>(a distancia)</i><br>La que ejercen los <b>imanes</b>. Pueden <b>atraer</b> o <b>repeler</b> (polos iguales se repelen, distintos se atraen).</div>
+      <div class="dato"><b>🛷 De roce</b><br><i>(de contacto)</i><br>Se <b>opone al movimiento</b> cuando dos superficies se frotan. Por ella un auto frena al apagar el motor.</div>
+      <div class="dato"><b>💪 Muscular</b><br><i>(de contacto)</i><br>La que hacemos con nuestros <b>músculos</b> al empujar, tirar o levantar objetos.</div>
+    </div>
+  </div>
+
+  <div class="dato"><b>💡 Dato curioso:</b> En la Luna pesarías <b>6 veces menos</b> que en la Tierra, porque su fuerza gravitacional es mucho más débil. ¡Podrías dar saltos enormes! 🌙</div>
+  <div class="dato"><b>💡 Dato curioso:</b> La fuerza de roce produce <b>calor</b>. Por eso, si frotas tus manos rápido, ¡se calientan! 🔥</div>
+
+  <div class="centro"><button class="btn" onclick="irA('flash')">¡A repasar con flashcards! 🃏</button></div>
+</section>
+
+<!-- ============ FLASHCARDS ============ -->
+<section id="flash">
+  <h2 class="titulo-seccion">🃏 Flashcards de repaso</h2>
+  <p class="subtitulo">Lee la pregunta, piensa la respuesta y <b>haz clic</b> en la tarjeta para comprobar. ¡Date 1 punto por cada una que sepas!</p>
+  <div class="centro"><button class="btn naranja" onclick="voltearTodas()">🔄 Voltear todas</button></div>
+  <div class="flash-zona" id="flashZona"></div>
+</section>
+
+<!-- ============ CONECTORES ============ -->
+<section id="conectores">
+  <h2 class="titulo-seccion">🔗 Conecta los conceptos</h2>
+  <p class="subtitulo">Haz clic en un concepto de la izquierda y luego en su definición de la derecha. Si aciertas, se pintan de <b>verde</b>. ⭐ 2 puntos por pareja.</p>
+
+  <div class="card">
+    <h3>🧪 Ronda 1: La Materia</h3>
+    <div class="conector-juego" id="con1"></div>
+    <div class="resultado-juego" id="res-con1"></div>
+  </div>
+
+  <div class="card azul">
+    <h3>💪 Ronda 2: La Fuerza</h3>
+    <div class="conector-juego" id="con2"></div>
+    <div class="resultado-juego" id="res-con2"></div>
+  </div>
+</section>
+
+<!-- ============ TABLA ESTADOS ============ -->
+<section id="tabla">
+  <h2 class="titulo-seccion morado" style="color:var(--morado)">📊 Completa la tabla de los estados</h2>
+  <p class="subtitulo">Elige la opción correcta en cada casilla y presiona <b>Revisar</b>. ⭐ Hasta 12 puntos.</p>
+  <div style="overflow-x:auto;">
+  <table class="estados" id="tablaEstados">
+    <tr><th>Característica</th><th>🧊 Sólido</th><th>💧 Líquido</th><th>💨 Gaseoso</th></tr>
+    <tr>
+      <td><b>Forma</b></td>
+      <td data-ok="definida"><select><option value="">—</option><option>definida</option><option>indefinida</option></select></td>
+      <td data-ok="indefinida"><select><option value="">—</option><option>definida</option><option>indefinida</option></select></td>
+      <td data-ok="indefinida"><select><option value="">—</option><option>definida</option><option>indefinida</option></select></td>
+    </tr>
+    <tr>
+      <td><b>Volumen</b></td>
+      <td data-ok="definido"><select><option value="">—</option><option>definido</option><option>indefinido</option></select></td>
+      <td data-ok="definido"><select><option value="">—</option><option>definido</option><option>indefinido</option></select></td>
+      <td data-ok="indefinido"><select><option value="">—</option><option>definido</option><option>indefinido</option></select></td>
+    </tr>
+    <tr>
+      <td><b>¿Fluye?</b></td>
+      <td data-ok="No"><select><option value="">—</option><option>Sí</option><option>No</option></select></td>
+      <td data-ok="Sí"><select><option value="">—</option><option>Sí</option><option>No</option></select></td>
+      <td data-ok="Sí"><select><option value="">—</option><option>Sí</option><option>No</option></select></td>
+    </tr>
+    <tr>
+      <td><b>¿Se comprime?</b></td>
+      <td data-ok="No"><select><option value="">—</option><option>Sí</option><option>No</option></select></td>
+      <td data-ok="No"><select><option value="">—</option><option>Sí</option><option>No</option></select></td>
+      <td data-ok="Sí"><select><option value="">—</option><option>Sí</option><option>No</option></select></td>
+    </tr>
+  </table>
+  </div>
+  <div class="centro"><button class="btn" onclick="revisarTabla()">✅ Revisar tabla</button></div>
+  <div class="resultado-juego" id="res-tabla"></div>
+</section>
+
+<!-- ============ CLASIFICA ============ -->
+<section id="clasifica">
+  <h2 class="titulo-seccion">🎯 Juego: ¡Clasifica!</h2>
+  <p class="subtitulo">Arrastra cada tarjeta a la caja correcta. (En celular, tócala y luego toca la caja.)</p>
+
+  <div class="card">
+    <h3>🧊 ¿En qué estado está cada cosa?</h3>
+    <div class="clas-banco" id="banco1"></div>
+    <div class="cajas" id="cajas1"></div>
+    <div class="centro" style="margin-top:12px;"><button class="btn azul" onclick="revisarClas(1)">Revisar</button></div>
+    <div class="resultado-juego" id="res-clas1"></div>
+  </div>
+
+  <div class="card morado">
+    <h3>🧲 ¿Qué tipo de fuerza es?</h3>
+    <div class="clas-banco" id="banco2"></div>
+    <div class="cajas" id="cajas2"></div>
+    <div class="centro" style="margin-top:12px;"><button class="btn naranja" onclick="revisarClas(2)">Revisar</button></div>
+    <div class="resultado-juego" id="res-clas2"></div>
+  </div>
+</section>
+
+<!-- ============ ALTERNATIVAS ============ -->
+<section id="alternativas">
+  <h2 class="titulo-seccion">✅ Preguntas de Alternativas</h2>
+  <p class="subtitulo">Elige la <b>única</b> alternativa correcta. ⭐ 2 puntos cada una.</p>
+  <div id="quizZona"></div>
+  <div class="resultado-juego" id="res-quiz"></div>
+</section>
+
+<!-- ============ VERDADERO/FALSO ============ -->
+<section id="vf">
+  <h2 class="titulo-seccion">🟢 Verdadero o Falso</h2>
+  <p class="subtitulo">Decide si cada afirmación es Verdadera o Falsa. ⭐ 1 punto cada una.</p>
+  <div id="vfZona"></div>
+  <div class="resultado-juego" id="res-vf"></div>
+</section>
+
+<!-- ============ LOGROS ============ -->
+<section id="logros">
+  <h2 class="titulo-seccion">🏆 Tus Logros</h2>
+  <p class="subtitulo">Junta puntos completando las actividades y desbloquea todas las insignias.</p>
+  <div class="card" style="text-align:center;">
+    <h3>Tu puntaje total</h3>
+    <div style="font-size:2.4rem; font-weight:bold; color:var(--verde-osc);"><span id="puntosFinal">0</span> ⭐</div>
+    <p id="nivelTxt" style="margin-top:6px; font-weight:bold;"></p>
+  </div>
+  <div class="insignias" id="insigniasZona"></div>
+  <div class="centro" style="margin-top:18px;">
+    <button class="btn naranja" onclick="reiniciar()">🔄 Reiniciar todo</button>
+  </div>
+  <div class="card naranja" style="margin-top:18px;">
+    <h3>📝 Consejo final antes de la prueba</h3>
+    <p>Repasa los <b>conceptos clave</b>, practica varias veces los quizzes y recuerda que puedes explicar con tus palabras qué es la materia, sus estados, qué es una fuerza y sus tipos. ¡Tú puedes! 🌟</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Guía de estudio interactiva · Ciencias Naturales 4° Básico · Basada en el material de las profesoras Daniela Alvarado y Karina Díaz (Unidades 2 y 3).
+</footer>
+
+<script>
+/* ================= ESTADO GLOBAL ================= */
+let puntos = 0;
+const META = 130; // puntaje aproximado para llenar la barra
+const logradas = new Set();
+
+function sumar(p){
+  puntos += p;
+  document.getElementById('puntos').textContent = puntos;
+  document.getElementById('puntosFinal').textContent = puntos;
+  const pct = Math.min(100, Math.round(puntos/META*100));
+  document.getElementById('barraProg').style.width = pct + '%';
+  revisarInsignias();
+}
+
+/* ================= NAVEGACIÓN ================= */
+const botones = document.querySelectorAll('#menu button');
+botones.forEach(b=>b.addEventListener('click',()=>irA(b.dataset.s)));
+function irA(id){
+  document.querySelectorAll('main section').forEach(s=>s.classList.remove('activa'));
+  document.getElementById(id).classList.add('activa');
+  botones.forEach(b=>b.classList.toggle('activo', b.dataset.s===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ================= FLASHCARDS ================= */
+const flashcards = [
+  {ico:'🌎', q:'¿Qué es la materia?', a:'Todo lo que ocupa espacio y tiene masa. Está hecha de partículas unidas por fuerza de atracción.'},
+  {ico:'⚖️', q:'¿Qué es la masa?', a:'La cantidad de materia que tiene un cuerpo. Se mide con la balanza, en kilogramos (kg).'},
+  {ico:'🧴', q:'¿Qué es el volumen?', a:'El espacio que ocupa un cuerpo. Se mide en litros (L) o metros cúbicos (m³).'},
+  {ico:'🌡️', q:'¿Qué es la temperatura?', a:'Una propiedad que indica el movimiento de las partículas. Se mide con el termómetro, en °C.'},
+  {ico:'🧲', q:'¿Qué es la fuerza de atracción de la materia?', a:'La interacción que mantiene cerca y unidas a las partículas de la materia.'},
+  {ico:'1️⃣', q:'1 kilogramo = ¿cuántos gramos?', a:'1 kg = 1.000 g'},
+  {ico:'💧', q:'1 litro = ¿cuántos mililitros?', a:'1 L = 1.000 mL'},
+  {ico:'🧊', q:'¿Cómo son las partículas en un SÓLIDO?', a:'Ordenadas y muy juntas. Vibran pero no se desplazan. Forma y volumen definidos.'},
+  {ico:'💧', q:'¿Cómo son las partículas en un LÍQUIDO?', a:'Desordenadas y más separadas. Se desplazan. Volumen definido, forma indefinida. Fluye.'},
+  {ico:'💨', q:'¿Cómo son las partículas en un GAS?', a:'Muy desordenadas y separadas. Se mueven libremente. Forma y volumen indefinidos. Se comprime.'},
+  {ico:'🔧', q:'¿Con qué instrumento se mide la masa?', a:'Con la balanza.'},
+  {ico:'📐', q:'¿Con qué instrumento se mide la fuerza?', a:'Con el dinamómetro. La unidad es el newton (N).'},
+  {ico:'💪', q:'¿Qué es una fuerza?', a:'Una interacción entre dos o más cuerpos que cambia su movimiento o los deforma.'},
+  {ico:'🎭', q:'¿Quién es el agente y quién el receptor?', a:'El agente ejerce la fuerza; el receptor la recibe.'},
+  {ico:'🎯', q:'¿Cuáles son las 3 características de una fuerza?', a:'Dirección, sentido y magnitud.'},
+  {ico:'🔄', q:'¿Qué es la deformación momentánea?', a:'Cuando el cuerpo recupera su forma al dejar de aplicar la fuerza. Ej: un elástico.'},
+  {ico:'🔒', q:'¿Qué es la deformación permanente?', a:'Cuando el cambio se mantiene aunque dejes de aplicar la fuerza. Ej: plasticina.'},
+  {ico:'🌍', q:'¿Qué es la fuerza gravitacional?', a:'La que atrae los objetos hacia la Tierra y determina su peso. Es a distancia.'},
+  {ico:'🧲', q:'¿Qué es la fuerza magnética?', a:'La de los imanes; puede atraer o repeler. Actúa a distancia.'},
+  {ico:'🛷', q:'¿Qué es la fuerza de roce?', a:'La que se opone al movimiento cuando dos superficies se frotan. Es de contacto.'},
+  {ico:'💪', q:'¿Qué es la fuerza muscular?', a:'La que ejercemos con nuestros músculos al empujar, tirar o levantar. Es de contacto.'},
+];
+const fz = document.getElementById('flashZona');
+flashcards.forEach((f,i)=>{
+  const d=document.createElement('div'); d.className='flash';
+  d.innerHTML=`<div class="flash-inner">
+    <div class="flash-cara flash-frente"><div class="ico">${f.ico}</div><div class="q">${f.q}</div><div class="pista">👆 toca para ver la respuesta</div></div>
+    <div class="flash-cara flash-detras"><div class="a">${f.a}</div></div></div>`;
+  d.addEventListener('click',()=>{
+    d.classList.toggle('volteada');
+    if(d.classList.contains('volteada') && !d.dataset.contada){d.dataset.contada=1; sumar(1);}
+  });
+  fz.appendChild(d);
+});
+function voltearTodas(){document.querySelectorAll('#flashZona .flash').forEach(f=>f.classList.toggle('volteada'));}
+
+/* ================= CONECTORES ================= */
+const pares1 = [
+  {c:'Materia', d:'Todo lo que tiene masa y ocupa espacio.'},
+  {c:'Masa', d:'Cantidad de materia que tiene un cuerpo.'},
+  {c:'Volumen', d:'Espacio que ocupa un cuerpo.'},
+  {c:'Temperatura', d:'Indica el movimiento de las partículas.'},
+  {c:'Balanza', d:'Instrumento para medir la masa.'},
+  {c:'Termómetro', d:'Instrumento para medir la temperatura.'},
+];
+const pares2 = [
+  {c:'Fuerza', d:'Interacción entre dos o más cuerpos.'},
+  {c:'Agente', d:'Cuerpo que ejerce la fuerza.'},
+  {c:'Magnitud', d:'Indica si la fuerza es grande, mediana o pequeña.'},
+  {c:'Dinamómetro', d:'Instrumento que mide la fuerza.'},
+  {c:'Fuerza de roce', d:'Se opone al movimiento entre superficies.'},
+  {c:'Fuerza muscular', d:'La que hacemos con nuestros músculos.'},
+];
+function montarConector(pares, contId, resId, ptsPair){
+  const cont = document.getElementById(contId);
+  const izq=[...pares.map((p,i)=>({t:p.c,id:i}))];
+  const der=[...pares.map((p,i)=>({t:p.d,id:i}))].sort(()=>Math.random()-0.5);
+  const colI=document.createElement('div'); colI.className='col-con'; colI.innerHTML='<h4>Concepto</h4>';
+  const colD=document.createElement('div'); colD.className='col-con'; colD.innerHTML='<h4>Definición</h4>';
+  izq.forEach(o=>{const e=document.createElement('div'); e.className='item-con'; e.textContent=o.t; e.dataset.id=o.id; e.dataset.lado='i'; colI.appendChild(e);});
+  der.forEach(o=>{const e=document.createElement('div'); e.className='item-con'; e.textContent=o.t; e.dataset.id=o.id; e.dataset.lado='d'; colD.appendChild(e);});
+  cont.appendChild(colI); cont.appendChild(colD);
+  let selI=null, hechos=0;
+  cont.querySelectorAll('.item-con').forEach(e=>{
+    e.addEventListener('click',()=>{
+      if(e.classList.contains('emparejado'))return;
+      if(e.dataset.lado==='i'){
+        cont.querySelectorAll('[data-lado=i]').forEach(x=>x.classList.remove('seleccionado'));
+        selI=e; e.classList.add('seleccionado');
+      } else if(selI){
+        if(selI.dataset.id===e.dataset.id){
+          selI.classList.add('emparejado'); e.classList.add('emparejado');
+          selI.classList.remove('seleccionado'); sumar(ptsPair); hechos++;
+          if(hechos===pares.length){document.getElementById(resId).textContent='🎉 ¡Todas conectadas! ¡Excelente!'; marcarLogro('con-'+contId);}
+        } else {
+          e.style.borderColor='var(--rojo)'; setTimeout(()=>e.style.borderColor='',400);
+          selI.classList.remove('seleccionado'); selI=null;
+        }
+      }
+    });
+  });
+}
+montarConector(pares1,'con1','res-con1',2);
+montarConector(pares2,'con2','res-con2',2);
+
+/* ================= TABLA ESTADOS ================= */
+function revisarTabla(){
+  let ok=0,total=0;
+  document.querySelectorAll('#tablaEstados td[data-ok]').forEach(td=>{
+    total++;
+    const sel=td.querySelector('select');
+    sel.classList.remove('bien','mal');
+    if(sel.value===td.dataset.ok){sel.classList.add('bien'); ok++;}
+    else sel.classList.add('mal');
+  });
+  const res=document.getElementById('res-tabla');
+  res.textContent=`Acertaste ${ok} de ${total}. `+(ok===total?'🎉 ¡Tabla perfecta!':'Revisa las rojas e inténtalo otra vez.');
+  if(!document.getElementById('tablaEstados').dataset.cobrada){
+    document.getElementById('tablaEstados').dataset.cobrada=1;
+    sumar(ok);
+    if(ok===total) marcarLogro('tabla');
+  }
+}
+
+/* ================= CLASIFICACIÓN ================= */
+const clas1 = {
+  cajas:['🧊 Sólido','💧 Líquido','💨 Gas'],
+  fichas:[
+    {t:'Piedra',cat:0},{t:'Madera',cat:0},{t:'Hielo',cat:0},
+    {t:'Agua',cat:1},{t:'Jugo',cat:1},{t:'Leche',cat:1},
+    {t:'Aire',cat:2},{t:'Vapor',cat:2},{t:'Humo',cat:2},
+  ]
+};
+const clas2 = {
+  cajas:['🌍 Gravitacional','🧲 Magnética','🛷 Roce','💪 Muscular'],
+  fichas:[
+    {t:'Una manzana cae del árbol',cat:0},{t:'Tu peso en la balanza',cat:0},
+    {t:'Un imán pega en el refri',cat:1},{t:'Dos imanes se repelen',cat:1},
+    {t:'El auto frena al apagarse',cat:2},{t:'Cuesta arrastrar una caja',cat:2},
+    {t:'Levantar tu mochila',cat:3},{t:'Patear una pelota',cat:3},
+  ]
+};
+function montarClas(data, bancoId, cajasId){
+  const banco=document.getElementById(bancoId), cajasCont=document.getElementById(cajasId);
+  const mezcla=[...data.fichas].sort(()=>Math.random()-0.5);
+  mezcla.forEach((f,i)=>{
+    const e=document.createElement('div'); e.className='ficha'; e.textContent=f.t; e.draggable=true;
+    e.dataset.cat=f.cat; e.id=bancoId+'-f'+i;
+    e.addEventListener('dragstart',ev=>ev.dataTransfer.setData('text',e.id));
+    e.addEventListener('click',()=>{ // modo táctil
+      document.querySelectorAll('.ficha').forEach(x=>x.style.outline='');
+      if(e.classList.contains('usada'))return;
+      seleccTactil = e; e.style.outline='3px solid var(--azul)';
+    });
+    banco.appendChild(e);
+  });
+  data.cajas.forEach((nom,idx)=>{
+    const c=document.createElement('div'); c.className='caja'; c.dataset.cat=idx;
+    c.innerHTML=`<h4>${nom}</h4>`;
+    c.addEventListener('dragover',ev=>{ev.preventDefault(); c.classList.add('over');});
+    c.addEventListener('dragleave',()=>c.classList.remove('over'));
+    c.addEventListener('drop',ev=>{
+      ev.preventDefault(); c.classList.remove('over');
+      const f=document.getElementById(ev.dataTransfer.getData('text'));
+      ponerEnCaja(f,c);
+    });
+    c.addEventListener('click',()=>{ if(seleccTactil){ponerEnCaja(seleccTactil,c); seleccTactil.style.outline=''; seleccTactil=null;} });
+    cajasCont.appendChild(c);
+  });
+}
+let seleccTactil=null;
+function ponerEnCaja(f,c){
+  if(f.classList.contains('usada'))return;
+  const tag=document.createElement('span'); tag.className='puesta'; tag.textContent=f.textContent;
+  tag.dataset.cat=f.dataset.cat;
+  c.appendChild(tag); f.classList.add('usada');
+}
+function revisarClas(n){
+  const data = n===1?clas1:clas2;
+  const cajasCont=document.getElementById('cajas'+n);
+  let ok=0,total=0;
+  cajasCont.querySelectorAll('.puesta').forEach(p=>{
+    total++;
+    const cajaCat=p.closest('.caja').dataset.cat;
+    if(p.dataset.cat===cajaCat){p.style.background='#d4f5c4'; ok++;}
+    else p.style.background='#ffd6d6';
+  });
+  const res=document.getElementById('res-clas'+n);
+  if(total===0){res.textContent='Coloca las tarjetas en las cajas primero 🙂'; return;}
+  res.textContent=`Acertaste ${ok} de ${data.fichas.length}. `+(ok===data.fichas.length?'🎉 ¡Perfecto!':'Mueve las rojas e inténtalo otra vez.');
+  const key='clas'+n;
+  if(!cobradas.has(key)){cobradas.add(key); sumar(ok); if(ok===data.fichas.length) marcarLogro(key);}
+}
+const cobradas=new Set();
+montarClas(clas1,'banco1','cajas1');
+montarClas(clas2,'banco2','cajas2');
+
+/* ================= QUIZ ALTERNATIVAS ================= */
+const quiz = [
+  {q:'En nuestro entorno, todo lo que nos rodea es:', op:['Sólido','Materia','Líquido','Gas'], ok:1},
+  {q:'¿Cuáles estados de la materia tienen la capacidad de fluir?', op:['Solo el sólido','Solo el líquido','Solo el gaseoso','El líquido y el gaseoso'], ok:3},
+  {q:'"Es la cantidad de materia que posee un cuerpo." ¿A qué concepto corresponde?', op:['A la masa','Al volumen','A la temperatura','Al espacio'], ok:0},
+  {q:'"Es el espacio que ocupa un cuerpo." ¿A qué concepto corresponde?', op:['A la masa','Al volumen','A la temperatura','Al peso'], ok:1},
+  {q:'¿Con qué instrumento se mide la masa?', op:['Termómetro','Probeta','Balanza','Dinamómetro'], ok:2},
+  {q:'¿Cuál es la unidad más usada para medir la masa?', op:['Litro','Kilogramo','Newton','Grado Celsius'], ok:1},
+  {q:'¿En qué estado las partículas están muy separadas y desordenadas?', op:['Sólido','Líquido','Gaseoso','En ninguno'], ok:2},
+  {q:'Un líquido al pasarlo de un vaso a otro:', op:['Cambia su volumen','Cambia su forma pero no su volumen','Cambia su masa','No cambia nada'], ok:1},
+  {q:'¿Qué propiedad indica el movimiento de las partículas?', op:['La masa','El volumen','La temperatura','La forma'], ok:2},
+  {q:'Una fuerza es:', op:['Una parte del cuerpo','Una interacción entre dos o más cuerpos','Un tipo de materia','Una unidad de medida'], ok:1},
+  {q:'El cuerpo que ejerce la fuerza se llama:', op:['Receptor','Agente','Dinamómetro','Imán'], ok:1},
+  {q:'¿Cuáles son las tres características de una fuerza?', op:['Masa, volumen y forma','Dirección, sentido y magnitud','Sólido, líquido y gas','Peso, roce y empuje'], ok:1},
+  {q:'¿Con qué instrumento se mide la fuerza?', op:['Balanza','Termómetro','Dinamómetro','Probeta'], ok:2},
+  {q:'Estirar un elástico y soltarlo es un ejemplo de:', op:['Deformación permanente','Deformación momentánea','Fuerza magnética','Cambio de estado'], ok:1},
+  {q:'La fuerza que atrae los objetos hacia la Tierra es la:', op:['Magnética','De roce','Gravitacional','Muscular'], ok:2},
+  {q:'Que un imán atraiga un clavo es un ejemplo de fuerza:', op:['Muscular','Magnética','De roce','Gravitacional'], ok:1},
+  {q:'La fuerza que se opone al movimiento entre dos superficies es la:', op:['Gravitacional','De roce','Magnética','Muscular'], ok:1},
+  {q:'Levantar tu mochila con los brazos usa la fuerza:', op:['Magnética','Gravitacional','Muscular','De roce'], ok:2},
+];
+const qz=document.getElementById('quizZona');
+quiz.forEach((p,i)=>{
+  const d=document.createElement('div'); d.className='pregunta';
+  let lis='';
+  p.op.forEach((o,j)=>lis+=`<li data-j="${j}">${String.fromCharCode(97+j)}) ${o}</li>`);
+  d.innerHTML=`<div><span class="num">${i+1}</span><span class="enunciado">${p.q}</span></div><ul class="opciones">${lis}</ul><div class="feedback"></div>`;
+  const fb=d.querySelector('.feedback');
+  d.querySelectorAll('.opciones li').forEach(li=>{
+    li.addEventListener('click',()=>{
+      if(d.dataset.resp)return; d.dataset.resp=1;
+      const j=+li.dataset.j;
+      d.querySelectorAll('.opciones li').forEach(x=>x.classList.add('bloqueada'));
+      d.querySelectorAll('.opciones li')[p.ok].classList.add('correcta');
+      if(j===p.ok){fb.textContent='✅ ¡Correcto!'; fb.className='feedback ok'; sumar(2);}
+      else{li.classList.add('incorrecta'); fb.textContent='❌ La correcta era la '+String.fromCharCode(97+p.ok)+').'; fb.className='feedback mal';}
+      fb.style.display='block';
+      contarQuiz();
+    });
+  });
+  qz.appendChild(d);
+});
+function contarQuiz(){
+  const resp=document.querySelectorAll('#quizZona .pregunta[data-resp]').length;
+  if(resp===quiz.length){document.getElementById('res-quiz').textContent='🎉 ¡Terminaste todas las alternativas!'; marcarLogro('quiz');}
+}
+
+/* ================= VERDADERO/FALSO ================= */
+const vfs = [
+  {a:'La masa es el espacio que ocupa un cuerpo.', v:false, exp:'Falso: el espacio que ocupa es el VOLUMEN. La masa es la cantidad de materia.'},
+  {a:'La materia se puede presentar en estado sólido, líquido y gaseoso.', v:true, exp:'Verdadero: esos son los tres estados físicos de la materia.'},
+  {a:'Las partículas en estado sólido pueden fluir.', v:false, exp:'Falso: en el sólido las partículas vibran pero no se desplazan, por eso no fluye.'},
+  {a:'La masa y el volumen son propiedades comunes a todo lo que está hecho de materia.', v:true, exp:'Verdadero: todo lo que es materia tiene masa y volumen.'},
+  {a:'Todos los objetos tienen masa y volumen.', v:true, exp:'Verdadero: por eso son materia.'},
+  {a:'Las partículas de los líquidos se comprimen fácilmente.', v:false, exp:'Falso: los líquidos NO se pueden comprimir; los gases sí.'},
+  {a:'El aire es materia porque ocupa espacio y tiene masa.', v:true, exp:'Verdadero: aunque no lo veamos, el aire es materia.'},
+  {a:'La fuerza es una característica propia de los cuerpos.', v:false, exp:'Falso: la fuerza aparece solo cuando dos cuerpos interactúan.'},
+  {a:'La fuerza se mide con el dinamómetro y su unidad es el newton.', v:true, exp:'Verdadero: dinamómetro y newton (N).'},
+  {a:'Moldear plasticina produce una deformación permanente.', v:true, exp:'Verdadero: la forma se mantiene aunque dejes de aplicar la fuerza.'},
+  {a:'La fuerza magnética necesita que los cuerpos se toquen para actuar.', v:false, exp:'Falso: la magnética es una fuerza a distancia, no necesita contacto.'},
+  {a:'La fuerza gravitacional es la que nos hace caer hacia la Tierra.', v:true, exp:'Verdadero: la gravedad atrae los objetos hacia la Tierra.'},
+];
+const vfz=document.getElementById('vfZona');
+vfs.forEach((p,i)=>{
+  const d=document.createElement('div'); d.className='vf';
+  d.innerHTML=`<div class="afirm">${i+1}. ${p.a}</div>
+    <div class="btns"><button class="v">V</button><button class="f">F</button></div>
+    <div class="resp">${p.exp}</div>`;
+  const resp=d.querySelector('.resp');
+  d.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      if(d.dataset.r)return; d.dataset.r=1;
+      const eligioV=b.classList.contains('v');
+      const acerto=(eligioV===p.v);
+      b.classList.add(acerto?'sel-bien':'sel-mal');
+      if(acerto) sumar(1);
+      resp.style.display='block';
+      contarVF();
+    });
+  });
+  vfz.appendChild(d);
+});
+function contarVF(){
+  const resp=document.querySelectorAll('#vfZona .vf[data-r]').length;
+  if(resp===vfs.length){document.getElementById('res-vf').textContent='🎉 ¡Completaste el Verdadero o Falso!'; marcarLogro('vf');}
+}
+
+/* ================= INSIGNIAS ================= */
+const insignias = [
+  {id:'puntos20', emo:'🌱', nom:'Aprendiz', desc:'Consigue 20 puntos', cond:()=>puntos>=20},
+  {id:'puntos60', emo:'🔬', nom:'Científico Jr.', desc:'Consigue 60 puntos', cond:()=>puntos>=60},
+  {id:'puntos100', emo:'🚀', nom:'Genio', desc:'Consigue 100 puntos', cond:()=>puntos>=100},
+  {id:'tabla', emo:'📊', nom:'Maestro de Estados', desc:'Completa la tabla perfecta', cond:()=>logradas.has('tabla')},
+  {id:'quiz', emo:'✅', nom:'As de Alternativas', desc:'Responde todo el quiz', cond:()=>logradas.has('quiz')},
+  {id:'vf', emo:'🟢', nom:'Detector V/F', desc:'Completa Verdadero o Falso', cond:()=>logradas.has('vf')},
+  {id:'clas', emo:'🎯', nom:'Clasificador', desc:'Gana los dos juegos de clasificar', cond:()=>logradas.has('clas1')&&logradas.has('clas2')},
+  {id:'conector', emo:'🔗', nom:'Conector Experto', desc:'Conecta todos los conceptos', cond:()=>logradas.has('con-con1')&&logradas.has('con-con2')},
+];
+const insZona=document.getElementById('insigniasZona');
+insignias.forEach(b=>{
+  const d=document.createElement('div'); d.className='insignia'; d.id='ins-'+b.id;
+  d.innerHTML=`<div class="emo">${b.emo}</div><div class="nom">${b.nom}</div><div class="desc">${b.desc}</div>`;
+  insZona.appendChild(d);
+});
+function marcarLogro(key){ logradas.add(key); revisarInsignias(); }
+function revisarInsignias(){
+  insignias.forEach(b=>{
+    const el=document.getElementById('ins-'+b.id);
+    if(b.cond() && !el.classList.contains('ganada')){
+      el.classList.add('ganada'); confeti();
+    }
+  });
+  // nivel
+  let nivel='¡Sigue así! 🌱';
+  if(puntos>=100)nivel='¡Nivel GENIO! 🚀 Estás súper preparado.';
+  else if(puntos>=60)nivel='¡Nivel Científico! 🔬 Vas muy bien.';
+  else if(puntos>=20)nivel='¡Nivel Aprendiz! 🌱 Buen comienzo.';
+  document.getElementById('nivelTxt').textContent=nivel;
+}
+
+/* ================= CONFETI ================= */
+function confeti(){
+  const emos=['🎉','⭐','🎊','🏆','✨','🌟'];
+  for(let i=0;i<18;i++){
+    const c=document.createElement('div'); c.className='confeti';
+    c.textContent=emos[Math.floor(Math.random()*emos.length)];
+    c.style.left=Math.random()*100+'vw';
+    c.style.animationDuration=(2+Math.random()*2)+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+
+/* ================= REINICIAR ================= */
+function reiniciar(){ location.reload(); }
+
+revisarInsignias();
+</script>
+</body>
+</html>
