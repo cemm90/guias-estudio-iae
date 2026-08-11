@@ -1,14 +1,15 @@
 {
   "asignatura": "Inglés",
-  "curso": "Sin curso",
-  "unidad": "Sin unidad",
+  "curso": "4° Básico",
+  "unidad": "Unit 5 · School Life",
   "emoji": "🌍",
   "color": "#D64545",
-  "desc": "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
+  "desc": "Interactive English study guide for Unit 5, 4th grade: school places, asking for directions, object pronouns, must and must not, and going to school, with flashcards, matching and memory games.",
   "tags": [
     "Guía de repaso"
   ],
   "listo": true,
   "autoDesc": true,
-  "autoTags": true
+  "autoTags": true,
+  "semestre": "Segundo Semestre"
 }
