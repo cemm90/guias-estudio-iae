@@ -1,7 +1,7 @@
 {
   "asignatura": "Lenguaje y Comunicación",
   "curso": "4° Básico",
-  "unidad": "Unidad 2",
+  "unidad": "Unidad 2 · Lecciones 1, 2 y 3",
   "emoji": "🪄",
   "color": "#6C3FB5",
   "desc": "Comprensión de textos literarios y no literarios (información explícita, implícita e inferencias) · Textos instructivos y normativos: estructura y propósito comunicativo y más.",
@@ -10,5 +10,6 @@
     "58 tarjetas",
     "7 niveles"
   ],
-  "listo": true
+  "listo": true,
+  "semestre": "Segundo Semestre"
 }
