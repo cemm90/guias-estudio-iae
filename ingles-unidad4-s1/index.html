@@ -1,1 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Interactive English study guide for 4th grade: simple past with regular verbs, there is / there are with some and any, frequency expressions, key vocabulary, reading practice and flashcards.">
+<meta name="curso" content="4° Básico">
+<meta name="asignatura" content="Inglés">
+<meta name="unidad" content="Síntesis · First Semester">
+<meta name="semestre" content="Primer Semestre">
+<meta name="theme-color" content="#1E3A8A">
+<meta property="og:type" content="website">
+<meta property="og:title" content="🌟 English Study Guide – 4th Grade">
+<meta property="og:description" content="Interactive English study guide for 4th grade: simple past with regular verbs, there is / there are with some and any, frequency expressions, key vocabulary, reading practice and flashcards.">
+<meta property="og:locale" content="en_US">
+<title>🌟 English Study Guide – 4th Grade</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  min-height: 100vh;
+  color: #333;
+}
+
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+/* Header */
+.header {
+  background: white;
+  border-radius: 20px;
+  padding: 22px 25px;
+  text-align: center;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.header h1 { font-size: 1.9em; color: #1e3a8a; margin-bottom: 4px; }
+.header p { color: #64748b; font-size: 0.95em; }
+
+/* Score bar */
+.score-bar {
+  background: white;
+  border-radius: 15px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+}
+.score-item { text-align: center; }
+.score-num { font-size: 1.6em; font-weight: 800; color: #1e3a8a; }
+.score-label { font-size: 0.7em; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+
+/* Navigation */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: white;
+  border-radius: 15px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+  justify-content: center;
+}
+.nav-btn {
+  padding: 9px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 25px;
+  background: white;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 0.88em;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.nav-btn:hover { border-color: #3b82f6; color: #3b82f6; }
+.nav-btn.active { background: #1e3a8a; color: white; border-color: #1e3a8a; }
+
+/* Main content panel */
+.panel {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  min-height: 500px;
+}
+.tab { display: none; }
+.tab.active { display: block; }
+
+/* Section title */
+.sec-title {
+  font-size: 1.4em;
+  color: #1e3a8a;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Activity header */
+.act-header {
+  background: #1e3a8a;
+  color: white;
+  padding: 11px 18px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 0.95em;
+}
+
+/* Grammar reference cards */
+.gcard {
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 18px;
+  border-left: 5px solid;
+}
+.gcard.blue { background: #eff6ff; border-color: #3b82f6; }
+.gcard.green { background: #f0fdf4; border-color: #22c55e; }
+.gcard.purple { background: #faf5ff; border-color: #a855f7; }
+.gcard.orange { background: #fff7ed; border-color: #f97316; }
+.gcard h3 { font-size: 1.1em; color: #1e3a8a; margin-bottom: 12px; }
+
+.rule-tag {
+  display: inline-block;
+  background: #1e3a8a;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 0.78em;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.ebox {
+  background: white;
+  border-radius: 8px;
+  padding: 11px 15px;
+  margin: 8px 0;
+  font-size: 0.93em;
+  line-height: 1.8;
+}
+.ebox em { color: #1e3a8a; font-style: normal; }
+
+.vtable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 0.88em;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.vtable th { background: #1e3a8a; color: white; padding: 8px 12px; text-align: left; }
+.vtable td { padding: 7px 12px; border-bottom: 1px solid #e2e8f0; }
+.vtable tr:hover td { background: #f8fafc; }
+
+.hl { background: #fef3c7; padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+.tip {
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 10px;
+  font-size: 0.88em;
+  line-height: 1.6;
+}
+
+/* Activity 1 - Word guessing */
+.clue-card {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 15px 18px;
+  margin-bottom: 12px;
+  border: 2px solid #e2e8f0;
+  transition: border-color 0.3s;
+}
+.clue-card.ok { border-color: #22c55e; background: #f0fdf4; }
+.clue-card.err { border-color: #ef4444; background: #fef2f2; }
+
+.num-badge {
+  width: 28px; height: 28px;
+  background: #1e3a8a; color: white;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.85em; font-weight: 700;
+  margin-right: 8px;
+}
+
+.letters {
+  display: flex; gap: 4px; flex-wrap: wrap;
+  margin: 8px 0;
+}
+.lbox {
+  width: 28px; height: 28px;
+  border-bottom: 2px solid #94a3b8;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.95em; color: #1e3a8a;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.ans-row { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+.ans-row input {
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 0.95em;
+  width: 200px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.ans-row input:focus { border-color: #3b82f6; }
+
+.fb { font-size: 0.88em; font-weight: 600; margin-top: 6px; min-height: 18px; }
+.fb.ok { color: #16a34a; }
+.fb.err { color: #dc2626; }
+
+/* Buttons */
+.btn {
+  padding: 8px 18px;
+  border: none; border-radius: 20px;
+  cursor: pointer; font-size: 0.88em; font-weight: 700;
+  transition: all 0.2s;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-blue { background: #1e3a8a; color: white; }
+.btn-blue:hover { background: #1e40af; }
+.btn-gray { background: #94a3b8; color: white; }
+.btn-gray:hover { background: #64748b; }
+.btn-green { background: #22c55e; color: white; }
+
+.check-btn {
+  display: block; width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+  color: white; border: none;
+  border-radius: 12px; font-size: 1em; font-weight: 700;
+  cursor: pointer; margin-top: 18px;
+  transition: all 0.25s;
+}
+.check-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30,58,138,0.3); }
+
+/* Word sorting */
+.word-pool {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 12px; min-height: 58px;
+  border: 2px dashed #cbd5e1;
+  margin-bottom: 18px;
+}
+.chip {
+  padding: 7px 14px;
+  background: #1e3a8a; color: white;
+  border-radius: 20px; cursor: pointer;
+  font-size: 0.88em; font-weight: 600;
+  transition: all 0.2s; user-select: none;
+}
+.chip:hover { background: #1e40af; transform: scale(1.05); }
+.chip.sel { background: #f97316; transform: scale(1.08); }
+.chip.wrong-anim { animation: shake 0.4s; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.zones {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.zone {
+  border-radius: 12px; min-height: 140px;
+  padding: 12px; cursor: pointer;
+  transition: all 0.2s; border: 2px solid transparent;
+}
+.zone:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.1); }
+.zone-h { background: #f0fdf4; border-color: #bbf7d0; }
+.zone-f { background: #fff7ed; border-color: #fed7aa; }
+.zone-c { background: #eff6ff; border-color: #bfdbfe; }
+
+.zone-title {
+  font-weight: 700; font-size: 0.85em;
+  text-align: center; padding: 5px 8px;
+  border-radius: 8px; margin-bottom: 10px;
+}
+.zone-h .zone-title { background: #dcfce7; color: #15803d; }
+.zone-f .zone-title { background: #fed7aa; color: #c2410c; }
+.zone-c .zone-title { background: #dbeafe; color: #1d4ed8; }
+
+.zone-words { display: flex; flex-wrap: wrap; gap: 5px; }
+.placed {
+  padding: 4px 10px; border-radius: 12px;
+  font-size: 0.8em; font-weight: 600;
+}
+.zone-h .placed { background: #bbf7d0; color: #15803d; }
+.zone-f .placed { background: #fed7aa; color: #c2410c; }
+.zone-c .placed { background: #bfdbfe; color: #1d4ed8; }
+
+/* Grammar activity 3 */
+.sent-item {
+  background: #f8fafc; border-radius: 12px;
+  padding: 16px 18px; margin-bottom: 14px;
+  border: 2px solid #e2e8f0; transition: border-color 0.3s;
+}
+.sent-item.ok { border-color: #22c55e; background: #f0fdf4; }
+.sent-item.err { border-color: #ef4444; background: #fef2f2; }
+
+.wrong-sent {
+  color: #dc2626; font-style: italic;
+  padding: 8px 12px; background: #fee2e2;
+  border-radius: 8px; margin-bottom: 10px;
+  font-size: 0.93em;
+}
+.wrong-sent u { font-weight: 700; }
+
+.opts { display: flex; flex-direction: column; gap: 7px; }
+.opt {
+  padding: 9px 14px; border: 2px solid #e2e8f0;
+  border-radius: 8px; background: white;
+  cursor: pointer; text-align: left;
+  font-size: 0.92em; transition: all 0.2s;
+}
+.opt:hover { border-color: #3b82f6; background: #eff6ff; }
+.opt.right { border-color: #22c55e; background: #f0fdf4; color: #15803d; font-weight: 700; }
+.opt.wrong { border-color: #ef4444; background: #fef2f2; color: #dc2626; }
+.opt:disabled { cursor: default; }
+
+/* Reading */
+.story {
+  background: #f0f9ff; border-radius: 12px;
+  padding: 20px; margin-bottom: 20px;
+  border-left: 4px solid #1e3a8a; line-height: 1.75;
+  font-size: 0.97em;
+}
+.story p { margin-bottom: 10px; }
+
+/* Flashcards */
+.fc-wrap {
+  perspective: 1000px;
+  width: 300px; height: 180px;
+  margin: 0 auto 18px; cursor: pointer;
+}
+.fc {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.55s;
+}
+.fc.flipped { transform: rotateY(180deg); }
+.fc-front, .fc-back {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden; border-radius: 16px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 18px; text-align: center;
+}
+.fc-front { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; }
+.fc-back { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; transform: rotateY(180deg); }
+.fc-front h3 { font-size: 1.35em; margin-bottom: 6px; }
+.fc-back h3 { font-size: 1.05em; margin-bottom: 6px; }
+.fc-back p { font-size: 0.85em; opacity: 0.9; }
+
+/* Vocab grid */
+.vgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px; margin-top: 14px;
+}
+.vcard {
+  background: #eff6ff; border-radius: 10px;
+  padding: 10px 12px; text-align: center;
+  border: 2px solid transparent; cursor: default;
+  transition: border-color 0.2s;
+}
+.vcard:hover { border-color: #3b82f6; }
+.vcard strong { color: #1e3a8a; font-size: 0.88em; display: block; margin-top: 4px; }
+.vcard span { color: #64748b; font-size: 0.75em; }
+
+/* Result boxes */
+.result-box {
+  border-radius: 12px; padding: 15px 20px;
+  text-align: center; margin-top: 14px;
+}
+.result-box.perfect { background: #f0fdf4; }
+.result-box.good { background: #eff6ff; }
+.result-box.try { background: #fff7ed; }
+.result-box .big { font-size: 2em; }
+.result-box strong { display: block; font-size: 1.15em; margin: 4px 0; }
+
+/* Home grid */
+.home-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 20px; }
+.home-card {
+  background: #f8fafc; border-radius: 14px;
+  padding: 20px; cursor: pointer;
+  transition: all 0.25s; border: 2px solid #e2e8f0;
+  text-align: center;
+}
+.home-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-color: #3b82f6; }
+.home-card .icon { font-size: 2.5em; margin-bottom: 8px; }
+.home-card h3 { color: #1e3a8a; margin-bottom: 5px; font-size: 1em; }
+.home-card p { color: #64748b; font-size: 0.82em; line-height: 1.5; }
+
+/* Two-col layout */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* Freq selects */
+.freq-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+.freq-row select {
+  padding: 7px 12px; border: 2px solid #e2e8f0;
+  border-radius: 8px; font-size: 0.92em;
+  background: white; cursor: pointer; outline: none;
+}
+.freq-row select:focus { border-color: #3b82f6; }
+
+@media (max-width: 600px) {
+  .zones { grid-template-columns: 1fr; }
+  .home-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .header h1 { font-size: 1.4em; }
+  .score-bar { flex-wrap: wrap; gap: 10px; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🌟 English Study Guide</h1>
+    <p>4th Grade · Units 0, 1, 2 & 3 · Instituto Alonso de Ercilla</p>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <div class="score-item">
+      <div class="score-num" id="total-pts">0</div>
+      <div class="score-label">⭐ Total Points</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num" id="sc-vocab">—</div>
+      <div class="score-label">📗 Vocabulary</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num" id="sc-gram">—</div>
+      <div class="score-label">✏️ Grammar</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num" id="sc-read">—</div>
+      <div class="score-label">📖 Reading</div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="go('home')">🏠 Home</button>
+    <button class="nav-btn" onclick="go('ref')">📚 Grammar Cards</button>
+    <button class="nav-btn" onclick="go('vocab')">📗 Vocabulary</button>
+    <button class="nav-btn" onclick="go('gram')">✏️ Grammar</button>
+    <button class="nav-btn" onclick="go('read')">📖 Reading</button>
+    <button class="nav-btn" onclick="go('cards')">🃏 Flashcards</button>
+  </div>
+
+  <!-- PANEL -->
+  <div class="panel">
+
+    <!-- ======== HOME ======== -->
+    <div class="tab active" id="tab-home">
+      <div class="sec-title">🏠 Welcome! Let's study for the test!</div>
+      <p style="color:#64748b">Choose any section below to start practicing. Earn points as you go! 🎯</p>
+
+      <div class="home-grid">
+        <div class="home-card" onclick="go('ref')">
+          <div class="icon">📚</div>
+          <h3>Grammar Cards</h3>
+          <p>Study Simple Past, There is/are, and frequency expressions</p>
+        </div>
+        <div class="home-card" onclick="go('vocab')">
+          <div class="icon">📗</div>
+          <h3>Vocabulary</h3>
+          <p>Guess words from clues and sort them into categories</p>
+        </div>
+        <div class="home-card" onclick="go('gram')">
+          <div class="icon">✏️</div>
+          <h3>Grammar Practice</h3>
+          <p>Fix sentences with grammar mistakes</p>
+        </div>
+        <div class="home-card" onclick="go('read')">
+          <div class="icon">📖</div>
+          <h3>Reading</h3>
+          <p>Read Sam's story and answer comprehension questions</p>
+        </div>
+        <div class="home-card" onclick="go('cards')" style="grid-column: span 2; max-width:300px; margin:0 auto; width:100%;">
+          <div class="icon">🃏</div>
+          <h3>Flashcards</h3>
+          <p>Practice key vocabulary with flip cards</p>
+        </div>
+      </div>
+
+      <div style="background:#eff6ff; border-radius:12px; padding:14px 18px; margin-top:18px;">
+        <strong style="color:#1e3a8a;">📌 Topics covered in this guide:</strong>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:6px; margin-top:10px; color:#475569; font-size:0.88em; line-height:1.9;">
+          <span>🏃 Health vocabulary</span>
+          <span>🧹 House chores</span>
+          <span>🍅 Food & ingredients</span>
+          <span>⏰ Simple Past tense</span>
+          <span>🔢 There is / There are</span>
+          <span>⏱️ How often + frequency</span>
+          <span>✅ Some / Any</span>
+          <span>📖 Reading comprehension</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== GRAMMAR REFERENCE ======== -->
+    <div class="tab" id="tab-ref">
+      <div class="sec-title">📚 Grammar Reference Cards</div>
+
+      <!-- Card 1: Simple Past -->
+      <div class="gcard blue">
+        <h3>⏰ Simple Past — Regular Verbs</h3>
+        <p style="color:#475569; font-size:0.92em; margin-bottom:12px;">Use Simple Past to talk about finished actions in the past. Add <strong>-ed</strong> to regular verbs.</p>
+
+        <div class="rule-tag" style="background:#15803d;">✅ Positive</div>
+        <div class="ebox">
+          <strong>Subject + verb<span class="hl">+ed</span></strong><br>
+          <em>• I <strong>washed</strong> the dishes yesterday.</em><br>
+          <em>• She <strong>cooked</strong> dinner last night.</em><br>
+          <em>• We <strong>cleaned</strong> the room two days ago.</em>
+        </div>
+
+        <div class="rule-tag" style="background:#dc2626; margin-top:4px;">❌ Negative</div>
+        <div class="ebox">
+          <strong>Subject + <span class="hl">didn't</span> + verb (NO -ed!)</strong><br>
+          <em>• I <strong>didn't wash</strong> the dishes. (NOT: didn't washed)</em><br>
+          <em>• She <strong>didn't cook</strong> dinner.</em>
+        </div>
+
+        <table class="vtable" style="margin-top:12px;">
+          <tr><th>Base form</th><th>Simple Past</th><th>Example sentence</th></tr>
+          <tr><td>cook</td><td><strong>cooked</strong></td><td>Dad cooked soup last Saturday</td></tr>
+          <tr><td>wash</td><td><strong>washed</strong></td><td>I washed the dishes after dinner</td></tr>
+          <tr><td>clean</td><td><strong>cleaned</strong></td><td>She cleaned the kitchen</td></tr>
+          <tr><td>vacuum</td><td><strong>vacuumed</strong></td><td>My sister vacuumed the floor</td></tr>
+          <tr><td>water</td><td><strong>watered</strong></td><td>We watered the plants last Friday</td></tr>
+          <tr><td>exercise</td><td><strong>exercised</strong></td><td>I exercised at the park yesterday</td></tr>
+          <tr><td>brush</td><td><strong>brushed</strong></td><td>He brushed his teeth this morning</td></tr>
+        </table>
+
+        <div class="tip" style="background:#dbeafe;">
+          ⏰ <strong>Past time expressions:</strong> yesterday · last night · last Monday · last weekend · last Friday · two days ago · three days ago
+        </div>
+      </div>
+
+      <!-- Card 2: There is / There are -->
+      <div class="gcard green">
+        <h3>🔍 There is / There are + Some / Any</h3>
+
+        <div class="two-col" style="margin-bottom:12px;">
+          <div>
+            <div class="rule-tag" style="background:#15803d;">THERE IS</div>
+            <div class="ebox">
+              For <strong>singular</strong> or <strong>uncountable</strong> nouns<br>
+              <em>• There <strong>is</strong> an apple. (1 apple)</em><br>
+              <em>• There <strong>is some</strong> water. (water = uncountable)</em><br>
+              <em>• There <strong>isn't any</strong> milk. ❌</em>
+            </div>
+          </div>
+          <div>
+            <div class="rule-tag" style="background:#15803d;">THERE ARE</div>
+            <div class="ebox">
+              For <strong>plural</strong> nouns<br>
+              <em>• There <strong>are</strong> 3 apples. (plural)</em><br>
+              <em>• There <strong>are some</strong> tomatoes. ✅</em><br>
+              <em>• There <strong>aren't any</strong> mushrooms. ❌</em>
+            </div>
+          </div>
+        </div>
+
+        <table class="vtable">
+          <tr><th></th><th>✅ Positive → use SOME</th><th>❌ Negative → use ANY</th></tr>
+          <tr><td><strong>Singular / Uncountable</strong></td><td>There <span class="hl">is some</span> water</td><td>There <span class="hl">isn't any</span> water</td></tr>
+          <tr><td><strong>Plural</strong></td><td>There <span class="hl">are some</span> tomatoes</td><td>There <span class="hl">aren't any</span> tomatoes</td></tr>
+        </table>
+
+        <div class="tip" style="background:#dcfce7;">
+          💡 <strong>Key rule:</strong> <span class="hl">SOME</span> = positive sentences &nbsp;|&nbsp; <span class="hl">ANY</span> = negative sentences
+        </div>
+      </div>
+
+      <!-- Card 3: How often -->
+      <div class="gcard purple">
+        <h3>⏱️ How Often? — Frequency Expressions</h3>
+        <p style="color:#475569; font-size:0.92em; margin-bottom:12px;">Use <em>"How often...?"</em> to ask about how many times something happens.</p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom:14px;">
+          <div class="ebox" style="text-align:center;">
+            <div style="font-size:1.6em;">1️⃣</div>
+            <strong>once</strong><br><span style="color:#64748b; font-size:0.8em;">= one time</span>
+          </div>
+          <div class="ebox" style="text-align:center;">
+            <div style="font-size:1.6em;">2️⃣</div>
+            <strong>twice</strong><br><span style="color:#64748b; font-size:0.8em;">= two times</span>
+          </div>
+          <div class="ebox" style="text-align:center;">
+            <div style="font-size:1.6em;">3️⃣</div>
+            <strong>three times</strong><br><span style="color:#64748b; font-size:0.8em;">(number + times)</span>
+          </div>
+          <div class="ebox" style="text-align:center;">
+            <div style="font-size:1.6em;">🔢</div>
+            <strong>four times</strong><br><span style="color:#64748b; font-size:0.8em;">(number + times)</span>
+          </div>
+        </div>
+
+        <div class="tip" style="background:#f3e8ff;">
+          <strong>Pattern:</strong> once/twice/three times + <span class="hl">a day</span> / <span class="hl">a week</span> / <span class="hl">a month</span> / <span class="hl">a year</span><br><br>
+          <em>• Q: How often do you brush your teeth?</em><br>
+          <em>&nbsp;&nbsp;A: I brush my teeth <strong>twice a day</strong>. 🦷</em><br><br>
+          <em>• Q: How often do you exercise?</em><br>
+          <em>&nbsp;&nbsp;A: I exercise <strong>three times a week</strong>. 🏃</em><br><br>
+          <em>• Q: How often do you go to the dentist?</em><br>
+          <em>&nbsp;&nbsp;A: I go to the dentist <strong>twice a year</strong>. 🏥</em>
+        </div>
+      </div>
+
+      <!-- Card 4: Vocabulary -->
+      <div class="gcard orange">
+        <h3>📝 Key Vocabulary — Three Categories</h3>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;">
+          <div>
+            <div class="rule-tag" style="background:#15803d;">💚 Healthy Habits</div>
+            <div class="ebox" style="font-size:0.85em;">
+              🏃 exercise<br>🥗 eat vegetables<br>🛏️ go to bed early<br>🦷 brush your teeth<br>🏥 go to the dentist<br>🤲 wash your hands
+            </div>
+          </div>
+          <div>
+            <div class="rule-tag" style="background:#c2410c;">🍕 Food & Ingredients</div>
+            <div class="ebox" style="font-size:0.85em;">
+              🧀 cheese<br>🍄 mushrooms<br>🥤 smoothie<br>🫒 oil<br>🍅 tomatoes
+            </div>
+          </div>
+          <div>
+            <div class="rule-tag" style="background:#1d4ed8;">🧹 House Chores</div>
+            <div class="ebox" style="font-size:0.85em;">
+              🧹 vacuum the floor<br>🍳 cook the dinner<br>🚗 wash the car<br>🧽 clean the room<br>🌱 water the plants
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== VOCABULARY ======== -->
+    <div class="tab" id="tab-vocab">
+      <div class="sec-title">📗 Vocabulary Practice</div>
+
+      <!-- Activity 1 -->
+      <div class="act-header">✏️ Activity 1: Read the clue and guess the word</div>
+      <p style="color:#64748b; font-size:0.88em; margin-bottom:14px;">Type your answer and click Check, or press Enter!</p>
+      <div id="a1-wrap"></div>
+      <button class="check-btn" onclick="checkA1All()">🔍 Check All Answers</button>
+      <div id="a1-result"></div>
+
+      <!-- Activity 2 -->
+      <div class="act-header" style="margin-top:28px;">🗂️ Activity 2: Sort the words into the correct category</div>
+      <p style="color:#64748b; font-size:0.88em; margin-bottom:12px;">👆 <strong>Click a word</strong> to select it (turns orange), then <strong>click a category box</strong> to place it. Wrong? It bounces back!</p>
+
+      <div class="word-pool" id="pool"></div>
+
+      <div class="zones">
+        <div class="zone zone-h" onclick="place('h')">
+          <div class="zone-title">💚 Healthy Habits</div>
+          <div class="zone-words" id="z-h"></div>
+        </div>
+        <div class="zone zone-f" onclick="place('f')">
+          <div class="zone-title">🍕 Food & Ingredients</div>
+          <div class="zone-words" id="z-f"></div>
+        </div>
+        <div class="zone zone-c" onclick="place('c')">
+          <div class="zone-title">🧹 House Chores</div>
+          <div class="zone-words" id="z-c"></div>
+        </div>
+      </div>
+
+      <div id="sort-res" style="margin-top:12px;"></div>
+      <button class="btn btn-gray" onclick="resetSort()" style="margin-top:10px;">🔄 Reset</button>
+    </div>
+
+    <!-- ======== GRAMMAR ======== -->
+    <div class="tab" id="tab-gram">
+      <div class="sec-title">✏️ Grammar Practice</div>
+
+      <!-- Activity 3 -->
+      <div class="act-header">🔧 Activity 3: Find the mistake — choose the CORRECT sentence</div>
+      <p style="color:#64748b; font-size:0.88em; margin-bottom:14px;">Each sentence has ONE grammar mistake. Click the correct version!</p>
+      <div id="a3-wrap"></div>
+      <div id="a3-result"></div>
+
+      <!-- Activity 5 -->
+      <div class="act-header" style="margin-top:28px;">⏱️ Activity 5: How often? — Complete the answers</div>
+      <p style="color:#64748b; font-size:0.88em; margin-bottom:14px;">Use: <strong>once / twice / three times / four times</strong> + <strong>a day / a week / a month / a year</strong></p>
+      <div id="a5-wrap"></div>
+      <button class="check-btn" onclick="checkA5()">🔍 See My Answers</button>
+      <div id="a5-result"></div>
+    </div>
+
+    <!-- ======== READING ======== -->
+    <div class="tab" id="tab-read">
+      <div class="sec-title">📖 Reading Comprehension</div>
+
+      <div class="act-header">📝 Activity 6: Read the text and answer the questions</div>
+      <p style="color:#64748b; font-size:0.88em; margin-bottom:14px;">Read carefully — some answers need <strong>inference</strong>! 🧠 Look for clues in the text.</p>
+
+      <div class="story">
+        <p><strong>My name is Sam. I live with my mom, dad, and little sister. We are a healthy family!</strong></p>
+        <p>Every morning, I eat fruit and vegetables for breakfast — never cereal! I exercise <span class="hl">three times a week</span> at the park near my house. My sister <span class="hl">vacuums the floor</span> and I always wash the dishes after dinner.</p>
+        <p>Last Saturday, my dad <span class="hl">cooked</span> a big pot of soup. He added <span class="hl">tomatoes, mushrooms, and a little oil</span>. Mom set the table and I helped her. My sister <span class="hl">cleaned the kitchen</span> after. It was delicious!</p>
+      </div>
+
+      <div id="r-wrap"></div>
+      <div id="r-result"></div>
+    </div>
+
+    <!-- ======== FLASHCARDS ======== -->
+    <div class="tab" id="tab-cards">
+      <div class="sec-title">🃏 Vocabulary Flashcards</div>
+      <p style="color:#64748b; margin-bottom:18px; font-size:0.92em;">Click the card to flip it! 🖱️ Use arrows to move between words.</p>
+
+      <div class="fc-wrap" onclick="flipCard()">
+        <div class="fc" id="fc">
+          <div class="fc-front">
+            <div style="font-size:2em; margin-bottom:6px;" id="fc-emoji">🏃</div>
+            <h3 id="fc-word">exercise</h3>
+            <p style="opacity:0.75; font-size:0.85em;" id="fc-type">noun · 8 letters</p>
+            <p style="opacity:0.6; font-size:0.78em; margin-top:6px;">👆 Click to see definition</p>
+          </div>
+          <div class="fc-back">
+            <div style="font-size:1.6em; margin-bottom:6px;">💡</div>
+            <h3 id="fc-def">Physical activity to keep your body healthy</h3>
+            <p id="fc-ex" style="margin-top:8px; font-style:italic;">"I exercise three times a week."</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:center; gap:14px; align-items:center; margin-bottom:20px;">
+        <button class="btn btn-blue" onclick="prevCard()">← Previous</button>
+        <span id="fc-count" style="color:#64748b; font-weight:700;">1 / 12</span>
+        <button class="btn btn-blue" onclick="nextCard()">Next →</button>
+      </div>
+
+      <div style="background:#f8fafc; border-radius:12px; padding:16px;">
+        <strong style="color:#1e3a8a;">📋 All vocabulary words at a glance:</strong>
+        <div class="vgrid" id="vgrid"></div>
+      </div>
+    </div>
+
+  </div><!-- end panel -->
+</div><!-- end app -->
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+
+const A1 = [
+  { id:1, clue:"You do this with your body to stay healthy. It means physical activity.", hint:"noun · 8 letters", ans:"exercise", emoji:"🏃" },
+  { id:2, clue:"Green things you eat, like broccoli or spinach. They are good for you!", hint:"plural noun · 10 letters", ans:"vegetables", emoji:"🥦" },
+  { id:3, clue:"The person who takes care of your teeth. You visit them once or twice a year.", hint:"noun · 7 letters", ans:"dentist", emoji:"🦷" },
+  { id:4, clue:"You use these to hold a fork, catch a ball, or wave hello.", hint:"plural noun · 5 letters", ans:"hands", emoji:"🤲" },
+  { id:5, clue:"Where you sleep every night. You lie down and rest here.", hint:"noun · 3 letters", ans:"bed", emoji:"🛏️" },
+  { id:6, clue:"You do this to your hands before eating. You use water and soap.", hint:"verb · 4 letters", ans:"wash", emoji:"🧼" },
+];
+
+const WORDS = [
+  { w:"exercise",         cat:"h" },
+  { w:"cheese",           cat:"f" },
+  { w:"vacuum the floor", cat:"c" },
+  { w:"mushrooms",        cat:"f" },
+  { w:"cook the dinner",  cat:"c" },
+  { w:"smoothie",         cat:"f" },
+  { w:"wash the car",     cat:"c" },
+  { w:"eat vegetables",   cat:"h" },
+  { w:"clean the room",   cat:"c" },
+  { w:"water the plants", cat:"c" },
+  { w:"oil",              cat:"f" },
+  { w:"go to the dentist",cat:"h" },
+  { w:"go to bed early",  cat:"h" },
+  { w:"tomatoes",         cat:"f" },
+  { w:"brush your teeth", cat:"h" },
+];
+
+const A3 = [
+  {
+    wrong: "I <u>breakfast</u> once a day.",
+    context: "How often do you eat breakfast? → I ___ once a day.",
+    opts: [
+      { t:"I eat breakfast once a day.", ok:true },
+      { t:"I breakfasted once a day.", ok:false },
+      { t:"I am eating breakfast once a day.", ok:false },
+    ],
+    exp:"The verb 'eat' was missing! → I <strong>eat</strong> breakfast once a day ✓"
+  },
+  {
+    wrong: "There <u>is</u> some mushrooms on the pizza.",
+    context: '"Mushrooms" is plural → which verb do we use?',
+    opts: [
+      { t:"There are some mushrooms on the pizza.", ok:true },
+      { t:"There is a mushroom on the pizza.", ok:false },
+      { t:"There are any mushrooms on the pizza.", ok:false },
+    ],
+    exp:"Mushrooms = plural → <strong>There ARE</strong>. Positive sentence → <strong>some</strong> ✓"
+  },
+  {
+    wrong: "There aren't <u>some</u> water in the glass.",
+    context: "Negative sentence + uncountable noun (water)",
+    opts: [
+      { t:"There isn't any water in the glass.", ok:true },
+      { t:"There aren't any water in the glass.", ok:false },
+      { t:"There isn't some water in the glass.", ok:false },
+    ],
+    exp:"Water = uncountable → <strong>There ISN'T</strong>. Negative → use <strong>any</strong> ✓"
+  },
+  {
+    wrong: "Yesterday, she <u>vacuum</u> the floor before lunch.",
+    context: '"Yesterday" = past → the verb needs -ed!',
+    opts: [
+      { t:"Yesterday, she vacuumed the floor before lunch.", ok:true },
+      { t:"Yesterday, she was vacuum the floor before lunch.", ok:false },
+      { t:"Yesterday, she vacuums the floor before lunch.", ok:false },
+    ],
+    exp:"Past tense: vacuum + ed = <strong>vacuumed</strong> ✓"
+  },
+  {
+    wrong: "Two days ago, I <u>cleaning</u> my room with my sister.",
+    context: '"Two days ago" = past → use Simple Past, not -ing form',
+    opts: [
+      { t:"Two days ago, I cleaned my room with my sister.", ok:true },
+      { t:"Two days ago, I was cleaning my room with my sister.", ok:false },
+      { t:"Two days ago, I cleans my room with my sister.", ok:false },
+    ],
+    exp:"Simple Past: clean + ed = <strong>cleaned</strong>. Never use -ing alone! ✓"
+  },
+  {
+    wrong: "Last Friday, we <u>water</u> the plants because it was hot.",
+    context: '"Last Friday" = past → verb needs -ed',
+    opts: [
+      { t:"Last Friday, we watered the plants because it was hot.", ok:true },
+      { t:"Last Friday, we waters the plants because it was hot.", ok:false },
+      { t:"Last Friday, we did water the plants because it was hot.", ok:false },
+    ],
+    exp:"Past tense: water + ed = <strong>watered</strong> ✓"
+  },
+];
+
+const A5 = [
+  { q:"How often do you eat vegetables?",     stub:"I eat vegetables", unit:"day/week" },
+  { q:"How often do you brush your teeth?",   stub:"I brush my teeth", unit:"day" },
+  { q:"How often do you exercise?",           stub:"I exercise", unit:"day/week" },
+  { q:"How often do you drink water?",        stub:"I drink water", unit:"day" },
+  { q:"How often do you do a house chore?",   stub:"I do a house chore", unit:"day/week" },
+];
+
+const READING = [
+  {
+    q:"How often does Sam exercise?",
+    opts:["Every day","3 times a week","Once a week"],
+    ok:1
+  },
+  {
+    q:"Who cleans the kitchen?",
+    opts:["Sam","Dad","Sam's sister"],
+    ok:2
+  },
+  {
+    q:"What did Sam do last Saturday during dinner time?",
+    opts:["Cooked the soup","Helped set the table","Washed the dishes"],
+    ok:1
+  },
+  {
+    q:"What did Dad add to the soup?",
+    opts:["Tomatoes + oil","Cheese + mushrooms","Mushrooms + oil + tomatoes"],
+    ok:2
+  },
+  {
+    q:"Why can we say Sam's family is healthy?",
+    opts:["They eat fast food rarely","They share chores and eat well","They go to the dentist"],
+    ok:1
+  },
+];
+
+const CARDS = [
+  { emoji:"🏃", word:"exercise",         type:"noun · 8 letters",        def:"Physical activity to keep your body healthy",              ex:'"I exercise three times a week at the park."' },
+  { emoji:"🥦", word:"vegetables",       type:"plural noun · 10 letters", def:"Healthy green foods like broccoli, spinach, or peas",      ex:'"I eat vegetables every morning for breakfast."' },
+  { emoji:"🦷", word:"dentist",          type:"noun · 7 letters",        def:"The doctor who takes care of your teeth",                  ex:'"I go to the dentist twice a year."' },
+  { emoji:"🤲", word:"hands",            type:"plural noun · 5 letters", def:"Body parts used to hold things, wave hello, or catch balls",ex:'"I wash my hands before eating."' },
+  { emoji:"🛏️", word:"bed",              type:"noun · 3 letters",        def:"Where you sleep and rest every night",                     ex:'"I go to bed early to stay healthy."' },
+  { emoji:"🧼", word:"wash",             type:"verb · 4 letters",        def:"To clean something with water and soap",                   ex:'"I wash the dishes after dinner every day."' },
+  { emoji:"🧹", word:"vacuum the floor", type:"house chore",             def:"To clean the floor using a vacuum cleaner",                ex:'"My sister vacuumed the floor yesterday."' },
+  { emoji:"🍳", word:"cook the dinner",  type:"house chore",             def:"To prepare the evening meal for the family",               ex:'"Dad cooked a big pot of soup last Saturday."' },
+  { emoji:"🥤", word:"smoothie",         type:"food · noun",             def:"A thick, healthy drink made with blended fruits or veggies",ex:'"I drink a smoothie for breakfast."' },
+  { emoji:"🍅", word:"tomatoes",         type:"food · plural noun",      def:"Red round vegetables used in cooking and salads",          ex:'"Dad added tomatoes to the soup."' },
+  { emoji:"🌱", word:"water the plants", type:"house chore",             def:"To give water to plants so they grow well",                ex:'"Last Friday, we watered the plants."' },
+  { emoji:"🧀", word:"cheese",           type:"food · uncountable noun", def:"A yellow or white dairy food made from milk",              ex:'"There is some cheese in the fridge."' },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let sc = { vocab:0, gram:0, read:0 };
+let a1done = {}, a3done = {}, rdone = {};
+let selected = null;
+let fcIdx = 0, fcFlipped = false;
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function go(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + tab + "'")) b.classList.add('active');
+  });
+}
+
+// ============================================================
+// SCORES
+// ============================================================
+function updScores() {
+  const total = sc.vocab + sc.gram + sc.read;
+  document.getElementById('total-pts').textContent = total;
+  document.getElementById('sc-vocab').textContent = sc.vocab > 0 ? sc.vocab : '—';
+  document.getElementById('sc-gram').textContent  = sc.gram  > 0 ? sc.gram  : '—';
+  document.getElementById('sc-read').textContent  = sc.read  > 0 ? sc.read  : '—';
+}
+
+// ============================================================
+// ACTIVITY 1
+// ============================================================
+function buildA1() {
+  const wrap = document.getElementById('a1-wrap');
+  wrap.innerHTML = '';
+  A1.forEach(item => {
+    const blanks = item.ans.split('').map(() => `<div class="lbox">_</div>`).join('');
+    const d = document.createElement('div');
+    d.className = 'clue-card';
+    d.id = 'c' + item.id;
+    d.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span class="num-badge">${item.id}</span>
+        <span style="font-size:1.4em;">${item.emoji}</span>
+        <span style="color:#475569;font-size:0.92em;">${item.clue}</span>
+      </div>
+      <div style="color:#94a3b8;font-size:0.82em;margin-bottom:6px;">${item.hint}</div>
+      <div class="letters" id="lb${item.id}">${blanks}</div>
+      <div class="ans-row">
+        <input type="text" id="in${item.id}" placeholder="Type your answer..."
+               oninput="updLetters(${item.id})"
+               onkeydown="if(event.key==='Enter')chkOne(${item.id})">
+        <button class="btn btn-blue" onclick="chkOne(${item.id})">Check ✓</button>
+      </div>
+      <div class="fb" id="fb${item.id}"></div>
+    `;
+    wrap.appendChild(d);
+  });
+}
+
+function updLetters(id) {
+  const typed = (document.getElementById('in' + id).value || '').toLowerCase();
+  const item  = A1.find(x => x.id === id);
+  const box   = document.getElementById('lb' + id);
+  box.innerHTML = item.ans.split('').map((letter, i) => {
+    const ch = typed[i] || '';
+    let col = '#94a3b8';
+    if (ch && ch === letter) col = '#16a34a';
+    else if (ch) col = '#dc2626';
+    return `<div class="lbox" style="color:${col};border-bottom-color:${col};">${ch || '_'}</div>`;
+  }).join('');
+}
+
+function chkOne(id) {
+  const typed = (document.getElementById('in' + id).value || '').toLowerCase().trim();
+  const item  = A1.find(x => x.id === id);
+  const card  = document.getElementById('c' + id);
+  const fb    = document.getElementById('fb' + id);
+  if (typed === item.ans) {
+    card.className = 'clue-card ok';
+    fb.className   = 'fb ok';
+    fb.textContent = `✅ Correct! "${item.ans}"`;
+    a1done[id] = true;
+    // Show full word in letter boxes
+    document.getElementById('lb' + id).innerHTML = item.ans.split('').map(l =>
+      `<div class="lbox" style="color:#16a34a;border-bottom-color:#16a34a;">${l}</div>`
+    ).join('');
+  } else {
+    card.className = 'clue-card err';
+    fb.className   = 'fb err';
+    fb.textContent = `❌ Try again! (${item.ans.length} letters)`;
+    setTimeout(() => { card.className = 'clue-card'; }, 1400);
+  }
+}
+
+function checkA1All() {
+  let right = 0;
+  A1.forEach(item => {
+    const typed = (document.getElementById('in' + item.id)?.value || '').toLowerCase().trim();
+    if (typed === item.ans) { right++; a1done[item.id] = true; }
+    else {
+      const fb = document.getElementById('fb' + item.id);
+      if (fb && !a1done[item.id]) { fb.className='fb err'; fb.textContent='Answer: ' + item.ans; }
+    }
+  });
+  sc.vocab = Math.max(sc.vocab, right);
+  updScores();
+  const r = document.getElementById('a1-result');
+  if (right === A1.length) {
+    r.innerHTML = `<div class="result-box perfect"><div class="big">🎉</div><strong style="color:#15803d">${right}/${A1.length} — Perfect vocabulary!</strong><span style="color:#64748b">Excellent work! 🌟</span></div>`;
+  } else {
+    r.innerHTML = `<div class="result-box good"><div class="big">📝</div><strong style="color:#1e3a8a">${right}/${A1.length} correct</strong><span style="color:#64748b">Review the Grammar Cards and try again!</span></div>`;
+  }
+}
+
+// ============================================================
+// ACTIVITY 2 — WORD SORT
+// ============================================================
+function buildSort() {
+  const pool = document.getElementById('pool');
+  pool.innerHTML = '';
+  selected = null;
+  ['h','f','c'].forEach(z => document.getElementById('z-'+z).innerHTML = '');
+  document.getElementById('sort-res').innerHTML = '';
+
+  const shuffled = [...WORDS].sort(() => Math.random() - 0.5);
+  shuffled.forEach(item => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = item.w;
+    chip.dataset.cat = item.cat;
+    chip.onclick = () => selWord(chip);
+    pool.appendChild(chip);
+  });
+}
+
+function selWord(chip) {
+  document.querySelectorAll('.chip.sel').forEach(c => c.classList.remove('sel'));
+  chip.classList.add('sel');
+  selected = chip;
+}
+
+function place(zone) {
+  if (!selected || selected.dataset.placed) return;
+  if (selected.dataset.cat === zone) {
+    const zoneEl = document.getElementById('z-' + zone);
+    const p = document.createElement('div');
+    p.className = 'placed';
+    p.textContent = selected.textContent;
+    zoneEl.appendChild(p);
+    selected.remove();
+    selected = null;
+    if (document.querySelectorAll('#pool .chip').length === 0) {
+      sc.vocab = Math.max(sc.vocab, sc.vocab + 5);
+      updScores();
+      document.getElementById('sort-res').innerHTML = `<div class="result-box perfect"><div class="big">🎉</div><strong style="color:#15803d">All 15 words sorted correctly!</strong></div>`;
+    }
+  } else {
+    selected.classList.remove('sel');
+    selected.classList.add('wrong-anim');
+    setTimeout(() => { selected?.classList.remove('wrong-anim'); selected = null; }, 500);
+  }
+}
+
+function resetSort() { buildSort(); }
+
+// ============================================================
+// ACTIVITY 3
+// ============================================================
+function buildA3() {
+  const wrap = document.getElementById('a3-wrap');
+  wrap.innerHTML = '';
+  A3.forEach((item, i) => {
+    const d = document.createElement('div');
+    d.className = 'sent-item';
+    d.id = 'si' + i;
+    d.innerHTML = `
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <span class="num-badge">${i+1}</span>
+        <div style="flex:1;">
+          <div class="wrong-sent">❌ ${item.wrong}</div>
+          <div style="color:#64748b;font-size:0.85em;margin-bottom:10px;">${item.context}</div>
+          <div class="opts" id="opts${i}">
+            ${item.opts.map((o,j) => `<button class="opt" id="op${i}_${j}" onclick="chkA3(${i},${j})">${String.fromCharCode(65+j)}) ${o.t}</button>`).join('')}
+          </div>
+          <div class="fb" id="a3fb${i}"></div>
+        </div>
+      </div>
+    `;
+    wrap.appendChild(d);
+  });
+}
+
+function chkA3(q, j) {
+  if (a3done[q]) return;
+  const item = A3[q];
+  a3done[q] = true;
+  item.opts.forEach((o, k) => {
+    const btn = document.getElementById(`op${q}_${k}`);
+    btn.disabled = true;
+    if (o.ok) btn.classList.add('right');
+  });
+  const si  = document.getElementById('si' + q);
+  const fb  = document.getElementById('a3fb' + q);
+  if (item.opts[j].ok) {
+    si.classList.add('ok');
+    fb.className = 'fb ok';
+    fb.innerHTML = `✅ Correct! 💡 ${item.exp}`;
+    sc.gram++;
+  } else {
+    si.classList.add('err');
+    document.getElementById(`op${q}_${j}`).classList.add('wrong');
+    fb.className = 'fb err';
+    fb.innerHTML = `❌ Not quite. 💡 ${item.exp}`;
+  }
+  updScores();
+  if (Object.keys(a3done).length === A3.length) {
+    const r = document.getElementById('a3-result');
+    const emoji = sc.gram >= 5 ? '🎉' : sc.gram >= 3 ? '👍' : '📝';
+    r.innerHTML = `<div class="result-box ${sc.gram===A3.length?'perfect':'good'}"><div class="big">${emoji}</div><strong style="color:#1e3a8a">Grammar Activity 3: ${sc.gram}/${A3.length} correct ⭐</strong></div>`;
+  }
+}
+
+// ============================================================
+// ACTIVITY 5
+// ============================================================
+function buildA5() {
+  const wrap = document.getElementById('a5-wrap');
+  wrap.innerHTML = '';
+  A5.forEach((item, i) => {
+    const d = document.createElement('div');
+    d.className = 'clue-card';
+    d.style.marginBottom = '14px';
+    d.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span class="num-badge">${i+1}</span>
+        <strong style="font-size:0.95em;">${item.q}</strong>
+      </div>
+      <div style="color:#64748b;font-size:0.88em;margin-bottom:10px;font-style:italic;">${item.stub} ___ ___.</div>
+      <div class="freq-row">
+        <select id="fr${i}">
+          <option value="">frequency...</option>
+          <option>once</option><option>twice</option><option>three times</option>
+          <option>four times</option><option>five times</option><option>many times</option>
+        </select>
+        <select id="pe${i}">
+          <option value="">a...</option>
+          <option>a day</option><option>a week</option>
+          <option>a month</option><option>a year</option>
+        </select>
+      </div>
+    `;
+    wrap.appendChild(d);
+  });
+}
+
+function checkA5() {
+  let items = '';
+  let filled = 0;
+  A5.forEach((item, i) => {
+    const fr = document.getElementById('fr' + i)?.value;
+    const pe = document.getElementById('pe' + i)?.value;
+    if (fr && pe) {
+      filled++;
+      items += `<li style="margin:6px 0;">${item.stub} <strong>${fr}</strong> <strong>${pe}</strong>.</li>`;
+    } else {
+      items += `<li style="margin:6px 0; color:#dc2626;">Question ${i+1}: not completed yet!</li>`;
+    }
+  });
+  const r = document.getElementById('a5-result');
+  if (filled === A5.length) {
+    r.innerHTML = `<div class="result-box perfect" style="text-align:left;">
+      <strong style="color:#15803d;">✅ Here are your answers:</strong>
+      <ul style="margin-top:10px;padding-left:20px;line-height:1.8;">${items}</ul>
+      <p style="color:#64748b;font-size:0.82em;margin-top:10px;">💡 Any frequency expression is correct as long as you use the right structure!</p>
+    </div>`;
+  } else {
+    r.innerHTML = `<div class="result-box try"><div class="big">⚠️</div>
+      <ul style="margin-top:8px;padding-left:20px;text-align:left;">${items}</ul></div>`;
+  }
+}
+
+// ============================================================
+// READING
+// ============================================================
+function buildReading() {
+  const wrap = document.getElementById('r-wrap');
+  wrap.innerHTML = '';
+  READING.forEach((item, i) => {
+    const d = document.createElement('div');
+    d.className = 'sent-item';
+    d.id = 'ri' + i;
+    d.innerHTML = `
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <span class="num-badge">${i+1}</span>
+        <div style="flex:1;">
+          <p style="font-weight:700;color:#1e3a8a;margin-bottom:10px;">${item.q}</p>
+          <div class="opts">
+            ${item.opts.map((o,j) => `<button class="opt" id="ro${i}_${j}" onclick="chkRead(${i},${j})">${String.fromCharCode(65+j)}) ${o}</button>`).join('')}
+          </div>
+          <div class="fb" id="rfb${i}"></div>
+        </div>
+      </div>
+    `;
+    wrap.appendChild(d);
+  });
+}
+
+function chkRead(q, j) {
+  if (rdone[q]) return;
+  rdone[q] = true;
+  const item = READING[q];
+  const si   = document.getElementById('ri' + q);
+  const fb   = document.getElementById('rfb' + q);
+  item.opts.forEach((_, k) => {
+    const btn = document.getElementById(`ro${q}_${k}`);
+    btn.disabled = true;
+    if (k === item.ok) btn.classList.add('right');
+  });
+  if (j === item.ok) {
+    si.classList.add('ok');
+    fb.className = 'fb ok';
+    fb.textContent = '✅ Correct! Great reading!';
+    sc.read++;
+  } else {
+    si.classList.add('err');
+    document.getElementById(`ro${q}_${j}`).classList.add('wrong');
+    fb.className = 'fb err';
+    fb.textContent = '❌ Not quite. The correct answer is highlighted in green.';
+  }
+  updScores();
+  if (Object.keys(rdone).length === READING.length) {
+    const r = document.getElementById('r-result');
+    const emoji = sc.read === 5 ? '🎉' : sc.read >= 3 ? '👍' : '📖';
+    r.innerHTML = `<div class="result-box ${sc.read===5?'perfect':'good'}">
+      <div class="big">${emoji}</div>
+      <strong style="color:#1e3a8a">Reading Score: ${sc.read}/${READING.length} ⭐</strong>
+      <span style="color:#64748b">${sc.read===5?'Perfect! You are an amazing reader!':'Keep practicing — re-read the text and look for clues!'}</span>
+    </div>`;
+  }
+}
+
+// ============================================================
+// FLASHCARDS
+// ============================================================
+function buildCards() {
+  updCard();
+  const grid = document.getElementById('vgrid');
+  grid.innerHTML = '';
+  CARDS.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'vcard';
+    d.innerHTML = `<div style="font-size:1.4em;">${c.emoji}</div><strong>${c.word}</strong><span>${c.type}</span>`;
+    grid.appendChild(d);
+  });
+}
+
+function updCard() {
+  const c = CARDS[fcIdx];
+  document.getElementById('fc-emoji').textContent = c.emoji;
+  document.getElementById('fc-word').textContent  = c.word;
+  document.getElementById('fc-type').textContent  = c.type;
+  document.getElementById('fc-def').textContent   = c.def;
+  document.getElementById('fc-ex').textContent    = c.ex;
+  document.getElementById('fc-count').textContent = `${fcIdx+1} / ${CARDS.length}`;
+  fcFlipped = false;
+  document.getElementById('fc').classList.remove('flipped');
+}
+
+function flipCard() {
+  fcFlipped = !fcFlipped;
+  document.getElementById('fc').classList.toggle('flipped', fcFlipped);
+}
+
+function nextCard() { fcIdx = (fcIdx + 1) % CARDS.length; updCard(); }
+function prevCard() { fcIdx = (fcIdx - 1 + CARDS.length) % CARDS.length; updCard(); }
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  buildA1();
+  buildSort();
+  buildA3();
+  buildA5();
+  buildReading();
+  buildCards();
+}
+
+init();
+</script>
+</body>
+</html>
