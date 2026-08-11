@@ -1,0 +1,14 @@
+{
+  "asignatura": "Historia y Geografía",
+  "curso": "Sin curso",
+  "unidad": "Sin unidad",
+  "emoji": "🗺️",
+  "color": "#E0713A",
+  "desc": "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
+  "tags": [
+    "Guía de repaso"
+  ],
+  "listo": true,
+  "autoDesc": true,
+  "autoTags": true
+}
