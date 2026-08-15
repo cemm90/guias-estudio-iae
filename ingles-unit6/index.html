@@ -1,1 +1,1373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 6 - Vacation Plans | Guía Interactiva de Inglés</title>
+<style>
+/* ============================================================
+   ESTILOS — Guía interactiva Unit 6 "Vacation Plans"
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --azul:#1565c0; --azul-claro:#42a5f5; --azul-suave:#e3f2fd;
+  --naranjo:#f57c00; --amarillo:#ffc107; --verde:#2e7d32; --verde-claro:#66bb6a;
+  --rojo:#c62828; --morado:#6a1b9a; --turquesa:#00897b;
+  --texto:#1a2733; --gris:#5b6b7a; --borde:#d7e3ec;
+  --sombra:0 4px 14px rgba(21,101,192,.13);
+}
+body{
+  font-family:"Trebuchet MS","Segoe UI",Verdana,sans-serif;
+  background:linear-gradient(160deg,#e0f4ff 0%,#f3fbff 40%,#fff6e6 100%);
+  color:var(--texto);min-height:100vh;padding:14px;line-height:1.55;
+}
+.app{max-width:900px;margin:0 auto}
 
+/* ---------- Encabezado / HUD ---------- */
+.hud{
+  background:#fff;border-radius:18px;box-shadow:var(--sombra);
+  padding:12px 16px;margin-bottom:16px;position:sticky;top:8px;z-index:50;
+  border:2px solid var(--borde);
+}
+.hud-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.hud-title{font-size:1rem;font-weight:bold;color:var(--azul)}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{
+  background:var(--azul-suave);border-radius:12px;padding:5px 11px;
+  font-size:.9rem;font-weight:bold;color:var(--azul);white-space:nowrap;
+}
+.stat.xp{background:#fff3e0;color:var(--naranjo)}
+.stat.racha{background:#e8f5e9;color:var(--verde)}
+.barra{
+  height:14px;background:#dfeaf3;border-radius:10px;overflow:hidden;margin-top:10px;
+}
+.barra span{
+  display:block;height:100%;width:0%;border-radius:10px;
+  background:linear-gradient(90deg,var(--verde-claro),var(--amarillo),var(--naranjo));
+  transition:width .5s ease;
+}
+.barra-label{font-size:.78rem;color:var(--gris);margin-top:4px;text-align:right}
+
+/* ---------- Tarjetas ---------- */
+.card{
+  background:#fff;border-radius:20px;box-shadow:var(--sombra);
+  padding:22px;margin-bottom:16px;border:2px solid var(--borde);
+  animation:aparecer .35s ease;
+}
+@keyframes aparecer{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+h1{font-size:1.7rem;color:var(--azul);margin-bottom:8px;line-height:1.25}
+h2{font-size:1.3rem;color:var(--azul);margin-bottom:10px}
+h3{font-size:1.05rem;color:var(--naranjo);margin:14px 0 6px}
+p{margin-bottom:9px}
+.sub{color:var(--gris);font-size:.95rem}
+.en{color:var(--morado);font-weight:bold}
+.es{color:var(--gris);font-style:italic}
+
+/* ---------- Botones ---------- */
+button{font-family:inherit;font-size:1rem;cursor:pointer;border:none}
+.btn{
+  background:linear-gradient(135deg,var(--azul),var(--azul-claro));color:#fff;
+  padding:13px 24px;border-radius:14px;font-weight:bold;font-size:1.02rem;
+  box-shadow:0 4px 0 #0d47a1;transition:transform .12s,box-shadow .12s;margin:5px 5px 5px 0;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #0d47a1}
+.btn.verde{background:linear-gradient(135deg,#2e7d32,#66bb6a);box-shadow:0 4px 0 #1b5e20}
+.btn.naranjo{background:linear-gradient(135deg,#ef6c00,#ffb300);box-shadow:0 4px 0 #e65100}
+.btn.gris{background:linear-gradient(135deg,#607d8b,#90a4ae);box-shadow:0 4px 0 #455a64}
+.btn:focus-visible{outline:4px solid #ffca28;outline-offset:3px}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+/* ---------- Mapa de niveles ---------- */
+.niveles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.nivel{
+  background:#fff;border:3px solid var(--borde);border-radius:16px;padding:14px;
+  text-align:left;display:flex;gap:12px;align-items:center;width:100%;transition:.15s;
+}
+.nivel:not(.bloqueado):hover{border-color:var(--azul-claro);transform:translateY(-2px)}
+.nivel.bloqueado{opacity:.5;cursor:not-allowed;background:#f2f5f7}
+.nivel.listo{border-color:var(--verde-claro);background:#f1f9f2}
+.nivel .icono{font-size:2rem;flex-shrink:0}
+.nivel .txt strong{display:block;font-size:1rem;color:var(--azul)}
+.nivel .txt small{color:var(--gris);font-size:.83rem}
+
+/* ---------- Opciones de respuesta ---------- */
+.opciones{display:grid;gap:10px;margin-top:14px}
+.opcion{
+  background:#fff;border:3px solid var(--borde);border-radius:14px;
+  padding:14px 16px;text-align:left;font-size:1.03rem;transition:.15s;width:100%;
+}
+.opcion:hover:not(:disabled){border-color:var(--azul-claro);background:var(--azul-suave)}
+.opcion:focus-visible{outline:4px solid #ffca28;outline-offset:2px}
+.opcion.correcta{border-color:var(--verde);background:#e8f5e9;font-weight:bold}
+.opcion.incorrecta{border-color:var(--rojo);background:#ffebee}
+.opciones.dos{grid-template-columns:1fr 1fr}
+
+/* ---------- Retroalimentación ---------- */
+.feedback{
+  margin-top:14px;padding:14px 16px;border-radius:14px;font-size:1rem;
+  animation:aparecer .3s ease;border-left:7px solid;
+}
+.feedback.bien{background:#e8f5e9;border-color:var(--verde);color:#1b5e20}
+.feedback.mal{background:#ffebee;border-color:var(--rojo);color:#8e1a1a}
+.feedback strong{display:block;margin-bottom:3px;font-size:1.08rem}
+
+/* ---------- Cajas de contenido ---------- */
+.caja{background:var(--azul-suave);border-radius:14px;padding:14px 16px;margin:10px 0;border-left:6px solid var(--azul-claro)}
+.caja.dato{background:#fff8e1;border-color:var(--amarillo)}
+.caja.resumen{background:#e8f5e9;border-color:var(--verde-claro)}
+.caja.truco{background:#f3e5f5;border-color:var(--morado)}
+.caja h4{color:var(--azul);margin-bottom:6px;font-size:1rem}
+.caja.dato h4{color:#b8860b}.caja.resumen h4{color:var(--verde)}.caja.truco h4{color:var(--morado)}
+ul,ol{margin:6px 0 6px 22px}li{margin-bottom:5px}
+
+.tabla{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+.tabla th,.tabla td{border:2px solid var(--borde);padding:8px 10px;text-align:left}
+.tabla th{background:var(--azul-suave);color:var(--azul)}
+
+/* ---------- Flashcards ---------- */
+.flash-zona{perspective:1200px;margin:16px 0}
+.flash{
+  position:relative;height:190px;cursor:pointer;transform-style:preserve-3d;
+  transition:transform .5s;
+}
+.flash.girada{transform:rotateY(180deg)}
+.flash .cara{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:18px;text-align:center;box-shadow:var(--sombra);
+}
+.flash .frente{background:linear-gradient(135deg,#42a5f5,#1565c0);color:#fff}
+.flash .atras{background:linear-gradient(135deg,#66bb6a,#2e7d32);color:#fff;transform:rotateY(180deg)}
+.flash .cara .grande{font-size:1.5rem;font-weight:bold;margin-bottom:6px}
+.flash .cara .chico{font-size:.9rem;opacity:.9}
+.flash-nav{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+
+/* ---------- Completar ---------- */
+input[type=text]{
+  font-family:inherit;font-size:1.05rem;padding:9px 12px;border:3px solid var(--borde);
+  border-radius:12px;min-width:160px;color:var(--texto);
+}
+input[type=text]:focus{outline:none;border-color:var(--azul-claro)}
+.frase{font-size:1.15rem;margin:14px 0;line-height:2}
+.banco{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.chip{
+  background:#fff3e0;border:2px solid var(--naranjo);border-radius:20px;
+  padding:6px 13px;font-size:.92rem;color:#e65100;font-weight:bold;
+}
+
+/* ---------- Emparejar ---------- */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:8px}
+.mitem{
+  background:#fff;border:3px solid var(--borde);border-radius:12px;padding:11px;
+  font-size:.95rem;text-align:left;transition:.15s;width:100%;
+}
+.mitem:hover:not(:disabled){border-color:var(--azul-claro)}
+.mitem.sel{border-color:var(--naranjo);background:#fff3e0}
+.mitem.ok{border-color:var(--verde);background:#e8f5e9;opacity:.65;cursor:default}
+.mitem.err{border-color:var(--rojo);background:#ffebee;animation:temblor .3s}
+@keyframes temblor{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* ---------- Ordenar ---------- */
+.orden-zona{min-height:60px;background:var(--azul-suave);border:3px dashed var(--azul-claro);
+  border-radius:14px;padding:10px;display:flex;flex-wrap:wrap;gap:7px;align-items:flex-start}
+.palabra{
+  background:#fff;border:2px solid var(--azul);border-radius:11px;padding:8px 13px;
+  font-size:1rem;color:var(--azul);font-weight:bold;
+}
+.palabra:hover{background:var(--azul-suave)}
+
+/* ---------- Medallas ---------- */
+.medallas{display:flex;flex-wrap:wrap;gap:9px;margin-top:10px}
+.medalla{
+  background:#fff8e1;border:3px solid var(--amarillo);border-radius:14px;
+  padding:9px 13px;font-size:.9rem;font-weight:bold;color:#8d6e00;
+}
+.medalla.off{background:#f2f5f7;border-color:var(--borde);color:#a9b6c1}
+
+/* ---------- Final ---------- */
+.resultados{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:11px;margin:14px 0}
+.res{background:var(--azul-suave);border-radius:14px;padding:14px;text-align:center}
+.res .num{font-size:1.8rem;font-weight:bold;color:var(--azul);display:block}
+.res .lab{font-size:.85rem;color:var(--gris)}
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:24px;z-index:99;
+  background:#1b5e20;color:#fff;padding:12px 20px;border-radius:30px;font-weight:bold;
+  box-shadow:0 6px 20px rgba(0,0,0,.25);animation:aparecer .3s ease;
+}
+.oculto{display:none!important}
+@media(max-width:560px){
+  body{padding:8px}
+  .card{padding:16px}
+  h1{font-size:1.35rem}
+  .opciones.dos{grid-template-columns:1fr}
+  .match{grid-template-columns:1fr 1fr;gap:7px}
+  .mitem{font-size:.85rem;padding:9px 7px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HUD -->
+  <div class="hud oculto" id="hud">
+    <div class="hud-top">
+      <div class="hud-title" id="hudTitulo">Unit 6 · Vacation Plans</div>
+      <div class="stats">
+        <div class="stat xp" id="stXP">⭐ 0 XP</div>
+        <div class="stat" id="stPuntos">🏆 0 pts</div>
+        <div class="stat racha" id="stRacha">🔥 0</div>
+      </div>
+    </div>
+    <div class="barra"><span id="barraProg"></span></div>
+    <div class="barra-label" id="barraLabel">0 / 0</div>
+  </div>
+
+  <div id="pantalla"></div>
+</div>
+
+<script>
+/* ============================================================
+   1. DATOS — Todo el contenido de Unit 6 "Vacation Plans"
+   Fuente: Student's Book pp. 60-65 y Workbook pp. 58-65
+   ============================================================ */
+
+const VOCAB_ACTIVIDADES = [
+  ["go hiking","ir de excursión / caminata por la montaña","🥾"],
+  ["go to the beach","ir a la playa","🏖️"],
+  ["have a barbecue","hacer un asado / barbacoa","🍖"],
+  ["see a show","ver un espectáculo","🎭"],
+  ["go sightseeing","hacer turismo / pasear viendo lugares","🚌"],
+  ["visit a castle","visitar un castillo","🏰"],
+  ["take a boat trip","dar un paseo en bote","⛵"],
+  ["go snorkeling","hacer snorkel (bucear con tubo)","🤿"],
+  ["go shopping","ir de compras","🛍️"],
+  ["go fishing","ir a pescar","🎣"],
+  ["go cycling","andar en bicicleta","🚲"],
+  ["go swimming","ir a nadar","🏊"]
+];
+
+const VOCAB_CLIMA = [
+  ["sunny","soleado","☀️"],
+  ["hot","caluroso","🔥"],
+  ["cloudy","nublado","☁️"],
+  ["rainy","lluvioso","🌧️"]
+];
+
+const VOCAB_EMPACAR = [
+  ["sunscreen","bloqueador solar","🧴"],
+  ["towel","toalla","🏖️"],
+  ["backpack","mochila","🎒"],
+  ["raincoat","impermeable / chaqueta de lluvia","🧥"],
+  ["swimsuit","traje de baño","🩱"],
+  ["camera","cámara de fotos","📷"]
+];
+
+/* ---- FLASHCARDS (30) ---- */
+const FLASHCARDS = {
+  n1: VOCAB_ACTIVIDADES.slice(0,8).map(v=>({frente:v[2]+" "+v[0],atras:v[1]})),
+  n2: [
+    {frente:"☀️ sunny",atras:"soleado"},
+    {frente:"🔥 hot",atras:"caluroso"},
+    {frente:"☁️ cloudy",atras:"nublado"},
+    {frente:"🌧️ rainy",atras:"lluvioso"},
+    {frente:"Why don't we go hiking?",atras:"¿Por qué no vamos de excursión? (proponer un plan)"},
+    {frente:"I'd rather go to the beach.",atras:"Yo preferiría ir a la playa. (I'd rather = I would rather)"},
+    {frente:"What can we do today?",atras:"¿Qué podemos hacer hoy?"},
+    {frente:"OK. Good idea!",atras:"Bueno. ¡Buena idea!"}
+  ],
+  n3: [
+    {frente:"I'm going to see a show.",atras:"Voy a ver un espectáculo. (plan futuro)"},
+    {frente:"I'm not going to do homework.",atras:"No voy a hacer tarea."},
+    {frente:"What are you going to do on vacation?",atras:"¿Qué vas a hacer en las vacaciones?"},
+    {frente:"Are you going to take a towel?",atras:"¿Vas a llevar una toalla?"},
+    {frente:"Yes, I am. / No, I'm not.",atras:"Sí. / No. (respuestas cortas con I)"}
+  ],
+  n4: [
+    {frente:"He's going to go hiking.",atras:"Él va a ir de excursión."},
+    {frente:"She isn't going to take a camera.",atras:"Ella no va a llevar cámara."},
+    {frente:"They're going to go sightseeing.",atras:"Ellos van a hacer turismo."},
+    {frente:"We aren't going to go to the beach.",atras:"Nosotros no vamos a ir a la playa."},
+    {frente:"tomorrow / next weekend / next week",atras:"mañana / el próximo fin de semana / la próxima semana"}
+  ],
+  n5: VOCAB_EMPACAR.map(v=>({frente:v[2]+" "+v[0],atras:v[1]})).concat([
+    {frente:"in / in front of",atras:"dentro de / delante de"},
+    {frente:"next to / behind",atras:"al lado de / detrás de"}
+  ]),
+  n6: [
+    {frente:"Is she going to take a camera?",atras:"¿Ella va a llevar una cámara? → Yes, she is. / No, she isn't."},
+    {frente:"Are they going to take raincoats?",atras:"¿Ellos van a llevar impermeables? → Yes, they are. / No, they aren't."},
+    {frente:"Vacation Food",atras:"La historia de Jim, que está de vacaciones en Tailandia con su familia."}
+  ]
+};
+
+/* ---- NIVELES: explicación + actividades ---- */
+const NIVELES = [
+{
+  id:"n1", icono:"🏖️", titulo:"Nivel 1 — Vacation Explorer",
+  sub:"Vocabulario: actividades de vacaciones (Lesson 1)",
+  teoria:`
+    <p>En la Unit 6 aprendemos a hablar de <strong>lo que vamos a hacer en las vacaciones</strong>. Lo primero es conocer las actividades.</p>
+    <div class="caja"><h4>🗣️ Las 8 actividades del libro</h4>
+      <table class="tabla">
+        <tr><th>English</th><th>Español</th></tr>
+        <tr><td class="en">go hiking</td><td>ir de excursión / caminata</td></tr>
+        <tr><td class="en">go to the beach</td><td>ir a la playa</td></tr>
+        <tr><td class="en">have a barbecue</td><td>hacer un asado</td></tr>
+        <tr><td class="en">see a show</td><td>ver un espectáculo</td></tr>
+        <tr><td class="en">go sightseeing</td><td>hacer turismo / pasear viendo lugares</td></tr>
+        <tr><td class="en">visit a castle</td><td>visitar un castillo</td></tr>
+        <tr><td class="en">take a boat trip</td><td>dar un paseo en bote</td></tr>
+        <tr><td class="en">go snorkeling</td><td>hacer snorkel</td></tr>
+      </table>
+    </div>
+    <div class="caja resumen"><h4>📌 Resumen rápido</h4>
+      <p>Cada actividad usa un verbo fijo: <strong>go</strong> + actividad terminada en <em>-ing</em> (go hiking, go sightseeing, go snorkeling), <strong>have</strong> a barbecue, <strong>see</strong> a show, <strong>take</strong> a boat trip, <strong>visit</strong> a castle.</p></div>
+    <div class="caja truco"><h4>🧠 Truco para recordar</h4>
+      <p><strong>GO</strong> va con las palabras que terminan en <em>-ing</em>: go hik<strong>ing</strong>, go sightsee<strong>ing</strong>, go snorkel<strong>ing</strong>, go shopp<strong>ing</strong>, go fish<strong>ing</strong>. ¡Si termina en -ING, usa GO!</p></div>
+    <div class="caja dato"><h4>💡 Dato curioso</h4>
+      <p><em>Sightseeing</em> viene de <em>sight</em> (vista, lugar interesante) + <em>seeing</em> (ver). Literalmente es "ver los lugares". Y <em>snorkel</em> viene del alemán <em>Schnorchel</em>, ¡el tubo que usaban los submarinos para respirar!</p></div>`,
+  actividades:[
+    {tipo:"mc",p:"El dibujo muestra a una persona bajo el agua con un tubo y máscara. ¿Qué actividad es?",
+     opts:["go snorkeling","visit a castle","see a show","go shopping"],ok:0,
+     mal:["","Visitar un castillo es entrar a un edificio antiguo, no bucear.","Ver un espectáculo pasa en un teatro.","Ir de compras es en tiendas."],
+     bien:"¡Exacto! Under the water with a mask = go snorkeling."},
+    {tipo:"mc",p:"Una familia cocina carne en una parrilla en el jardín. In English:",
+     opts:["take a boat trip","have a barbecue","go hiking","see a show"],ok:1,
+     mal:["Un boat trip es un paseo en bote.","","Hiking es caminar por la montaña.","A show es un espectáculo."],
+     bien:"¡Muy bien! Se dice HAVE a barbecue, no 'do' ni 'make'."},
+    {tipo:"mc",p:"Completa: We can ______ a show at the theater on Saturday.",
+     opts:["go","see","take","have"],ok:1,
+     mal:["'Go' se usa con -ing: go hiking.","","'Take' va con a boat trip.","'Have' va con a barbecue."],
+     bien:"¡Correcto! SEE a show — el verbo fijo para espectáculos."},
+    {tipo:"mc",p:"They can't ______ in the country because it's raining.",
+     opts:["go hiking","have a barbecue","see a show","go shopping"],ok:0,
+     mal:["","Un asado igual se puede hacer bajo techo.","Los shows son bajo techo.","Las tiendas son bajo techo."],
+     bien:"¡Bien! Hiking es al aire libre, así que la lluvia lo arruina."},
+    {tipo:"mc",p:"I want to visit a ______ in France in summer.",
+     opts:["beach","castle","boat trip","show"],ok:1,
+     mal:["'Visit a beach' no se usa; se dice 'go to the beach'.","","'Take a boat trip', no 'visit'.","'See a show', no 'visit'."],
+     bien:"¡Perfecto! France tiene castillos famosos. VISIT a castle."},
+    {tipo:"mc",p:"Can we take a ______ on the lake?",
+     opts:["boat trip","barbecue","castle","hiking"],ok:0,
+     mal:["","Se dice 'have a barbecue'.","Se dice 'visit a castle'.","Se dice 'go hiking'."],
+     bien:"¡Sí! TAKE a boat trip — el verbo que va con paseos en bote."},
+    {tipo:"tf",p:"'Go sightseeing' significa ir a la playa a nadar.",ok:false,
+     exp:"Falso. 'Go sightseeing' es hacer turismo, recorrer lugares interesantes de una ciudad. Ir a la playa es 'go to the beach'."},
+    {tipo:"tf",p:"Decimos 'have a barbecue', no 'do a barbecue'.",ok:true,
+     exp:"¡Verdadero! En inglés el verbo correcto es HAVE a barbecue."},
+    {tipo:"tf",p:"'Go hiking' se hace normalmente en la montaña o el campo.",ok:true,
+     exp:"¡Verdadero! Hiking es caminar por senderos naturales."},
+    {tipo:"tf",p:"Se dice 'see a castle' cuando entramos a visitarlo.",ok:false,
+     exp:"Falso. Lo correcto es VISIT a castle. 'See' lo usamos con 'a show'."},
+    {tipo:"fill",banco:["show","snorkeling","castle","hiking","boat trip","beach"],
+     items:[
+      {frase:"We can see a ___ on Saturday.",ok:"show"},
+      {frase:"They can't go ___ in the country because it's raining.",ok:"hiking"},
+      {frase:"I want to visit a ___ in France in summer.",ok:"castle"},
+      {frase:"Can we take a ___ on the lake?",ok:"boat trip"},
+      {frase:"They go ___ in the ocean every summer.",ok:"snorkeling"},
+      {frase:"Let's go to the ___ and make a sandcastle!",ok:"beach"}
+     ]},
+    {tipo:"match",titulo:"Une cada actividad con su traducción",
+     pares:[["go hiking","ir de excursión"],["have a barbecue","hacer un asado"],
+            ["go sightseeing","hacer turismo"],["take a boat trip","paseo en bote"],
+            ["visit a castle","visitar un castillo"],["see a show","ver un espectáculo"]]},
+    {tipo:"mc",p:"¿Cuál de estas expresiones está BIEN escrita?",
+     opts:["I go snorkel.","I go snorkeling.","I have snorkeling.","I take snorkeling."],ok:1,
+     mal:["Falta el -ing: go snorkelING.","","'Have' no se usa aquí.","'Take' no se usa aquí."],
+     bien:"¡Exacto! GO + verbo con -ing."}
+  ]
+},
+{
+  id:"n2", icono:"🌤️", titulo:"Nivel 2 — Weather Planner",
+  sub:"El clima + Why don't we…? / I'd rather… (Functional Language)",
+  teoria:`
+    <p>Para decidir qué hacer, primero miramos <strong>el clima</strong> y después <strong>proponemos un plan</strong>.</p>
+    <div class="caja"><h4>🌦️ The weather</h4>
+      <ul>
+        <li>☀️ <span class="en">sunny</span> — soleado</li>
+        <li>🔥 <span class="en">hot</span> — caluroso</li>
+        <li>☁️ <span class="en">cloudy</span> — nublado</li>
+        <li>🌧️ <span class="en">rainy</span> — lluvioso</li>
+      </ul>
+      <p>Se usan con <strong>It's</strong>: <span class="en">It's sunny today.</span></p>
+    </div>
+    <div class="caja"><h4>💬 Proponer y preferir</h4>
+      <p><span class="en">Why don't we + verbo?</span> = ¿Por qué no…? (proponer un plan)<br>
+      <span class="en">I'd rather + verbo.</span> = Yo preferiría… (decir lo que prefieres)</p>
+      <p><strong>Diálogo del libro (p. 61):</strong></p>
+      <ul>
+        <li>— What can we do today?</li>
+        <li>— It's sunny. <span class="en">Why don't we</span> go hiking?</li>
+        <li>— <span class="en">I'd rather</span> go to the beach.</li>
+        <li>— OK. Good idea!</li>
+      </ul>
+    </div>
+    <div class="caja resumen"><h4>📌 Resumen rápido</h4>
+      <p>Después de <strong>Why don't we</strong> y de <strong>I'd rather</strong> el verbo va <strong>sin "to"</strong> y sin cambios: <em>Why don't we <u>go</u>…? / I'd rather <u>have</u>…</em></p></div>
+    <div class="caja truco"><h4>🧠 Truco</h4>
+      <p><strong>I'd</strong> es la forma corta de <strong>I would</strong>. Y ojo: aunque <em>"Why don't we…?"</em> parece negativa, ¡en realidad es una invitación amable!</p></div>
+    <div class="caja dato"><h4>💡 Dato curioso</h4>
+      <p>En inglés el clima casi siempre necesita el sujeto <strong>it</strong>: "It's rainy". No existe decir solo "Is rainy" — el <em>it</em> es obligatorio aunque no se traduzca.</p></div>`,
+  actividades:[
+    {tipo:"mc",p:"It's ______. Why don't we go to the beach? (hace mucho calor y sol)",
+     opts:["rainy","cloudy","hot","cold"],ok:2,
+     mal:["Rainy = lluvioso, mal día de playa.","Cloudy = nublado.","","Cold no aparece en esta lección y no invita a la playa."],
+     bien:"¡Bien! Hot = caluroso, ideal para la playa."},
+    {tipo:"mc",p:"Completa: ______ we take a boat trip?  (proponer un plan)",
+     opts:["Why don't","I'd rather","What can","Let's we"],ok:0,
+     mal:["","'I'd rather' expresa preferencia, no una pregunta.","'What can we do?' es más general, y aquí falta 'do'.","'Let's we' no existe: se dice 'Let's take…'."],
+     bien:"¡Exacto! Why don't we + verbo = proponer."},
+    {tipo:"mc",p:"— Why don't we go snorkeling?  — ______ have a barbecue.",
+     opts:["I'd rather","I'm rather","I would rather to","I rather"],ok:0,
+     mal:["","Se dice I'd (I would), no I'm (I am).","Después de 'rather' NO va 'to'.","Falta el 'would' / 'd'."],
+     bien:"¡Perfecto! I'd rather + verbo sin 'to'."},
+    {tipo:"tf",p:"'I'd rather' es la forma corta de 'I would rather'.",ok:true,
+     exp:"¡Verdadero! I'd = I would. Significa 'yo preferiría'."},
+    {tipo:"tf",p:"Después de 'Why don't we' se escribe el verbo con 'to': Why don't we to go?",ok:false,
+     exp:"Falso. El verbo va solo: Why don't we GO hiking?"},
+    {tipo:"tf",p:"Si el pronóstico dice 'rainy', una buena idea es 'go hiking' todo el día.",ok:false,
+     exp:"Falso. Si está rainy (lluvioso), conviene un plan bajo techo, como 'see a show'."},
+    {tipo:"tf",p:"Podemos decir 'It's cloudy today.'",ok:true,
+     exp:"¡Verdadero! It's + adjetivo de clima es la estructura correcta."},
+    {tipo:"fill",banco:["sunny","rainy","cloudy","hot","rather","don't"],
+     items:[
+      {frase:"Look! There are no clouds and there is a lot of sun. It's ___.",ok:"sunny"},
+      {frase:"Take your raincoat. It's ___ today.",ok:"rainy"},
+      {frase:"The sky is grey. It's ___.",ok:"cloudy"},
+      {frase:"Why ___ we go to the beach?",ok:"don't"},
+      {frase:"I'd ___ see a show.",ok:"rather"}
+     ]},
+    {tipo:"orden",titulo:"Ordena la propuesta",
+     palabras:["Why","don't","we","have","a","barbecue","?"],
+     ok:"Why don't we have a barbecue ?",
+     exp:"Estructura: Why don't we + verbo + resto + ?"},
+    {tipo:"orden",titulo:"Ordena la preferencia",
+     palabras:["I'd","rather","go","to","the","beach","."],
+     ok:"I'd rather go to the beach .",
+     exp:"Estructura: I'd rather + verbo (sin 'to' después de rather)."},
+    {tipo:"match",titulo:"Une el clima con la mejor actividad",
+     pares:[["It's sunny.","go to the beach"],["It's rainy.","see a show"],
+            ["It's hot.","go snorkeling"],["It's cloudy.","visit a castle"]]}
+  ]
+},
+{
+  id:"n3", icono:"🎯", titulo:"Nivel 3 — Going To Beginner",
+  sub:"Grammar: going to con I / you (Lesson 2)",
+  teoria:`
+    <p>Usamos <strong>going to</strong> para hablar de <strong>planes futuros</strong>: cosas que ya decidimos hacer.</p>
+    <div class="caja"><h4>📐 La fórmula</h4>
+      <p><strong>Sujeto + am/is/are + going to + verbo</strong></p>
+      <table class="tabla">
+        <tr><th>Tipo</th><th>Ejemplo</th></tr>
+        <tr><td>✔️ Afirmativo</td><td class="en">I'm going to go snorkeling.</td></tr>
+        <tr><td>❌ Negativo</td><td class="en">I'm not going to see a show.</td></tr>
+        <tr><td>❓ Pregunta</td><td class="en">What are you going to do on vacation?</td></tr>
+      </table>
+    </div>
+    <div class="caja resumen"><h4>📌 Resumen rápido</h4>
+      <p>Con <strong>I</strong> siempre va <strong>am</strong> (I'm / I'm not). Con <strong>you</strong> siempre va <strong>are</strong> (you're / you aren't). Después de "going to" el verbo va <strong>en infinitivo sin to</strong>: <em>going to <u>go</u></em>, <em>going to <u>see</u></em>.</p></div>
+    <div class="caja truco"><h4>🧠 Truco</h4>
+      <p>¡Ojo con la doble "go"! <span class="en">I'm going to <u>go</u> hiking</span> — el primer "going" es la estructura del futuro, el segundo "go" es la actividad. Suena raro pero está correcto.</p></div>
+    <div class="caja dato"><h4>💡 Dato curioso</h4>
+      <p>Al hablar rápido, los angloparlantes dicen <em>"gonna"</em> en vez de "going to": <em>I'm gonna go snorkeling</em>. Se entiende y es muy común… ¡pero en la prueba escribe siempre <strong>going to</strong>!</p></div>`,
+  actividades:[
+    {tipo:"mc",p:"What ______ you going to do on vacation?",
+     opts:["is","am","are","do"],ok:2,
+     mal:["'Is' va con he/she/it.","'Am' solo va con I.","","Con 'going to' no se usa 'do'."],
+     bien:"¡Correcto! you → are."},
+    {tipo:"mc",p:"Completa: I ______ going to go snorkeling.",
+     opts:["am","is","are","be"],ok:0,
+     mal:["","'Is' es para he/she/it.","'Are' es para you/we/they.","'Be' no se conjuga así."],
+     bien:"¡Exacto! I + am → I'm going to…"},
+    {tipo:"mc",p:"Forma negativa correcta con I:",
+     opts:["I don't going to see a show.","I'm not going to see a show.","I not going to see a show.","I amn't going to see a show."],ok:1,
+     mal:["Con 'going to' no se usa 'don't'.","","Falta el verbo 'am'.","'Amn't' no existe en inglés estándar."],
+     bien:"¡Muy bien! I'm not going to + verbo."},
+    {tipo:"mc",p:"Sarah dice: 'I'm going to visit my grandparents in New York.' ¿Qué significa?",
+     opts:["Ya visitó a sus abuelos.","Está visitándolos ahora.","Planea visitarlos en el futuro.","Le gustaría visitarlos algún día."],ok:2,
+     mal:["'Going to' habla del futuro, no del pasado.","Eso sería 'I am visiting them now'.","","'Going to' es un plan decidido, más firme que un deseo."],
+     bien:"¡Sí! Going to = plan futuro ya decidido."},
+    {tipo:"mc",p:"En el libro, Emma dice: 'I'm not going to do homework!'. Esto significa que ella…",
+     opts:["va a hacer la tarea","no piensa hacer la tarea","ya hizo la tarea","está haciendo la tarea"],ok:1,
+     mal:["La frase es negativa: I'm NOT.","","No habla del pasado.","No habla del presente."],
+     bien:"¡Correcto! I'm not going to = no tengo el plan de hacerlo."},
+    {tipo:"tf",p:"Después de 'going to' el verbo va sin cambios: 'I'm going to go hiking.'",ok:true,
+     exp:"¡Verdadero! going to + verbo base."},
+    {tipo:"tf",p:"Se puede decir 'I going to go to the beach.'",ok:false,
+     exp:"Falso. Falta el verbo be: I'M going to go to the beach."},
+    {tipo:"tf",p:"'What are you going to do on vacation?' es una pregunta sobre planes futuros.",ok:true,
+     exp:"¡Verdadero! Es la pregunta clave de toda la Unit 6."},
+    {tipo:"tf",p:"'I'm going to go sightseeing' y 'I went sightseeing' significan lo mismo.",ok:false,
+     exp:"Falso. La primera es un plan futuro; 'I went' es pasado (ya ocurrió)."},
+    {tipo:"fill",banco:["am","'m not","are","going to"],
+     items:[
+      {frase:"I ___ going to take a boat trip.",ok:"am",acepta:["'m","am"]},
+      {frase:"What ___ you going to do next weekend?",ok:"are"},
+      {frase:"I ___ going to go to the beach. I don't like sand.",ok:"'m not",acepta:["'m not","am not"]},
+      {frase:"I'm ___ see a show tomorrow.",ok:"going to"}
+     ]},
+    {tipo:"orden",titulo:"Ordena la oración (Harry, Workbook p. 60)",
+     palabras:["I'm","going","to","go","snorkeling","."],
+     ok:"I'm going to go snorkeling .",
+     exp:"Sujeto + be + going to + verbo."},
+    {tipo:"orden",titulo:"Ordena la pregunta",
+     palabras:["What","are","you","going","to","do","?"],
+     ok:"What are you going to do ?",
+     exp:"Palabra interrogativa + are + you + going to + verbo."},
+    {tipo:"mc",p:"Luke: 'I ______ take a boat trip. I'm going to have a barbecue.' (él NO va en bote)",
+     opts:["'m going to","'m not going to","don't going to","am going to not"],ok:1,
+     mal:["Eso diría que SÍ va en bote.","","'Don't' no se usa con going to.","El 'not' va justo después de 'am'."],
+     bien:"¡Exacto! I'm not going to take a boat trip."}
+  ]
+},
+{
+  id:"n4", icono:"👨‍👩‍👧", titulo:"Nivel 4 — Grammar Master",
+  sub:"going to con he / she / we / they (Lesson 2)",
+  teoria:`
+    <p>La estructura es la misma, pero <strong>cambia el verbo be</strong> según la persona.</p>
+    <div class="caja"><h4>📐 Tabla completa</h4>
+      <table class="tabla">
+        <tr><th>Persona</th><th>Afirmativo</th><th>Negativo</th></tr>
+        <tr><td>I</td><td class="en">I'm going to…</td><td class="en">I'm not going to…</td></tr>
+        <tr><td>He / She / It</td><td class="en">He's going to…</td><td class="en">He isn't going to…</td></tr>
+        <tr><td>We / They / You</td><td class="en">They're going to…</td><td class="en">They aren't going to…</td></tr>
+      </table>
+      <p>Ejemplos del libro (p. 63):<br>
+      ✔️ <span class="en">He's going to go hiking.</span> ❌ <span class="en">He isn't going to go snorkeling.</span><br>
+      ✔️ <span class="en">They're going to go sightseeing.</span> ❌ <span class="en">They aren't going to go to the beach.</span></p>
+    </div>
+    <div class="caja"><h4>🕐 Time words</h4>
+      <p>Con <em>going to</em> usamos palabras de tiempo futuro: <span class="en">tomorrow</span> (mañana), <span class="en">next weekend</span> (el próximo fin de semana), <span class="en">next week / next month</span>.</p>
+    </div>
+    <div class="caja resumen"><h4>📌 Resumen rápido</h4>
+      <p><strong>I → am · He/She/It → is · We/You/They → are.</strong> El resto de la frase (going to + verbo) nunca cambia.</p></div>
+    <div class="caja truco"><h4>🧠 Truco de las 3 letras</h4>
+      <p>Recuerda <strong>"I-am, He-is, They-are"</strong> como una cancioncita. Y las contracciones negativas: <em>isn't</em> (he/she/it) y <em>aren't</em> (we/you/they).</p></div>
+    <div class="caja dato"><h4>💡 Dato curioso</h4>
+      <p>En el email de Jane (p. 63), ella escribe sobre su hermano Tom en el summer camp. Fíjate: <em>"Tom doesn't like swimming in the ocean, so he <u>isn't</u> going to go snorkeling."</em> ¡La razón explica el negativo!</p></div>`,
+  actividades:[
+    {tipo:"mc",p:"He ______ going to visit a castle.",
+     opts:["am","is","are","be"],ok:1,
+     mal:["'Am' solo va con I.","","'Are' va con we/you/they.","'Be' no se usa conjugado así."],
+     bien:"¡Bien! He → is → He's going to…"},
+    {tipo:"mc",p:"They ______ going to go to the beach. (negativo)",
+     opts:["isn't","aren't","am not","don't"],ok:1,
+     mal:["'Isn't' va con he/she/it.","","'Am not' solo con I.","'Don't' no se usa con going to."],
+     bien:"¡Exacto! They aren't going to…"},
+    {tipo:"mc",p:"Del email de Jane: 'Tom doesn't like swimming, so he ______ going to go snorkeling.'",
+     opts:["is","isn't","aren't","'m not"],ok:1,
+     mal:["Si no le gusta nadar, no va a hacer snorkel.","","'Aren't' es plural.","'I'm not' es para I."],
+     bien:"¡Perfecto! he isn't going to go snorkeling."},
+    {tipo:"mc",p:"'We ______ going to cook outside this evening.' (sí van a cocinar)",
+     opts:["'re","'s","am","isn't"],ok:0,
+     mal:["","'s (is) va con he/she/it.","'Am' solo con I.","Eso sería negativo y singular."],
+     bien:"¡Sí! We're = We are."},
+    {tipo:"mc",p:"Helen's parents ______ go to the beach on Tuesday. (según la tabla, ese día NO van)",
+     opts:["are going to","aren't going to","isn't going to","don't going to"],ok:1,
+     mal:["Eso diría que sí van.","","'Isn't' es singular.","'Don't' no se usa con going to."],
+     bien:"¡Correcto! Helen's parents aren't going to go to the beach."},
+    {tipo:"mc",p:"¿Cuál palabra de tiempo NO se usa con 'going to' para planes futuros?",
+     opts:["tomorrow","next weekend","yesterday","next month"],ok:2,
+     mal:["","","","Next month sí es futuro."],
+     bien:"¡Exacto! 'Yesterday' es pasado; no combina con planes futuros."},
+    {tipo:"tf",p:"'She's going to take a camera' significa que ella planea llevar una cámara.",ok:true,
+     exp:"¡Verdadero! She's = She is + going to = plan futuro."},
+    {tipo:"tf",p:"Se dice 'They is going to go sightseeing.'",ok:false,
+     exp:"Falso. They → ARE: They're going to go sightseeing."},
+    {tipo:"tf",p:"'He isn't going to' es la contracción de 'He is not going to'.",ok:true,
+     exp:"¡Verdadero! isn't = is not."},
+    {tipo:"tf",p:"Con 'we' se usa 'am': We am going to make a fire.",ok:false,
+     exp:"Falso. We → ARE: We're going to make a fire."},
+    {tipo:"tf",p:"En 'They're going to make new friends', 'They're' significa 'They are'.",ok:true,
+     exp:"¡Verdadero! Es la contracción de They are."},
+    {tipo:"fill",banco:["is","are","isn't","aren't","'s","'re"],
+     items:[
+      {frase:"She ___ going to see a show tomorrow.",ok:"is"},
+      {frase:"They ___ going to go sightseeing next week.",ok:"are"},
+      {frase:"He ___ going to go snorkeling. He doesn't like the ocean.",ok:"isn't"},
+      {frase:"We ___ going to go to the beach. It's rainy.",ok:"aren't"},
+      {frase:"Helen ___ going to visit a castle on Wednesday.",ok:"is",acepta:["is","'s"]}
+     ]},
+    {tipo:"match",titulo:"Une el sujeto con su verbo be",
+     pares:[["I","am"],["He / She / It","is"],["We / They / You","are"],["He (negativo)","isn't"],["They (negativo)","aren't"]]},
+    {tipo:"orden",titulo:"Ordena la oración negativa",
+     palabras:["They","aren't","going","to","go","to","the","beach","."],
+     ok:"They aren't going to go to the beach .",
+     exp:"Sujeto + aren't + going to + verbo."}
+  ]
+},
+{
+  id:"n5", icono:"🎒", titulo:"Nivel 5 — Packing Champion",
+  sub:"Things to pack + preposiciones de lugar (Lesson 3)",
+  teoria:`
+    <p>Antes de un <strong>day trip</strong> (paseo de un día) hay que empacar. Estas son las 6 palabras clave.</p>
+    <div class="caja"><h4>🧳 Day Trip: What to Bring</h4>
+      <table class="tabla">
+        <tr><th>English</th><th>Español</th></tr>
+        <tr><td class="en">sunscreen 🧴</td><td>bloqueador solar</td></tr>
+        <tr><td class="en">towel 🏖️</td><td>toalla</td></tr>
+        <tr><td class="en">backpack 🎒</td><td>mochila</td></tr>
+        <tr><td class="en">raincoat 🧥</td><td>impermeable</td></tr>
+        <tr><td class="en">swimsuit 🩱</td><td>traje de baño</td></tr>
+        <tr><td class="en">camera 📷</td><td>cámara de fotos</td></tr>
+      </table>
+    </div>
+    <div class="caja"><h4>📍 Preposiciones de lugar</h4>
+      <ul>
+        <li><span class="en">in</span> — dentro de: <em>The towel is <u>in</u> the backpack.</em></li>
+        <li><span class="en">in front of</span> — delante de</li>
+        <li><span class="en">next to</span> — al lado de</li>
+        <li><span class="en">behind</span> — detrás de</li>
+      </ul>
+    </div>
+    <div class="caja resumen"><h4>📌 Resumen rápido</h4>
+      <p>Varias palabras son compuestas: <strong>sun + screen</strong>, <strong>back + pack</strong>, <strong>rain + coat</strong>, <strong>swim + suit</strong>. ¡Si conoces las dos mitades, adivinas el significado!</p></div>
+    <div class="caja truco"><h4>🧠 Canción del libro "Let's Pack!"</h4>
+      <p>"Are you going to take <strong>sunscreen</strong>? Yes, I am. It's a sunny day.<br>
+      Are you going to take a <strong>towel</strong>? Yes, I am. I'm going to swim and play.<br>
+      Are you going to take a <strong>raincoat</strong>? No, I'm not. It isn't rainy today!"</p>
+      <p>Fíjate: cada respuesta se conecta con el <strong>clima</strong>. 🌤️</p></div>
+    <div class="caja dato"><h4>💡 Dato curioso</h4>
+      <p><em>Sunscreen</em> significa literalmente "pantalla de sol": <em>screen</em> es pantalla o barrera. En inglés británico también se dice <em>sun cream</em>.</p></div>`,
+  actividades:[
+    {tipo:"mc",p:"It's a sunny day. You should take ______.",
+     opts:["a raincoat","sunscreen","a scarf","gloves"],ok:1,
+     mal:["El raincoat es para días de lluvia.","","",""],
+     bien:"¡Bien! Sunscreen protege del sol."},
+    {tipo:"mc",p:"It's rainy today. Take a ______.",
+     opts:["swimsuit","towel","raincoat","camera"],ok:2,
+     mal:["El traje de baño es para nadar.","La toalla es para secarse.","","La cámara es para fotos."],
+     bien:"¡Correcto! Rain + coat = impermeable."},
+    {tipo:"mc",p:"You carry all your things in a ______.",
+     opts:["backpack","towel","camera","swimsuit"],ok:0,
+     mal:["","",""," "],
+     bien:"¡Exacto! Back (espalda) + pack (bulto) = mochila."},
+    {tipo:"mc",p:"'The towel is ______ the backpack' (la toalla está adentro).",
+     opts:["in","behind","next to","in front of"],ok:0,
+     mal:["","'Behind' es detrás.","'Next to' es al lado.","'In front of' es delante."],
+     bien:"¡Sí! IN = dentro de."},
+    {tipo:"mc",p:"'The camera is ______ the backpack' (está delante, más cerca de nosotros).",
+     opts:["in","behind","in front of","under"],ok:2,
+     mal:["'In' es adentro.","'Behind' es detrás.","","'Under' es debajo, no está en esta lección."],
+     bien:"¡Muy bien! IN FRONT OF = delante de."},
+    {tipo:"mc",p:"En la canción: 'Are you going to take a raincoat?' — 'No, I'm not. It ______ rainy today!'",
+     opts:["is","isn't","aren't","am not"],ok:1,
+     mal:["Si estuviera lluvioso, sí llevaría raincoat.","","'Aren't' es plural.","'Am not' es para I."],
+     bien:"¡Exacto! It isn't rainy today."},
+    {tipo:"tf",p:"'Swimsuit' es el traje de baño.",ok:true,exp:"¡Verdadero! swim (nadar) + suit (traje)."},
+    {tipo:"tf",p:"Un 'towel' sirve para tomar fotos.",ok:false,
+     exp:"Falso. 'Towel' es la toalla. Para fotos se usa la 'camera'."},
+    {tipo:"tf",p:"'Behind the backpack' significa detrás de la mochila.",ok:true,
+     exp:"¡Verdadero! behind = detrás de."},
+    {tipo:"tf",p:"'Next to' significa 'después de'.",ok:false,
+     exp:"Falso. 'Next to' significa AL LADO DE."},
+    {tipo:"tf",p:"Si vas a la playa a nadar, necesitas swimsuit y towel.",ok:true,
+     exp:"¡Verdadero! Y también sunscreen si está soleado."},
+    {tipo:"fill",banco:["sunscreen","towel","backpack","raincoat","swimsuit","camera"],
+     items:[
+      {frase:"It's sunny. Don't forget the ___!",ok:"sunscreen"},
+      {frase:"I'm going to swim, so I need my ___.",ok:"swimsuit"},
+      {frase:"I want to take photos. Where is my ___?",ok:"camera"},
+      {frase:"Put everything in your ___.",ok:"backpack"},
+      {frase:"After swimming, dry yourself with a ___.",ok:"towel"},
+      {frase:"It's going to rain. Take your ___.",ok:"raincoat"}
+     ]},
+    {tipo:"match",titulo:"Une la palabra con su traducción",
+     pares:[["sunscreen","bloqueador solar"],["towel","toalla"],["backpack","mochila"],
+            ["raincoat","impermeable"],["swimsuit","traje de baño"],["camera","cámara"]]},
+    {tipo:"match",titulo:"Une la preposición con su significado",
+     pares:[["in","dentro de"],["in front of","delante de"],["next to","al lado de"],["behind","detrás de"]]},
+    {tipo:"memoria",titulo:"Memorama: encuentra los pares English–Español",
+     pares:[["sunscreen","bloqueador"],["towel","toalla"],["backpack","mochila"],["raincoat","impermeable"]]}
+  ]
+},
+{
+  id:"n6", icono:"❓", titulo:"Nivel 6 — Question Expert",
+  sub:"Preguntas Yes/No + la historia 'Vacation Food'",
+  teoria:`
+    <p>Para <strong>preguntar por planes</strong> ponemos el verbo <em>be</em> al principio.</p>
+    <div class="caja"><h4>❓ Preguntas y respuestas cortas</h4>
+      <table class="tabla">
+        <tr><th>Pregunta</th><th>Yes</th><th>No</th></tr>
+        <tr><td class="en">Are you going to take a towel?</td><td class="en">Yes, I am.</td><td class="en">No, I'm not.</td></tr>
+        <tr><td class="en">Is she going to take sunscreen?</td><td class="en">Yes, she is.</td><td class="en">No, she isn't.</td></tr>
+        <tr><td class="en">Are they going to take raincoats?</td><td class="en">Yes, they are.</td><td class="en">No, they aren't.</td></tr>
+      </table>
+    </div>
+    <div class="caja"><h4>📖 Story: "Vacation Food"</h4>
+      <p>Jim está de vacaciones en <strong>Tailandia (Thailand)</strong> con su familia.</p>
+      <ol>
+        <li>En el desayuno Jim solo quiere <strong>cereal and milk</strong>: "I want cereal and milk."</li>
+        <li>La familia va a hacer <strong>a boat trip</strong> y luego <strong>go snorkeling</strong>: "It's amazing! I love snorkeling!"</li>
+        <li>En el almuerzo hay comida distinta. Jim dice: "I usually eat a sandwich…". Su hermana prueba y dice: "The food is different, but it's great!"</li>
+        <li>Antes de la cena Jim tiene hambre: "I'm hungry, Mom." Van a hacer <strong>a barbecue</strong> en la playa.</li>
+        <li>Jim se atreve: "I'm going to try this <strong>shrimp</strong> (camarón)." Y le encanta: "They are delicious!"</li>
+        <li>Al final pide <strong>más camarones</strong>: "Can I have some more shrimp?"</li>
+      </ol>
+      <p><strong>Moraleja:</strong> atreverse a probar comida nueva puede ser una gran sorpresa. 🍤</p>
+    </div>
+    <div class="caja resumen"><h4>📌 Resumen rápido</h4>
+      <p>Pregunta = <strong>Am/Is/Are + sujeto + going to + verbo?</strong> La respuesta corta repite el mismo verbo be, <strong>sin "going to"</strong>: "Yes, she is." (nunca "Yes, she is going to.")</p></div>
+    <div class="caja truco"><h4>🧠 Truco del "salto"</h4>
+      <p>Para preguntar, el verbo be <strong>salta</strong> al principio:<br>
+      She <u>is</u> going to… → <u>Is</u> she going to…?</p></div>
+    <div class="caja dato"><h4>💡 Dato curioso</h4>
+      <p>En Tailandia el camarón (<em>shrimp</em>) es un ingrediente estrella. ¡La comida tailandesa mezcla lo dulce, lo ácido, lo salado y lo picante en un mismo plato!</p></div>`,
+  actividades:[
+    {tipo:"mc",p:"______ she going to take a camera?",
+     opts:["Are","Is","Am","Do"],ok:1,
+     mal:["'Are' va con you/we/they.","","'Am' solo con I.","'Do' no se usa con going to."],
+     bien:"¡Exacto! Is she going to…?"},
+    {tipo:"mc",p:"'Is he going to take a raincoat?' — Respuesta corta NEGATIVA:",
+     opts:["No, he isn't.","No, he doesn't.","No, he not.","No, he aren't."],ok:0,
+     mal:["","'Doesn't' no se usa con going to.","Falta el verbo be.","'Aren't' es plural."],
+     bien:"¡Correcto! No, he isn't."},
+    {tipo:"mc",p:"'Are they going to take towels?' — Respuesta corta AFIRMATIVA:",
+     opts:["Yes, they do.","Yes, they are.","Yes, they is.","Yes, they are going to."],ok:1,
+     mal:["'Do' no se usa aquí.","","'Is' es singular.","La respuesta corta NO lleva 'going to'."],
+     bien:"¡Perfecto! Yes, they are."},
+    {tipo:"mc",p:"Tom pregunta a Julia: '______ you going to take a swimsuit?'",
+     opts:["Is","Am","Are","Does"],ok:2,
+     mal:["'Is' es para he/she/it.","'Am' solo con I.","","'Does' no va con going to."],
+     bien:"¡Bien! Are you going to…?"},
+    {tipo:"mc",p:"En la historia, ¿dónde están Jim y su familia de vacaciones?",
+     opts:["In Thailand","In France","In New York","In Chile"],ok:0,
+     mal:["","France aparece en otro ejercicio del workbook.","New York es el viaje de Sarah.","No se menciona Chile."],
+     bien:"¡Correcto! Jim and his family are on vacation in Thailand."},
+    {tipo:"mc",p:"¿Qué quiere comer Jim en el desayuno?",
+     opts:["Shrimp","A sandwich","Cereal and milk","Fish"],ok:2,
+     mal:["El camarón lo prueba en la cena.","El sandwich es lo que come normalmente al almuerzo.","","El pescado lo prueban al final."],
+     bien:"¡Sí! 'I want cereal and milk.'"},
+    {tipo:"mc",p:"¿Qué comida nueva prueba Jim y le encanta?",
+     opts:["Shrimp (camarón)","Pizza","Chicken","Rice"],ok:0,
+     mal:["","","",""],
+     bien:"¡Exacto! 'I'm going to try this shrimp… They are delicious!'"},
+    {tipo:"mc",p:"¿Qué hacen antes de la cena en la playa?",
+     opts:["They see a show","They have a barbecue","They visit a castle","They go shopping"],ok:1,
+     mal:["No hay show en la historia.","","No hay castillo.","No van de compras."],
+     bien:"¡Bien! 'We're going to have a barbecue.'"},
+    {tipo:"tf",p:"En 'Yes, she is.' NO se repite 'going to'.",ok:true,
+     exp:"¡Verdadero! Las respuestas cortas solo llevan el verbo be."},
+    {tipo:"tf",p:"A Jim le gustó el snorkeling en la historia.",ok:true,
+     exp:"¡Verdadero! Él dice: 'I love snorkeling!'"},
+    {tipo:"tf",p:"Al final de la historia, Jim NO quiere más camarones.",ok:false,
+     exp:"Falso. Jim pide más: 'Can I have some more shrimp?'"},
+    {tipo:"tf",p:"Se puede preguntar: 'Do you going to take a camera?'",ok:false,
+     exp:"Falso. Con going to nunca se usa 'do'. Lo correcto: 'ARE you going to take a camera?'"},
+    {tipo:"tf",p:"Jim se sentía hambriento (hungry) antes de la cena.",ok:true,
+     exp:"¡Verdadero! Él dice: 'I'm hungry, Mom.'"},
+    {tipo:"fill",banco:["Is","Are","is","isn't","are","aren't"],
+     items:[
+      {frase:"___ she going to take a camera? — Yes, she ___.",ok:"Is",acepta:["is"]},
+      {frase:"___ they going to take towels? — Yes, they ___.",ok:"Are",acepta:["are"]},
+      {frase:"Is he going to take a raincoat? — No, he ___.",ok:"isn't"},
+      {frase:"Are they going to take swimsuits? — Yes, they ___.",ok:"are"}
+     ]},
+    {tipo:"orden",titulo:"Ordena la pregunta",
+     palabras:["Is","she","going","to","take","sunscreen","?"],
+     ok:"Is she going to take sunscreen ?",
+     exp:"Verbo be + sujeto + going to + verbo + ?"},
+    {tipo:"match",titulo:"Une la pregunta con su respuesta corta",
+     pares:[["Are you going to take a towel?","Yes, I am."],
+            ["Is she going to take sunscreen?","No, she isn't."],
+            ["Are they going to take raincoats?","Yes, they are."],
+            ["Is he going to go snorkeling?","No, he isn't."]]}
+  ]
+},
+{
+  id:"n7", icono:"🏆", titulo:"Nivel 7 — Final Challenge",
+  sub:"Desafío final: todo el contenido de la Unit 6",
+  teoria:`
+    <p>¡Último nivel! Aquí se mezcla <strong>todo</strong>: vocabulario, clima, <em>going to</em>, preguntas y la historia.</p>
+    <div class="caja resumen"><h4>📌 Repaso relámpago</h4>
+      <ul>
+        <li><strong>Actividades:</strong> go hiking, go to the beach, have a barbecue, see a show, go sightseeing, visit a castle, take a boat trip, go snorkeling.</li>
+        <li><strong>Clima:</strong> sunny, hot, cloudy, rainy.</li>
+        <li><strong>Proponer:</strong> Why don't we…? / <strong>Preferir:</strong> I'd rather…</li>
+        <li><strong>Futuro:</strong> am/is/are + going to + verbo.</li>
+        <li><strong>Empacar:</strong> sunscreen, towel, backpack, raincoat, swimsuit, camera.</li>
+        <li><strong>Preguntas:</strong> Is/Are + sujeto + going to…? → Yes, she is. / No, they aren't.</li>
+      </ul>
+    </div>
+    <div class="caja truco"><h4>🧠 Antes de la prueba</h4>
+      <p>Si dudas del verbo be, pregúntate primero <strong>quién</strong> hace la acción: I → am, he/she/it → is, we/you/they → are. Eso resuelve la mitad de los ejercicios.</p></div>`,
+  actividades:[
+    {tipo:"mc",p:"Choose the correct sentence:",
+     opts:["She going to visit a castle.","She's going to visit a castle.","She's going visit a castle.","She is go to visit a castle."],ok:1,
+     mal:["Falta el verbo be.","","Falta 'to' después de going.","Sobra 'go'."],
+     bien:"¡Excelente! She's going to + verbo."},
+    {tipo:"mc",p:"It's rainy today. Why don't we ______?",
+     opts:["go to the beach","go snorkeling","see a show","have a barbecue outside"],ok:2,
+     mal:["Con lluvia, la playa no es buena idea.","Snorkeling con lluvia y mar picado, tampoco.","","Un asado afuera se moja."],
+     bien:"¡Buen razonamiento! Un show es bajo techo."},
+    {tipo:"mc",p:"Kim is going ______. (está sacando una foto frente a una pirámide)",
+     opts:["sightseeing","snorkeling","hiking","fishing"],ok:0,
+     mal:["","Snorkeling es en el agua.","Hiking es caminar por senderos.","Fishing es pescar."],
+     bien:"¡Correcto! Visitar y fotografiar monumentos = go sightseeing."},
+    {tipo:"mc",p:"'Helen's grandparents ______ going to visit a castle on Wednesday.' (según la tabla, ellos van a la playa)",
+     opts:["are","aren't","isn't","am not"],ok:1,
+     mal:["Eso diría que sí van al castillo.","","'Isn't' es singular.","'Am not' es para I."],
+     bien:"¡Muy bien! aren't going to visit a castle."},
+    {tipo:"mc",p:"Which one is a thing to pack?",
+     opts:["go hiking","sunscreen","cloudy","I'd rather"],ok:1,
+     mal:["Eso es una actividad.","","Eso es clima.","Eso expresa preferencia."],
+     bien:"¡Sí! Sunscreen es de la lista 'Day Trip: What to Bring'."},
+    {tipo:"mc",p:"Complete: 'What ______ your friend going to do on Saturday?'",
+     opts:["am","is","are","do"],ok:1,
+     mal:["'Am' solo con I.","","'Are' es plural.","'Do' no va con going to."],
+     bien:"¡Exacto! 'your friend' = he/she → is."},
+    {tipo:"mc",p:"— Are you going to take a camera? — ______",
+     opts:["Yes, I do.","Yes, I am.","Yes, I is.","Yes, I going."],ok:1,
+     mal:["'Do' no se usa con going to.","","'Is' no va con I.","Falta el verbo be."],
+     bien:"¡Perfecto! Yes, I am."},
+    {tipo:"tf",p:"'Take a boat trip' y 'go sightseeing' son actividades de vacaciones.",ok:true,
+     exp:"¡Verdadero! Ambas están en la lista de Lesson 1."},
+    {tipo:"tf",p:"'Going to' se usa para hablar de cosas que ya pasaron.",ok:false,
+     exp:"Falso. 'Going to' es para planes FUTUROS."},
+    {tipo:"tf",p:"'I'd rather have a barbecue' expresa una preferencia.",ok:true,
+     exp:"¡Verdadero! I'd rather = yo preferiría."},
+    {tipo:"tf",p:"Con he/she/it la forma negativa es 'aren't going to'.",ok:false,
+     exp:"Falso. Con he/she/it es ISN'T going to."},
+    {tipo:"tf",p:"En la historia, Jim viaja a Tailandia y termina probando comida nueva.",ok:true,
+     exp:"¡Verdadero! Prueba camarones y le encantan."},
+    {tipo:"fill",banco:["going to","isn't","Are","rather","sunscreen","sunny"],
+     items:[
+      {frase:"It's ___ today, so let's go to the beach.",ok:"sunny"},
+      {frase:"I'd ___ take a boat trip.",ok:"rather"},
+      {frase:"She's ___ see a show tomorrow.",ok:"going to"},
+      {frase:"He ___ going to go snorkeling.",ok:"isn't"},
+      {frase:"___ you going to take a towel?",ok:"Are"},
+      {frase:"Put ___ on your face before the beach.",ok:"sunscreen"}
+     ]},
+    {tipo:"orden",titulo:"Ordena la oración negativa",
+     palabras:["She","isn't","going","to","take","a","camera","."],
+     ok:"She isn't going to take a camera .",
+     exp:"Sujeto + isn't + going to + verbo."},
+    {tipo:"orden",titulo:"Ordena la pregunta larga",
+     palabras:["What","are","you","going","to","do","on","vacation","?"],
+     ok:"What are you going to do on vacation ?",
+     exp:"La pregunta estrella de toda la unidad."},
+    {tipo:"match",titulo:"Repaso mixto: une cada uno con su par",
+     pares:[["go snorkeling","hacer snorkel"],["rainy","lluvioso"],["backpack","mochila"],
+            ["Why don't we…?","¿Por qué no…?"],["Yes, she is.","respuesta corta afirmativa"]]},
+    {tipo:"memoria",titulo:"Memorama final",
+     pares:[["go hiking","excursión"],["visit a castle","castillo"],["swimsuit","traje de baño"],["cloudy","nublado"]]}
+  ]
+}
+];
+
+const MEDALLAS = [
+  {id:"primera",  nombre:"🎉 Primer paso",       cond:"Responder la primera pregunta"},
+  {id:"racha5",   nombre:"🔥 Racha de 5",        cond:"5 respuestas correctas seguidas"},
+  {id:"racha10",  nombre:"⚡ Racha de 10",       cond:"10 respuestas correctas seguidas"},
+  {id:"nivel1",   nombre:"🏖️ Vacation Explorer", cond:"Completar el Nivel 1"},
+  {id:"nivel3",   nombre:"🎯 Going To Beginner",  cond:"Completar el Nivel 3"},
+  {id:"nivel5",   nombre:"🎒 Packing Champion",   cond:"Completar el Nivel 5"},
+  {id:"perfecto", nombre:"💎 Nivel perfecto",     cond:"Un nivel sin errores"},
+  {id:"final",    nombre:"👑 Unit 6 Master",      cond:"Completar los 7 niveles"}
+];
+
+const ELOGIOS_OK = ["¡Excelente! 🎉","¡Muy bien! 👏","¡Perfecto! ⭐","¡Genial! 🚀","¡Eso es! 💪","¡Increíble! 🌟","Great job! 👍"];
+const ELOGIOS_MAL = ["Casi… 🤔","¡Ojo con esto! 👀","No pasa nada, sigue. 💡","Revisa la explicación 📖"];
+
+/* ============================================================
+   2. ESTADO DEL JUEGO
+   ============================================================ */
+let estado = {
+  xp:0, puntos:0, racha:0, mejorRacha:0,
+  correctas:0, incorrectas:0,
+  nivelActual:0, actIdx:0,
+  nivelesCompletos:[], erroresNivel:0,
+  medallas:[], inicio:null,
+  erroresPorNivel:{}
+};
+const TOTAL_ACTIVIDADES = NIVELES.reduce((s,n)=>s+n.actividades.length,0);
+let hechas = 0;
+
+/* ============================================================
+   3. UTILIDADES
+   ============================================================ */
+const $ = id => document.getElementById(id);
+function mezclar(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function alAzar(a){return a[Math.floor(Math.random()*a.length)];}
+function norm(s){return (s||"").toLowerCase().trim().replace(/[.,!?]/g,"").replace(/[''´`]/g,"'").replace(/\s+/g," ");}
+
+function toast(msg){
+  const t=document.createElement("div");t.className="toast";t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2600);
+}
+function darMedalla(id){
+  if(estado.medallas.includes(id))return;
+  estado.medallas.push(id);
+  const m=MEDALLAS.find(x=>x.id===id);
+  if(m) toast("🏅 ¡Medalla desbloqueada: "+m.nombre+"!");
+}
+function actualizarHUD(){
+  $("stXP").textContent="⭐ "+estado.xp+" XP";
+  $("stPuntos").textContent="🏆 "+estado.puntos+" pts";
+  $("stRacha").textContent="🔥 "+estado.racha;
+  const pct = TOTAL_ACTIVIDADES ? Math.round(hechas/TOTAL_ACTIVIDADES*100) : 0;
+  $("barraProg").style.width=pct+"%";
+  $("barraLabel").textContent=hechas+" / "+TOTAL_ACTIVIDADES+" actividades ("+pct+"%)";
+}
+function sumarAcierto(pts){
+  estado.correctas++; estado.racha++; hechas++;
+  estado.mejorRacha=Math.max(estado.mejorRacha,estado.racha);
+  let bonus=0;
+  if(estado.racha>0 && estado.racha%5===0){bonus=25;toast("🔥 ¡Racha de "+estado.racha+"! +25 XP extra");}
+  estado.xp+=pts+bonus; estado.puntos+=pts*10+bonus*5;
+  darMedalla("primera");
+  if(estado.racha>=5)darMedalla("racha5");
+  if(estado.racha>=10)darMedalla("racha10");
+  actualizarHUD();
+}
+function sumarError(){
+  estado.incorrectas++; estado.racha=0; estado.erroresNivel++; hechas++;
+  const nid=NIVELES[estado.nivelActual].id;
+  estado.erroresPorNivel[nid]=(estado.erroresPorNivel[nid]||0)+1;
+  actualizarHUD();
+}
+function render(html){ $("pantalla").innerHTML=html; window.scrollTo({top:0,behavior:"smooth"}); }
+
+/* ============================================================
+   4. PANTALLAS PRINCIPALES
+   ============================================================ */
+function pantallaInicio(){
+  $("hud").classList.add("oculto");
+  render(`
+  <div class="card" style="text-align:center">
+    <div style="font-size:3.4rem;line-height:1">🏖️ ✈️ 🎒</div>
+    <h1>Unit 6 — Vacation Plans</h1>
+    <p class="sub">Guía interactiva de Inglés · Vocabulario, <em>going to</em>, preguntas y la historia "Vacation Food"</p>
+    <div class="caja" style="text-align:left">
+      <h4>🎮 ¿Cómo funciona?</h4>
+      <ul>
+        <li><strong>7 niveles</strong> que se desbloquean uno tras otro.</li>
+        <li>Cada nivel: explicación + flashcards + actividades variadas.</li>
+        <li>Ganas <strong>XP</strong>, <strong>puntos</strong> y <strong>medallas</strong> 🏅</li>
+        <li>Respuestas seguidas correctas = <strong>bonus de racha</strong> 🔥</li>
+      </ul>
+    </div>
+    <div class="caja dato" style="text-align:left">
+      <h4>📚 ¿Qué vas a repasar?</h4>
+      <p>Actividades de vacaciones · el clima · <em>Why don't we…? / I'd rather…</em> · <em>going to</em> en afirmativo, negativo y preguntas · cosas para empacar · preposiciones de lugar · la historia de Jim en Tailandia.</p>
+    </div>
+    <button class="btn" onclick="empezar()">🚀 ¡Empezar!</button>
+    <button class="btn gris" onclick="pantallaMedallas()">🏅 Ver medallas</button>
+  </div>`);
+}
+
+function empezar(){
+  estado.inicio = Date.now();
+  $("hud").classList.remove("oculto");
+  actualizarHUD();
+  mapaNiveles();
+}
+
+function mapaNiveles(){
+  const cards = NIVELES.map((n,i)=>{
+    const listo = estado.nivelesCompletos.includes(n.id);
+    const abierto = i===0 || estado.nivelesCompletos.includes(NIVELES[i-1].id);
+    const cls = listo?"nivel listo":(abierto?"nivel":"nivel bloqueado");
+    const marca = listo?" ✅":(abierto?"":" 🔒");
+    return `<button class="${cls}" ${abierto?"":"disabled"} onclick="abrirNivel(${i})">
+      <span class="icono">${abierto?n.icono:"🔒"}</span>
+      <span class="txt"><strong>${n.titulo}${marca}</strong><small>${n.sub}</small></span>
+    </button>`;
+  }).join("");
+  const todos = estado.nivelesCompletos.length===NIVELES.length;
+  render(`
+  <div class="card">
+    <h2>🗺️ Mapa de niveles</h2>
+    <p class="sub">Completa un nivel para desbloquear el siguiente.</p>
+    <div class="niveles" style="margin-top:14px">${cards}</div>
+    ${todos?`<div style="margin-top:16px"><button class="btn verde" onclick="pantallaFinal()">🏁 Ver mis resultados finales</button></div>`:""}
+    <div style="margin-top:16px">
+      <button class="btn gris" onclick="pantallaMedallas()">🏅 Medallas</button>
+      <button class="btn gris" onclick="reiniciar()">🔄 Reiniciar todo</button>
+    </div>
+  </div>`);
+}
+
+function pantallaMedallas(){
+  const lista = MEDALLAS.map(m=>{
+    const tiene = estado.medallas.includes(m.id);
+    return `<div class="medalla ${tiene?"":"off"}">${tiene?m.nombre:"🔒 "+m.nombre.replace(/^\S+\s/,"")}<br><small style="font-weight:normal">${m.cond}</small></div>`;
+  }).join("");
+  render(`<div class="card">
+    <h2>🏅 Mis medallas</h2>
+    <p class="sub">Tienes ${estado.medallas.length} de ${MEDALLAS.length}.</p>
+    <div class="medallas">${lista}</div>
+    <div style="margin-top:16px"><button class="btn" onclick="${estado.inicio?"mapaNiveles()":"pantallaInicio()"}">← Volver</button></div>
+  </div>`);
+}
+
+/* ---------- Entrada a un nivel ---------- */
+function abrirNivel(i){
+  estado.nivelActual=i; estado.actIdx=0; estado.erroresNivel=0;
+  const n=NIVELES[i];
+  $("hudTitulo").textContent="Unit 6 · "+n.titulo;
+  render(`<div class="card">
+    <h1>${n.icono} ${n.titulo}</h1>
+    <p class="sub">${n.sub}</p>
+    ${n.teoria}
+    <div style="margin-top:18px">
+      ${FLASHCARDS[n.id]?`<button class="btn naranjo" onclick="verFlashcards()">🃏 Flashcards (${FLASHCARDS[n.id].length})</button>`:""}
+      <button class="btn verde" onclick="siguienteActividad()">▶️ Empezar actividades (${n.actividades.length})</button>
+      <button class="btn gris" onclick="mapaNiveles()">🗺️ Mapa</button>
+    </div>
+  </div>`);
+}
+
+/* ---------- Flashcards ---------- */
+let flashSet=[], flashIdx=0;
+function verFlashcards(){
+  flashSet = mezclar(FLASHCARDS[NIVELES[estado.nivelActual].id]);
+  flashIdx = 0;
+  dibujarFlash();
+}
+function dibujarFlash(){
+  const f = flashSet[flashIdx];
+  render(`<div class="card">
+    <h2>🃏 Flashcards</h2>
+    <p class="sub">Tarjeta ${flashIdx+1} de ${flashSet.length} · Haz clic en la tarjeta para darla vuelta.</p>
+    <div class="flash-zona">
+      <div class="flash" id="flashCard" onclick="this.classList.toggle('girada')" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.classList.toggle('girada')}">
+        <div class="cara frente"><div class="grande">${f.frente}</div><div class="chico">👆 Toca para ver el significado</div></div>
+        <div class="cara atras"><div class="grande">${f.atras}</div><div class="chico">👆 Toca para volver</div></div>
+      </div>
+    </div>
+    <div class="flash-nav">
+      <button class="btn gris" onclick="moverFlash(-1)" ${flashIdx===0?"disabled":""}>⬅️ Anterior</button>
+      <button class="btn" onclick="moverFlash(1)" ${flashIdx===flashSet.length-1?"disabled":""}>Siguiente ➡️</button>
+      <button class="btn naranjo" onclick="verFlashcards()">🔀 Mezclar</button>
+      <button class="btn verde" onclick="siguienteActividad()">▶️ Ir a las actividades</button>
+    </div>
+  </div>`);
+}
+function moverFlash(d){ flashIdx=Math.max(0,Math.min(flashSet.length-1,flashIdx+d)); dibujarFlash(); }
+
+/* ============================================================
+   5. MOTOR DE ACTIVIDADES
+   ============================================================ */
+function siguienteActividad(){
+  const n = NIVELES[estado.nivelActual];
+  if(estado.actIdx >= n.actividades.length){ return finNivel(); }
+  const act = n.actividades[estado.actIdx];
+  const cab = `<p class="sub">${n.icono} ${n.titulo} · Actividad ${estado.actIdx+1} de ${n.actividades.length}</p>`;
+  switch(act.tipo){
+    case "mc":      actMC(act,cab); break;
+    case "tf":      actTF(act,cab); break;
+    case "fill":    actFill(act,cab); break;
+    case "match":   actMatch(act,cab); break;
+    case "orden":   actOrden(act,cab); break;
+    case "memoria": actMemoria(act,cab); break;
+    default:        avanzar();
+  }
+}
+function avanzar(){ estado.actIdx++; siguienteActividad(); }
+
+function botonSiguiente(){
+  return `<div style="margin-top:14px"><button class="btn" id="btnSig" onclick="avanzar()">Siguiente ➡️</button></div>`;
+}
+
+/* ---------- Selección múltiple ---------- */
+function actMC(act,cab){
+  const idx = mezclar(act.opts.map((_,i)=>i));
+  render(`<div class="card">${cab}
+    <h2>🔤 Elige la respuesta correcta</h2>
+    <p style="font-size:1.12rem;margin-top:10px">${act.p}</p>
+    <div class="opciones" id="ops">
+      ${idx.map(i=>`<button class="opcion" onclick="respMC(this,${i},${act.ok})">${act.opts[i]}</button>`).join("")}
+    </div>
+    <div id="fb"></div>
+  </div>`);
+  window._actMC = act;
+}
+function respMC(btn,elegida,correcta){
+  const act = window._actMC;
+  document.querySelectorAll("#ops .opcion").forEach(b=>b.disabled=true);
+  if(elegida===correcta){
+    btn.classList.add("correcta"); sumarAcierto(10);
+    $("fb").innerHTML=`<div class="feedback bien"><strong>${alAzar(ELOGIOS_OK)}</strong>${act.bien||""}</div>`+botonSiguiente();
+  }else{
+    btn.classList.add("incorrecta"); sumarError();
+    document.querySelectorAll("#ops .opcion").forEach(b=>{ if(b.textContent===act.opts[correcta]) b.classList.add("correcta"); });
+    const porque = (act.mal && act.mal[elegida]) ? act.mal[elegida] : "";
+    $("fb").innerHTML=`<div class="feedback mal"><strong>${alAzar(ELOGIOS_MAL)}</strong>
+      ${porque?"❌ "+porque+"<br>":""}✅ La respuesta correcta es <strong>${act.opts[correcta]}</strong>. ${act.bien||""}</div>`+botonSiguiente();
+  }
+}
+
+/* ---------- Verdadero / Falso ---------- */
+function actTF(act,cab){
+  render(`<div class="card">${cab}
+    <h2>✅❌ ¿Verdadero o falso?</h2>
+    <p style="font-size:1.12rem;margin-top:10px">${act.p}</p>
+    <div class="opciones dos" id="ops">
+      <button class="opcion" style="text-align:center" onclick="respTF(this,true)">✅ Verdadero</button>
+      <button class="opcion" style="text-align:center" onclick="respTF(this,false)">❌ Falso</button>
+    </div>
+    <div id="fb"></div>
+  </div>`);
+  window._actTF = act;
+}
+function respTF(btn,val){
+  const act=window._actTF;
+  document.querySelectorAll("#ops .opcion").forEach(b=>b.disabled=true);
+  if(val===act.ok){
+    btn.classList.add("correcta"); sumarAcierto(8);
+    $("fb").innerHTML=`<div class="feedback bien"><strong>${alAzar(ELOGIOS_OK)}</strong>${act.exp}</div>`+botonSiguiente();
+  }else{
+    btn.classList.add("incorrecta"); sumarError();
+    $("fb").innerHTML=`<div class="feedback mal"><strong>${alAzar(ELOGIOS_MAL)}</strong>${act.exp}</div>`+botonSiguiente();
+  }
+}
+
+/* ---------- Completar espacios ---------- */
+function actFill(act,cab){
+  const items = mezclar(act.items);
+  window._actFill = items;
+  render(`<div class="card">${cab}
+    <h2>✏️ Completa las oraciones</h2>
+    <p class="sub">Escribe la palabra que falta. Usa el banco de palabras como ayuda.</p>
+    <div class="banco">${mezclar(act.banco).map(w=>`<span class="chip">${w}</span>`).join("")}</div>
+    ${items.map((it,i)=>`<div class="frase">${i+1}. ${it.frase.replace("___",`<input type="text" id="f${i}" aria-label="Respuesta ${i+1}" autocomplete="off">`)}
+      <span id="mark${i}"></span></div>`).join("")}
+    <button class="btn verde" onclick="respFill()">Revisar ✔️</button>
+    <div id="fb"></div>
+  </div>`);
+}
+function respFill(){
+  const items = window._actFill;
+  let ok=0, detalle="";
+  items.forEach((it,i)=>{
+    const inp=$("f"+i); if(!inp) return;
+    inp.disabled=true;
+    const acepta=(it.acepta||[it.ok]).map(norm);
+    if(!acepta.includes(norm(it.ok))) acepta.push(norm(it.ok));
+    const bien = acepta.includes(norm(inp.value));
+    inp.style.borderColor = bien ? "#2e7d32" : "#c62828";
+    inp.style.background = bien ? "#e8f5e9" : "#ffebee";
+    $("mark"+i).innerHTML = bien ? " ✅" : ` ❌ → <strong style="color:#2e7d32">${it.ok}</strong>`;
+    if(bien) ok++; else detalle += `<li>${it.frase.replace("___","<strong>"+it.ok+"</strong>")}</li>`;
+  });
+  const total=items.length;
+  if(ok===total){ sumarAcierto(12); }
+  else { if(ok>0){estado.xp+=ok*3;estado.puntos+=ok*20;} sumarError(); }
+  actualizarHUD();
+  $("fb").innerHTML = ok===total
+    ? `<div class="feedback bien"><strong>${alAzar(ELOGIOS_OK)}</strong>¡${ok}/${total} correctas! Dominaste este ejercicio.</div>`+botonSiguiente()
+    : `<div class="feedback mal"><strong>Obtuviste ${ok}/${total}</strong>Repasa estas oraciones:<ul>${detalle}</ul></div>`+botonSiguiente();
+}
+
+/* ---------- Emparejar ---------- */
+let matchSel=null, matchOk=0, matchTotal=0, matchFallos=0;
+function actMatch(act,cab){
+  matchSel=null; matchOk=0; matchFallos=0; matchTotal=act.pares.length;
+  const izq = mezclar(act.pares.map((p,i)=>({t:p[0],i})));
+  const der = mezclar(act.pares.map((p,i)=>({t:p[1],i})));
+  render(`<div class="card">${cab}
+    <h2>🔗 ${act.titulo}</h2>
+    <p class="sub">Toca una tarjeta de la izquierda y luego su pareja a la derecha.</p>
+    <div class="match" style="margin-top:12px">
+      <div class="col">${izq.map(o=>`<button class="mitem" data-lado="a" data-i="${o.i}" onclick="clicMatch(this)">${o.t}</button>`).join("")}</div>
+      <div class="col">${der.map(o=>`<button class="mitem" data-lado="b" data-i="${o.i}" onclick="clicMatch(this)">${o.t}</button>`).join("")}</div>
+    </div>
+    <div id="fb"></div>
+  </div>`);
+}
+function clicMatch(btn){
+  if(btn.classList.contains("ok"))return;
+  if(!matchSel){
+    if(btn.dataset.lado!=="a"){ btn.classList.add("err"); setTimeout(()=>btn.classList.remove("err"),300); return; }
+    document.querySelectorAll(".mitem.sel").forEach(b=>b.classList.remove("sel"));
+    btn.classList.add("sel"); matchSel=btn; return;
+  }
+  if(btn.dataset.lado==="a"){ matchSel.classList.remove("sel"); btn.classList.add("sel"); matchSel=btn; return; }
+  if(btn.dataset.i===matchSel.dataset.i){
+    btn.classList.add("ok"); matchSel.classList.add("ok"); matchSel.classList.remove("sel");
+    matchSel=null; matchOk++;
+    if(matchOk===matchTotal){
+      if(matchFallos===0){ sumarAcierto(15); $("fb").innerHTML=`<div class="feedback bien"><strong>${alAzar(ELOGIOS_OK)}</strong>¡Todos los pares correctos y sin errores! 🎯</div>`+botonSiguiente(); }
+      else { sumarError(); $("fb").innerHTML=`<div class="feedback mal"><strong>¡Completado!</strong>Uniste todos los pares, pero con ${matchFallos} intento(s) fallido(s). Repasa esas palabras.</div>`+botonSiguiente(); }
+    }
+  }else{
+    matchFallos++;
+    btn.classList.add("err"); setTimeout(()=>btn.classList.remove("err"),320);
+    matchSel.classList.remove("sel"); matchSel=null;
+  }
+}
+
+/* ---------- Ordenar palabras ---------- */
+let ordenActual=[];
+function actOrden(act,cab){
+  ordenActual=[];
+  window._actOrden=act;
+  render(`<div class="card">${cab}
+    <h2>🧩 ${act.titulo}</h2>
+    <p class="sub">Toca las palabras en el orden correcto. Toca una palabra de la zona azul para devolverla.</p>
+    <div class="orden-zona" id="zona"></div>
+    <div class="banco" id="pool" style="margin-top:12px">
+      ${mezclar(act.palabras).map((w,i)=>`<button class="palabra" data-w="${w}" onclick="tomarPalabra(this)">${w}</button>`).join("")}
+    </div>
+    <button class="btn verde" onclick="respOrden()">Revisar ✔️</button>
+    <div id="fb"></div>
+  </div>`);
+}
+function tomarPalabra(btn){
+  const w=btn.dataset.w; ordenActual.push(w); btn.remove();
+  const z=$("zona");
+  const el=document.createElement("button");
+  el.className="palabra"; el.textContent=w; el.dataset.w=w;
+  el.onclick=()=>{ const k=ordenActual.lastIndexOf(w); if(k>-1)ordenActual.splice(k,1); el.remove();
+    const p=document.createElement("button"); p.className="palabra"; p.dataset.w=w; p.textContent=w; p.onclick=()=>tomarPalabra(p); $("pool").appendChild(p); };
+  z.appendChild(el);
+}
+function respOrden(){
+  const act=window._actOrden;
+  const usuario=ordenActual.join(" ");
+  const bien = norm(usuario)===norm(act.ok);
+  if(bien){ sumarAcierto(12);
+    $("fb").innerHTML=`<div class="feedback bien"><strong>${alAzar(ELOGIOS_OK)}</strong>"${act.ok.replace(" ?","?").replace(" .",".")}" ✅<br>${act.exp}</div>`+botonSiguiente();
+  }else{ sumarError();
+    $("fb").innerHTML=`<div class="feedback mal"><strong>${alAzar(ELOGIOS_MAL)}</strong>
+      Tu orden: <em>${usuario||"(vacío)"}</em><br>
+      ✅ Correcto: <strong>${act.ok.replace(" ?","?").replace(" .",".")}</strong><br>${act.exp}</div>`+botonSiguiente();
+  }
+  document.querySelectorAll("#pool .palabra, #zona .palabra").forEach(b=>b.disabled=true);
+}
+
+/* ---------- Memorama ---------- */
+let memVolteadas=[], memOk=0, memIntentos=0, memBloqueo=false;
+function actMemoria(act,cab){
+  memVolteadas=[]; memOk=0; memIntentos=0; memBloqueo=false;
+  const cartas = mezclar(act.pares.flatMap((p,i)=>[{t:p[0],i},{t:p[1],i}]));
+  render(`<div class="card">${cab}
+    <h2>🧠 ${act.titulo}</h2>
+    <p class="sub">Voltea dos tarjetas y encuentra las parejas English–Español.</p>
+    <div class="match" id="mem" style="grid-template-columns:repeat(4,1fr);margin-top:12px">
+      ${cartas.map((c,k)=>`<button class="mitem" style="text-align:center;min-height:64px" data-i="${c.i}" data-k="${k}" onclick="clicMem(this)">❔</button>`).join("")}
+    </div>
+    <div id="fb"></div>
+  </div>`);
+  window._memCartas = cartas;
+  window._memTotal = act.pares.length;
+}
+function clicMem(btn){
+  if(memBloqueo||btn.classList.contains("ok")||memVolteadas.includes(btn))return;
+  const c = window._memCartas[+btn.dataset.k];
+  btn.textContent=c.t; btn.classList.add("sel");
+  memVolteadas.push(btn);
+  if(memVolteadas.length===2){
+    memIntentos++;
+    const [a,b]=memVolteadas;
+    if(a.dataset.i===b.dataset.i){
+      a.classList.remove("sel");b.classList.remove("sel");
+      a.classList.add("ok");b.classList.add("ok");
+      memVolteadas=[]; memOk++;
+      if(memOk===window._memTotal){
+        const perfecto = memIntentos<=window._memTotal+2;
+        if(perfecto){ sumarAcierto(15); $("fb").innerHTML=`<div class="feedback bien"><strong>${alAzar(ELOGIOS_OK)}</strong>¡Memorama completo en ${memIntentos} intentos! Excelente memoria. 🧠</div>`+botonSiguiente(); }
+        else { sumarAcierto(8); $("fb").innerHTML=`<div class="feedback bien"><strong>¡Completado!</strong>Lo lograste en ${memIntentos} intentos. Repasa el vocabulario para ir más rápido.</div>`+botonSiguiente(); }
+      }
+    }else{
+      memBloqueo=true;
+      setTimeout(()=>{ memVolteadas.forEach(x=>{x.textContent="❔";x.classList.remove("sel")}); memVolteadas=[]; memBloqueo=false; },800);
+    }
+  }
+}
+
+/* ============================================================
+   6. FIN DE NIVEL Y PANTALLA FINAL
+   ============================================================ */
+function finNivel(){
+  const n=NIVELES[estado.nivelActual];
+  if(!estado.nivelesCompletos.includes(n.id)) estado.nivelesCompletos.push(n.id);
+  let bonus=50; estado.xp+=bonus; estado.puntos+=200;
+  let msgPerf="";
+  if(estado.erroresNivel===0){ darMedalla("perfecto"); estado.xp+=75; estado.puntos+=300; msgPerf="<p>💎 <strong>¡Nivel perfecto!</strong> Sin ningún error. +75 XP extra.</p>"; }
+  if(n.id==="n1")darMedalla("nivel1");
+  if(n.id==="n3")darMedalla("nivel3");
+  if(n.id==="n5")darMedalla("nivel5");
+  if(estado.nivelesCompletos.length===NIVELES.length)darMedalla("final");
+  actualizarHUD();
+  const hayMas = estado.nivelActual < NIVELES.length-1;
+  render(`<div class="card" style="text-align:center">
+    <div style="font-size:3rem">${estado.erroresNivel===0?"💎":"🎉"}</div>
+    <h1>¡Nivel completado!</h1>
+    <p class="sub">${n.titulo}</p>
+    <div class="resultados">
+      <div class="res"><span class="num">${n.actividades.length-estado.erroresNivel}</span><span class="lab">actividades bien</span></div>
+      <div class="res"><span class="num">${estado.erroresNivel}</span><span class="lab">con errores</span></div>
+      <div class="res"><span class="num">+${bonus}</span><span class="lab">XP de bonus</span></div>
+    </div>
+    ${msgPerf}
+    <div style="margin-top:10px">
+      ${hayMas?`<button class="btn verde" onclick="abrirNivel(${estado.nivelActual+1})">▶️ Siguiente nivel: ${NIVELES[estado.nivelActual+1].titulo.split("— ")[1]}</button>`:`<button class="btn verde" onclick="pantallaFinal()">🏁 Ver resultados finales</button>`}
+      <button class="btn gris" onclick="mapaNiveles()">🗺️ Mapa de niveles</button>
+      <button class="btn naranjo" onclick="abrirNivel(${estado.nivelActual})">🔁 Repetir este nivel</button>
+    </div>
+  </div>`);
+}
+
+function pantallaFinal(){
+  const seg = Math.round((Date.now()-estado.inicio)/1000);
+  const mm = Math.floor(seg/60), ss = seg%60;
+  const total = estado.correctas+estado.incorrectas;
+  const pct = total?Math.round(estado.correctas/total*100):0;
+  let rango, emoji;
+  if(pct>=90){rango="Unit 6 Master 👑";emoji="👑";}
+  else if(pct>=75){rango="Vacation Expert 🌟";emoji="🌟";}
+  else if(pct>=60){rango="Good Traveler 😃";emoji="😃";}
+  else {rango="Beginner Explorer 🌱";emoji="🌱";}
+
+  // Recomendaciones según temas más débiles
+  const nombresNivel = {n1:"vocabulario de actividades (Lesson 1)",n2:"el clima y Why don't we…? / I'd rather…",
+    n3:"going to con I / you",n4:"going to con he / she / we / they",
+    n5:"cosas para empacar y preposiciones",n6:"preguntas Yes/No y la historia",n7:"repaso general"};
+  const debiles = Object.entries(estado.erroresPorNivel).sort((a,b)=>b[1]-a[1]).filter(e=>e[1]>0).slice(0,3);
+  const reco = debiles.length
+    ? `<ul>${debiles.map(([id,e])=>`<li>Repasa <strong>${nombresNivel[id]}</strong> — tuviste ${e} error(es) ahí.</li>`).join("")}</ul>`
+    : "<p>¡No tuviste temas débiles! Solo repasa las flashcards antes de la prueba. 🎯</p>";
+
+  const meds = MEDALLAS.filter(m=>estado.medallas.includes(m.id)).map(m=>`<div class="medalla">${m.nombre}</div>`).join("") || "<p class='sub'>Aún sin medallas.</p>";
+
+  render(`<div class="card" style="text-align:center">
+    <div style="font-size:3.4rem">${emoji}</div>
+    <h1>¡Terminaste la Unit 6!</h1>
+    <p class="sub">Tu rango: <strong>${rango}</strong></p>
+    <div class="resultados">
+      <div class="res"><span class="num">${estado.puntos}</span><span class="lab">puntos</span></div>
+      <div class="res"><span class="num">${estado.xp}</span><span class="lab">XP</span></div>
+      <div class="res"><span class="num">${pct}%</span><span class="lab">de logro</span></div>
+      <div class="res"><span class="num">${estado.correctas}</span><span class="lab">correctas</span></div>
+      <div class="res"><span class="num">${estado.incorrectas}</span><span class="lab">con errores</span></div>
+      <div class="res"><span class="num">${estado.mejorRacha}</span><span class="lab">mejor racha 🔥</span></div>
+      <div class="res"><span class="num">${mm}:${String(ss).padStart(2,"0")}</span><span class="lab">tiempo</span></div>
+      <div class="res"><span class="num">${estado.nivelesCompletos.length}/${NIVELES.length}</span><span class="lab">niveles</span></div>
+    </div>
+    <div class="caja resumen" style="text-align:left"><h4>📚 Recomendaciones para estudiar</h4>${reco}</div>
+    <div class="caja" style="text-align:left"><h4>🏅 Medallas obtenidas</h4><div class="medallas">${meds}</div></div>
+    <div style="margin-top:14px">
+      <button class="btn verde" onclick="reiniciar()">🔄 Volver a jugar</button>
+      <button class="btn gris" onclick="mapaNiveles()">🗺️ Mapa de niveles</button>
+    </div>
+  </div>`);
+}
+
+function reiniciar(){
+  estado = {xp:0,puntos:0,racha:0,mejorRacha:0,correctas:0,incorrectas:0,nivelActual:0,actIdx:0,
+            nivelesCompletos:[],erroresNivel:0,medallas:[],inicio:null,erroresPorNivel:{}};
+  hechas=0; actualizarHUD(); pantallaInicio();
+}
+
+/* ---- Arranque ---- */
+pantallaInicio();
+</script>
+</body>
+</html>
