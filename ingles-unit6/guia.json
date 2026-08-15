@@ -1,14 +1,15 @@
 {
   "asignatura": "Inglés",
-  "curso": "Sin curso",
-  "unidad": "Sin unidad",
+  "curso": "4° Básico",
+  "unidad": "Unit 6 - Vacation Plans",
   "emoji": "🌍",
   "color": "#D64545",
-  "desc": "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
+  "desc": "Repaso interactivo de la Unit 6 Vacation Plans: vocabulario de actividades de vacaciones, el clima, going to para planes futuros, preguntas Yes/No, cosas para empacar y la historia Vacation Food.",
   "tags": [
     "Guía de repaso"
   ],
   "listo": true,
   "autoDesc": true,
-  "autoTags": true
+  "autoTags": true,
+  "semestre": "Segundo semestre"
 }
