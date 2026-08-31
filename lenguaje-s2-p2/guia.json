@@ -1,0 +1,14 @@
+{
+  "asignatura": "Lenguaje y Comunicación",
+  "curso": "Sin curso",
+  "unidad": "Sin unidad",
+  "emoji": "🪄",
+  "color": "#6C3FB5",
+  "desc": "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
+  "tags": [
+    "Guía de repaso"
+  ],
+  "listo": true,
+  "autoDesc": true,
+  "autoTags": true
+}
