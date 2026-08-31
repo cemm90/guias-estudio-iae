@@ -1,1 +1,1625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detective Lector · La calle más aburrida del mundo</title>
+<style>
+/* ============================================================
+   GUÍA DE ESTUDIO INTERACTIVA — 4° BÁSICO
+   Comprensión de textos literarios
+   Libro base: "La calle más aburrida del mundo" (J. I. Valenzuela)
+   ============================================================ */
 
+:root{
+  --noche:#151a3a;
+  --noche2:#1e2555;
+  --morado:#5b3bb5;
+  --morado-cl:#7c5ce0;
+  --amarillo:#ffc93c;
+  --amarillo-osc:#e0a500;
+  --verde:#1faa59;
+  --verde-cl:#d6f5e3;
+  --rojo:#d93838;
+  --rojo-cl:#fde0e0;
+  --azul:#2563c9;
+  --azul-cl:#dce8ff;
+  --papel:#fffdf7;
+  --texto:#22243d;
+  --texto-sv:#5a5d7a;
+  --borde:#e3e0d4;
+  --sombra:0 6px 0 rgba(0,0,0,.12);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:"Trebuchet MS","Verdana","Segoe UI",sans-serif;
+  background:var(--noche);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(124,92,224,.35) 0, transparent 42%),
+    radial-gradient(circle at 88% 82%, rgba(255,201,60,.18) 0, transparent 45%);
+  background-attachment:fixed;
+  color:var(--texto);
+  min-height:100vh;
+  padding:0 0 60px;
+  font-size:17px;
+  line-height:1.55;
+}
+
+/* ---------- BARRA SUPERIOR ---------- */
+#barra{
+  position:sticky;top:0;z-index:50;
+  background:rgba(21,26,58,.96);
+  border-bottom:3px solid var(--morado);
+  padding:8px 12px;
+}
+#barra.oculto{display:none}
+.barra-in{max-width:920px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.marcador{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.10);
+  color:#fff;border-radius:12px;padding:5px 11px;
+  font-weight:bold;font-size:15px;white-space:nowrap;
+}
+.marcador .num{color:var(--amarillo);font-size:17px}
+#racha-caja.encendida{background:rgba(255,201,60,.28);box-shadow:0 0 0 2px var(--amarillo) inset}
+.progreso-ext{flex:1;min-width:130px;height:16px;background:rgba(255,255,255,.15);border-radius:20px;overflow:hidden}
+.progreso-int{height:100%;width:0%;border-radius:20px;background:linear-gradient(90deg,var(--verde),var(--amarillo));transition:width .45s ease}
+#etiqueta-nivel{color:#cfd2ff;font-size:14px;font-weight:bold;width:100%;text-align:center}
+
+/* ---------- CONTENEDOR ---------- */
+main{max-width:920px;margin:0 auto;padding:18px 14px}
+.tarjeta{
+  background:var(--papel);
+  border-radius:22px;
+  padding:26px 24px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  border:3px solid rgba(255,255,255,.6);
+  margin-bottom:18px;
+  animation:entra .35s ease;
+}
+@keyframes entra{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+h1{font-size:32px;line-height:1.15;color:var(--morado);margin-bottom:8px}
+h2{font-size:25px;color:var(--morado);margin-bottom:10px}
+h3{font-size:20px;color:var(--azul);margin:16px 0 8px}
+p{margin-bottom:12px}
+.sub{color:var(--texto-sv);font-size:16px}
+.centro{text-align:center}
+
+/* ---------- BOTONES ---------- */
+button{font-family:inherit}
+.btn{
+  display:inline-block;border:none;cursor:pointer;
+  background:var(--morado);color:#fff;
+  font-size:19px;font-weight:bold;
+  padding:14px 26px;border-radius:16px;
+  box-shadow:0 5px 0 #3d2585;
+  transition:transform .08s, box-shadow .08s;
+  margin:6px 4px;
+}
+.btn:hover{background:var(--morado-cl)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #3d2585}
+.btn.grande{font-size:22px;padding:17px 38px}
+.btn.amarillo{background:var(--amarillo);color:#4a3200;box-shadow:0 5px 0 var(--amarillo-osc)}
+.btn.amarillo:hover{background:#ffd766}
+.btn.verde{background:var(--verde);box-shadow:0 5px 0 #147a3f}
+.btn.gris{background:#8a8ca8;box-shadow:0 5px 0 #63657d}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:focus-visible,.opcion:focus-visible,.par-btn:focus-visible,.palabra:focus-visible{
+  outline:4px solid var(--azul);outline-offset:3px;
+}
+
+/* ---------- MAPA DE NIVELES ---------- */
+.mapa{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px;margin-top:16px}
+.nivel-card{
+  background:#fff;border:3px solid var(--borde);border-radius:18px;
+  padding:16px;text-align:left;cursor:pointer;position:relative;
+  transition:transform .12s, border-color .12s;
+}
+.nivel-card:hover:not(.bloqueado){transform:translateY(-4px);border-color:var(--morado)}
+.nivel-card.bloqueado{opacity:.55;cursor:not-allowed;background:#f0efe9}
+.nivel-card.completo{border-color:var(--verde);background:var(--verde-cl)}
+.nivel-emoji{font-size:34px;display:block;margin-bottom:4px}
+.nivel-num{font-size:13px;font-weight:bold;color:var(--texto-sv);text-transform:uppercase;letter-spacing:1px}
+.nivel-nom{font-size:19px;font-weight:bold;color:var(--morado);line-height:1.2;margin:2px 0 4px}
+.nivel-hab{font-size:14px;color:var(--texto-sv)}
+.candado{position:absolute;top:12px;right:14px;font-size:20px}
+.estrellitas{font-size:17px;letter-spacing:2px;margin-top:6px}
+
+/* ---------- LECCIÓN ---------- */
+.caja{border-radius:16px;padding:15px 17px;margin:12px 0;border-left:7px solid}
+.caja.resumen{background:var(--azul-cl);border-color:var(--azul)}
+.caja.ejemplo{background:#fff6da;border-color:var(--amarillo-osc)}
+.caja.dato{background:#f2e9ff;border-color:var(--morado-cl)}
+.caja h4{font-size:17px;margin-bottom:5px;color:var(--texto)}
+.caja p:last-child{margin-bottom:0}
+.cita{font-style:italic;background:#f6f4ec;border-radius:10px;padding:10px 14px;border-left:5px solid var(--borde);margin:10px 0}
+
+/* ---------- ACTIVIDADES ---------- */
+.tipo-tag{
+  display:inline-block;background:var(--morado);color:#fff;
+  font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;
+  padding:4px 12px;border-radius:20px;margin-bottom:12px;
+}
+.pregunta{font-size:21px;font-weight:bold;margin-bottom:14px;line-height:1.35}
+.opciones{display:flex;flex-direction:column;gap:10px}
+.opcion{
+  text-align:left;background:#fff;border:3px solid var(--borde);
+  border-radius:14px;padding:14px 16px;font-size:17px;cursor:pointer;
+  transition:border-color .12s, background .12s;width:100%;
+}
+.opcion:hover:not(:disabled){border-color:var(--morado-cl);background:#faf7ff}
+.opcion.correcta{border-color:var(--verde);background:var(--verde-cl)}
+.opcion.incorrecta{border-color:var(--rojo);background:var(--rojo-cl)}
+.opcion .letra{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:50%;background:var(--morado);color:#fff;
+  font-weight:bold;margin-right:10px;font-size:15px;flex-shrink:0;
+}
+.vf-fila{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.vf-fila .opcion{width:auto;min-width:165px;text-align:center;font-size:20px;font-weight:bold}
+.afirmacion{font-size:21px;background:#f6f4ec;border-radius:14px;padding:16px;margin-bottom:16px;line-height:1.4}
+
+.feedback{border-radius:14px;padding:14px 16px;margin-top:14px;font-size:16px;animation:entra .25s}
+.feedback.bien{background:var(--verde-cl);border-left:7px solid var(--verde)}
+.feedback.mal{background:var(--rojo-cl);border-left:7px solid var(--rojo)}
+.feedback strong{display:block;font-size:18px;margin-bottom:3px}
+
+/* ---------- FLASHCARDS ---------- */
+.flash-zona{perspective:1200px;margin:14px 0}
+.flash{
+  position:relative;width:100%;min-height:210px;cursor:pointer;
+  transform-style:preserve-3d;transition:transform .55s;
+}
+.flash.girada{transform:rotateY(180deg)}
+.flash-cara{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border-radius:18px;padding:22px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+}
+.flash-frente{background:linear-gradient(150deg,var(--morado),var(--morado-cl));color:#fff;font-size:22px;font-weight:bold}
+.flash-dorso{background:linear-gradient(150deg,var(--amarillo),#ffe08a);color:#4a3200;font-size:19px;transform:rotateY(180deg)}
+.flash-pista{font-size:14px;opacity:.85;margin-top:12px;font-weight:normal}
+.flash-nav{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.contador{font-weight:bold;color:var(--texto-sv);min-width:70px;text-align:center}
+
+/* ---------- COMPLETAR ---------- */
+.frase-completar{font-size:21px;line-height:1.9;background:#f6f4ec;border-radius:14px;padding:18px;margin-bottom:14px}
+.hueco{display:inline-block;min-width:110px;border-bottom:4px dotted var(--morado);text-align:center;font-weight:bold;color:var(--morado);padding:0 6px}
+.hueco.lleno{border-bottom-style:solid}
+.banco{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.palabra{
+  background:#fff;border:3px solid var(--borde);border-radius:12px;
+  padding:10px 16px;font-size:17px;font-weight:bold;cursor:pointer;color:var(--texto);
+}
+.palabra:hover:not(:disabled){border-color:var(--morado);background:#faf7ff}
+.palabra.usada{opacity:.35;cursor:not-allowed}
+
+/* ---------- RELACIONAR ---------- */
+.relacionar{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.col-tit{font-weight:bold;color:var(--texto-sv);font-size:14px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.par-btn{
+  display:block;width:100%;text-align:left;background:#fff;
+  border:3px solid var(--borde);border-radius:12px;padding:11px 13px;
+  font-size:16px;cursor:pointer;margin-bottom:9px;color:var(--texto);line-height:1.3;
+}
+.par-btn:hover:not(:disabled){border-color:var(--morado-cl)}
+.par-btn.elegido{border-color:var(--azul);background:var(--azul-cl)}
+.par-btn.ok{border-color:var(--verde);background:var(--verde-cl);cursor:default}
+.par-btn.error{animation:tiembla .4s}
+@keyframes tiembla{0%,100%{transform:none}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+/* ---------- ORDENAR ---------- */
+.orden-lista{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+.orden-item{
+  display:flex;align-items:center;gap:10px;background:#fff;
+  border:3px solid var(--borde);border-radius:12px;padding:11px 13px;font-size:16px;
+}
+.orden-item .idx{
+  width:30px;height:30px;border-radius:50%;background:var(--amarillo);color:#4a3200;
+  display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;
+}
+.orden-item .txt{flex:1;line-height:1.3}
+.flechas{display:flex;flex-direction:column;gap:3px}
+.mini{background:var(--morado);color:#fff;border:none;border-radius:7px;width:34px;height:24px;cursor:pointer;font-size:13px}
+.mini:disabled{opacity:.3;cursor:not-allowed}
+.orden-item.ok{border-color:var(--verde);background:var(--verde-cl)}
+.orden-item.no{border-color:var(--rojo);background:var(--rojo-cl)}
+
+/* ---------- LECTURA ---------- */
+.texto-lectura{
+  background:#fffdf3;border:3px solid var(--borde);border-radius:16px;
+  padding:20px;margin-bottom:16px;max-height:340px;overflow-y:auto;font-size:17px;line-height:1.7;
+}
+.texto-lectura h4{font-size:20px;color:var(--morado);margin-bottom:4px;text-align:center}
+.texto-lectura .autor{text-align:center;color:var(--texto-sv);font-size:14px;margin-bottom:12px}
+
+/* ---------- PANTALLAS DE RESULTADO ---------- */
+.medalla-grande{font-size:74px;line-height:1;margin-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:12px;margin:18px 0}
+.stat{background:#fff;border:3px solid var(--borde);border-radius:16px;padding:14px;text-align:center}
+.stat .valor{font-size:29px;font-weight:bold;color:var(--morado);line-height:1.1}
+.stat .etiq{font-size:13px;color:var(--texto-sv);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.medallero{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0}
+.medalla{background:#fff;border:3px solid var(--amarillo);border-radius:14px;padding:9px 14px;font-size:15px;font-weight:bold}
+.consejo{background:#fff6da;border-left:7px solid var(--amarillo-osc);border-radius:12px;padding:13px 16px;margin:9px 0;font-size:16px}
+.cronometro{
+  display:inline-block;background:var(--rojo);color:#fff;font-weight:bold;
+  padding:6px 16px;border-radius:20px;font-size:19px;margin-bottom:10px;
+}
+.cronometro.calma{background:var(--verde)}
+
+/* ---------- VARIOS ---------- */
+.tabla-comp{width:100%;border-collapse:collapse;margin:12px 0;font-size:16px}
+.tabla-comp th,.tabla-comp td{border:2px solid var(--borde);padding:9px 11px;text-align:left}
+.tabla-comp th{background:var(--morado);color:#fff}
+.tabla-comp tr:nth-child(even) td{background:#f6f4ec}
+ul.lista{margin:0 0 12px 22px}
+ul.lista li{margin-bottom:6px}
+.pie{text-align:center;color:#b9bce0;font-size:14px;padding:10px}
+.toast{
+  position:fixed;left:50%;top:104px;transform:translateX(-50%);
+  background:var(--amarillo);color:#4a3200;font-weight:bold;
+  padding:11px 22px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.3);
+  z-index:200;animation:sube 2.2s forwards;pointer-events:none;font-size:17px;
+}
+@keyframes sube{0%{opacity:0;transform:translate(-50%,14px)}15%{opacity:1;transform:translate(-50%,0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-14px)}}
+
+@media(max-width:600px){
+  body{font-size:16px}
+  h1{font-size:26px}
+  .tarjeta{padding:20px 16px}
+  .relacionar{grid-template-columns:1fr}
+  .pregunta{font-size:19px}
+  .btn{font-size:17px;padding:13px 20px}
+}
+</style>
+</head>
+<body>
+
+<div id="barra" class="oculto">
+  <div class="barra-in">
+    <div class="marcador">🏆 <span class="num" id="m-puntos">0</span></div>
+    <div class="marcador">⭐ <span class="num" id="m-xp">0</span> XP</div>
+    <div class="marcador" id="racha-caja">🔥 <span class="num" id="m-racha">0</span></div>
+    <div class="progreso-ext"><div class="progreso-int" id="m-barra"></div></div>
+    <div id="etiqueta-nivel"></div>
+  </div>
+</div>
+
+<main id="app"></main>
+<div class="pie">Guía de estudio interactiva · Comprensión de textos literarios · 4° básico</div>
+
+<script>
+/* ============================================================
+   1) DATOS — Todo el contenido vive aquí.
+      Para ampliar la guía basta con agregar objetos a NIVELES.
+   ============================================================ */
+
+const LIBRO = {
+  titulo:"La calle más aburrida del mundo",
+  autor:"José Ignacio Valenzuela",
+  ilustrador:"Luis San Vicente"
+};
+
+/* Textos originales complementarios (Nivel 8): sirven para practicar
+   las mismas habilidades con lecturas NUEVAS, como en la prueba. */
+const TEXTOS_NUEVOS = [
+  {
+    titulo:"El misterio de la mochila azul",
+    autor:"Texto de práctica",
+    cuerpo:`Camila llegó al colegio con una idea fija en la cabeza: descubrir quién se llevaba las colaciones de la sala.\n\nDesde hacía una semana, cada vez que el curso volvía del recreo, alguna mochila aparecía abierta y faltaba un pan, una manzana o una barra de cereal. Nadie decía nada, pero todos se miraban de reojo. La sala 4°B, que antes era la más alegre del segundo piso, se había vuelto un lugar silencioso y desconfiado.\n\nCamila decidió actuar. Se quedó escondida detrás de la puerta durante el recreo, con su cuaderno de tapas rojas en la mano, dispuesta a anotar todo lo que viera. Pasaron cinco minutos larguísimos. Diez. Entonces escuchó un ruido suave, como el de una hoja arrastrada por el viento.\n\nUna paloma gorda entró por la ventana que siempre quedaba abierta, caminó tranquilamente sobre los pupitres y se metió de cabeza en la mochila azul de Matías, la única que nunca se cerraba bien. Salió con medio pan en el pico y voló de vuelta al patio, sin ninguna prisa.\n\nCamila se quedó con la boca abierta. Después se rió sola, tan fuerte que la escucharon desde el pasillo.\n\nAl día siguiente, el curso puso una malla en la ventana y Matías aprendió a cerrar su mochila. La sala volvió a llenarse de risas, y Camila guardó su cuaderno de tapas rojas para el próximo caso.`,
+    preguntas:[
+      {tipo:"mc", pregunta:"¿Qué hacía Camila escondida detrás de la puerta?", opciones:[
+        {t:"Esperaba para descubrir quién abría las mochilas.", ok:true, fb:"¡Exacto! El texto lo dice de forma explícita: se quedó escondida «dispuesta a anotar todo lo que viera»."},
+        {t:"Se escondía porque no quería salir a recreo.", ok:false, fb:"No. Ella eligió quedarse por una razón: investigar el misterio de las colaciones."},
+        {t:"Buscaba su cuaderno de tapas rojas.", ok:false, fb:"No: el cuaderno lo llevaba en la mano para anotar pistas."},
+        {t:"Esperaba a que llegara la profesora.", ok:false, fb:"El texto nunca menciona a la profesora."}]},
+      {tipo:"mc", pregunta:"¿Cómo era el ambiente de la sala 4°B ANTES de que empezaran los robos?", opciones:[
+        {t:"Alegre y con confianza entre compañeros.", ok:true, fb:"¡Muy bien! El texto dice que «antes era la más alegre del segundo piso», y que después se volvió silenciosa y desconfiada."},
+        {t:"Siempre fue silenciosa y desconfiada.", ok:false, fb:"Ese es el ambiente de DESPUÉS. La palabra «antes» marca el cambio."},
+        {t:"Era una sala vacía y sin ventanas.", ok:false, fb:"Justamente había una ventana que quedaba siempre abierta."},
+        {t:"Era una sala donde nadie se hablaba nunca.", ok:false, fb:"El texto dice que era la más alegre, así que sí se hablaban."}]},
+      {tipo:"mc", pregunta:"¿Por qué la ladrona elegía siempre la mochila de Matías?", opciones:[
+        {t:"Porque era la única que no se cerraba bien.", ok:true, fb:"¡Inferencia perfecta! El texto da la pista («la única que nunca se cerraba bien») y tú sacas la conclusión."},
+        {t:"Porque era de color azul y a las palomas les gusta el azul.", ok:false, fb:"El texto no dice nada sobre el gusto de la paloma por los colores. Eso sería inventar."},
+        {t:"Porque Matías siempre traía las mejores colaciones.", ok:false, fb:"No se menciona qué colación traía Matías comparada con las demás."},
+        {t:"Porque estaba más cerca de la ventana.", ok:false, fb:"El texto no dice dónde estaba ubicada la mochila."}]},
+      {tipo:"vf", afirmacion:"El culpable de las desapariciones era un compañero de curso.", ok:false, fb:"Falso: la culpable era una paloma que entraba por la ventana. ¡Igual que en el caso de Toñito, el «ladrón» era un animal!"},
+      {tipo:"vf", afirmacion:"Gracias a lo que descubrió Camila, el curso pudo solucionar el problema.", ok:true, fb:"Verdadero: pusieron una malla en la ventana y Matías aprendió a cerrar su mochila. Esa es la SOLUCIÓN del relato."},
+      {tipo:"mc", pregunta:"¿Qué opinión sobre Camila se puede defender MEJOR con el texto?", opciones:[
+        {t:"Es perseverante, porque esperó escondida sin rendirse hasta descubrir la verdad.", ok:true, fb:"¡Esa es una opinión fundamentada! Das tu juicio Y lo respaldas con un hecho del texto."},
+        {t:"Es la niña más inteligente del colegio.", ok:false, fb:"Puede que lo sea, pero el texto no la compara con nadie más: es una opinión sin respaldo."},
+        {t:"Es desordenada, porque nunca cierra su mochila.", ok:false, fb:"Ojo: la mochila que no se cerraba era la de Matías, no la de Camila."},
+        {t:"Es miedosa, porque se escondió detrás de la puerta.", ok:false, fb:"Se escondió para vigilar, no por miedo. El texto muestra que era valiente."}]}
+    ]
+  },
+  {
+    titulo:"El violín del último piso",
+    autor:"Texto de práctica",
+    cuerpo:`En el edificio donde vivía Emilio nadie conocía al vecino del último piso. Solo sabían dos cosas: que se llamaba don Abelardo y que todas las noches, a las nueve en punto, tocaba el violín.\n\nAl principio, la música molestaba. La señora del segundo golpeaba el techo con una escoba. El papá de Emilio suspiraba y subía el volumen del televisor. Emilio, en cambio, apagaba la luz de su pieza, se acostaba y escuchaba. Le parecía que el violín contaba historias tristes de lugares lejanos.\n\nUna noche de invierno, la música no sonó. Tampoco la noche siguiente, ni la otra. El edificio quedó en un silencio raro, incómodo, como un zapato que aprieta.\n\nAl cuarto día Emilio subió los seis pisos y golpeó la puerta. Don Abelardo abrió despacio. Era un hombre muy delgado, de manos temblorosas y ojos cansados.\n\n—Se me rompió una cuerda —dijo el anciano— y ya no veo bien para cambiarla.\n\nEmilio bajó corriendo, juntó a tres vecinos y esa misma tarde alguien consiguió una cuerda nueva en el centro. A las nueve en punto, el violín volvió a sonar.\n\nEsa noche, por primera vez, nadie golpeó el techo con una escoba. Al contrario: la señora del segundo abrió su ventana para escuchar mejor.`,
+    preguntas:[
+      {tipo:"mc", pregunta:"¿En qué lugar (ambiente) ocurre principalmente la historia?", opciones:[
+        {t:"En un edificio de departamentos de al menos seis pisos.", ok:true, fb:"¡Correcto! Emilio «subió los seis pisos» hasta el último piso: el ambiente es un edificio."},
+        {t:"En una casa grande con jardín.", ok:false, fb:"No: se habla de vecinos de arriba y de abajo, escobas en el techo y pisos. Eso es un edificio."},
+        {t:"En una sala de conciertos.", ok:false, fb:"El violín suena en un departamento, no en un escenario."},
+        {t:"En una calle del barrio.", ok:false, fb:"La historia ocurre dentro del edificio."}]},
+      {tipo:"mc", pregunta:"¿Por qué don Abelardo dejó de tocar el violín?", opciones:[
+        {t:"Porque se le cortó una cuerda y no veía bien para cambiarla.", ok:true, fb:"¡Exacto! Es información explícita: él mismo lo explica en su diálogo."},
+        {t:"Porque los vecinos se enojaron con él.", ok:false, fb:"Los vecinos se molestaban, pero esa no es la causa que da el texto."},
+        {t:"Porque se fue de viaje en invierno.", ok:false, fb:"El texto no menciona ningún viaje."},
+        {t:"Porque estaba muy enfermo.", ok:false, fb:"Solo sabemos que era anciano y que no veía bien; el texto no habla de enfermedad."}]},
+      {tipo:"mc", pregunta:"«El edificio quedó en un silencio raro, incómodo, como un zapato que aprieta». ¿Qué quiere decir esta comparación?", opciones:[
+        {t:"Que el silencio molestaba, aunque antes se quejaban de la música.", ok:true, fb:"¡Gran inferencia! Un zapato que aprieta se soporta mal: los vecinos extrañaban el violín sin admitirlo."},
+        {t:"Que en el edificio había muchos zapatos.", ok:false, fb:"Es una comparación, no algo que pasa de verdad. El autor la usa para explicar una sensación."},
+        {t:"Que hacía frío en el edificio.", ok:false, fb:"El frío del invierno se menciona aparte; la comparación habla de incomodidad."},
+        {t:"Que los vecinos estaban felices con el silencio.", ok:false, fb:"Al revés: «raro» e «incómodo» son palabras negativas."}]},
+      {tipo:"vf", afirmacion:"Al comienzo del relato, Emilio sentía la música de forma distinta al resto de los vecinos.", ok:true, fb:"Verdadero: mientras los demás se molestaban, él apagaba la luz para escuchar. Comparar personajes es descubrir estas diferencias."},
+      {tipo:"vf", afirmacion:"El problema del relato se resuelve porque don Abelardo se cambia de edificio.", ok:false, fb:"Falso: el problema se resuelve cuando los vecinos consiguen una cuerda nueva y la música vuelve."},
+      {tipo:"mc", pregunta:"¿Cuál fue la CONSECUENCIA de que Emilio subiera al último piso?", opciones:[
+        {t:"Los vecinos se organizaron y la música volvió a sonar.", ok:true, fb:"¡Muy bien! Una acción del personaje provoca un cambio en toda la historia: eso es una consecuencia."},
+        {t:"Don Abelardo se enojó y cerró la puerta.", ok:false, fb:"No: abrió la puerta y explicó lo que pasaba."},
+        {t:"La señora del segundo siguió golpeando el techo.", ok:false, fb:"Al final ella abrió la ventana para escuchar mejor: cambió de actitud."},
+        {t:"Emilio aprendió a tocar violín.", ok:false, fb:"Eso no aparece en el texto."}]}
+    ]
+  },
+  {
+    titulo:"La feria de los sábados",
+    autor:"Texto de práctica",
+    cuerpo:`Todos los sábados, a las siete de la mañana, la calle Los Aromos cambiaba de piel. Los autos desaparecían y en su lugar crecían toldos de plástico naranja, cajones de tomates, montañas de paltas y un ruido alegre de voces que ofrecían la fruta más dulce del mundo.\n\nJulieta odiaba la feria. Odiaba levantarse temprano, odiaba el olor a pescado y, sobre todo, odiaba tener que empujar el carro mientras su abuela conversaba con cada persona del pasillo.\n\n—Abuela, apúrate —repetía cada tres pasos.\n\nUn sábado, la abuela no pudo levantarse de la cama. Le dolía una rodilla y no había nadie más en la casa. Julieta tomó el carro, la lista y el monedero, y salió sola por primera vez.\n\nEn la feria descubrió cosas que nunca había mirado: don Ramón le regaló una frutilla enorme «para la nieta de la señora Elba»; la casera de las verduras le preguntó por su abuela con la voz preocupada; el pescadero le enseñó a mirar los ojos del pescado para saber si estaba fresco.\n\nJulieta volvió a la casa con el carro lleno y con algo más difícil de guardar: la idea de que su abuela no perdía el tiempo conversando. Estaba tejiendo, semana a semana, la red de personas que la cuidaba.\n\nEl sábado siguiente, cuando su abuela pudo levantarse, Julieta empujó el carro sin quejarse ni una sola vez.`,
+    preguntas:[
+      {tipo:"mc", pregunta:"¿Qué significa que la calle «cambiaba de piel» los sábados?", opciones:[
+        {t:"Que se transformaba por completo al instalarse la feria.", ok:true, fb:"¡Exacto! Es una imagen literaria: la calle no cambia de piel de verdad, cambia de aspecto."},
+        {t:"Que pintaban las casas de la calle.", ok:false, fb:"No aparece nada sobre pintura en el texto."},
+        {t:"Que la calle se ensuciaba mucho.", ok:false, fb:"El texto describe toldos, cajones y voces alegres, no suciedad."},
+        {t:"Que cambiaban el nombre de la calle.", ok:false, fb:"El nombre sigue siendo Los Aromos."}]},
+      {tipo:"mc", pregunta:"¿Cuál es el PROBLEMA que hace avanzar la historia?", opciones:[
+        {t:"La abuela no puede levantarse y Julieta debe ir sola a la feria.", ok:true, fb:"¡Correcto! Ese es el conflicto que obliga al personaje a actuar y a cambiar."},
+        {t:"Que en la feria no había frutas frescas.", ok:false, fb:"Al contrario: había montañas de fruta y el pescado se elegía fresco."},
+        {t:"Que Julieta perdió el monedero.", ok:false, fb:"Eso nunca ocurre en el relato."},
+        {t:"Que la feria dejó de instalarse los sábados.", ok:false, fb:"La feria siguió funcionando con normalidad."}]},
+      {tipo:"vf", afirmacion:"Al comienzo del texto, Julieta iba a la feria de buena gana.", ok:false, fb:"Falso: el texto dice tres veces que «odiaba» algo de la feria. Al final, en cambio, empuja el carro sin quejarse."},
+      {tipo:"vf", afirmacion:"El texto muestra que el personaje cambia su forma de pensar entre el principio y el final.", ok:true, fb:"Verdadero: pasa de quejarse a comprender a su abuela. Ese cambio interno es una característica psicológica."},
+      {tipo:"mc", pregunta:"«Estaba tejiendo, semana a semana, la red de personas que la cuidaba». ¿Qué se puede inferir de esta frase?", opciones:[
+        {t:"Que conversar con los caseros era la manera que tenía la abuela de cuidar sus amistades.", ok:true, fb:"¡Muy bien! Inferir es descubrir lo que el texto sugiere sin decirlo con todas sus letras."},
+        {t:"Que la abuela tejía chalecos mientras compraba.", ok:false, fb:"«Tejer» está usado en sentido figurado, no literal."},
+        {t:"Que la abuela compraba lana en la feria.", ok:false, fb:"No se menciona ninguna compra de lana."},
+        {t:"Que la abuela era la dueña de la feria.", ok:false, fb:"Solo era una clienta muy conocida."}]},
+      {tipo:"mc", pregunta:"Si tuvieras que opinar sobre la actitud final de Julieta, ¿qué justificación usa mejor el texto?", opciones:[
+        {t:"Actuó bien, porque después de vivir la experiencia sola entendió a su abuela y dejó de quejarse.", ok:true, fb:"¡Perfecto! Opinión + hecho del texto que la respalda. Así se responde en la prueba."},
+        {t:"Actuó mal, porque nunca debió ir sola a la feria.", ok:false, fb:"El texto presenta su salida como algo positivo: allí descubre lo importante."},
+        {t:"Actuó bien, porque compró todo muy barato.", ok:false, fb:"Los precios nunca se mencionan en el texto."},
+        {t:"Actuó mal, porque dejó sola a su abuela enferma.", ok:false, fb:"Justamente salió a comprar para ayudarla; no la abandonó."}]}
+    ]
+  }
+];
+
+/* ---------- NIVELES ---------- */
+const NIVELES = [
+
+/* ===================== NIVEL 1 ===================== */
+{
+ id:1, emoji:"🕵️", nombre:"Aprendiz de Detective", habilidad:"Describir y comparar personajes",
+ leccion:{
+  titulo:"¿Cómo se describe a un personaje?",
+  html:`
+  <p>Un <b>personaje</b> es cada ser que actúa dentro de la historia: puede ser una persona, un animal o hasta un objeto que habla. Para describirlo, los detectives lectores usamos <b>dos tipos de lupa</b>:</p>
+  <table class="tabla-comp">
+    <tr><th>Características FÍSICAS 👀</th><th>Características PSICOLÓGICAS 💭</th></tr>
+    <tr><td>Lo que se puede <b>ver</b>: alto, delgado, redondo, pelo mojado, anteojos gruesos, abrigo negro.</td><td>Lo que se puede <b>deducir de su forma de ser</b>: curioso, desconfiado, ordenado, cariñoso, triste, goloso.</td></tr>
+    <tr><td>Doña Isolina tiene cuerpo redondo, rostro redondo, ojos redondos y boca redonda.</td><td>Doña Isolina es presumida y le encanta la moda: siempre comenta con orgullo que su ropa está «al último grito de la moda».</td></tr>
+  </table>
+  <p>Muchas veces el autor <b>no dice</b> "era ordenado". Nos muestra su cocina con las cucharas plateadas junto a las cucharas plateadas y los cereales ordenados por estatura… ¡y nosotros deducimos que Filiberto es maniático del orden!</p>
+  <div class="caja resumen"><h4>📌 Resumen rápido</h4><p>Describir un personaje = decir <b>cómo es por fuera</b> (físico) y <b>cómo es por dentro</b> (psicológico). Comparar dos personajes = buscar en qué <b>se parecen</b> y en qué <b>se diferencian</b>.</p></div>
+  <div class="caja ejemplo"><h4>✏️ Ejemplo de comparación</h4><p><b>Toñito y Guille</b> son hermanos y viven en la misma casa (parecido). Pero Toñito es observador y quiere ser detective, mientras que Guille vive pegado al celular y usa palabras raras como "¡Albricias!" sin saber qué significan (diferencia).</p></div>
+  <div class="caja dato"><h4>🤯 Dato curioso</h4><p>El autor, José Ignacio Valenzuela, también escribe teleseries y guiones de cine. ¡Por eso sus personajes parecen sacados de una película de detectives!</p></div>`
+ },
+ actividades:[
+  {tipo:"flash", titulo:"Fichas de los sospechosos", cards:[
+    {frente:"Toñito", dorso:"El protagonista. Niño muy imaginativo y observador que sueña con ser un famoso detective. Frunce el ceño cuando piensa y dice «¡Ajá!» cuando descubre algo."},
+    {frente:"Lulú", dorso:"La perra poodle blanca de Toñito, su «asistente». Tiene mal genio cuando le da hambre y entierra al pie del árbol todo lo que brilla. ¡Es la verdadera ladrona!"},
+    {frente:"Doña Isolina Montenegro", dorso:"Vecina de cuerpo, rostro, ojos y boca redondos. Hornea galletas, ama la moda y guarda un valioso collar heredado de su abuela."},
+    {frente:"Filiberto Praderas", dorso:"Vive en la casa amarilla, la última de la calle. Flaco, pálido y muy ágil: trota todos los días. Desde que su esposa se fue con sus hijos, no volvió a reír."},
+    {frente:"Morgana Casablanca", dorso:"Vecina muy especial que vive con veinte gatos. Es delgada y golosa: adora los helados y los chocolates."},
+    {frente:"Guille", dorso:"Hermano mayor de Toñito. Está en plena edad de desarrollo: brazos larguísimos, dientudo y con granos. Dice «¡Albricias!», «¡Mecachis!» e «¡Inefable!»."},
+    {frente:"La mamá de Toñito", dorso:"Bibliotecaria de un colegio. Usa anteojos con mucho aumento, tiene cejas puntiagudas y sus manos huelen a libros. Su pieza está llena de torres de libros."},
+    {frente:"El papá de Toñito", dorso:"Un señor muy serio que construye casas, puentes, edificios y columpios. Anda con un portafolios de planos y usa casco rojo en las obras."},
+    {frente:"El hombre del abrigo negro", dorso:"El enamorado de doña Isolina. Muy nervioso y peinado con fijador; esconde bajo el abrigo una caja de bombones con forma de corazón."},
+    {frente:"Doña Gumercinda Gatica", dorso:"La abuela de doña Isolina, viuda de Montenegro. Ya no aparece en la historia, pero de ella viene el collar robado."}
+  ]},
+  {tipo:"mc", pregunta:"¿Cuál de estas es una característica PSICOLÓGICA de Toñito?", opciones:[
+    {t:"Es muy observador y curioso.", ok:true, fb:"¡Correcto! La curiosidad no se ve con los ojos: se deduce de sus acciones."},
+    {t:"Sale todas las mañanas muy peinado.", ok:false, fb:"Eso es físico: se puede VER cómo lleva el pelo."},
+    {t:"Lleva una enorme mochila a la espalda.", ok:false, fb:"Eso también es físico, es algo visible."},
+    {t:"Tiene una lupa que le regalaron.", ok:false, fb:"Un objeto que tiene no describe cómo es por dentro."}]},
+  {tipo:"mc", pregunta:"¿Qué característica de Lulú explica que se robara el collar?", opciones:[
+    {t:"Le atrae todo lo que brilla, tiene colores o rebota, y lo entierra al pie del árbol.", ok:true, fb:"¡Esa es la clave del caso! El autor te lo cuenta al comienzo para que puedas resolver el misterio."},
+    {t:"Odia a doña Isolina.", ok:false, fb:"En ningún momento el texto dice que Lulú sienta rabia hacia la vecina."},
+    {t:"Está entrenada para robar joyas.", ok:false, fb:"Lulú no está entrenada para nada: actúa por hambre e instinto."},
+    {t:"Es una perra muy obediente.", ok:false, fb:"¡Todo lo contrario! Toñito la llama «la peor ayudante de detective del mundo»."}]},
+  {tipo:"mc", pregunta:"Toñito imagina que su mamá «se convierte en un búho sabelotodo». ¿Qué nos dice esto de ella y de él?", opciones:[
+    {t:"Que ella usa anteojos muy gruesos y trabaja entre libros, y que él tiene mucha imaginación.", ok:true, fb:"¡Excelente! Una sola imagen describe a dos personajes al mismo tiempo."},
+    {t:"Que la mamá puede volar.", ok:false, fb:"Es solo un juego de la imaginación de Toñito, no ocurre de verdad."},
+    {t:"Que la mamá sabe todas las respuestas del mundo.", ok:false, fb:"«Sabelotodo» es parte del juego imaginario; lo real es que trabaja con libros."},
+    {t:"Que a Toñito le dan miedo los pájaros.", ok:false, fb:"Nada en el texto habla de miedo a los pájaros."}]},
+  {tipo:"mc", pregunta:"¿En qué se PARECEN Filiberto Praderas y Morgana Casablanca?", opciones:[
+    {t:"Los dos son delgados y viven solos en la calle de Toñito.", ok:true, fb:"¡Muy bien comparado! Ambos son delgados, viven solos y por eso Toñito sospecha de ellos."},
+    {t:"A los dos les encantan los dulces.", ok:false, fb:"Solo a Morgana. Filiberto come pura fruta, verdura y productos de dieta."},
+    {t:"Los dos tienen muchos gatos.", ok:false, fb:"Los veinte gatos son de Morgana; Filiberto vive completamente solo."},
+    {t:"Los dos salen a trotar todas las mañanas.", ok:false, fb:"Solo Filiberto trota. Morgana camina despacio y erguida."}]},
+  {tipo:"mc", pregunta:"¿Qué diferencia importante hay entre Toñito y su hermano Guille?", opciones:[
+    {t:"Toñito investiga todo lo que pasa a su alrededor; Guille está distraído con su celular.", ok:true, fb:"¡Correcto! Tan distraído estaba que regaló su cuaderno de matemáticas sin darse cuenta."},
+    {t:"Toñito es el hermano mayor y Guille el menor.", ok:false, fb:"Al revés: Guille es el hermano mayor, está en plena edad de desarrollo."},
+    {t:"Guille quiere ser detective y Toñito bombero.", ok:false, fb:"Guille quiere ser Presidente de la República, bombero o domador de leones. El detective es Toñito."},
+    {t:"Toñito no vive con sus papás.", ok:false, fb:"Toñito vive con su papá, su mamá y Guille."}]},
+  {tipo:"mc", pregunta:"El texto dice que Filiberto «no volvió a reír», su rostro se puso pálido y sus ojos se apagaron. ¿Qué característica psicológica muestra?", opciones:[
+    {t:"Es un hombre profundamente triste.", ok:true, fb:"¡Exacto! Su tristeza se muestra con señales del cuerpo, no con la palabra «triste»."},
+    {t:"Es un hombre peligroso y malvado.", ok:false, fb:"Estar triste no es lo mismo que ser malo. Toñito se equivoca al pensar que «quien no sonríe es sospechoso»."},
+    {t:"Es un hombre muy divertido.", ok:false, fb:"Justamente dejó de reír: es lo contrario."},
+    {t:"Es un hombre olvidadizo.", ok:false, fb:"El texto no dice nada sobre su memoria; sí sobre su tristeza."}]},
+  {tipo:"vf", afirmacion:"Doña Isolina tiene un collar valioso que heredó de su abuela, doña Gumercinda Gatica.", ok:true, fb:"¡Verdadero! Ella misma lo dice con mucho orgullo cuando Toñito revisa su dormitorio."},
+  {tipo:"vf", afirmacion:"Guille sabe perfectamente qué significa la palabra «inefable».", ok:false, fb:"Falso: el texto aclara que la dice «aunque no sabe qué significa». ¡Por eso regaló su cuaderno sin querer!"},
+  {tipo:"vf", afirmacion:"El papá de Toñito trabaja construyendo casas, puentes, edificios y columpios.", ok:true, fb:"¡Verdadero! Por eso anda con planos, reglas y su casco rojo de jefe."},
+  {tipo:"vf", afirmacion:"Morgana Casablanca vive sola, sin ninguna mascota.", ok:false, fb:"Falso: vive con veinte gatos que asoman la cabeza todos juntos cuando abre la puerta."},
+  {tipo:"relacionar", titulo:"Une cada personaje con el detalle que lo delata", pares:[
+    ["Guille","«¡Albricias!», «¡Mecachis!», «¡Inefable!»"],
+    ["Filiberto Praderas","Una cocina ordenada hasta el último tenedor"],
+    ["Morgana Casablanca","Veinte gatos y una espalda lastimada"],
+    ["La mamá","Anteojos de mucho aumento y torres de libros"],
+    ["El hombre del abrigo","Bombones derretidos en forma de corazón"],
+    ["Lulú","Todo lo brillante termina bajo el árbol"]
+  ]},
+  {tipo:"completar", frase:"Doña Isolina tiene cuerpo ___, rostro ___ y también ojos ___.", huecos:["redondo","redondo","redondos"], banco:["redondo","redondo","redondos","cuadrado","delgado"], fb:"El autor repite la palabra «redondo» a propósito, para que imagines a doña Isolina como una pelota simpática."},
+  {tipo:"completar", frase:"Toñito quiere ser un famoso ___ y su ayudante es su perra ___.", huecos:["detective","Lulú"], banco:["detective","Lulú","bombero","Guille","cartero"], fb:"¡Y necesitaba tres cosas para serlo: un asistente, una lupa y una libreta!"},
+  {tipo:"completar", frase:"La mamá de Toñito trabaja en una ___ y sus manos huelen a ___.", huecos:["biblioteca","libros"], banco:["biblioteca","libros","panadería","flores","escuela"], fb:"Ese detalle explica por qué su pieza está llena de torres de libros… ¡y por qué Toñito estornuda ahí!"}
+ ]
+},
+
+/* ===================== NIVEL 2 ===================== */
+{
+ id:2, emoji:"🏘️", nombre:"Explorador de Escenarios", habilidad:"Describir los ambientes de la narración",
+ leccion:{
+  titulo:"El ambiente: dónde y cuándo ocurre todo",
+  html:`
+  <p>El <b>ambiente</b> es el lugar y el momento en que ocurre la historia. Pero ¡ojo!, no es solo la dirección: también es la <b>sensación</b> que produce ese lugar.</p>
+  <ul class="lista">
+    <li><b>Ambiente físico:</b> la calle del barrio, el dormitorio de doña Isolina, la cocina amarilla de Filiberto, la casa de los veinte gatos.</li>
+    <li><b>Ambiente psicológico (el "clima"):</b> al principio la calle es <b>aburrida</b> y tranquila; al final es <b>entretenida</b> y llena de amigos.</li>
+  </ul>
+  <p>Fíjate cómo el autor describe la cocina de Filiberto: cucharas con cucharas, manzanas verdes en un recipiente verde, cajas de cereal ordenadas por estatura. Ese ambiente <b>ordenadísimo</b> nos habla del personaje que vive ahí.</p>
+  <div class="caja resumen"><h4>📌 Resumen rápido</h4><p>Para describir un ambiente responde: <b>¿Dónde están?</b> · <b>¿Qué objetos hay?</b> · <b>¿Qué se ve, se huele o se escucha?</b> · <b>¿Qué sensación produce?</b></p></div>
+  <div class="caja ejemplo"><h4>✏️ Ejemplo</h4><p>El dormitorio de doña Isolina: cama enorme con cojines ordenados, tocador lleno de «frascos, frasquitos y frascotes», joyero de terciopelo azul, ventana abierta con las cortinas moviéndose «como alas de mariposas». ¡Un ambiente elegante, perfumado y con muchas pistas!</p></div>
+  <div class="caja dato"><h4>🤯 Dato curioso</h4><p>El título de la historia cambia con el ambiente: empieza siendo «La calle más aburrida del mundo» y termina siendo «la calle más entretenida del mundo». ¡El lugar es el mismo, lo que cambió fue la mirada de Toñito!</p></div>`
+ },
+ actividades:[
+  {tipo:"flash", titulo:"Recorre los escenarios del caso", cards:[
+    {frente:"La calle del barrio", dorso:"El ambiente principal. Al comienzo es tranquila y aburrida: «nunca han matado a nadie, ni han robado algo, ni se ha perdido un vecino». Al final se llena de saludos y sonrisas."},
+    {frente:"El dormitorio de doña Isolina", dorso:"La escena del crimen. Cama con cojines ordenados, arruga en el cobertor, tocador con frascos, joyero de terciopelo azul abierto y una ventana de par en par."},
+    {frente:"La casa amarilla de Filiberto", dorso:"La última casa de la calle, pintada de amarillo. En el jardín hay un árbol altísimo con un columpio que nadie usa. Su cocina es la más ordenada del mundo."},
+    {frente:"La casa de Morgana", dorso:"Un lugar lleno de maullidos: veinte gatos asoman la cabeza al abrir la puerta y miran con «ojos tan llenos como cuarenta lunas redondas»."},
+    {frente:"La pieza de la mamá", dorso:"Libros en las mesitas, sobre la cama, en las repisas y en torres por el suelo. ¡Tantos que a Toñito le da alergia y estornuda!"},
+    {frente:"El jardín de Toñito", dorso:"Tiene un único árbol. Al pie de ese árbol Lulú entierra todos sus tesoros: el control remoto… y el collar desaparecido."}
+  ]},
+  {tipo:"mc", pregunta:"¿Cómo describe Toñito su calle al COMIENZO de la historia?", opciones:[
+    {t:"Como la calle más aburrida del mundo, donde nunca pasa nada.", ok:true, fb:"¡Exacto! Nunca ha habido un robo, una desaparición ni un crimen… hasta ahora."},
+    {t:"Como una calle peligrosa llena de ladrones.", ok:false, fb:"Al revés: lo que a Toñito le frustra es que jamás ocurre ningún delito."},
+    {t:"Como una calle llena de niños jugando.", ok:false, fb:"El texto no describe grupos de niños; describe vecinos adultos y silencio."},
+    {t:"Como una calle del centro de la ciudad.", ok:false, fb:"Es una calle de barrio, con casas, jardines y rejas."}]},
+  {tipo:"mc", pregunta:"¿Qué objeto del dormitorio de doña Isolina fue la pista del ruido «¡pum!»?", opciones:[
+    {t:"El bote de helado de vainilla que estaba en el suelo.", ok:true, fb:"¡Muy bien! Cayó del velador cuando Lulú se apuró por otra galleta."},
+    {t:"El joyero de terciopelo azul.", ok:false, fb:"El joyero estaba abierto sobre el tocador, pero no fue lo que hizo ruido."},
+    {t:"La ventana que se cerró de golpe.", ok:false, fb:"La ventana quedó abierta de par en par todo el tiempo."},
+    {t:"Un frasco de perfume del tocador.", ok:false, fb:"Ningún frasco se cayó: eso hizo pensar a Toñito que el ladrón era muy ágil."}]},
+  {tipo:"mc", pregunta:"¿Qué nos dice el ambiente de la cocina de Filiberto sobre él?", opciones:[
+    {t:"Que es maniático del orden y que solo come alimentos de dieta.", ok:true, fb:"¡Perfecto! Y ese detalle —frutas, verduras y nada de galletas— es lo que lo salva de ser el culpable."},
+    {t:"Que le encanta cocinar postres.", ok:false, fb:"En su cocina no había ni un dulce; por eso Toñito lo descarta."},
+    {t:"Que vive con mucha gente.", ok:false, fb:"Vive completamente solo desde que su esposa se fue con los hijos."},
+    {t:"Que es muy desordenado.", ok:false, fb:"Es todo lo contrario: hasta los cereales están ordenados por estatura."}]},
+  {tipo:"mc", pregunta:"El columpio del jardín de Filiberto «nadie lo ha usado». ¿Qué ambiente crea ese detalle?", opciones:[
+    {t:"Un ambiente triste y solitario.", ok:true, fb:"¡Gran lectura! Un columpio vacío que se mece con el viento es una imagen de soledad."},
+    {t:"Un ambiente alegre y festivo.", ok:false, fb:"Un juego que nadie usa produce la sensación contraria a la alegría."},
+    {t:"Un ambiente de peligro.", ok:false, fb:"No hay amenaza en esa escena, sino melancolía."},
+    {t:"Un ambiente de mucho ruido.", ok:false, fb:"El texto dice justamente que «todo está en silencio»."}]},
+  {tipo:"mc", pregunta:"¿Cómo cambia el ambiente de la calle al FINAL de la historia?", opciones:[
+    {t:"Se vuelve entretenida: Filiberto sonríe, Morgana guiña un ojo y el enamorado saluda.", ok:true, fb:"¡Exacto! Y el barrio bautiza la casa como «la guarida del gran detective Toñito»."},
+    {t:"Queda desierta porque todos se mudaron.", ok:false, fb:"Al contrario: al final aparecen todos los vecinos en la calle."},
+    {t:"Se llena de policías investigando.", ok:false, fb:"La policía nunca llega a resolver nada: el caso lo resuelve Toñito."},
+    {t:"Sigue siendo exactamente igual de aburrida.", ok:false, fb:"Toñito mismo se pregunta: «¿Quién dijo que vivía en un lugar aburrido?»"}]},
+  {tipo:"vf", afirmacion:"La casa de Filiberto Praderas es la última de la calle y está pintada de amarillo.", ok:true, fb:"¡Verdadero! En verano «reluce como un sol»."},
+  {tipo:"vf", afirmacion:"En la pieza de la mamá de Toñito hay tantos libros que él estornuda al entrar.", ok:true, fb:"¡Verdadero! «¡Achú!». El olor de los libros siempre le pica la nariz."},
+  {tipo:"vf", afirmacion:"La historia ocurre durante el año escolar, mientras Toñito va todos los días a clases.", ok:false, fb:"Falso: ocurre en vacaciones. Por eso Toñito tiene todo el día libre para investigar."},
+  {tipo:"vf", afirmacion:"El collar apareció escondido dentro de la casa de doña Isolina.", ok:false, fb:"Falso: estaba enterrado al pie del único árbol del jardín de Toñito, el escondite favorito de Lulú."},
+  {tipo:"relacionar", titulo:"¿En qué lugar encontrarías cada detalle?", pares:[
+    ["Dormitorio de doña Isolina","Joyero de terciopelo azul y cortinas al viento"],
+    ["Cocina de Filiberto","Manzanas verdes en un recipiente verde"],
+    ["Casa de Morgana","Veinte pares de ojos maullando en la puerta"],
+    ["Pieza de la mamá","Torres de libros por todo el suelo"],
+    ["Jardín de Toñito","Un árbol con tesoros enterrados"]
+  ]},
+  {tipo:"completar", frase:"La calle de Toñito pasa de ser la más ___ del mundo a ser la más ___ del mundo.", huecos:["aburrida","entretenida"], banco:["aburrida","entretenida","peligrosa","larga"], fb:"¡Ese es el viaje completo del relato, y está escrito en los títulos de los capítulos!"},
+  {tipo:"completar", frase:"En el jardín de Filiberto hay un ___ altísimo del que cuelga un ___ que nadie usa.", huecos:["árbol","columpio"], banco:["árbol","columpio","farol","banco","auto"], fb:"Ese columpio vacío es una de las imágenes más tristes del libro."},
+  {tipo:"completar", frase:"La escena del crimen fue el ___ de doña Isolina, y el ladrón entró por la ___.", huecos:["dormitorio","ventana"], banco:["dormitorio","ventana","jardín","puerta","baño"], fb:"La ventana abierta con las cortinas descorridas fue la primera pista anotada en la libreta verde."}
+ ]
+},
+
+/* ===================== NIVEL 3 ===================== */
+{
+ id:3, emoji:"🔎", nombre:"Cazador de Pistas", habilidad:"Localizar información explícita",
+ leccion:{
+  titulo:"Localizar: la respuesta está escrita en el texto",
+  html:`
+  <p><b>Localizar</b> es la habilidad más parecida a buscar un tesoro: la respuesta <b>está escrita</b> en el texto y tú tienes que encontrarla. No hay que adivinar ni opinar, ¡solo buscar bien!</p>
+  <h3>Truco del detective lector 🔦</h3>
+  <ul class="lista">
+    <li>Lee la pregunta y <b>subraya la palabra clave</b> (un nombre, un objeto, un color, un número).</li>
+    <li>Vuelve al texto y busca <b>esa misma palabra</b> o una parecida.</li>
+    <li>Lee la oración completa antes y después. ¡Ahí está la respuesta!</li>
+  </ul>
+  <p>Las preguntas de localizar suelen empezar con: <b>¿Quién…? ¿Qué…? ¿Dónde…? ¿Cuándo…? ¿Cuántos…?</b></p>
+  <div class="caja resumen"><h4>📌 Resumen rápido</h4><p>Información <b>explícita</b> = está escrita con todas sus letras. Si tienes que suponer algo, ya no es localizar: es inferir (¡eso viene en el próximo nivel!).</p></div>
+  <div class="caja ejemplo"><h4>✏️ Ejemplo</h4><p>Pregunta: «¿De qué color era el joyero de doña Isolina?» → Busco la palabra <b>joyero</b> en el texto → «una elegante caja de <b>terciopelo azul</b>». ¡Listo, sin adivinar!</p></div>
+  <div class="caja dato"><h4>🤯 Dato curioso</h4><p>Toñito usa el mismo truco: por eso anota TODAS las pistas en su libreta de tapas verdes. Un buen detective (y un buen lector) siempre vuelve a revisar sus notas.</p></div>`
+ },
+ actividades:[
+  {tipo:"mc", pregunta:"¿De qué color era la libreta que Toñito usó para anotar las pistas?", opciones:[
+    {t:"Verde.", ok:true, fb:"¡Correcto! Era un cuaderno de tapas verdes… ¡que en realidad era el cuaderno de matemáticas de Guille!"},
+    {t:"Azul.", ok:false, fb:"Azul era el joyero de terciopelo de doña Isolina."},
+    {t:"Roja.", ok:false, fb:"Rojo era el casco de trabajo del papá de Toñito."},
+    {t:"Amarilla.", ok:false, fb:"Amarilla es la casa de Filiberto Praderas."}]},
+  {tipo:"mc", pregunta:"Según el libro que le regaló su papá, ¿qué tres cosas necesita todo detective?", opciones:[
+    {t:"Un fiel asistente, una lupa profesional y una libreta de muchas páginas.", ok:true, fb:"¡Exacto! Y Toñito solo tuvo que conseguir la libreta, porque ya tenía a Lulú y su lupa."},
+    {t:"Un abrigo negro, un sombrero y una linterna.", ok:false, fb:"El abrigo negro lo usa el enamorado de doña Isolina, pero no es parte de la lista."},
+    {t:"Un auto, un teléfono y un uniforme.", ok:false, fb:"Nada de eso aparece en la lista del libro."},
+    {t:"Una cámara, una lupa y un perro policía.", ok:false, fb:"Lulú es poodle, no perro policía, ¡y no hay cámaras en la historia!"}]},
+  {tipo:"mc", pregunta:"¿Qué estaba haciendo doña Isolina cuando ocurrió el robo?", opciones:[
+    {t:"Estaba en la ducha.", ok:true, fb:"¡Correcto! Por eso escuchó el ruido pero no vio nada."},
+    {t:"Estaba horneando galletas.", ok:false, fb:"Las galletas ya estaban horneadas, sobre el velador."},
+    {t:"Estaba paseando por la calle.", ok:false, fb:"Salió a la calle después, descalza y con el pelo mojado."},
+    {t:"Estaba durmiendo la siesta.", ok:false, fb:"El texto dice claramente: «Estaba en la ducha cuando escuché un ruido extraño»."}]},
+  {tipo:"mc", pregunta:"¿Cuál fue el PRIMER misterio que resolvió Toñito, antes del collar?", opciones:[
+    {t:"El misterio del control remoto perdido.", ok:true, fb:"¡Muy bien! Y también lo había enterrado Lulú al pie del árbol. ¡Una pista enorme!"},
+    {t:"El misterio de la peineta de su mamá.", ok:false, fb:"Eso pasa al final, y es lo que le hace descubrir la verdad, no un caso aparte."},
+    {t:"El misterio de los bombones derretidos.", ok:false, fb:"Los bombones son del enamorado de doña Isolina, no un caso resuelto antes."},
+    {t:"El misterio del columpio de Filiberto.", ok:false, fb:"El columpio es un detalle del ambiente, no un caso."}]},
+  {tipo:"mc", pregunta:"¿Cómo consiguió Toñito su libreta de detective?", opciones:[
+    {t:"Le pidió un cuaderno a Guille, que dijo «Inefable» sin mirar.", ok:true, fb:"¡Correcto! Guille estaba tan pegado al celular que regaló su futuro cuaderno de matemáticas."},
+    {t:"Se la regaló su papá junto con la lupa.", ok:false, fb:"Su papá le regaló el LIBRO sobre detectives; la lupa fue un regalo de cumpleaños."},
+    {t:"La compró con sus ahorros.", ok:false, fb:"En el texto no aparece ninguna compra."},
+    {t:"Se la prestó doña Isolina.", ok:false, fb:"Doña Isolina solo le da galletas de recompensa al final."}]},
+  {tipo:"mc", pregunta:"¿Qué había en el velador de doña Isolina el día del robo?", opciones:[
+    {t:"Un vaso de refresco y un plato con galletas a medio comer.", ok:true, fb:"¡Exacto! Galletas de chocolate con crema chantillí y chispas de azúcar multicolor."},
+    {t:"Un libro y unos anteojos.", ok:false, fb:"Los libros y los anteojos son de la mamá de Toñito."},
+    {t:"Una caja de bombones con forma de corazón.", ok:false, fb:"Esos bombones aún los traía el enamorado bajo su abrigo."},
+    {t:"Solamente el joyero de terciopelo.", ok:false, fb:"El joyero estaba en el tocador, no en el velador."}]},
+  {tipo:"mc", pregunta:"¿Qué comió la familia de Toñito en la merienda antes de que él anotara sus reflexiones?", opciones:[
+    {t:"Enfrijoladas rellenas de queso y agua de jamaica.", ok:true, fb:"¡Muy bien localizado! Después de esa comida a Toñito le dio muchísimo sueño."},
+    {t:"Galletas con crema y helado de vainilla.", ok:false, fb:"Eso estaba en la pieza de doña Isolina, ¡y se lo comió Lulú!"},
+    {t:"Leche con chocolate y pan.", ok:false, fb:"La leche con chocolate la toma en otro momento del día."},
+    {t:"Sopa de verduras.", ok:false, fb:"Eso no aparece en el texto."}]},
+  {tipo:"mc", pregunta:"¿Por qué Morgana Casablanca tenía la espalda lastimada?", opciones:[
+    {t:"Porque intentó rescatar a uno de sus gatos desde un árbol.", ok:true, fb:"¡Correcto! Y ni siquiera recordaba si era Misifús, Botijas o Dominó."},
+    {t:"Porque se cayó por la ventana de doña Isolina.", ok:false, fb:"¡Eso habría sido una confesión! Pero no: fue por rescatar un gato."},
+    {t:"Porque cargó una caja muy pesada.", ok:false, fb:"El texto no menciona ninguna caja pesada."},
+    {t:"Porque se resbaló en la feria.", ok:false, fb:"Ese detalle no aparece en la historia."}]},
+  {tipo:"vf", afirmacion:"El collar de doña Isolina había pertenecido a su abuela.", ok:true, fb:"¡Verdadero! A doña Gumercinda Gatica, viuda de Montenegro."},
+  {tipo:"vf", afirmacion:"Toñito entró a la casa de Filiberto Praderas por una ventana trasera.", ok:true, fb:"¡Verdadero! Y sabía que estaba haciendo algo que no debía: «no se atreven ni a respirar»."},
+  {tipo:"vf", afirmacion:"Filiberto Praderas vive con su esposa y sus hijos.", ok:false, fb:"Falso: su esposa se fue llevándose a los hijos poco después de que él colgara el columpio."},
+  {tipo:"vf", afirmacion:"Toñito le dijo a Morgana que su profesora le había dejado de tarea entrevistar a un vecino.", ok:true, fb:"¡Verdadero! Fue una mentira que inventó para poder interrogarla sin que ella se diera cuenta."},
+  {tipo:"vf", afirmacion:"El hombre del abrigo negro escondía un arma debajo de la ropa.", ok:false, fb:"Falso: escondía una caja de bombones en forma de corazón… ¡que se estaba derritiendo con el calor!"},
+  {tipo:"vf", afirmacion:"La mamá de Toñito le regaló la peineta antigua a su hijo.", ok:false, fb:"Falso: la peineta se la regaló su madrina cuando ella cumplió diez años, y es muy valiosa para ella."},
+  {tipo:"completar", frase:"Cuando Toñito descubre algo importante, siempre exclama: «¡___!».", huecos:["Ajá"], banco:["Ajá","Albricias","Mecachis","Socorro"], fb:"Lo hace porque cree que así hablan los detectives de las películas."},
+  {tipo:"completar", frase:"El ruido que doña Isolina escuchó desde la ducha fue: «¡___!».", huecos:["pum"], banco:["pum","clic","ding","achú"], fb:"Fue el bote de helado de vainilla cayendo al suelo."},
+  {tipo:"completar", frase:"Lulú es una perra de raza ___ y de color ___.", huecos:["poodle","blanca"], banco:["poodle","blanca","quiltra","negra"], fb:"El autor la compara con «una esponjosa nube blanca»."},
+  {tipo:"completar", frase:"El primer sospechoso anotado en la libreta fue ___ ___.", huecos:["Filiberto","Praderas"], banco:["Filiberto","Praderas","Morgana","Casablanca"], fb:"Toñito sospechó de él por ser flaco, ágil y por no sonreír nunca."}
+ ]
+},
+
+/* ===================== NIVEL 4 ===================== */
+{
+ id:4, emoji:"🧠", nombre:"Mente Deductiva", habilidad:"Inferir información implícita",
+ leccion:{
+  titulo:"Inferir: leer entre líneas",
+  html:`
+  <p><b>Inferir</b> es descubrir algo que el texto <b>no dice con todas sus letras</b>, pero que se puede deducir juntando pistas. Es exactamente lo que hace un detective.</p>
+  <div class="cita">«Solo había frutas, verduras y productos de dieta» + «el ladrón se comió una galleta con crema» = <b>Filiberto no puede ser el ladrón</b>.</div>
+  <p>Fíjate: el texto <b>nunca escribe</b> "Filiberto es inocente". Toñito lo <b>infiere</b> uniendo dos datos. Tú puedes hacer lo mismo en cualquier lectura.</p>
+  <h3>La fórmula 🧩</h3>
+  <p><b>PISTA DEL TEXTO + LO QUE YO SÉ DEL MUNDO = INFERENCIA</b></p>
+  <p>Ejemplo: el texto dice que al hombre del abrigo le gotea un líquido espeso y oscuro. Yo sé que el chocolate se derrite con el calor → infiero que lleva chocolates, no algo peligroso.</p>
+  <div class="caja resumen"><h4>📌 Resumen rápido</h4><p>Una buena inferencia siempre se puede <b>defender con una pista del texto</b>. Si no hay pista que la respalde, no es inferencia: es invención.</p></div>
+  <div class="caja ejemplo"><h4>✏️ Ejemplo de vocabulario por contexto</h4><p>«El ladrón <b>hurtó</b> el collar». Aunque no sepas qué es "hurtar", el contexto (un robo, un collar desaparecido) te dice que significa <b>robar</b>.</p></div>
+  <div class="caja dato"><h4>🤯 Dato curioso</h4><p>Toñito se equivoca dos veces al inferir (con Filiberto y con Morgana). ¡Eso también enseña algo: una inferencia hay que comprobarla antes de acusar a alguien!</p></div>`
+ },
+ actividades:[
+  {tipo:"flash", titulo:"Vocabulario de detective (deduce por el contexto)", cards:[
+    {frente:"Hurtar", dorso:"Robar algo. «¿Dónde guardaba el objeto que fue hurtado?», pregunta Toñito usando sus mejores palabras."},
+    {frente:"Sospechoso / sospechosa", dorso:"Persona de la que se cree que pudo cometer el delito. Toñito tuvo dos: Filiberto y Morgana."},
+    {frente:"Fechoría", dorso:"Una acción mala o dañina. Toñito quiere descubrir al autor de la fechoría."},
+    {frente:"Interrogar", dorso:"Hacer preguntas para conseguir información. Toñito interroga a Morgana fingiendo que es una entrevista para el colegio."},
+    {frente:"Botín", dorso:"Lo que se lleva un ladrón. El botín de Lulú siempre termina enterrado al pie del árbol."},
+    {frente:"Anhelo", dorso:"Un deseo muy grande. El anhelo de Toñito es ser un famoso detective."},
+    {frente:"Solemne", dorso:"Serio e importante. Guille dice cosas simples de manera solemne: «¡Albricias!»."},
+    {frente:"Delatar", dorso:"Descubrir o acusar a alguien. Toñito no quiere hacer ruido para no delatar su presencia."}
+  ]},
+  {tipo:"mc", pregunta:"El texto dice que los zapatos del hombre del abrigo negro «están llenos de polvo». ¿Qué se puede inferir?", opciones:[
+    {t:"Que viene caminando desde muy lejos.", ok:true, fb:"¡Exacto! Es la misma deducción que hace Toñito. Pista + conocimiento del mundo = inferencia."},
+    {t:"Que es un ladrón profesional.", ok:false, fb:"El polvo no dice nada sobre robar; esa es una acusación sin pista."},
+    {t:"Que trabaja en una construcción.", ok:false, fb:"El del casco rojo y las obras es el papá de Toñito."},
+    {t:"Que nunca se lava los zapatos.", ok:false, fb:"El texto sí muestra que se cuida mucho: va peinado con fijador."}]},
+  {tipo:"mc", pregunta:"Toñito deduce que el ladrón «debe ser flaco». ¿En qué pista se basa?", opciones:[
+    {t:"En que no había huellas hundidas en la tierra bajo la ventana.", ok:true, fb:"¡Muy bien! Razona: si fuera gordo, sus zapatos se habrían hundido en el barro."},
+    {t:"En que la ventana era muy pequeña.", ok:false, fb:"El texto dice que la ventana estaba abierta «de par en par»."},
+    {t:"En que el ladrón solo se comió una galleta.", ok:false, fb:"Comer poco no significa ser delgado, y esa no es la pista que usa Toñito."},
+    {t:"En que doña Isolina lo vio de lejos.", ok:false, fb:"Doña Isolina no vio nada: estaba en la ducha."}]},
+  {tipo:"mc", pregunta:"«Lulú se relame los bigotes al escuchar hablar de galletas con crema. Siempre tiene hambre». ¿Qué está preparando el autor con esta frase?", opciones:[
+    {t:"Está dejando una pista para que el lector adivine quién es el ladrón.", ok:true, fb:"¡Excelente! El autor siembra pistas antes del final. ¡Un buen lector las cacha antes que el detective!"},
+    {t:"Está explicando que Lulú está enferma.", ok:false, fb:"Tener hambre no es estar enferma."},
+    {t:"Está diciendo que Lulú quiere ser cocinera.", ok:false, fb:"Eso no tiene ningún respaldo en el texto."},
+    {t:"Está mostrando que a Lulú no le gustan los dulces.", ok:false, fb:"¡Al revés! Se relame de puro antojo."}]},
+  {tipo:"mc", pregunta:"Cuando Toñito ve la cocina de Filiberto, dice: «Nos equivocamos de sospechoso». ¿Por qué llega a esa conclusión?", opciones:[
+    {t:"Porque el ladrón se comió una galleta con crema y Filiberto solo come alimentos que no engordan.", ok:true, fb:"¡Perfecto! Esa contradicción entre la pista y el personaje lo deja fuera del caso."},
+    {t:"Porque Filiberto estaba trotando a esa hora.", ok:false, fb:"Toñito lo ve trotar después; su conclusión viene de la comida."},
+    {t:"Porque Filiberto es demasiado gordo para entrar por la ventana.", ok:false, fb:"Filiberto es flaco y ágil: por eso era sospechoso."},
+    {t:"Porque Filiberto le mostró el collar de otra persona.", ok:false, fb:"Toñito ni siquiera habla con él: entra a escondidas."}]},
+  {tipo:"mc", pregunta:"¿Por qué el enamorado de doña Isolina estaba tan nervioso frente a la casa?", opciones:[
+    {t:"Porque quería declararle su cariño y se le estaban derritiendo los bombones.", ok:true, fb:"¡Muy bien! Da cuatro pasos a un lado y cuatro al otro: nervios de enamorado, no de ladrón."},
+    {t:"Porque planeaba robar otra joya.", ok:false, fb:"Toñito piensa eso, ¡pero se equivoca! Los detectives también se apresuran."},
+    {t:"Porque se había perdido en el barrio.", ok:false, fb:"Sabía perfectamente a qué casa iba: la de su amada Isolina."},
+    {t:"Porque le tenía miedo a Lulú.", ok:false, fb:"Recién se asusta cuando Lulú le arrebata la caja."}]},
+  {tipo:"mc", pregunta:"¿Qué se puede inferir sobre la relación entre Toñito y su mamá cuando él responde «iba a peinar a Lulú»?", opciones:[
+    {t:"Que le da vergüenza confesar que estaba investigándola y prefiere inventar una excusa.", ok:true, fb:"¡Correcto! Inferimos su emoción a partir de lo que hace, no de lo que el texto declara."},
+    {t:"Que de verdad quería peinar a la perra.", ok:false, fb:"Estaba tratando de quitarle la peineta a Lulú, no de peinarla."},
+    {t:"Que su mamá le había pedido que peinara a Lulú.", ok:false, fb:"Nadie le pidió eso: fue una excusa inventada al instante."},
+    {t:"Que Toñito y su mamá no se hablan.", ok:false, fb:"Se hablan todo el tiempo: ella lo llama a comer una y otra vez."}]},
+  {tipo:"mc", pregunta:"¿Qué le hace pensar a Toñito que su propia mamá podría ser sospechosa?", opciones:[
+    {t:"La escucha decir que le encantaría tener un hermoso collar para su aniversario.", ok:true, fb:"¡Exacto! Toñito infiere un motivo… aunque después descubre que estaba muy equivocado."},
+    {t:"La ve entrar a la casa de doña Isolina.", ok:false, fb:"Eso nunca ocurre en el relato."},
+    {t:"Encuentra el collar en su joyero metálico.", ok:false, fb:"Revisa la caja metálica y no hay «ni rastro del collar»."},
+    {t:"Su mamá le miente sobre dónde estuvo.", ok:false, fb:"Su mamá no miente en ningún momento."}]},
+  {tipo:"mc", pregunta:"«Tal vez está mintiendo», piensa Toñito del hombre del abrigo. ¿Qué muestra esto sobre él?", opciones:[
+    {t:"Que desconfía de todos, incluso sin pruebas.", ok:true, fb:"¡Muy buena lectura! Su entusiasmo lo lleva a sospechar de gente inocente."},
+    {t:"Que ya sabía quién era el ladrón.", ok:false, fb:"Todavía le falta bastante para descubrirlo."},
+    {t:"Que le tiene miedo a los desconocidos.", ok:false, fb:"No huye: se le acerca y lo interroga. Es valiente."},
+    {t:"Que conocía al hombre desde antes.", ok:false, fb:"El texto dice que era «un hombre a quien nunca había visto en su vida»."}]},
+  {tipo:"vf", afirmacion:"Cuando el texto dice que Guille «se ríe nervioso cada vez que le llega un mensaje», podemos inferir que le gusta la persona que le escribe.", ok:true, fb:"¡Verdadero! Es una inferencia razonable: el texto muestra la conducta y nosotros deducimos el sentimiento."},
+  {tipo:"vf", afirmacion:"Que Toñito diga «¡Ajá!» muchas veces significa que ya resolvió el caso.", ok:false, fb:"Falso: lo dice cada vez que cree ver algo importante, aunque muchas veces no lleve a ninguna parte."},
+  {tipo:"vf", afirmacion:"Del hecho de que Morgana estuviera varios días en cama se infiere que no pudo saltar por la ventana.", ok:true, fb:"¡Verdadero! Con la espalda lastimada no podía brincar, así que quedó descartada."},
+  {tipo:"vf", afirmacion:"La frase «una nube blanca rebotadora» se refiere a doña Isolina.", ok:false, fb:"Falso: así describe el autor a Lulú cuando salta por la ventana. Es una comparación."},
+  {tipo:"vf", afirmacion:"Cuando la mamá dice que la peineta «es algo muy valioso para mí», se infiere que su valor es sentimental, por el recuerdo de su madrina.", ok:true, fb:"¡Verdadero! No habla de dinero: habla de cariño y recuerdos."},
+  {tipo:"relacionar", titulo:"Une la PISTA con la INFERENCIA correcta", pares:[
+    ["Cocina con puros alimentos de dieta","Filiberto no se comería una galleta con crema"],
+    ["Espalda lastimada y días en cama","Morgana no pudo saltar por la ventana"],
+    ["Gotas espesas y oscuras en la acera","Bajo el abrigo hay chocolates derretidos"],
+    ["Arruga en el cobertor junto al velador","Alguien pequeño se subió a la cama"],
+    ["Ninguna huella hundida en la tierra","El intruso pesaba muy poco"]
+  ]},
+  {tipo:"completar", frase:"Inferir es unir una ___ del texto con lo que yo ya ___ del mundo.", huecos:["pista","sé"], banco:["pista","sé","opinión","invento"], fb:"¡Y si no hay pista que la respalde, no es inferencia: es invención!"},
+  {tipo:"completar", frase:"Que Lulú entierre todo lo brillante al pie del ___ permite inferir dónde estaba el ___.", huecos:["árbol","collar"], banco:["árbol","collar","joyero","helado"], fb:"Toñito solo tuvo que ir a su propio patio y desenterrarlo."},
+  {tipo:"completar", frase:"Toñito infiere que el intruso entró por la ventana porque doña Isolina no se ducha con la ventana ___ en un día de ___.", huecos:["abierta","viento"], banco:["abierta","viento","cerrada","sol"], fb:"«Así cualquiera se puede resfriar, y ella es una mujer muy sana», anota en su libreta."}
+ ]
+},
+
+/* ===================== NIVEL 5 ===================== */
+{
+ id:5, emoji:"⛓️", nombre:"Efecto Dominó", habilidad:"Determinar causas y consecuencias",
+ leccion:{
+  titulo:"Causa y consecuencia: todo hecho trae otro hecho",
+  html:`
+  <p>En una narración, las cosas no pasan porque sí. Una acción provoca otra, como fichas de dominó cayendo.</p>
+  <ul class="lista">
+    <li><b>CAUSA:</b> por qué pasó algo. Responde a <b>¿Por qué?</b></li>
+    <li><b>CONSECUENCIA:</b> qué pasó después por culpa de eso. Responde a <b>¿Qué pasó entonces?</b></li>
+  </ul>
+  <div class="cita"><b>Causa:</b> Lulú no había comido y tenía hambre. → <b>Consecuencia:</b> entró por la ventana atraída por el olor de las galletas.</div>
+  <p>Cuidado: dos cosas que ocurren seguidas no siempre son causa y consecuencia. Pregúntate: <i>si lo primero no hubiera pasado, ¿lo segundo igual habría ocurrido?</i></p>
+  <div class="caja resumen"><h4>📌 Resumen rápido</h4><p>Palabras que anuncian causa: <b>porque, ya que, debido a</b>. Palabras que anuncian consecuencia: <b>por eso, entonces, así que, por lo tanto</b>.</p></div>
+  <div class="caja ejemplo"><h4>✏️ Ejemplo del libro</h4><p><b>Causa:</b> Lulú golpea el bote de helado. → <b>Consecuencia inmediata:</b> se escucha «¡pum!». → <b>Consecuencia siguiente:</b> doña Isolina sale de la ducha y descubre el robo.</p></div>
+  <div class="caja dato"><h4>🤯 Dato curioso</h4><p>¡Todo el libro es una cadena de consecuencias que empieza por unas galletas! Por eso Toñito dice: «La culpa la tienen las galletas».</p></div>`
+ },
+ actividades:[
+  {tipo:"ordenar", titulo:"Ordena la cadena de hechos del robo, tal como la explica Toñito", items:[
+    "Lulú tiene hambre y huele las galletas desde el jardín.",
+    "Entra de un brinco por la ventana abierta del dormitorio.",
+    "Se sube a la cama y deja una arruga en el cobertor.",
+    "Al apurarse, golpea el bote de helado: ¡pum!",
+    "Ve el joyero abierto y le atrae el collar brillante.",
+    "Sale con el collar y lo entierra al pie del árbol.",
+    "Doña Isolina sale de la ducha y grita: «¡Socorro!»."
+  ]},
+  {tipo:"mc", pregunta:"¿Cuál fue la CONSECUENCIA de que Lulú entrara con hambre al dormitorio?", opciones:[
+    {t:"Se comió una galleta, botó el helado y se llevó el collar.", ok:true, fb:"¡Exacto! Una sola causa (el hambre) provocó toda la cadena del caso."},
+    {t:"Doña Isolina la echó de la casa.", ok:false, fb:"Doña Isolina no la vio: estaba en la ducha."},
+    {t:"Toñito la castigó de inmediato.", ok:false, fb:"Toñito recién descubre la verdad al final del libro."},
+    {t:"La perra se quedó dormida en la cama.", ok:false, fb:"Solo se sentó un momento; por eso quedó la arruga."}]},
+  {tipo:"mc", pregunta:"¿Por qué Toñito estaba tan feliz cuando escuchó el grito de doña Isolina?", opciones:[
+    {t:"Porque significaba que por fin tenía un caso real que resolver.", ok:true, fb:"¡Correcto! «Su intuición le confirma que el primer caso real de su vida acababa de comenzar»."},
+    {t:"Porque no le caía bien doña Isolina.", ok:false, fb:"Nada en el texto muestra que se lleven mal; al final ella le hornea galletas."},
+    {t:"Porque quería que llegara la policía.", ok:false, fb:"Al revés: quiere resolverlo ANTES que la policía."},
+    {t:"Porque el grito asustó a Lulú.", ok:false, fb:"Eso no ocurre en el texto."}]},
+  {tipo:"mc", pregunta:"¿Cuál fue la consecuencia de que la esposa de Filiberto se fuera con sus hijos?", opciones:[
+    {t:"Filiberto no volvió a reír y quedó solo con el columpio recién colgado.", ok:true, fb:"¡Muy bien! Una causa del pasado explica cómo es el personaje en el presente."},
+    {t:"Filiberto se cambió de casa.", ok:false, fb:"Siguió viviendo en la casa amarilla, la última de la calle."},
+    {t:"Filiberto empezó a robar joyas.", ok:false, fb:"Toñito sospecha eso, pero resulta ser inocente."},
+    {t:"Filiberto pintó su casa de amarillo.", ok:false, fb:"La había pintado años antes."}]},
+  {tipo:"mc", pregunta:"¿Qué consecuencia tuvo que Toñito viera a Lulú robando la peineta brillante de su mamá?", opciones:[
+    {t:"Todas las pistas se ordenaron en su mente y resolvió el caso.", ok:true, fb:"¡Correcto! Ese es el momento clave: «¡Ya sé quién, cómo y por qué robó el collar!»."},
+    {t:"Su mamá lo castigó sin salir.", ok:false, fb:"Su mamá solo le quitó la peineta y le pidió cuidado."},
+    {t:"Lulú se escapó de la casa.", ok:false, fb:"Lulú se queda; la que se escapa antes es con la caja de bombones."},
+    {t:"Decidió abandonar la investigación.", ok:false, fb:"¡Justo lo contrario: la terminó de golpe!"}]},
+  {tipo:"mc", pregunta:"¿Por qué Toñito descartó a Morgana Casablanca como sospechosa?", opciones:[
+    {t:"Porque su espalda lastimada le impedía saltar y había estado en cama varios días.", ok:true, fb:"¡Exacto! La causa física hace imposible la acción, así que queda libre de sospecha."},
+    {t:"Porque no le gustan las galletas.", ok:false, fb:"¡Le encantan! De hecho estaba comiendo una cuando abrió la puerta."},
+    {t:"Porque tiene veinte gatos que la vigilan.", ok:false, fb:"Los gatos no fueron una prueba de nada."},
+    {t:"Porque estaba de viaje ese día.", ok:false, fb:"Estaba en su casa, adolorida."}]},
+  {tipo:"mc", pregunta:"¿Cuál fue la consecuencia FINAL de que Toñito resolviera el caso?", opciones:[
+    {t:"Los vecinos empezaron a saludarlo y la calle se volvió entretenida para él.", ok:true, fb:"¡Muy bien! Y bautizaron su casa como «la guarida del gran detective Toñito»."},
+    {t:"La policía lo contrató como ayudante.", ok:false, fb:"La policía nunca vuelve a aparecer en la historia."},
+    {t:"Doña Isolina se cambió de casa.", ok:false, fb:"Se quedó feliz con su collar recuperado."},
+    {t:"Toñito dejó de querer ser detective.", ok:false, fb:"¡Al contrario! Se sienta a esperar el próximo caso."}]},
+  {tipo:"vf", afirmacion:"Toñito consiguió su libreta como consecuencia de que Guille estaba distraído con el celular.", ok:true, fb:"¡Verdadero! Guille contestó «Inefable» sin mirar y regaló su cuaderno de matemáticas."},
+  {tipo:"vf", afirmacion:"El ruido «¡pum!» fue la causa de que doña Isolina saliera del baño y descubriera el robo.", ok:true, fb:"¡Verdadero! Sin ese ruido, tal vez habría tardado horas en darse cuenta."},
+  {tipo:"vf", afirmacion:"Lulú abandonó a Toñito frente al hombre del abrigo porque le tenía miedo.", ok:false, fb:"Falso: se fue por hambre, buscando comida. ¡Su hambre mueve toda la historia!"},
+  {tipo:"vf", afirmacion:"Como consecuencia de las enfrijoladas de su mamá, a Toñito le dio mucho sueño y se durmió con la boca abierta.", ok:true, fb:"¡Verdadero! Hasta el detective más intrépido necesita dormir."},
+  {tipo:"relacionar", titulo:"Une cada CAUSA con su CONSECUENCIA", pares:[
+    ["Lulú tenía hambre","Entró al dormitorio por la ventana"],
+    ["El calor del día","Los bombones del abrigo se derritieron"],
+    ["Filiberto quedó solo","Su rostro no volvió a sonreír"],
+    ["Toñito no tenía libreta","Le pidió un cuaderno a su hermano"],
+    ["Morgana rescató a un gato","Se lastimó la espalda y quedó en cama"],
+    ["Toñito resolvió el caso","Doña Isolina le horneó galletas de premio"]
+  ]},
+  {tipo:"completar", frase:"Como Lulú tenía ___, entró por la ventana; ___ eso empezó todo el caso.", huecos:["hambre","por"], banco:["hambre","por","sueño","sin"], fb:"«La culpa la tienen las galletas», explica Toñito al final."},
+  {tipo:"completar", frase:"El ruido «¡pum!» fue la ___ de que doña Isolina saliera del baño y descubriera el ___.", huecos:["causa","robo"], banco:["causa","robo","consecuencia","regalo"], fb:"Sin ese ruido, quizá habría tardado horas en darse cuenta."}
+ ]
+},
+
+/* ===================== NIVEL 6 ===================== */
+{
+ id:6, emoji:"🧩", nombre:"Caso Cerrado", habilidad:"Reconocer el problema y la solución",
+ leccion:{
+  titulo:"Problema y solución: el corazón de la historia",
+  html:`
+  <p>Casi todas las narraciones tienen la misma estructura:</p>
+  <table class="tabla-comp">
+    <tr><th>Parte</th><th>¿Qué ocurre?</th><th>En nuestro libro</th></tr>
+    <tr><td><b>Inicio</b></td><td>Se presentan los personajes y el lugar</td><td>Toñito, su familia, su perra y la calle más aburrida del mundo</td></tr>
+    <tr><td><b>Problema (nudo)</b></td><td>Algo se rompe, se pierde o sale mal</td><td>¡Alguien robó el collar favorito de doña Isolina!</td></tr>
+    <tr><td><b>Desarrollo</b></td><td>Los personajes intentan resolverlo</td><td>Toñito anota pistas, sospecha de Filiberto, de Morgana, del hombre del abrigo y hasta de su mamá</td></tr>
+    <tr><td><b>Solución (desenlace)</b></td><td>El problema se resuelve</td><td>Descubre que Lulú lo enterró bajo el árbol y le devuelve el collar a su dueña</td></tr>
+  </table>
+  <p>A veces hay un <b>problema pequeño</b> dentro de otro más grande: Toñito no tenía libreta (problema pequeño) y lo solucionó pidiéndole un cuaderno a Guille.</p>
+  <div class="caja resumen"><h4>📌 Resumen rápido</h4><p><b>Problema:</b> lo que el personaje necesita resolver. <b>Solución:</b> cómo lo consigue al final. Pregúntate siempre: ¿qué se rompió y quién lo arregló?</p></div>
+  <div class="caja ejemplo"><h4>✏️ Ejemplo</h4><p>Problema: el collar desapareció. Intentos fallidos: dos sospechosos inocentes. Solución: Toñito recuerda la costumbre de Lulú y desentierra la joya en su propio jardín.</p></div>
+  <div class="caja dato"><h4>🤯 Dato curioso</h4><p>El culpable estuvo TODO el tiempo al lado del detective. Este truco se llama "el sospechoso invisible" y se usa muchísimo en las novelas policiales.</p></div>`
+ },
+ actividades:[
+  {tipo:"flash", titulo:"Los problemas de la historia y cómo se resuelven", cards:[
+    {frente:"Problema principal", dorso:"Desapareció el valioso collar de doña Isolina, heredado de su abuela."},
+    {frente:"Solución del problema principal", dorso:"Toñito deduce que Lulú lo robó por atracción a lo brillante y lo desentierra al pie del árbol de su jardín."},
+    {frente:"Problema pequeño 1", dorso:"A Toñito le falta una libreta para anotar pistas. Solución: le pide un cuaderno a Guille, que acepta sin darse cuenta."},
+    {frente:"Problema pequeño 2", dorso:"Los bombones del enamorado se derritieron con el calor. Solución: al final vuelve con una caja nueva, esta vez sin esconderla."},
+    {frente:"Problema pequeño 3", dorso:"Al comienzo, Toñito cree vivir en la calle más aburrida del mundo. Solución: al resolver el caso descubre que su calle es entretenida."},
+    {frente:"Problema del control remoto", dorso:"El control remoto había desaparecido. Solución: Toñito lo desentierra del jardín… ¡la misma pista que resolverá el caso grande!"}
+  ]},
+  {tipo:"mc", pregunta:"¿Cuál es el PROBLEMA principal de la historia?", opciones:[
+    {t:"El robo del collar favorito de doña Isolina.", ok:true, fb:"¡Correcto! Todo el relato gira en torno a ese misterio."},
+    {t:"Que Toñito no tiene amigos en la calle.", ok:false, fb:"Eso se resuelve al final, pero no es el problema que mueve la historia."},
+    {t:"Que Lulú se pierde en el barrio.", ok:false, fb:"Lulú desaparece un rato, pero siempre vuelve."},
+    {t:"Que la familia de Toñito se va de vacaciones.", ok:false, fb:"Están en vacaciones, pero no se van a ninguna parte."}]},
+  {tipo:"mc", pregunta:"¿Cómo se SOLUCIONA finalmente el problema?", opciones:[
+    {t:"Toñito recuerda que Lulú entierra lo brillante y encuentra el collar bajo el árbol.", ok:true, fb:"¡Exacto! Usó «solo el poder de su mente» para atar todas las pistas."},
+    {t:"La policía atrapa al ladrón en la calle.", ok:false, fb:"La policía nunca resuelve nada en esta historia."},
+    {t:"Doña Isolina encuentra el collar en su joyero.", ok:false, fb:"El joyero quedó vacío hasta que Toñito le devolvió la joya."},
+    {t:"Filiberto confiesa que fue él.", ok:false, fb:"Filiberto es inocente: solo come alimentos de dieta."}]},
+  {tipo:"mc", pregunta:"¿Qué intentos hace Toñito ANTES de encontrar la solución?", opciones:[
+    {t:"Anota pistas, entra a la casa de Filiberto, interroga a Morgana y registra la pieza de su mamá.", ok:true, fb:"¡Muy bien! Esos intentos fallidos son el desarrollo del relato."},
+    {t:"Llama a la policía y espera en su casa.", ok:false, fb:"Justamente quiere resolverlo antes que la policía."},
+    {t:"Pone carteles por todo el barrio.", ok:false, fb:"Eso no aparece en la historia."},
+    {t:"Le pregunta directamente a su perra.", ok:false, fb:"Le habla a Lulú todo el rato, ¡pero ella no confiesa nada!"}]},
+  {tipo:"mc", pregunta:"¿Por qué a Toñito le da vergüenza revelar quién fue el ladrón?", opciones:[
+    {t:"Porque la culpable era su propia ayudante, Lulú.", ok:true, fb:"¡Correcto! «¡Su ayudante resultó ser la autora del delito!»."},
+    {t:"Porque él mismo se había llevado el collar.", ok:false, fb:"Toñito nunca tocó el collar hasta desenterrarlo."},
+    {t:"Porque la culpable era su mamá.", ok:false, fb:"Su mamá fue sospechosa un rato, pero era inocente."},
+    {t:"Porque no quería recibir galletas de premio.", ok:false, fb:"¡Las recibió feliz: una doble ración!"}]},
+  {tipo:"mc", pregunta:"En el relato hay un problema pequeño al comienzo. ¿Cuál es?", opciones:[
+    {t:"Se perdió el control remoto de la casa de Toñito.", ok:true, fb:"¡Muy bien! Y su solución (Lulú lo enterró) es la clave escondida de todo el libro."},
+    {t:"Se cortó la luz en el barrio.", ok:false, fb:"Eso no ocurre en el texto."},
+    {t:"Guille perdió su celular.", ok:false, fb:"Guille no suelta el celular ni un segundo."},
+    {t:"La mamá perdió sus anteojos.", ok:false, fb:"Sus anteojos de repuesto están guardados en la caja metálica."}]},
+  {tipo:"vf", afirmacion:"El problema de la historia se resuelve gracias a la observación y la memoria de Toñito.", ok:true, fb:"¡Verdadero! Recordó una costumbre de su perra y con eso ató todos los cabos."},
+  {tipo:"vf", afirmacion:"Doña Isolina recupera su collar y premia a Toñito con galletas.", ok:true, fb:"¡Verdadero! Una doble ración de galletas bañadas con crema y chispas multicolor."},
+  {tipo:"vf", afirmacion:"El problema del relato queda sin resolver al final.", ok:false, fb:"Falso: el caso se cierra y hasta lo aplauden: «Clap, clap, clap. ¡Bravo, detective!»."},
+  {tipo:"vf", afirmacion:"El robo del collar ocurre al comienzo del libro, en el capítulo del primer caso.", ok:true, fb:"¡Verdadero! El grito de doña Isolina marca el inicio del problema."},
+  {tipo:"ordenar", titulo:"Ordena la estructura del relato", items:[
+    "Conocemos a Toñito, su familia, su perra y su calle aburrida.",
+    "Doña Isolina grita: le robaron su collar favorito.",
+    "Toñito anota las pistas en su libreta de tapas verdes.",
+    "Investiga a Filiberto, a Morgana y al hombre del abrigo negro.",
+    "Ve a Lulú robar la peineta brillante de su mamá.",
+    "Le devuelve el collar a doña Isolina y explica todo el caso."
+  ]},
+  {tipo:"completar", frase:"El ___ de la historia es el robo del collar y la ___ es que Toñito lo desentierra del jardín.", huecos:["problema","solución"], banco:["problema","solución","inicio","final"], fb:"¡Problema y solución son las dos columnas que sostienen cualquier cuento!"}
+ ]
+},
+
+/* ===================== NIVEL 7 ===================== */
+{
+ id:7, emoji:"⚖️", nombre:"Juez Justo", habilidad:"Opinar con fundamento en el texto",
+ leccion:{
+  titulo:"Opinar bien: mi idea + una prueba del texto",
+  html:`
+  <p>Opinar <b>no</b> es decir "porque sí" o "porque me gusta". En una prueba de Lenguaje, una buena opinión tiene <b>dos partes</b>:</p>
+  <div class="cita"><b>1) Lo que pienso</b> + <b>2) Un hecho del texto que lo demuestra</b></div>
+  <table class="tabla-comp">
+    <tr><th>❌ Opinión floja</th><th>✅ Opinión fundamentada</th></tr>
+    <tr><td>«Toñito estuvo mal.»</td><td>«Toñito estuvo mal, <b>porque entró a la casa de Filiberto por la ventana sin permiso</b>, y eso es meterse en la propiedad de otra persona.»</td></tr>
+    <tr><td>«Lulú es mala.»</td><td>«Lulú no es mala, <b>porque el texto explica que se lleva las cosas por instinto cuando tiene hambre</b>, no para hacer daño.»</td></tr>
+  </table>
+  <h3>Palabras que ayudan a fundamentar 🗝️</h3>
+  <p><i>porque… · ya que… · el texto dice que… · esto se nota cuando… · un ejemplo es…</i></p>
+  <div class="caja resumen"><h4>📌 Resumen rápido</h4><p>Puedes opinar lo que quieras, pero tienes que <b>defenderlo con el texto</b>. Si no encuentras la parte que lo demuestra, tal vez la opinión no se sostiene.</p></div>
+  <div class="caja ejemplo"><h4>✏️ Ejemplo completo</h4><p><b>Pregunta:</b> ¿Te parece bien que Toñito sospechara de Filiberto solo porque no sonríe?<br><b>Respuesta:</b> No me parece bien, porque el texto explica que Filiberto dejó de reír cuando su esposa se fue con sus hijos. Estar triste no convierte a nadie en ladrón.</p></div>
+  <div class="caja dato"><h4>🤯 Dato curioso</h4><p>En estas preguntas <b>no hay una sola respuesta correcta</b>: puedes decir que sí o que no. Lo que se evalúa es <b>qué tan bien defiendes tu idea con el texto</b>.</p></div>`
+ },
+ actividades:[
+  {tipo:"mc", pregunta:"¿Cuál de estas opiniones está MEJOR fundamentada en el texto?", opciones:[
+    {t:"Toñito es un buen observador, porque notó una arruga en el cobertor y un bote de helado caído que nadie más había mirado.", ok:true, fb:"¡Perfecto! Opinión + hechos concretos del texto que la respaldan."},
+    {t:"Toñito es un buen observador porque todos los detectives lo son.", ok:false, fb:"Eso es una idea general, no una prueba del texto."},
+    {t:"Toñito es un buen observador porque a mí me cae bien.", ok:false, fb:"Que te caiga bien no demuestra nada sobre su capacidad de observar."},
+    {t:"Toñito es un buen observador porque tiene una lupa.", ok:false, fb:"Tener una lupa no es lo mismo que saber usarla. ¡Sus deducciones sí lo demuestran!"}]},
+  {tipo:"mc", pregunta:"Sobre la decisión de Toñito de entrar a la casa de Filiberto sin permiso, ¿qué juicio se puede defender mejor con el texto?", opciones:[
+    {t:"Estuvo mal, y el propio texto lo insinúa: «Ambos saben que están haciendo algo que no deben».", ok:true, fb:"¡Excelente! Usar una cita textual es la forma más fuerte de fundamentar."},
+    {t:"Estuvo bien, porque los detectives pueden entrar donde quieran.", ok:false, fb:"Eso no lo dice el texto y tampoco es cierto en la vida real."},
+    {t:"Estuvo bien, porque encontró el collar ahí.", ok:false, fb:"En la casa de Filiberto no había ningún collar."},
+    {t:"Estuvo mal, porque Filiberto lo descubrió y se enojó.", ok:false, fb:"Filiberto nunca se dio cuenta: pasó trotando sin mirarlos."}]},
+  {tipo:"mc", pregunta:"¿Qué opinión sobre Lulú se sostiene mejor con la información del libro?", opciones:[
+    {t:"No actuó con maldad, porque el texto explica que se lleva las cosas brillantes por costumbre y porque tenía hambre.", ok:true, fb:"¡Muy bien! Distinguir «hacer daño» de «actuar por instinto» es una reflexión de nivel alto."},
+    {t:"Es una ladrona profesional que planeó todo.", ok:false, fb:"Nada en el texto sugiere un plan: entró siguiendo un olor."},
+    {t:"Debería ir presa por lo que hizo.", ok:false, fb:"Es una perra actuando por instinto; el texto la muestra con humor, no como una criminal."},
+    {t:"Es la mejor ayudante de detective del mundo.", ok:false, fb:"El propio Toñito la llama «la peor ayudante de detective del mundo» cuando lo abandona."}]},
+  {tipo:"mc", pregunta:"Toñito llegó a sospechar de su propia mamá. ¿Cuál es la mejor forma de opinar sobre eso?", opciones:[
+    {t:"Se apresuró, porque solo la escuchó decir que le gustaría un collar, y desear algo no es lo mismo que robarlo.", ok:true, fb:"¡Gran razonamiento! Reconoces la pista que él usó y explicas por qué era insuficiente."},
+    {t:"Hizo muy bien, porque un detective debe sospechar de todos.", ok:false, fb:"Es una opinión posible, pero el texto muestra que esa sospecha era injusta y no llevó a nada."},
+    {t:"Hizo mal, porque su mamá le había pedido que no entrara a su pieza.", ok:false, fb:"Ese permiso nunca se menciona en el texto: estarías inventando la prueba."},
+    {t:"Hizo bien, porque encontró el collar en el joyero de su mamá.", ok:false, fb:"El texto dice justo lo contrario: «No, ni rastro del collar»."}]},
+  {tipo:"mc", pregunta:"¿Qué actitud de doña Isolina se puede criticar usando el texto?", opciones:[
+    {t:"Presume de su collar diciendo que «muchos en esta calle lo envidiaban», lo que puede generar desconfianza entre vecinos.", ok:true, fb:"¡Muy fino! Tomas una frase textual y la conviertes en argumento."},
+    {t:"Nunca sale de su casa ni saluda a nadie.", ok:false, fb:"Al contrario: sale a la calle, conversa con Toñito y hasta le hornea galletas."},
+    {t:"No quiere a los animales.", ok:false, fb:"El texto no dice nada sobre su relación con los animales."},
+    {t:"Acusó injustamente a Filiberto.", ok:false, fb:"Quien sospechó de Filiberto fue Toñito, no ella."}]},
+  {tipo:"mc", pregunta:"¿Cómo fundamentarías mejor la idea de que Toñito cambia a lo largo del relato?", opciones:[
+    {t:"Al principio dice vivir en la calle más aburrida del mundo, y al final la considera la más entretenida porque conoció a sus vecinos.", ok:true, fb:"¡Perfecto! Comparas el inicio y el final con hechos del texto: eso es reflexionar."},
+    {t:"Porque al final ya tiene lupa y libreta.", ok:false, fb:"La lupa la tenía desde antes; los objetos no muestran un cambio interior."},
+    {t:"Porque creció y se hizo más alto.", ok:false, fb:"El paso del tiempo físico no aparece en el texto."},
+    {t:"Porque dejó de querer a su perra.", ok:false, fb:"Sigue con ella hasta el final, aunque la rete."}]},
+  {tipo:"vf", afirmacion:"«Filiberto es sospechoso porque no sonríe» es una conclusión bien fundamentada.", ok:false, fb:"Falso: es un prejuicio. Estar triste no es prueba de nada, y el texto explica por qué él dejó de reír."},
+  {tipo:"vf", afirmacion:"Una buena opinión sobre un texto puede empezar con «yo pienso que…» pero debe seguir con «porque el texto dice…».", ok:true, fb:"¡Verdadero! Esa es exactamente la fórmula que se espera en la prueba."},
+  {tipo:"vf", afirmacion:"En una pregunta de opinión, quien responde puede estar en desacuerdo con el personaje siempre que justifique con el texto.", ok:true, fb:"¡Verdadero! No existe una única respuesta correcta: existe una respuesta bien defendida."},
+  {tipo:"completar", frase:"Para opinar bien necesito decir lo que ___ y agregar una ___ sacada del texto.", huecos:["pienso","prueba"], banco:["pienso","prueba","invento","adivinanza"], fb:"¡Idea + evidencia! Es la fórmula ganadora."},
+  {tipo:"completar", frase:"Palabras útiles para justificar: «___ el texto dice que…» y «esto se nota ___…».", huecos:["porque","cuando"], banco:["porque","cuando","aunque","quizás"], fb:"Estos conectores son tus mejores amigos en la prueba."},
+  {tipo:"completar", frase:"Toñito estuvo mal al entrar sin ___ a la casa de Filiberto, aunque su intención era ___ el caso.", huecos:["permiso","resolver"], banco:["permiso","resolver","ganas","olvidar"], fb:"Se puede reconocer una buena intención Y criticar la acción al mismo tiempo."},
+  {tipo:"completar", frase:"Que Toñito se equivocara ___ veces antes de descubrir al culpable muestra que investigar exige ___.", huecos:["varias","paciencia"], banco:["varias","paciencia","cero","rapidez"], fb:"Filiberto, Morgana, el hombre del abrigo y hasta su mamá: ¡cuatro sospechosos inocentes!"}
+ ]
+},
+
+/* ===================== NIVEL 8 ===================== */
+{
+ id:8, emoji:"📚", nombre:"Nuevos Casos", habilidad:"Leer textos nuevos y responder",
+ leccion:{
+  titulo:"Textos nuevos: como en la prueba de verdad",
+  html:`
+  <p>En la evaluación te van a dar textos que <b>nunca has leído</b>. ¡Y eso es una buena noticia!, porque las respuestas siempre están (o se deducen) en la misma hoja.</p>
+  <h3>Plan de ataque en 4 pasos 🗺️</h3>
+  <ul class="lista">
+    <li><b>1.</b> Lee el texto completo <b>sin apurarte</b>, una vez.</li>
+    <li><b>2.</b> Lee la pregunta y descubre qué te piden: ¿<b>localizar</b> (está escrito), <b>inferir</b> (hay que deducirlo) o <b>reflexionar</b> (hay que opinar con pruebas)?</li>
+    <li><b>3.</b> <b>Vuelve al texto</b> a buscar la parte que sirve. ¡Siempre vuelve! Nadie responde de memoria.</li>
+    <li><b>4.</b> Descarta las alternativas imposibles antes de elegir.</li>
+  </ul>
+  <div class="caja resumen"><h4>📌 Resumen rápido</h4><p>Localizar = está escrito. · Inferir = se deduce con pistas. · Reflexionar = opino y lo defiendo con el texto.</p></div>
+  <div class="caja ejemplo"><h4>✏️ Trampa frecuente</h4><p>Una alternativa puede ser <b>verdadera en la vida real</b> pero <b>no aparecer en el texto</b>. En una prueba de lectura, si no está en el texto, no sirve.</p></div>
+  <div class="caja dato"><h4>🤯 Dato curioso</h4><p>Puedes volver a leer el texto todas las veces que quieras: en esta guía el recuadro de lectura se queda contigo mientras respondes.</p></div>`
+ },
+ actividades:[
+  {tipo:"lectura", textoIdx:0},
+  {tipo:"lectura", textoIdx:1},
+  {tipo:"lectura", textoIdx:2}
+ ]
+},
+
+/* ===================== NIVEL 9 ===================== */
+{
+ id:9, emoji:"🏅", nombre:"Desafío del Gran Detective", habilidad:"Todas las habilidades mezcladas",
+ esDesafio:true,
+ leccion:{
+  titulo:"¡El desafío final!",
+  html:`
+  <p>Llegó la prueba de fuego: <b>15 preguntas mezcladas</b> de todos los niveles anteriores, con <b>cronómetro</b> ⏱️.</p>
+  <p>Cada pregunta te da <b>25 segundos</b>. Si se acaba el tiempo, se cuenta como error, así que lee rápido pero con cuidado. ¡Los puntos valen el doble!</p>
+  <div class="caja resumen"><h4>🎯 Recuerda</h4><p>Personajes · Ambientes · Localizar · Inferir · Causas y consecuencias · Problema y solución · Opinión fundamentada.</p></div>
+  <div class="caja dato"><h4>💪 Ánimo</h4><p>Si algo falla, no importa: al final la guía te dirá exactamente qué habilidad repasar antes de la prueba.</p></div>`
+ },
+ actividades:[
+  {tipo:"mc", tiempo:25, pregunta:"¿Quién resultó ser el ladrón del collar?", opciones:[
+    {t:"Lulú, la perra de Toñito.", ok:true, fb:"¡Correcto! La ayudante era la culpable."},
+    {t:"Filiberto Praderas.", ok:false, fb:"Inocente: solo come alimentos de dieta."},
+    {t:"Morgana Casablanca.", ok:false, fb:"Inocente: tenía la espalda lastimada."},
+    {t:"El hombre del abrigo negro.", ok:false, fb:"Inocente: solo traía bombones para su amada."}]},
+  {tipo:"mc", tiempo:25, pregunta:"¿Qué característica FÍSICA se repite en la descripción de doña Isolina?", opciones:[
+    {t:"Todo en ella es redondo.", ok:true, fb:"Cuerpo, rostro, ojos y boca: ¡redondos!"},
+    {t:"Todo en ella es alargado.", ok:false, fb:"El alargado y flaco es Guille."},
+    {t:"Es muy alta y delgada.", ok:false, fb:"Esa descripción calza con Morgana."},
+    {t:"Usa siempre casco rojo.", ok:false, fb:"El casco rojo es del papá de Toñito."}]},
+  {tipo:"vf", tiempo:20, afirmacion:"La historia ocurre durante las vacaciones de Toñito.", ok:true, fb:"¡Verdadero! Por eso tiene tiempo libre para investigar."},
+  {tipo:"mc", tiempo:25, pregunta:"¿Qué pista permitió inferir que el intruso pesaba muy poco?", opciones:[
+    {t:"No dejó huellas hundidas en la tierra bajo la ventana.", ok:true, fb:"¡Bien! Toñito razonó que un gordo se habría hundido en el barro."},
+    {t:"La ventana estaba rota.", ok:false, fb:"La ventana estaba abierta, no rota."},
+    {t:"Los frascos del tocador estaban tirados.", ok:false, fb:"No se cayó ni un frasco: por eso el ladrón parecía muy ágil."},
+    {t:"El collar seguía en el joyero.", ok:false, fb:"El joyero quedó vacío."}]},
+  {tipo:"mc", tiempo:25, pregunta:"¿Cuál es la SOLUCIÓN del relato?", opciones:[
+    {t:"Toñito desentierra el collar del pie del árbol y se lo devuelve a doña Isolina.", ok:true, fb:"¡Caso cerrado!"},
+    {t:"La policía detiene a un ladrón del barrio.", ok:false, fb:"La policía no resuelve nada aquí."},
+    {t:"Doña Isolina compra un collar nuevo.", ok:false, fb:"Recupera el mismo collar de su abuela."},
+    {t:"Nunca se supo quién fue.", ok:false, fb:"Sí se supo: fue Lulú."}]},
+  {tipo:"vf", tiempo:20, afirmacion:"Toñito consiguió su libreta de detective comprándola en una tienda.", ok:false, fb:"Falso: se la pidió a Guille, que aceptó sin mirar."},
+  {tipo:"mc", tiempo:25, pregunta:"El ambiente de la cocina de Filiberto es…", opciones:[
+    {t:"Extremadamente ordenado.", ok:true, fb:"Hasta los cereales están ordenados por estatura."},
+    {t:"Sucio y desordenado.", ok:false, fb:"Es lo contrario."},
+    {t:"Lleno de gatos.", ok:false, fb:"Los gatos son de Morgana."},
+    {t:"Lleno de libros.", ok:false, fb:"Los libros están en la pieza de la mamá."}]},
+  {tipo:"mc", tiempo:25, pregunta:"¿Cuál fue la CAUSA de que Lulú entrara al dormitorio de doña Isolina?", opciones:[
+    {t:"El olor de las galletas, porque no había comido.", ok:true, fb:"¡Todo empezó por hambre!"},
+    {t:"Quería ayudar a Toñito con el caso.", ok:false, fb:"El caso todavía no existía."},
+    {t:"Estaba persiguiendo un gato.", ok:false, fb:"Eso no ocurre en el texto."},
+    {t:"Doña Isolina la invitó a pasar.", ok:false, fb:"Doña Isolina estaba en la ducha."}]},
+  {tipo:"mc", tiempo:25, pregunta:"¿Qué opinión sobre Toñito está mejor fundamentada?", opciones:[
+    {t:"Es perseverante: siguió investigando aunque sus dos primeros sospechosos resultaron inocentes.", ok:true, fb:"¡Idea + prueba del texto!"},
+    {t:"Es el mejor detective del mundo entero.", ok:false, fb:"Exagerado y sin respaldo en el texto."},
+    {t:"Es flojo, porque nunca hace nada.", ok:false, fb:"Investiga todo el libro sin parar."},
+    {t:"Es mentiroso, porque siempre engaña a su familia.", ok:false, fb:"Miente una sola vez, a Morgana, y por la investigación."}]},
+  {tipo:"vf", tiempo:20, afirmacion:"Guille usa palabras como «¡Albricias!» aunque no siempre sabe lo que significan.", ok:true, fb:"¡Verdadero! Con «Inefable» regaló su propio cuaderno."},
+  {tipo:"mc", tiempo:25, pregunta:"¿Qué sintió Toñito al descubrir que la culpable era su propia perra?", opciones:[
+    {t:"Vergüenza, porque su ayudante resultó ser la ladrona.", ok:true, fb:"El texto dice que intentó que no se le notara la vergüenza."},
+    {t:"Rabia contra doña Isolina.", ok:false, fb:"No hay ninguna pelea con la vecina."},
+    {t:"Miedo de la policía.", ok:false, fb:"La policía no aparece."},
+    {t:"Ganas de esconder la verdad para siempre.", ok:false, fb:"Al contrario: la contó completa."}]},
+  {tipo:"mc", tiempo:25, pregunta:"¿Qué significa la palabra «hurtado» en «¿Dónde guardaba el objeto que fue hurtado?»", opciones:[
+    {t:"Robado.", ok:true, fb:"¡El contexto te lo dice todo!"},
+    {t:"Guardado.", ok:false, fb:"Si estuviera guardado, no habría caso."},
+    {t:"Perdido por accidente.", ok:false, fb:"Toñito habla de un delito, no de un descuido."},
+    {t:"Regalado.", ok:false, fb:"Nadie regaló el collar."}]},
+  {tipo:"mc", tiempo:25, pregunta:"¿Cómo cambia la calle entre el inicio y el final del libro?", opciones:[
+    {t:"De aburrida a entretenida, porque Toñito conoció a sus vecinos.", ok:true, fb:"¡El cambio central de la historia!"},
+    {t:"De peligrosa a segura.", ok:false, fb:"Nunca fue peligrosa."},
+    {t:"De ruidosa a silenciosa.", ok:false, fb:"El texto no plantea ese contraste."},
+    {t:"De llena de niños a vacía.", ok:false, fb:"Al final aparecen más vecinos, no menos."}]},
+  {tipo:"vf", tiempo:20, afirmacion:"Morgana Casablanca fue descartada porque no le gustan los dulces.", ok:false, fb:"Falso: le encantan. Fue descartada por su espalda lastimada."},
+  {tipo:"mc", tiempo:25, pregunta:"Al final, ¿cómo bautizan los vecinos la casa de Toñito?", opciones:[
+    {t:"«La guarida del gran detective Toñito».", ok:true, fb:"¡Exacto! Un final feliz para el detective."},
+    {t:"«La casa del collar perdido».", ok:false, fb:"Ese fue el nombre del caso en su libreta."},
+    {t:"«La casa más aburrida del mundo».", ok:false, fb:"¡Justo lo contrario!"},
+    {t:"«La casa de Lulú la ladrona».", ok:false, fb:"Ese apodo no aparece en el texto."}]}
+ ]
+}
+
+];
+
+/* ============================================================
+   2) MOTOR DEL JUEGO
+   ============================================================ */
+
+const estado = {
+  puntos:0, xp:0, racha:0, mejorRacha:0,
+  correctas:0, incorrectas:0,
+  inicio:null,
+  completos:{},          // idNivel -> {estrellas, ok, total}
+  errores:{},            // idNivel -> cantidad de errores
+  medallas:[],
+  nivelIdx:null, actIdx:0, subIdx:0,
+  lista:[], okNivel:0, totalNivel:0,
+  cronoId:null
+};
+
+const app = document.getElementById('app');
+const barra = document.getElementById('barra');
+
+const FRASES_BIEN = ["¡Excelente!","¡Muy bien!","¡Correcto!","¡Eso es!","¡Detective de primera!","¡Lo lograste!","¡Perfecto!","¡Bien pensado!"];
+const FRASES_MAL  = ["¡Casi!","Uy, no era esa…","No te preocupes, sigue","Revisa la pista","Casi lo tenías"];
+
+/* ---------- utilidades ---------- */
+function mezclar(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function azar(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function el(html){ app.innerHTML = html; window.scrollTo({top:0,behavior:'smooth'}); }
+function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(txt){
+  const d = document.createElement('div');
+  d.className = 'toast'; d.textContent = txt;
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(), 2200);
+}
+function tiempoTexto(ms){
+  const s = Math.round(ms/1000);
+  const m = Math.floor(s/60);
+  return m + " min " + String(s%60).padStart(2,'0') + " s";
+}
+
+/* ---------- marcador ---------- */
+function pintarBarra(){
+  document.getElementById('m-puntos').textContent = estado.puntos;
+  document.getElementById('m-xp').textContent = estado.xp;
+  document.getElementById('m-racha').textContent = estado.racha;
+  document.getElementById('racha-caja').classList.toggle('encendida', estado.racha>=3);
+  let pct = 0, etiqueta = "";
+  if(estado.nivelIdx!==null){
+    const n = NIVELES[estado.nivelIdx];
+    pct = Math.round((estado.actIdx / estado.lista.length)*100);
+    etiqueta = "Nivel " + n.id + " · " + n.nombre + " — actividad " + Math.min(estado.actIdx+1, estado.lista.length) + " de " + estado.lista.length;
+  }else{
+    const hechos = Object.keys(estado.completos).length;
+    pct = Math.round((hechos/NIVELES.length)*100);
+    etiqueta = hechos + " de " + NIVELES.length + " niveles completados";
+  }
+  document.getElementById('m-barra').style.width = pct + "%";
+  document.getElementById('etiqueta-nivel').textContent = etiqueta;
+}
+
+function sumarAcierto(base){
+  const mult = (estado.nivelIdx!==null && NIVELES[estado.nivelIdx].esDesafio) ? 2 : 1;
+  let pts = base*mult;
+  estado.racha++;
+  if(estado.racha > estado.mejorRacha) estado.mejorRacha = estado.racha;
+  if(estado.racha>0 && estado.racha%5===0){
+    pts += 25;
+    toast("🔥 ¡Racha de " + estado.racha + "! +25 puntos");
+    ganarMedalla("🔥 Racha de " + estado.racha);
+  }
+  estado.puntos += pts; estado.xp += 10*mult; estado.correctas++;
+  estado.okNivel++;
+  pintarBarra();
+}
+function sumarError(){
+  estado.racha = 0; estado.incorrectas++;
+  const id = NIVELES[estado.nivelIdx].id;
+  estado.errores[id] = (estado.errores[id]||0)+1;
+  pintarBarra();
+}
+function ganarMedalla(m){
+  if(!estado.medallas.includes(m)){ estado.medallas.push(m); }
+}
+
+/* ============================================================
+   3) PANTALLAS
+   ============================================================ */
+
+function pantallaBienvenida(){
+  estado.nivelIdx = null;
+  barra.classList.add('oculto');
+  el(`
+  <div class="tarjeta centro">
+    <div style="font-size:66px;line-height:1">🕵️‍♂️🔍</div>
+    <h1>Detective Lector</h1>
+    <p class="sub"><b>Guía interactiva para la prueba de Lenguaje · 4° básico</b></p>
+    <p style="margin-top:14px">Libro base: <b>«${LIBRO.titulo}»</b><br><span class="sub">${LIBRO.autor} · Ilustraciones de ${LIBRO.ilustrador}</span></p>
+    <div class="caja resumen" style="text-align:left">
+      <h4>🎯 ¿Qué vas a entrenar?</h4>
+      <p>Leer y comprender · localizar información · inferir · describir y comparar personajes · describir ambientes · causas y consecuencias · problema y solución · opinar con fundamento.</p>
+    </div>
+    <div class="caja ejemplo" style="text-align:left">
+      <h4>🎮 ¿Cómo se juega?</h4>
+      <p>Son <b>9 niveles</b> que se desbloquean uno tras otro. En cada uno primero aprendes con una explicación corta y después juegas: preguntas, fichas, verdadero o falso, completar, unir y ordenar. Ganas <b>puntos, XP, estrellas y medallas</b>. ¡Y hay un desafío final cronometrado!</p>
+    </div>
+    <button class="btn grande amarillo" onclick="empezar()">¡Comenzar la investigación! 🚀</button>
+  </div>`);
+}
+
+function empezar(){
+  estado.inicio = Date.now();
+  barra.classList.remove('oculto');
+  pantallaMapa();
+}
+
+function pantallaMapa(){
+  estado.nivelIdx = null;
+  pintarBarra();
+  const hechos = Object.keys(estado.completos).length;
+  let cards = "";
+  NIVELES.forEach((n,i)=>{
+    const done = estado.completos[n.id];
+    const bloqueado = i>0 && !estado.completos[NIVELES[i-1].id];
+    let estrellas = "";
+    if(done){
+      estrellas = "<div class='estrellitas'>" + "⭐".repeat(done.estrellas) + "☆".repeat(3-done.estrellas) +
+                  " <span class='sub' style='font-size:13px'>" + done.ok + "/" + done.total + "</span></div>";
+    }
+    cards += `
+    <div class="nivel-card ${bloqueado?'bloqueado':''} ${done?'completo':''}"
+         ${bloqueado?'':`onclick="iniciarNivel(${i})" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();iniciarNivel(${i})}"`}
+         role="button" aria-label="Nivel ${n.id}: ${esc(n.nombre)}">
+      ${bloqueado?'<span class="candado">🔒</span>':(done?'<span class="candado">✅</span>':'')}
+      <span class="nivel-emoji">${n.emoji}</span>
+      <div class="nivel-num">Nivel ${n.id}</div>
+      <div class="nivel-nom">${esc(n.nombre)}</div>
+      <div class="nivel-hab">${esc(n.habilidad)}</div>
+      ${estrellas}
+    </div>`;
+  });
+  const todos = hechos===NIVELES.length;
+  el(`
+  <div class="tarjeta">
+    <h2>🗺️ Mapa de la investigación</h2>
+    <p class="sub">Completa cada nivel para desbloquear el siguiente. Puedes repetir los niveles que ya terminaste.</p>
+    <div class="mapa">${cards}</div>
+    ${todos?`<div class="centro" style="margin-top:18px"><button class="btn grande verde" onclick="pantallaFinal()">Ver mi informe final 🏆</button></div>`:''}
+  </div>`);
+}
+
+/* ---------- iniciar nivel ---------- */
+function iniciarNivel(i){
+  estado.nivelIdx = i; estado.actIdx = 0; estado.subIdx = 0;
+  estado.okNivel = 0;
+  const n = NIVELES[i];
+  // Las fichas (flashcards) van primero; el resto se mezcla en cada partida.
+  const flash = n.actividades.filter(a=>a.tipo==='flash');
+  const resto = n.actividades.filter(a=>a.tipo!=='flash');
+  estado.lista = n.esDesafio ? mezclar(resto) : flash.concat(mezclar(resto));
+  // total de "respuestas" posibles del nivel (para las estrellas)
+  estado.totalNivel = estado.lista.reduce((s,a)=>s+puntosPosibles(a),0);
+  pantallaLeccion();
+}
+function puntosPosibles(a){
+  switch(a.tipo){
+    case 'mc': case 'vf': return 1;
+    case 'completar': return a.huecos.length;
+    case 'relacionar': return a.pares.length;
+    case 'ordenar': return a.items.length;
+    case 'lectura': return TEXTOS_NUEVOS[a.textoIdx].preguntas.length;
+    default: return 0;
+  }
+}
+
+function pantallaLeccion(){
+  const n = NIVELES[estado.nivelIdx];
+  pintarBarra();
+  el(`
+  <div class="tarjeta">
+    <div class="tipo-tag">Nivel ${n.id} · Aprendo</div>
+    <h2>${n.emoji} ${esc(n.leccion.titulo)}</h2>
+    <p class="sub"><b>Habilidad:</b> ${esc(n.habilidad)}</p>
+    ${n.leccion.html}
+    <div class="centro" style="margin-top:18px">
+      <button class="btn gris" onclick="pantallaMapa()">← Volver al mapa</button>
+      <button class="btn grande" onclick="siguienteActividad()" autofocus>¡A jugar! 🎮</button>
+    </div>
+  </div>`);
+}
+
+function siguienteActividad(){
+  pintarBarra();
+  if(estado.actIdx >= estado.lista.length){ return finNivel(); }
+  const a = estado.lista[estado.actIdx];
+  switch(a.tipo){
+    case 'mc': case 'vf': return renderPregunta(a, ()=>{ estado.actIdx++; siguienteActividad(); });
+    case 'flash': return renderFlash(a);
+    case 'completar': return renderCompletar(a);
+    case 'relacionar': return renderRelacionar(a);
+    case 'ordenar': return renderOrdenar(a);
+    case 'lectura': return renderLectura(a);
+    default: estado.actIdx++; return siguienteActividad();
+  }
+}
+
+/* ---------- PREGUNTAS (selección múltiple / verdadero-falso) ---------- */
+function renderPregunta(p, onNext, textoHTML){
+  const esVF = p.tipo==='vf';
+  const opciones = esVF
+    ? [{t:"✅ Verdadero", ok:p.ok===true, fb:p.fb},{t:"❌ Falso", ok:p.ok===false, fb:p.fb}]
+    : mezclar(p.opciones);
+  const letras = "ABCD";
+  const crono = p.tiempo ? `<div class="centro"><span class="cronometro" id="crono">⏱️ ${p.tiempo}</span></div>` : '';
+  el(`
+  <div class="tarjeta">
+    <div class="tipo-tag">${esVF?'Verdadero o Falso':'Selección múltiple'}</div>
+    ${crono}
+    ${textoHTML||''}
+    ${esVF ? `<div class="afirmacion">${esc(p.afirmacion)}</div>` : `<div class="pregunta">${esc(p.pregunta)}</div>`}
+    <div class="opciones ${esVF?'vf-fila':''}" id="ops">
+      ${opciones.map((o,i)=>`<button class="opcion" data-i="${i}">${esVF?'':`<span class="letra">${letras[i]}</span>`}${esc(o.t)}</button>`).join('')}
+    </div>
+    <div id="fb"></div>
+    <div class="centro" id="cont"></div>
+  </div>`);
+
+  const responder = (idx)=>{
+    if(estado.cronoId){ clearInterval(estado.cronoId); estado.cronoId=null; }
+    const botones = [...document.querySelectorAll('#ops .opcion')];
+    botones.forEach(b=>b.disabled=true);
+    const acertado = idx!==-1 && opciones[idx].ok;
+    opciones.forEach((o,i)=>{ if(o.ok) botones[i].classList.add('correcta'); });
+    if(idx!==-1 && !acertado) botones[idx].classList.add('incorrecta');
+    const correcta = opciones.find(o=>o.ok);
+    let msg;
+    if(idx===-1){ msg = `<strong>⏰ ¡Se acabó el tiempo!</strong>La respuesta correcta era: <b>${esc(correcta.t)}</b>. ${esc(correcta.fb||'')}`; }
+    else if(acertado){ msg = `<strong>${azar(FRASES_BIEN)}</strong>${esc(opciones[idx].fb||'')}`; }
+    else { msg = `<strong>${azar(FRASES_MAL)}</strong>${esc(opciones[idx].fb||'')}<br><br>✅ <b>Respuesta correcta:</b> ${esc(correcta.t)}${correcta.fb?' — '+esc(correcta.fb):''}`; }
+    document.getElementById('fb').innerHTML = `<div class="feedback ${acertado?'bien':'mal'}">${msg}</div>`;
+    if(acertado) sumarAcierto(10); else sumarError();
+    const cont = document.getElementById('cont');
+    cont.innerHTML = `<button class="btn" id="btn-cont">Continuar →</button>`;
+    document.getElementById('btn-cont').onclick = onNext;
+    document.getElementById('btn-cont').focus();
+  };
+
+  document.querySelectorAll('#ops .opcion').forEach(b=>{
+    b.onclick = ()=> responder(parseInt(b.dataset.i,10));
+  });
+
+  if(p.tiempo){
+    let queda = p.tiempo;
+    const c = document.getElementById('crono');
+    estado.cronoId = setInterval(()=>{
+      queda--;
+      if(c){ c.textContent = "⏱️ " + queda; c.classList.toggle('calma', queda>10); }
+      if(queda<=0){ clearInterval(estado.cronoId); estado.cronoId=null; responder(-1); }
+    },1000);
+  }
+}
+
+/* ---------- FLASHCARDS ---------- */
+function renderFlash(a){
+  const cards = mezclar(a.cards);
+  let i = 0, girada = false;
+  const vistas = new Set();
+  function pinta(){
+    el(`
+    <div class="tarjeta">
+      <div class="tipo-tag">Fichas de estudio</div>
+      <h2>🃏 ${esc(a.titulo)}</h2>
+      <p class="sub">Toca la ficha para darla vuelta. Revísalas todas antes de continuar.</p>
+      <div class="flash-zona">
+        <div class="flash ${girada?'girada':''}" id="ficha" tabindex="0" role="button" aria-label="Girar ficha">
+          <div class="flash-cara flash-frente">${esc(cards[i].frente)}<div class="flash-pista">👆 toca para ver la respuesta</div></div>
+          <div class="flash-cara flash-dorso">${esc(cards[i].dorso)}</div>
+        </div>
+      </div>
+      <div class="flash-nav">
+        <button class="btn gris" id="ant">← Anterior</button>
+        <span class="contador">${i+1} / ${cards.length}</span>
+        <button class="btn" id="sig">Siguiente →</button>
+      </div>
+      <div class="centro" style="margin-top:12px">
+        <button class="btn verde" id="listo">Ya las repasé, continuar ✅</button>
+      </div>
+    </div>`);
+    const f = document.getElementById('ficha');
+    const girar = ()=>{ girada=!girada; f.classList.toggle('girada');
+      if(girada && !vistas.has(i)){ vistas.add(i); estado.xp += 3; pintarBarra(); } };
+    f.onclick = girar;
+    f.onkeydown = e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); girar(); } };
+    document.getElementById('ant').onclick = ()=>{ i=(i-1+cards.length)%cards.length; girada=false; pinta(); };
+    document.getElementById('sig').onclick = ()=>{ i=(i+1)%cards.length; girada=false; pinta(); };
+    document.getElementById('listo').onclick = ()=>{
+      estado.puntos += 15; toast("+15 puntos por repasar 🃏");
+      estado.actIdx++; siguienteActividad();
+    };
+  }
+  pinta();
+}
+
+/* ---------- COMPLETAR ---------- */
+function renderCompletar(a){
+  const partes = a.frase.split('___');
+  const puestas = new Array(a.huecos.length).fill(null);
+  const banco = mezclar(a.banco.map((t,i)=>({t, id:i})));
+  const usadas = new Set();
+  function pinta(comprobado){
+    let frase = "";
+    partes.forEach((p,i)=>{
+      frase += esc(p);
+      if(i<partes.length-1){
+        const v = puestas[i];
+        frase += `<span class="hueco ${v!==null?'lleno':''}" data-h="${i}" tabindex="0" role="button">${v!==null?esc(v.t):'&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`;
+      }
+    });
+    el(`
+    <div class="tarjeta">
+      <div class="tipo-tag">Completa la frase</div>
+      <p class="sub">Toca las palabras de abajo para llenar los espacios. Si te equivocas, toca el espacio para borrarlo.</p>
+      <div class="frase-completar">${frase}</div>
+      <div class="banco">
+        ${banco.map(b=>`<button class="palabra ${usadas.has(b.id)?'usada':''}" data-b="${b.id}" ${usadas.has(b.id)?'disabled':''}>${esc(b.t)}</button>`).join('')}
+      </div>
+      <div id="fb"></div>
+      <div class="centro" style="margin-top:14px" id="cont">
+        <button class="btn" id="check" ${puestas.includes(null)?'disabled':''}>Comprobar ✔️</button>
+      </div>
+    </div>`);
+    document.querySelectorAll('.palabra').forEach(btn=>{
+      btn.onclick = ()=>{
+        const idx = puestas.indexOf(null);
+        if(idx===-1) return;
+        const b = banco.find(x=>x.id===parseInt(btn.dataset.b,10));
+        puestas[idx] = b; usadas.add(b.id); pinta(false);
+      };
+    });
+    document.querySelectorAll('.hueco').forEach(h=>{
+      const quitar = ()=>{
+        const i = parseInt(h.dataset.h,10);
+        if(puestas[i]){ usadas.delete(puestas[i].id); puestas[i]=null; pinta(false); }
+      };
+      h.onclick = quitar;
+      h.onkeydown = e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); quitar(); } };
+    });
+    const chk = document.getElementById('check');
+    if(chk) chk.onclick = ()=>{
+      let ok=0;
+      puestas.forEach((p,i)=>{ if(p && p.t===a.huecos[i]) ok++; });
+      const perfecto = ok===a.huecos.length;
+      for(let k=0;k<ok;k++) sumarAcierto(10);
+      if(!perfecto) sumarError();
+      document.getElementById('fb').innerHTML =
+        `<div class="feedback ${perfecto?'bien':'mal'}">
+          <strong>${perfecto?azar(FRASES_BIEN):'Respuesta correcta:'}</strong>
+          ${perfecto?'':'<b>'+esc(a.frase.split('___').reduce((s,p,i)=>s+p+(i<a.huecos.length?'['+a.huecos[i]+']':''),''))+'</b><br><br>'}
+          ${esc(a.fb||'')}
+        </div>`;
+      document.getElementById('cont').innerHTML = `<button class="btn" id="c2">Continuar →</button>`;
+      document.getElementById('c2').onclick = ()=>{ estado.actIdx++; siguienteActividad(); };
+      document.getElementById('c2').focus();
+      document.querySelectorAll('.palabra').forEach(b=>b.disabled=true);
+    };
+  }
+  pinta(false);
+}
+
+/* ---------- RELACIONAR ---------- */
+function renderRelacionar(a){
+  const izq = mezclar(a.pares.map((p,i)=>({t:p[0], i})));
+  const der = mezclar(a.pares.map((p,i)=>({t:p[1], i})));
+  const resueltos = new Set();
+  let sel = null;
+  el(`
+  <div class="tarjeta">
+    <div class="tipo-tag">Une las columnas</div>
+    <h2>🔗 ${esc(a.titulo)}</h2>
+    <p class="sub">Toca una tarjeta de la izquierda y luego su pareja de la derecha.</p>
+    <div class="relacionar">
+      <div><div class="col-tit">Columna A</div>${izq.map(x=>`<button class="par-btn" data-lado="i" data-i="${x.i}">${esc(x.t)}</button>`).join('')}</div>
+      <div><div class="col-tit">Columna B</div>${der.map(x=>`<button class="par-btn" data-lado="d" data-i="${x.i}">${esc(x.t)}</button>`).join('')}</div>
+    </div>
+    <div id="fb"></div>
+    <div class="centro" style="margin-top:14px" id="cont"></div>
+  </div>`);
+  const botones = [...document.querySelectorAll('.par-btn')];
+  botones.forEach(b=>{
+    b.onclick = ()=>{
+      if(b.classList.contains('ok')) return;
+      if(b.dataset.lado==='i'){
+        botones.filter(x=>x.dataset.lado==='i').forEach(x=>x.classList.remove('elegido'));
+        b.classList.add('elegido'); sel = b; return;
+      }
+      if(!sel){ b.classList.add('error'); setTimeout(()=>b.classList.remove('error'),400); return; }
+      if(sel.dataset.i === b.dataset.i){
+        sel.classList.remove('elegido'); sel.classList.add('ok'); b.classList.add('ok');
+        sel.disabled = true; b.disabled = true;
+        resueltos.add(b.dataset.i);
+        sumarAcierto(10); sel = null;
+        if(resueltos.size===a.pares.length){
+          document.getElementById('fb').innerHTML = `<div class="feedback bien"><strong>${azar(FRASES_BIEN)}</strong>Uniste las ${a.pares.length} parejas. ¡Memoria de detective! 🕵️</div>`;
+          document.getElementById('cont').innerHTML = `<button class="btn" id="c3">Continuar →</button>`;
+          document.getElementById('c3').onclick = ()=>{ estado.actIdx++; siguienteActividad(); };
+          document.getElementById('c3').focus();
+        }
+      }else{
+        b.classList.add('error'); sel.classList.add('error');
+        const s = sel;
+        setTimeout(()=>{ b.classList.remove('error'); s.classList.remove('error'); s.classList.remove('elegido'); },420);
+        sumarError(); sel = null;
+      }
+    };
+  });
+}
+
+/* ---------- ORDENAR ---------- */
+function renderOrdenar(a){
+  let orden = mezclar(a.items.map((t,i)=>({t, i})));
+  // evita que salga ya ordenado
+  if(orden.every((o,k)=>o.i===k)) orden = orden.reverse();
+  let comprobado = false;
+  function pinta(){
+    el(`
+    <div class="tarjeta">
+      <div class="tipo-tag">Ordena la secuencia</div>
+      <h2>🔢 ${esc(a.titulo)}</h2>
+      <p class="sub">Usa las flechas para mover cada hecho hasta dejarlos en el orden correcto.</p>
+      <div class="orden-lista">
+        ${orden.map((o,k)=>`
+          <div class="orden-item ${comprobado?(o.i===k?'ok':'no'):''}">
+            <span class="idx">${k+1}</span>
+            <span class="txt">${esc(o.t)}</span>
+            ${comprobado?'':`<span class="flechas">
+              <button class="mini" data-up="${k}" ${k===0?'disabled':''} aria-label="Subir">▲</button>
+              <button class="mini" data-dn="${k}" ${k===orden.length-1?'disabled':''} aria-label="Bajar">▼</button>
+            </span>`}
+          </div>`).join('')}
+      </div>
+      <div id="fb"></div>
+      <div class="centro" id="cont">${comprobado?'':'<button class="btn" id="check">Comprobar ✔️</button>'}</div>
+    </div>`);
+    document.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>{
+      const k=parseInt(b.dataset.up,10); [orden[k-1],orden[k]]=[orden[k],orden[k-1]]; pinta();
+    });
+    document.querySelectorAll('[data-dn]').forEach(b=>b.onclick=()=>{
+      const k=parseInt(b.dataset.dn,10); [orden[k+1],orden[k]]=[orden[k],orden[k+1]]; pinta();
+    });
+    const chk = document.getElementById('check');
+    if(chk) chk.onclick = ()=>{
+      const ok = orden.filter((o,k)=>o.i===k).length;
+      comprobado = true;
+      for(let i=0;i<ok;i++) sumarAcierto(10);
+      if(ok<orden.length) sumarError();
+      pinta();
+      document.getElementById('fb').innerHTML =
+        `<div class="feedback ${ok===orden.length?'bien':'mal'}">
+          <strong>${ok===orden.length?azar(FRASES_BIEN):'Acertaste '+ok+' de '+orden.length+' posiciones'}</strong>
+          El orden correcto es:<br>${a.items.map((t,i)=>(i+1)+'. '+esc(t)).join('<br>')}
+        </div>`;
+      document.getElementById('cont').innerHTML = `<button class="btn" id="c4">Continuar →</button>`;
+      document.getElementById('c4').onclick = ()=>{ estado.actIdx++; siguienteActividad(); };
+      document.getElementById('c4').focus();
+    };
+  }
+  pinta();
+}
+
+/* ---------- LECTURA DE TEXTO NUEVO ---------- */
+function renderLectura(a){
+  const T = TEXTOS_NUEVOS[a.textoIdx];
+  if(estado.subIdx===0 && !a._leido){
+    a._leido = true;
+    el(`
+    <div class="tarjeta">
+      <div class="tipo-tag">Texto nuevo</div>
+      <div class="texto-lectura" style="max-height:none">
+        <h4>${esc(T.titulo)}</h4>
+        <div class="autor">${esc(T.autor)}</div>
+        ${T.cuerpo.split('\n\n').map(p=>`<p>${esc(p)}</p>`).join('')}
+      </div>
+      <div class="centro">
+        <button class="btn grande" id="ir" autofocus>Ya lo leí, ir a las preguntas →</button>
+      </div>
+    </div>`);
+    document.getElementById('ir').onclick = ()=> renderLectura(a);
+    return;
+  }
+  const preguntas = T.preguntas;
+  if(estado.subIdx >= preguntas.length){
+    estado.subIdx = 0; estado.actIdx++; return siguienteActividad();
+  }
+  const textoHTML = `<div class="texto-lectura">
+      <h4>${esc(T.titulo)}</h4><div class="autor">Pregunta ${estado.subIdx+1} de ${preguntas.length} · puedes volver a leer 👇</div>
+      ${T.cuerpo.split('\n\n').map(p=>`<p>${esc(p)}</p>`).join('')}
+    </div>`;
+  renderPregunta(preguntas[estado.subIdx], ()=>{ estado.subIdx++; renderLectura(a); }, textoHTML);
+}
+
+/* ---------- FIN DE NIVEL ---------- */
+function finNivel(){
+  const n = NIVELES[estado.nivelIdx];
+  const total = Math.max(estado.totalNivel,1);
+  const pct = Math.round((estado.okNivel/total)*100);
+  const estrellas = pct>=90?3 : pct>=70?2 : pct>=50?1 : 0;
+  const previo = estado.completos[n.id];
+  if(!previo || estrellas>=previo.estrellas){
+    estado.completos[n.id] = {estrellas, ok:estado.okNivel, total};
+  }
+  if(pct===100){ ganarMedalla("💯 " + n.nombre + " perfecto"); estado.puntos+=50; }
+  if(n.id===1) ganarMedalla("🕵️ Primer caso abierto");
+  if(n.id===8) ganarMedalla("📚 Lector de textos nuevos");
+  if(n.esDesafio && pct>=80) ganarMedalla("🏅 Gran Detective");
+  if(Object.keys(estado.completos).length===NIVELES.length) ganarMedalla("🗺️ Investigación completa");
+
+  const msg = pct>=90 ? "¡Increíble! Dominas esta habilidad."
+            : pct>=70 ? "¡Muy bien! Vas por buen camino."
+            : pct>=50 ? "¡Bien! Con un repaso más quedas listo."
+            : "Repasa la explicación de este nivel y vuelve a intentarlo. ¡Se puede!";
+  const hayMas = estado.nivelIdx < NIVELES.length-1;
+  el(`
+  <div class="tarjeta centro">
+    <div class="medalla-grande">${estrellas===3?'🏆':estrellas===2?'🎉':estrellas===1?'👍':'💪'}</div>
+    <h2>Nivel ${n.id} completado</h2>
+    <p class="sub">${esc(n.nombre)}</p>
+    <div class="estrellitas" style="font-size:34px">${"⭐".repeat(estrellas)}${"☆".repeat(3-estrellas)}</div>
+    <div class="stats">
+      <div class="stat"><div class="valor">${estado.okNivel}/${total}</div><div class="etiq">Aciertos</div></div>
+      <div class="stat"><div class="valor">${pct}%</div><div class="etiq">Logro</div></div>
+      <div class="stat"><div class="valor">${estado.puntos}</div><div class="etiq">Puntaje total</div></div>
+    </div>
+    <p><b>${msg}</b></p>
+    <div class="centro">
+      <button class="btn gris" onclick="iniciarNivel(${estado.nivelIdx})">Repetir nivel 🔁</button>
+      ${hayMas?`<button class="btn grande" onclick="iniciarNivel(${estado.nivelIdx+1})">Siguiente nivel →</button>`:`<button class="btn grande verde" onclick="pantallaFinal()">Ver informe final 🏆</button>`}
+      <br><button class="btn gris" onclick="pantallaMapa()">🗺️ Mapa de niveles</button>
+    </div>
+  </div>`);
+  estado.nivelIdx = null;
+  pintarBarra();
+}
+
+/* ---------- PANTALLA FINAL ---------- */
+function pantallaFinal(){
+  estado.nivelIdx = null;
+  const tiempo = tiempoTexto(Date.now()-estado.inicio);
+  const totalResp = estado.correctas + estado.incorrectas;
+  const pct = totalResp? Math.round((estado.correctas/totalResp)*100) : 0;
+  const estrellasTot = Object.values(estado.completos).reduce((s,c)=>s+c.estrellas,0);
+  const nivel = pct>=90?"🥇 Gran Detective Lector" : pct>=75?"🥈 Detective Experto" : pct>=60?"🥉 Detective en Formación" : "🔍 Aprendiz de Detective";
+
+  // recomendaciones según los niveles con más errores
+  const debiles = Object.entries(estado.errores).sort((a,b)=>b[1]-a[1]).slice(0,3).filter(x=>x[1]>0);
+  const CONSEJOS = {
+    1:"Vuelve al libro y haz una tabla de cada personaje con dos columnas: cómo es por fuera / cómo es por dentro.",
+    2:"Elige tres escenas y dibuja o describe el lugar: qué objetos hay y qué sensación produce.",
+    3:"Practica subrayando la palabra clave de la pregunta y buscándola en el texto antes de responder.",
+    4:"Antes de responder pregúntate: ¿qué pista del texto respalda mi respuesta? Si no hay pista, no es inferencia.",
+    5:"Practica con la fórmula: «Esto pasó PORQUE…» y «POR ESO ocurrió…».",
+    6:"Cuenta cualquier cuento en cuatro partes: inicio, problema, intentos y solución.",
+    7:"Escribe tus opiniones siempre en dos partes: yo pienso que… PORQUE el texto dice que…",
+    8:"Lee un cuento nuevo cada día y responde tres preguntas: una de localizar, una de inferir y una de opinar.",
+    9:"Repasa los niveles con menos estrellas y vuelve a intentar el desafío final."
+  };
+  let recos = debiles.length
+    ? debiles.map(([id,c])=>{
+        const n = NIVELES.find(x=>x.id==id);
+        return `<div class="consejo"><b>${n.emoji} ${esc(n.habilidad)}</b> — ${c} error${c>1?'es':''}.<br>${esc(CONSEJOS[id])}</div>`;
+      }).join('')
+    : `<div class="consejo">🎉 ¡No tuviste errores importantes! Repasa el libro una vez más antes de la prueba y estarás listo.</div>`;
+
+  el(`
+  <div class="tarjeta centro">
+    <div class="medalla-grande">🏆</div>
+    <h1>¡Investigación terminada!</h1>
+    <h2 style="color:var(--azul)">${nivel}</h2>
+    <div class="stats">
+      <div class="stat"><div class="valor">${estado.puntos}</div><div class="etiq">Puntaje</div></div>
+      <div class="stat"><div class="valor">${estado.xp}</div><div class="etiq">XP</div></div>
+      <div class="stat"><div class="valor">${estado.correctas}</div><div class="etiq">Aciertos</div></div>
+      <div class="stat"><div class="valor">${estado.incorrectas}</div><div class="etiq">Errores</div></div>
+      <div class="stat"><div class="valor">${pct}%</div><div class="etiq">Logro</div></div>
+      <div class="stat"><div class="valor">${estrellasTot}/${NIVELES.length*3}</div><div class="etiq">Estrellas</div></div>
+      <div class="stat"><div class="valor">${estado.mejorRacha}</div><div class="etiq">Mejor racha</div></div>
+      <div class="stat"><div class="valor" style="font-size:19px">${tiempo}</div><div class="etiq">Tiempo</div></div>
+    </div>
+    <h3>🎖️ Medallas obtenidas</h3>
+    <div class="medallero">${estado.medallas.length?estado.medallas.map(m=>`<span class="medalla">${esc(m)}</span>`).join(''):'<span class="sub">Todavía no ganas medallas… ¡vuelve a jugar!</span>'}</div>
+    <h3>📋 Qué repasar antes de la prueba</h3>
+    <div style="text-align:left">${recos}</div>
+    <div class="centro" style="margin-top:18px">
+      <button class="btn gris" onclick="pantallaMapa()">🗺️ Volver al mapa</button>
+      <button class="btn grande amarillo" onclick="reiniciar()">Volver a jugar 🔁</button>
+    </div>
+  </div>`);
+  pintarBarra();
+}
+
+function reiniciar(){
+  estado.puntos=0; estado.xp=0; estado.racha=0; estado.mejorRacha=0;
+  estado.correctas=0; estado.incorrectas=0; estado.completos={}; estado.errores={};
+  estado.medallas=[]; estado.nivelIdx=null; estado.actIdx=0; estado.subIdx=0;
+  NIVELES.forEach(n=>n.actividades.forEach(a=>{ if(a._leido) delete a._leido; }));
+  estado.inicio=Date.now();
+  pantallaBienvenida();
+}
+
+/* ---------- arranque ---------- */
+pantallaBienvenida();
+</script>
+</body>
+</html>
