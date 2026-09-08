@@ -1,1 +1,1325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 7 · The World of Animals — Guía Interactiva</title>
 
+<!-- ===================================================================
+     METADATA DE LA GUÍA
+     Este bloque JSON describe la guía. Puede leerse desde JS con:
+       JSON.parse(document.getElementById('guia-metadata').textContent)
+     También queda expuesto en window.GUIA_META
+     =================================================================== -->
+<script type="application/json" id="guia-metadata">
+{
+  "asignatura": "Inglés",
+  "curso": "4° Básico",
+  "unidad": "Unit 7 · Lessons 1, 2, 3 y 4",
+  "emoji": "🦁",
+  "color": "#16A34A",
+  "desc": "The World of Animals: vocabulario de animales y acciones · What's it like? (It's / It has / It can) · Adjetivos comparativos y superlativos · Adverbios comparativos y superlativos · Story \"Working Together\" y más.",
+  "tags": [
+    "198 actividades",
+    "135 tarjetas",
+    "7 niveles"
+  ],
+  "listo": true,
+  "semestre": "Segundo Semestre"
+}
+</script>
+
+<style>
+:root{
+  --brand:#16A34A; --brand-d:#0F7A37; --brand-l:#DCFCE7;
+  --ink:#12241A; --ink-2:#4A5D53; --line:#D8E6DD;
+  --bg:#F2F8F4; --card:#FFFFFF;
+  --ok:#16A34A; --ok-bg:#DCFCE7;
+  --no:#DC2626; --no-bg:#FEE2E2;
+  --gold:#F59E0B; --violet:#7C3AED; --blue:#2563EB;
+  --r:18px; --sh:0 4px 18px rgba(16,60,35,.10);
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--font); background:var(--bg); color:var(--ink);
+  font-size:17px; line-height:1.55; min-height:100vh;
+}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:860px;margin:0 auto;padding:14px 14px 90px}
+.hidden{display:none !important}
+
+/* ---------- Topbar ---------- */
+#topbar{
+  position:sticky;top:0;z-index:50;background:rgba(242,248,244,.95);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+}
+.tb-in{max-width:860px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;background:var(--card);
+  border:1px solid var(--line);border-radius:999px;padding:5px 12px;
+  font-size:14px;font-weight:700;box-shadow:var(--sh)
+}
+.chip.xp{color:var(--violet)} .chip.pts{color:var(--brand-d)} .chip.streak{color:var(--gold)}
+.bar{flex:1 1 160px;height:12px;background:#fff;border:1px solid var(--line);border-radius:999px;overflow:hidden;min-width:120px}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand),#4ADE80);transition:width .45s ease}
+.btn-exit{background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:700;color:var(--ink-2)}
+
+/* ---------- Cards ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:20px;margin-bottom:16px}
+h1{font-size:30px;line-height:1.2;margin:.2em 0 .3em}
+h2{font-size:23px;margin:.2em 0 .5em}
+h3{font-size:19px;margin:1.1em 0 .4em}
+p{margin:.5em 0}
+.muted{color:var(--ink-2)}
+.small{font-size:15px}
+.center{text-align:center}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-block;background:var(--brand);color:#fff;border:none;
+  border-radius:14px;padding:14px 24px;font-weight:800;font-size:17px;
+  box-shadow:0 4px 0 var(--brand-d);transition:transform .08s, box-shadow .08s
+}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--brand-d)}
+.btn.sec{background:#fff;color:var(--brand-d);border:2px solid var(--brand);box-shadow:0 4px 0 #C9E9D5}
+.btn.ghost{background:#fff;color:var(--ink-2);border:1px solid var(--line);box-shadow:none;font-weight:700}
+.btn[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+
+/* ---------- Welcome ---------- */
+.hero{
+  background:linear-gradient(150deg,var(--brand),#0EA5E9);
+  color:#fff;border-radius:22px;padding:28px 22px;text-align:center;box-shadow:var(--sh)
+}
+.hero h1{color:#fff;margin:.1em 0}
+.hero .emoji{font-size:56px;line-height:1}
+.hero p{color:#EAFBF1}
+.pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.pill{background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:700}
+
+/* ---------- Level map ---------- */
+.levels{display:grid;gap:12px}
+@media(min-width:640px){.levels{grid-template-columns:1fr 1fr}}
+.lvl{
+  display:flex;gap:14px;align-items:center;text-align:left;width:100%;
+  background:var(--card);border:2px solid var(--line);border-radius:var(--r);
+  padding:14px;box-shadow:var(--sh);transition:transform .1s,border-color .1s
+}
+.lvl:hover:not([disabled]){transform:translateY(-2px);border-color:var(--brand)}
+.lvl[disabled]{opacity:.55;filter:grayscale(.6)}
+.lvl .ic{font-size:34px;flex:0 0 auto;width:56px;height:56px;display:grid;place-items:center;background:var(--brand-l);border-radius:16px}
+.lvl .tx{flex:1;min-width:0}
+.lvl .tx b{display:block;font-size:17px}
+.lvl .tx span{font-size:14px;color:var(--ink-2);display:block}
+.stars{font-size:15px;letter-spacing:1px;color:var(--gold)}
+
+/* ---------- Teoría ---------- */
+.box{border-radius:14px;padding:14px 16px;margin:12px 0;border:1px solid var(--line)}
+.box.res{background:#EFF6FF;border-color:#BFDBFE}
+.box.ej{background:#FFF7ED;border-color:#FED7AA}
+.box.dato{background:#F5F3FF;border-color:#DDD6FE}
+.box h4{margin:0 0 6px;font-size:16px;text-transform:uppercase;letter-spacing:.4px}
+.box ul{margin:.4em 0;padding-left:1.2em}
+.box li{margin:.25em 0}
+code,.k{background:var(--brand-l);border-radius:6px;padding:1px 7px;font-weight:800;color:var(--brand-d);font-family:inherit}
+
+/* ---------- Actividades ---------- */
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;font-size:14px;font-weight:700;color:var(--ink-2)}
+.badge{background:var(--brand-l);color:var(--brand-d);border-radius:999px;padding:3px 10px;font-size:13px;font-weight:800}
+.q{font-size:20px;font-weight:700;margin:6px 0 14px;line-height:1.4}
+.opts{display:grid;gap:10px}
+.opt{
+  text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;
+  padding:14px 16px;font-weight:600;transition:border-color .1s,background .1s;width:100%
+}
+.opt:hover:not(.done){border-color:var(--brand)}
+.opt.sel{border-color:var(--blue);background:#EFF6FF}
+.opt.good{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad{border-color:var(--no);background:var(--no-bg)}
+.opt.done{cursor:default}
+.tfrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fb{border-radius:14px;padding:12px 14px;margin-top:14px;font-weight:600;border:1px solid}
+.fb.good{background:var(--ok-bg);border-color:#86EFAC;color:#14532D}
+.fb.bad{background:var(--no-bg);border-color:#FCA5A5;color:#7F1D1D}
+input[type=text]{
+  font-family:inherit;font-size:18px;padding:11px 13px;border:2px solid var(--line);
+  border-radius:12px;width:100%;max-width:280px;background:#fff;color:var(--ink)
+}
+input[type=text]:focus{outline:none;border-color:var(--brand)}
+.inline-q{font-size:20px;font-weight:700;line-height:1.9}
+.hintword{display:inline-flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.hintword span{background:#F1F5F9;border:1px solid var(--line);border-radius:8px;padding:3px 9px;font-size:14px;font-weight:700}
+
+/* Match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mcol{display:grid;gap:8px;align-content:start}
+.mit{
+  background:#fff;border:2px solid var(--line);border-radius:12px;padding:11px 12px;
+  font-weight:700;font-size:16px;text-align:left;width:100%
+}
+.mit.sel{border-color:var(--blue);background:#EFF6FF}
+.mit.good{border-color:var(--ok);background:var(--ok-bg);cursor:default}
+.mit.shake{animation:sk .3s}
+@keyframes sk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Order */
+.ordlist{display:grid;gap:8px;margin:10px 0}
+.ordit{
+  display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--line);
+  border-radius:12px;padding:10px 12px;font-weight:600;text-align:left
+}
+.ordit .n{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--brand-l);color:var(--brand-d);display:grid;place-items:center;font-weight:800;font-size:14px}
+.ordit .mv{display:flex;gap:4px;margin-left:auto}
+.mvb{border:1px solid var(--line);background:#fff;border-radius:8px;width:34px;height:34px;font-weight:800;color:var(--ink-2)}
+.ordit.good{border-color:var(--ok);background:var(--ok-bg)}
+.ordit.bad{border-color:var(--no);background:var(--no-bg)}
+
+/* Flashcards */
+.fcbox{perspective:1200px;margin:10px auto;max-width:460px}
+.fc{
+  position:relative;width:100%;min-height:190px;transform-style:preserve-3d;
+  transition:transform .5s;cursor:pointer
+}
+.fc.flip{transform:rotateY(180deg)}
+.fcf,.fcb{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;
+  display:grid;place-items:center;text-align:center;padding:20px;font-weight:800;
+  border:2px solid var(--line);box-shadow:var(--sh)
+}
+.fcf{background:#fff;font-size:26px}
+.fcb{background:var(--brand-l);transform:rotateY(180deg);font-size:21px;color:var(--brand-d)}
+.fcnav{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:12px;flex-wrap:wrap}
+.fcnav .btn{padding:10px 14px;font-size:15px}
+
+/* Memory */
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:520px){.mem{grid-template-columns:repeat(3,1fr)}}
+.mcard{
+  aspect-ratio:1/1;border:2px solid var(--line);border-radius:14px;background:var(--brand);
+  color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center;padding:6px;
+  text-align:center;word-break:break-word;line-height:1.2
+}
+.mcard.open{background:#fff;color:var(--ink);border-color:var(--blue)}
+.mcard.done{background:var(--ok-bg);color:var(--brand-d);border-color:var(--ok);cursor:default}
+
+/* Toast */
+#toast{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(120%);
+  background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-weight:800;
+  z-index:99;transition:transform .35s;box-shadow:var(--sh);max-width:92vw;text-align:center
+}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+/* Final */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+@media(min-width:640px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font-size:24px;color:var(--brand-d)}
+.stat span{font-size:13px;color:var(--ink-2)}
+.medals{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+.medal{background:#FFFBEB;border:1px solid #FDE68A;border-radius:999px;padding:6px 14px;font-weight:800;font-size:14px}
+.rec{background:#FFF7ED;border:1px solid #FED7AA;border-radius:14px;padding:12px 14px;margin-top:10px}
+.rec ul{margin:.3em 0;padding-left:1.2em}
+footer{text-align:center;color:var(--ink-2);font-size:13px;padding:18px 0}
+.timer{font-weight:900;color:var(--no)}
+</style>
+</head>
+<body>
+
+<div id="topbar" class="hidden">
+  <div class="tb-in">
+    <button class="btn-exit" id="btnMapa">‹ Niveles</button>
+    <span class="chip pts">⭐ <span id="uiPts">0</span></span>
+    <span class="chip xp">⚡ <span id="uiXp">0</span> XP</span>
+    <span class="chip streak">🔥 <span id="uiStreak">0</span></span>
+    <div class="bar"><i id="uiBar"></i></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="screen"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ==========================================================================
+   1) METADATA
+   ========================================================================== */
+window.GUIA_META = JSON.parse(document.getElementById('guia-metadata').textContent);
+
+/* ==========================================================================
+   2) BANCO DE CONTENIDO  —  todo el contenido vive aquí.
+      Para ampliar la guía solo hay que agregar objetos a este array.
+      Tipos de actividad soportados:
+        mc    : selección múltiple   {t:'mc', q, o:[], c:índice, e:'', w:['']}
+        tf    : verdadero / falso    {t:'tf', q, c:true|false, e:''}
+        fill  : completar            {t:'fill', q:'... ___ ...', a:['acepta','variantes'], hint:[], e:''}
+        match : relacionar           {t:'match', title, pairs:[[izq,der],...]}
+        order : ordenar              {t:'order', title, items:[...en orden correcto...]}
+        memory: memorice             {t:'memory', title, pairs:[[a,b],...]}
+        flash : flashcards           {t:'flash', title, cards:[[frente,reverso],...]}
+   ========================================================================== */
+const NIVELES = [
+
+/* ---------------------------------------------------------------- NIVEL 1 */
+{
+  nombre:"Animal Words", emoji:"🦥", sub:"Lesson 1 · Vocabulario de animales",
+  teoria:{
+    intro:"En la <b>Unit 7 — The World of Animals</b> aprendemos los nombres de muchos animales en inglés. ¡Son las palabras que vas a usar en toda la unidad!",
+    puntos:[
+      "Los <b>10 animales principales</b> de la Lesson 1: <span class='k'>sloth</span> perezoso, <span class='k'>eagle</span> águila, <span class='k'>giant tortoise</span> tortuga gigante, <span class='k'>butterfly</span> mariposa, <span class='k'>lion</span> león, <span class='k'>toucan</span> tucán, <span class='k'>octopus</span> pulpo, <span class='k'>cheetah</span> guepardo, <span class='k'>beaver</span> castor, <span class='k'>sailfish</span> pez vela.",
+      "Usamos <span class='k'>It's a…</span> antes de sonido de consonante: <i>It's a lion.</i>",
+      "Usamos <span class='k'>It's an…</span> antes de sonido de vocal (a, e, i, o, u): <i>It's an eagle. It's an octopus.</i>"
+    ],
+    resumen:"Animales de la unidad + la regla <b>a / an</b>. Si la palabra empieza con sonido de vocal → <b>an</b>; si empieza con consonante → <b>a</b>.",
+    ejemplos:[
+      "It's <b>a</b> sloth. → Es un perezoso.",
+      "It's <b>an</b> eagle. → Es un águila.",
+      "It's <b>a</b> giant tortoise. → Es una tortuga gigante.",
+      "It's <b>an</b> octopus. → Es un pulpo."
+    ],
+    dato:"🧠 Truco: <b>a</b>gua, <b>e</b>lefante, <b>i</b>sla, <b>o</b>so, <b>u</b>va… si la palabra en inglés parte con ese sonido, va <b>an</b>. ¡El pulpo (<i>an octopus</i>) y el águila (<i>an eagle</i>) siempre llevan <b>an</b>!"
+  },
+  acts:[
+    {t:'flash', title:"Flashcards: los animales de la Unit 7", cards:[
+      ["sloth 🦥","perezoso — It's very slow."],
+      ["eagle 🦅","águila — This bird can fly high and see very well."],
+      ["giant tortoise 🐢","tortuga gigante — It carries its house on its back."],
+      ["butterfly 🦋","mariposa — It's an insect. It has colorful wings."],
+      ["lion 🦁","león — Big cats roar."],
+      ["toucan 🐦","tucán — This bird has a very big beak."],
+      ["octopus 🐙","pulpo — This animal has eight arms."],
+      ["cheetah 🐆","guepardo — It's the fastest land animal."],
+      ["beaver 🦫","castor — A land animal, but it swims."],
+      ["sailfish 🐟","pez vela — A fish that swims very fast and jumps high."]
+    ]},
+    {t:'flash', title:"Flashcards extra: otros animales de la unidad", cards:[
+      ["elephant 🐘","elefante"],
+      ["giraffe 🦒","jirafa"],
+      ["hippo 🦛","hipopótamo"],
+      ["monkey 🐒","mono"],
+      ["spider 🕷️","araña"],
+      ["penguin 🐧","pingüino"],
+      ["rabbit 🐰","conejo"],
+      ["frog 🐸","rana"],
+      ["lizard 🦎","lagarto"],
+      ["dolphin 🐬","delfín"],
+      ["parrot 🦜","loro"],
+      ["mouse 🐭","ratón"]
+    ]},
+    {t:'mc', q:"This bird can fly high and see very well.", o:["an eagle","a beaver","a butterfly"], c:0,
+      e:"¡Correcto! <b>An eagle</b> vuela muy alto y tiene una vista excelente.",
+      w:["","El castor no vuela: vive en el río.","La mariposa vuela, pero es un insecto pequeño y no ve a gran distancia."]},
+    {t:'mc', q:"It's an insect. It has colorful wings.", o:["a toucan","a butterfly","a sailfish"], c:1,
+      e:"¡Muy bien! <b>A butterfly</b> es un insecto con alas de colores.",
+      w:["El tucán es un ave (bird), no un insecto.","","El pez vela vive en el mar y no tiene alas."]},
+    {t:'mc', q:"It carries its house on its back.", o:["a giant tortoise","an octopus","a cheetah"], c:0,
+      e:"¡Exacto! <b>A giant tortoise</b> lleva su caparazón (su 'casa') en la espalda.",
+      w:["","El pulpo no tiene caparazón, tiene ocho brazos.","El guepardo es un felino veloz, sin caparazón."]},
+    {t:'mc', q:"This animal is very slow.", o:["a sailfish","a cheetah","a sloth"], c:2,
+      e:"¡Correcto! <b>A sloth</b> es famoso por ser lentísimo (2 km/h).",
+      w:["El pez vela es uno de los animales más rápidos del mar.","El guepardo es el animal terrestre más rápido.",""]},
+    {t:'mc', q:"This bird has a very big beak.", o:["a toucan","an eagle","a penguin"], c:0,
+      e:"¡Sí! <b>A toucan</b> tiene un pico (beak) enorme y colorido.",
+      w:["","El águila tiene pico curvo, pero más pequeño que el del tucán.","El pingüino tiene un pico pequeño."]},
+    {t:'mc', q:"This animal has eight arms.", o:["a spider","an octopus","a lion"], c:1,
+      e:"¡Excelente! <b>An octopus</b> tiene ocho brazos.",
+      w:["La araña tiene ocho patas (legs), no brazos, y es un insecto terrestre.","","El león tiene cuatro patas."]},
+    {t:'mc', q:"¿Cuál frase está bien escrita?", o:["It's a octopus.","It's an octopus.","It's an lion."], c:1,
+      e:"¡Perfecto! <i>octopus</i> empieza con sonido de vocal → <b>an</b>.",
+      w:["'octopus' empieza con sonido de vocal, así que necesita <b>an</b>.","","'lion' empieza con sonido de consonante → <b>a lion</b>."]},
+    {t:'mc', q:"A land animal, but it swims. It lives in the river.", o:["a beaver","a dolphin","a giant tortoise"], c:0,
+      e:"¡Muy bien! <b>A beaver</b> es un animal terrestre que nada muy bien.",
+      w:["","El delfín vive siempre en el agua, no es animal terrestre.","La tortuga gigante camina en tierra, no es nadadora de río."]},
+    {t:'tf', q:"A cheetah is a bird.", c:false, e:"El guepardo (<b>cheetah</b>) es un felino, un <i>big cat</i>, no un ave."},
+    {t:'tf', q:"A sailfish lives in the water.", c:true, e:"¡Correcto! El pez vela (<b>sailfish</b>) es un pez y vive en el mar."},
+    {t:'tf', q:"We say “an eagle” because “eagle” starts with a vowel sound.", c:true, e:"¡Exacto! Sonido de vocal → <b>an</b>."},
+    {t:'tf', q:"A toucan has eight arms.", c:false, e:"El que tiene ocho brazos es el pulpo (<b>an octopus</b>). El tucán tiene un pico grande."},
+    {t:'tf', q:"A sloth moves faster than a cheetah.", c:false, e:"¡Al revés! El <b>cheetah</b> es rapidísimo y el <b>sloth</b> es lentísimo."},
+    {t:'fill', q:"It's ___ eagle.", a:["an"], hint:["a","an"], e:"'eagle' empieza con sonido de vocal → <b>an eagle</b>."},
+    {t:'fill', q:"It's ___ lion.", a:["a"], hint:["a","an"], e:"'lion' empieza con sonido de consonante → <b>a lion</b>."},
+    {t:'fill', q:"It's an insect with colorful wings: a ___.", a:["butterfly"], hint:["butterfly","toucan","beaver"], e:"<b>butterfly</b> = mariposa."},
+    {t:'fill', q:"It carries its house on its back: a giant ___.", a:["tortoise"], hint:["tortoise","octopus","sloth"], e:"<b>giant tortoise</b> = tortuga gigante."},
+    {t:'fill', q:"Big cats like this one roar: a ___.", a:["lion"], hint:["lion","beaver","penguin"], e:"<b>lion</b> = león, un <i>big cat</i>."},
+    {t:'match', title:"Relaciona el animal con su traducción", pairs:[
+      ["sloth","perezoso"],["eagle","águila"],["beaver","castor"],["toucan","tucán"],["octopus","pulpo"]
+    ]},
+    {t:'match', title:"Relaciona el animal con su descripción", pairs:[
+      ["cheetah","It runs very fast."],
+      ["butterfly","It has colorful wings."],
+      ["giant tortoise","It carries its house on its back."],
+      ["sailfish","It swims fast and jumps high."],
+      ["sloth","It's very slow and lazy."]
+    ]},
+    {t:'memory', title:"Memorice: encuentra las parejas inglés–español", pairs:[
+      ["lion","león"],["eagle","águila"],["frog","rana"],["spider","araña"],["penguin","pingüino"],["rabbit","conejo"]
+    ]}
+  ]
+},
+
+/* ---------------------------------------------------------------- NIVEL 2 */
+{
+  nombre:"What's it like?", emoji:"🔎", sub:"Lesson 1 · It's… / It has… / It can…",
+  teoria:{
+    intro:"Para <b>describir un animal</b> preguntamos <span class='k'>What's a … like?</span> (¿Cómo es un…?) y respondemos con tres estructuras clave.",
+    puntos:[
+      "<span class='k'>It's…</span> → para decir <b>cómo es</b>: <i>It's big. It's a land animal.</i>",
+      "<span class='k'>It has…</span> → para decir <b>qué tiene</b>: <i>It has eight arms. It has colorful wings.</i>",
+      "<span class='k'>It can…</span> → para decir <b>qué puede hacer</b>: <i>It can fly very high. It can swim.</i>",
+      "La pregunta se abrevia: <i>What is</i> → <span class='k'>What's</span>."
+    ],
+    resumen:"<b>What's a … like?</b> se responde con <b>It's</b> (cómo es), <b>It has</b> (qué tiene) o <b>It can</b> (qué puede hacer).",
+    ejemplos:[
+      "A: <b>What's</b> an eagle like? — B: <b>It can</b> fly very high.",
+      "A: <b>What's</b> a beaver like? — B: <b>It's</b> a land animal but it swims.",
+      "A: <b>What's</b> an octopus like? — B: <b>It has</b> eight arms.",
+      "A: <b>What's</b> a sailfish like? — B: <b>It can</b> jump very high."
+    ],
+    dato:"🧠 Truco de 3 dedos: <b>IS</b> = cómo es · <b>HAS</b> = qué tiene · <b>CAN</b> = qué puede hacer. Si la respuesta habla de una habilidad → siempre <b>can</b>."
+  },
+  acts:[
+    {t:'flash', title:"Flashcards: preguntas y respuestas del diálogo", cards:[
+      ["What's an eagle like?","It can fly very high."],
+      ["What's a beaver like?","It's a land animal but it swims."],
+      ["What's an octopus like?","It has eight arms."],
+      ["What's a sailfish like?","It can jump very high."],
+      ["What's a toucan like?","It has a very big beak."],
+      ["What's a sloth like?","It's very slow."],
+      ["What's a butterfly like?","It has colorful wings."],
+      ["What's a cheetah like?","It can run very fast."]
+    ]},
+    {t:'fill', q:"A: ___ an eagle like?  B: It can fly very high.", a:["what's","whats","what is"], hint:["What's","How's","Who's"], e:"La pregunta para describir es <b>What's … like?</b>"},
+    {t:'fill', q:"B: It ___ fly very high.  (habilidad del águila)", a:["can"], hint:["is","has","can"], e:"Una habilidad se expresa con <b>can</b>."},
+    {t:'fill', q:"B: It ___ eight arms.  (el pulpo)", a:["has"], hint:["is","has","can"], e:"Lo que el animal <b>tiene</b> se dice con <b>has</b>."},
+    {t:'fill', q:"B: It ___ a land animal but it swims.  (el castor)", a:["is","'s"], hint:["is","has","can"], e:"Para decir cómo es o qué es, usamos <b>is</b> (It's)."},
+    {t:'fill', q:"B: It ___ jump very high.  (el pez vela)", a:["can"], hint:["is","has","can"], e:"Saltar es una habilidad → <b>can</b>."},
+    {t:'mc', q:"What's a toucan like?", o:["It has a very big beak.","It has eight arms.","It can carry its house."], c:0,
+      e:"¡Muy bien! El tucán se describe por su gran pico.",
+      w:["","Ocho brazos son del pulpo.","La casa en la espalda es de la tortuga gigante."]},
+    {t:'mc', q:"Elige la frase correcta.", o:["It can has colorful wings.","It has colorful wings.","It is colorful wings."], c:1,
+      e:"¡Correcto! Después de <b>has</b> va directamente el sustantivo.",
+      w:["No se combinan <b>can</b> + <b>has</b>. Después de <i>can</i> va el verbo base.","","<i>It is</i> se usa con adjetivos o con 'a + sustantivo': <i>It is colorful.</i>"]},
+    {t:'mc', q:"A cheetah… ¿qué frase describe su habilidad?", o:["It has fast legs.","It's a big cat.","It can run very fast."], c:2,
+      e:"¡Perfecto! Una <b>habilidad</b> se expresa con <b>can</b>.",
+      w:["Eso describe lo que tiene, no lo que puede hacer.","Eso describe qué es, no su habilidad.",""]},
+    {t:'mc', q:"¿Cuál pregunta usarías para que te describan un animal?", o:["Where is a lion?","What's a lion like?","How many lions?"], c:1,
+      e:"¡Sí! <b>What's a … like?</b> = ¿Cómo es un…?",
+      w:["Esa pregunta es por el lugar.","","Esa pregunta es por la cantidad."]},
+    {t:'tf', q:"“It can swim.” habla de una habilidad del animal.", c:true, e:"¡Correcto! <b>can</b> + verbo = habilidad."},
+    {t:'tf', q:"“It has a big beak.” describe lo que el animal puede hacer.", c:false, e:"Describe lo que el animal <b>tiene</b>. Lo que puede hacer se dice con <b>can</b>."},
+    {t:'tf', q:"“What's an octopus like?” pregunta por la descripción del animal.", c:true, e:"¡Exacto! Es la pregunta para describir."},
+    {t:'order', title:"Ordena la pregunta correcta", items:["What's","a","sailfish","like?"]},
+    {t:'order', title:"Ordena la respuesta correcta", items:["It","can","fly","very","high."]},
+    {t:'order', title:"Ordena esta descripción del castor", items:["It's","a","land","animal","but","it","swims."]},
+    {t:'match', title:"Relaciona pregunta y respuesta", pairs:[
+      ["What's an octopus like?","It has eight arms."],
+      ["What's an eagle like?","It can fly very high."],
+      ["What's a sloth like?","It's very slow."],
+      ["What's a toucan like?","It has a very big beak."]
+    ]},
+    {t:'match', title:"¿IS, HAS o CAN? Relaciona cada frase con su uso", pairs:[
+      ["It's a land animal.","Dice qué es / cómo es"],
+      ["It has colorful wings.","Dice qué tiene"],
+      ["It can jump very high.","Dice qué puede hacer"]
+    ]}
+  ]
+},
+
+/* ---------------------------------------------------------------- NIVEL 3 */
+{
+  nombre:"Comparative Adjectives", emoji:"⚖️", sub:"Lesson 2 · más… que",
+  teoria:{
+    intro:"Los <b>adjetivos comparativos</b> sirven para <b>comparar dos cosas</b>. En español decimos “más grande que”; en inglés hay dos formas según el largo del adjetivo.",
+    puntos:[
+      "Adjetivos <b>cortos</b> (1 sílaba) → adjetivo + <span class='k'>-er</span> + <span class='k'>than</span>: <i>tall → taller than</i>, <i>fast → faster than</i>.",
+      "Si termina en consonante + vocal + consonante, se <b>dobla</b> la última letra: <i>big → bigger</i>.",
+      "Si termina en <b>-y</b>, cambia a <b>-ier</b>: <i>lazy → lazier</i>, <i>heavy → heavier</i>.",
+      "Adjetivos <b>largos</b> (2 o más sílabas) → <span class='k'>more</span> + adjetivo + <span class='k'>than</span>: <i>more colorful than</i>, <i>more dangerous than</i>, <i>more beautiful than</i>, <i>more intelligent than</i>.",
+      "Para decir <b>menos</b> usamos <span class='k'>less</span> + adjetivo + <span class='k'>than</span>: <i>less dangerous than</i>.",
+      "Irregulares: <i>good → <b>better</b></i>, <i>bad → <b>worse</b></i>."
+    ],
+    resumen:"Corto + <b>-er … than</b> / Largo + <b>more … than</b>. Siempre aparece <b>than</b> entre los dos elementos comparados.",
+    ejemplos:[
+      "An elephant is <b>bigger than</b> a hippo.",
+      "A butterfly is <b>more colorful than</b> a toucan.",
+      "A sloth is <b>less dangerous than</b> a lion.",
+      "A sloth is <b>taller than</b> a beaver. (72 cm vs 60 cm)",
+      "A beaver is <b>heavier than</b> a sloth. (30 kg vs 9 kg)",
+      "A beaver is <b>faster than</b> a sloth. (8 km/h vs 2 km/h)"
+    ],
+    dato:"🧠 Truco: cuenta las sílabas. <i>fast</i> (1) → <b>faster</b>. <i>beau-ti-ful</i> (3) → <b>more beautiful</b>. ¡Y nunca digas “more faster”! Solo una forma a la vez."
+  },
+  acts:[
+    {t:'flash', title:"Flashcards: adjetivo → comparativo", cards:[
+      ["big","bigger than"],["tall","taller than"],["fast","faster than"],
+      ["small","smaller than"],["heavy","heavier than"],["lazy","lazier than"],
+      ["colorful","more colorful than"],["dangerous","more dangerous than"],
+      ["beautiful","more beautiful than"],["active","more active than"],
+      ["intelligent","more intelligent than"],["good","better than (irregular)"],
+      ["bad","worse than (irregular)"],["strong","stronger than"],["long","longer than"]
+    ]},
+    {t:'mc', q:"An elephant is ___ a hippo.", o:["bigger than","more big than","the biggest"], c:0,
+      e:"¡Correcto! <i>big</i> es corto → <b>bigger than</b> (se dobla la g).",
+      w:["","Con adjetivos cortos NO se usa <i>more</i>.","Ese es el superlativo; aquí comparamos solo dos animales."]},
+    {t:'mc', q:"A butterfly is ___ a toucan.", o:["colorfuler than","more colorful than","most colorful"], c:1,
+      e:"¡Muy bien! <i>colorful</i> es largo → <b>more colorful than</b>.",
+      w:["Los adjetivos largos no llevan -er.","","Ese sería superlativo y además le falta 'the'."]},
+    {t:'mc', q:"A sloth is ___ a lion.", o:["more dangerous than","less dangerous than","dangerouser than"], c:1,
+      e:"¡Exacto! El perezoso es MENOS peligroso → <b>less dangerous than</b>.",
+      w:["El león es el peligroso, no el perezoso.","","<i>dangerous</i> es largo: nunca lleva -er."]},
+    {t:'mc', q:"A cheetah is ___ a sloth.", o:["more active than","lazier than","less active than"], c:0,
+      e:"¡Sí! El guepardo es mucho más activo que el perezoso.",
+      w:["","El perezoso es el 'lazier' (más perezoso).","Al revés: el guepardo es MÁS activo."]},
+    {t:'mc', q:"Sloth: 72 cm · Beaver: 60 cm. ¿Cuál es correcta?", o:["A beaver is taller than a sloth.","A sloth is taller than a beaver.","A sloth is more tall than a beaver."], c:1,
+      e:"¡Perfecto! 72 cm > 60 cm → <b>A sloth is taller than a beaver.</b>",
+      w:["El castor mide menos (60 cm).","","<i>tall</i> es corto: <b>taller</b>, nunca 'more tall'."]},
+    {t:'mc', q:"Sloth: 9 kg · Beaver: 30 kg. ¿Cuál es correcta?", o:["A beaver is heavier than a sloth.","A sloth is heavier than a beaver.","A beaver is more heavy than a sloth."], c:0,
+      e:"¡Correcto! 30 kg > 9 kg y <i>heavy</i> → <b>heavier</b> (y → ier).",
+      w:["","El perezoso pesa solo 9 kg.","<i>heavy</i> termina en -y → <b>heavier</b>."]},
+    {t:'mc', q:"El comparativo de “good” es…", o:["gooder","more good","better"], c:2,
+      e:"¡Muy bien! <b>good → better</b> es irregular.",
+      w:["'gooder' no existe en inglés.","'more good' tampoco existe.",""]},
+    {t:'mc', q:"An eagle is ___ an octopus.", o:["more colorful than","colorfuller than","more colorful"], c:0,
+      e:"¡Bien! Adjetivo largo + <b>than</b> para completar la comparación.",
+      w:["","Esa forma no existe.","Falta <b>than</b>: sin él la comparación queda incompleta."]},
+    {t:'tf', q:"Con adjetivos de una sílaba usamos “more”.", c:false, e:"Con adjetivos cortos usamos <b>-er</b>: <i>fast → faster</i>. <i>more</i> es para los largos."},
+    {t:'tf', q:"“less dangerous than” significa “menos peligroso que”.", c:true, e:"¡Correcto! <b>less</b> = menos."},
+    {t:'tf', q:"En una comparación siempre aparece la palabra “than”.", c:true, e:"¡Exacto! <b>than</b> une las dos cosas comparadas."},
+    {t:'tf', q:"El comparativo de “big” es “biger”.", c:false, e:"Se dobla la última consonante: <b>bigger</b>."},
+    {t:'tf', q:"Beaver: 8 km/h, Sloth: 2 km/h → “A beaver is faster than a sloth.” es correcta.", c:true, e:"¡Sí! 8 km/h > 2 km/h."},
+    {t:'fill', q:"A sloth is ___ than a beaver.  (tall)", a:["taller"], hint:["taller","more tall"], e:"<b>tall → taller</b> (adjetivo corto)."},
+    {t:'fill', q:"A beaver is ___ than a sloth.  (heavy)", a:["heavier"], hint:["heavier","more heavy"], e:"<b>heavy → heavier</b> (-y cambia a -ier)."},
+    {t:'fill', q:"A beaver is ___ than a sloth.  (fast)", a:["faster"], hint:["faster","more fast"], e:"<b>fast → faster</b>."},
+    {t:'fill', q:"A butterfly is ___ ___ than a beaver.  (beautiful)  — escribe las dos palabras", a:["more beautiful"], hint:["more beautiful","beautifuler"], e:"<b>beautiful</b> es largo → <b>more beautiful than</b>."},
+    {t:'fill', q:"A cat is ___ ___ than a dog.  (intelligent) — escribe las dos palabras", a:["more intelligent"], hint:["more intelligent","intelligenter"], e:"<b>more intelligent than</b>."},
+    {t:'order', title:"Ordena la oración comparativa", items:["An","elephant","is","bigger","than","a","hippo."]},
+    {t:'order', title:"Ordena la oración comparativa", items:["A","lion","is","more","dangerous","than","a","sloth."]},
+    {t:'match', title:"Relaciona el adjetivo con su comparativo", pairs:[
+      ["big","bigger"],["heavy","heavier"],["dangerous","more dangerous"],["good","better"],["lazy","lazier"]
+    ]},
+    {t:'match', title:"Relaciona cada comparación con el animal correcto", pairs:[
+      ["…is faster than a sloth.","a cheetah"],
+      ["…is more colorful than an eagle.","a butterfly"],
+      ["…is bigger than a monkey.","an elephant"],
+      ["…is lazier than a cheetah.","a sloth"]
+    ]}
+  ]
+},
+
+/* ---------------------------------------------------------------- NIVEL 4 */
+{
+  nombre:"Superlative Adjectives", emoji:"🏆", sub:"Lesson 2 · el más… de todos",
+  teoria:{
+    intro:"Los <b>superlativos</b> se usan para decir que algo es <b>el más</b> de un grupo (3 o más). ¡Siempre llevan <span class='k'>the</span>!",
+    puntos:[
+      "Adjetivos <b>cortos</b> → <span class='k'>the</span> + adjetivo + <span class='k'>-est</span>: <i>the fastest</i>, <i>the biggest</i>, <i>the strongest</i>.",
+      "Adjetivos <b>largos</b> → <span class='k'>the most</span> + adjetivo: <i>the most dangerous</i>, <i>the most colorful</i>, <i>the most beautiful</i>.",
+      "Terminación en <b>-y</b> → <b>-iest</b>: <i>lazy → the laziest</i>, <i>heavy → the heaviest</i>.",
+      "Se dobla la consonante final: <i>big → the biggest</i>.",
+      "Irregulares: <i>good → <b>the best</b></i>, <i>bad → <b>the worst</b></i>.",
+      "Pregunta típica: <span class='k'>Which animal is the …?</span>"
+    ],
+    resumen:"Comparativo = entre 2 (<b>-er / more … than</b>). Superlativo = entre 3 o más (<b>the -est / the most …</b>).",
+    ejemplos:[
+      "Which animal is <b>the most dangerous</b>? — The lion.",
+      "Which animal is <b>the most colorful</b>? — The parrot.",
+      "Which animal is <b>the fastest</b>? — The cheetah.",
+      "Which animal is <b>the slowest</b>? — The sloth.",
+      "Harry <b>is the biggest</b> eagle here. He measures 105 cm.",
+      "Charlie is <b>the most beautiful</b> eagle because of his colorful feathers."
+    ],
+    dato:"🧠 Truco: si ves <b>than</b> → comparativo. Si ves <b>the</b> al principio → superlativo. ¡<i>the</i> es la señal del campeón! 🏅"
+  },
+  acts:[
+    {t:'flash', title:"Flashcards: adjetivo → superlativo", cards:[
+      ["big","the biggest"],["fast","the fastest"],["slow","the slowest"],
+      ["strong","the strongest"],["long","the longest"],["tall","the tallest"],
+      ["dangerous","the most dangerous"],["colorful","the most colorful"],
+      ["beautiful","the most beautiful"],["heavy","the heaviest"],
+      ["good","the best (irregular)"],["bad","the worst (irregular)"]
+    ]},
+    {t:'flash', title:"Flashcards: los datos del texto “Meet our eagles!”", cards:[
+      ["Harry the Harpy Eagle","is the biggest eagle — he measures 105 cm."],
+      ["Gerty's wings","are longer than Harry's wings, at 2 m long."],
+      ["Gerty flies at 241 km/h","She is the fastest eagle."],
+      ["Harry at catching food","He is the strongest at catching food."],
+      ["Harry's beak","is bigger than Charlie's and Gerty's."],
+      ["Charlie the Crested Serpent Eagle","is the most beautiful eagle — colorful feathers."]
+    ]},
+    {t:'mc', q:"Which animal is ___ ? (dangerous) — beaver / butterfly / lion", o:["the most dangerous","the dangerousest","more dangerous"], c:0,
+      e:"¡Correcto! <b>the most dangerous</b>… y la respuesta es el <b>lion</b>.",
+      w:["","Los adjetivos largos nunca llevan -est.","Ese es comparativo; la pregunta compara tres animales."]},
+    {t:'mc', q:"Which animal is the most colorful? eagle / sloth / parrot", o:["eagle","sloth","parrot"], c:2,
+      e:"¡Muy bien! El <b>parrot</b> (loro) es el más colorido.",
+      w:["El águila tiene colores más apagados.","El perezoso es café/gris.",""]},
+    {t:'mc', q:"Which animal is the fastest? giant tortoise / cheetah / lion", o:["giant tortoise","cheetah","lion"], c:1,
+      e:"¡Exacto! El <b>cheetah</b> es el animal terrestre más rápido.",
+      w:["La tortuga gigante es lentísima.","","El león es rápido, pero el guepardo lo supera."]},
+    {t:'mc', q:"Which animal is the slowest? sloth / toucan / beaver", o:["sloth","toucan","beaver"], c:0,
+      e:"¡Sí! El <b>sloth</b> es el más lento (2 km/h).",
+      w:["","El tucán vuela.","El castor nada a 8 km/h."]},
+    {t:'mc', q:"Harry ___ eagle here. He measures 105 cm.", o:["is bigger than","is the biggest","is more big"], c:1,
+      e:"¡Perfecto! Compara con TODAS las águilas del grupo → superlativo.",
+      w:["Falta el segundo elemento con <i>than</i>.","","Esa forma no existe."]},
+    {t:'mc', q:"Gerty can fly at 241 km/h. She is ___ eagle.", o:["the fastest","faster than","the most fast"], c:0,
+      e:"¡Bien! Es la más rápida de las tres → <b>the fastest</b>.",
+      w:["","<i>than</i> necesita un segundo elemento para comparar.","<i>fast</i> es corto: <b>the fastest</b>."]},
+    {t:'mc', q:"Charlie is ___ eagle because of his colorful feathers.", o:["the beautifulest","the most beautiful","more beautiful"], c:1,
+      e:"¡Muy bien! <b>beautiful</b> es largo → <b>the most beautiful</b>.",
+      w:["Esa palabra no existe.","","Le falta el 'the' y el contexto pide superlativo."]},
+    {t:'mc', q:"El superlativo de “good” es…", o:["the goodest","the best","the better"], c:1,
+      e:"¡Correcto! <b>good → the best</b> (irregular).",
+      w:["No existe.","","<i>better</i> es el comparativo, no el superlativo."]},
+    {t:'tf', q:"“Gerty's wings are longer than Harry's wings.” es una comparación entre dos.", c:true, e:"¡Sí! Lleva <b>than</b> → comparativo."},
+    {t:'tf', q:"Los superlativos siempre llevan la palabra “the”.", c:true, e:"¡Exacto! <b>the</b> fastest, <b>the</b> most dangerous…"},
+    {t:'tf', q:"“the most fast” es la forma correcta del superlativo de “fast”.", c:false, e:"<i>fast</i> es corto → <b>the fastest</b>."},
+    {t:'tf', q:"Harry's beak is bigger than Charlie's and Gerty's.", c:true, e:"¡Correcto! Así lo dice el texto de las águilas."},
+    {t:'tf', q:"Usamos el superlativo cuando comparamos solamente dos cosas.", c:false, e:"El superlativo es para <b>tres o más</b>. Para dos usamos el comparativo con <i>than</i>."},
+    {t:'fill', q:"Which animal is ___ ___ ___ (dangerous)? — escribe las tres palabras", a:["the most dangerous"], hint:["the most dangerous"], e:"Adjetivo largo → <b>the most dangerous</b>."},
+    {t:'fill', q:"Which animal is ___ ___ (fast)? — escribe las dos palabras", a:["the fastest"], hint:["the fastest"], e:"Adjetivo corto → <b>the fastest</b>."},
+    {t:'fill', q:"Which animal is ___ ___ (slow)? — escribe las dos palabras", a:["the slowest"], hint:["the slowest"], e:"<b>slow → the slowest</b>."},
+    {t:'fill', q:"Harry is ___ ___ (strong) at catching food. — escribe las dos palabras", a:["the strongest"], hint:["the strongest"], e:"<b>strong → the strongest</b>."},
+    {t:'fill', q:"Gerty's wings are ___ than Harry's wings. (long)", a:["longer"], hint:["longer","the longest"], e:"Hay <b>than</b> → comparativo: <b>longer</b>."},
+    {t:'order', title:"Ordena la oración superlativa", items:["The","cheetah","is","the","fastest","animal."]},
+    {t:'order', title:"Ordena la pregunta", items:["Which","animal","is","the","most","dangerous?"]},
+    {t:'match', title:"Relaciona adjetivo y superlativo", pairs:[
+      ["fast","the fastest"],["big","the biggest"],["beautiful","the most beautiful"],["good","the best"],["heavy","the heaviest"]
+    ]},
+    {t:'match', title:"¿Comparativo o superlativo? Relaciona", pairs:[
+      ["A sloth is slower than a beaver.","Comparativo (dos animales)"],
+      ["The sloth is the slowest animal.","Superlativo (todo el grupo)"],
+      ["Gerty is faster than Harry.","Comparativo (dos animales)"],
+      ["Charlie is the most beautiful eagle.","Superlativo (todo el grupo)"]
+    ]},
+    {t:'memory', title:"Memorice: adjetivo ↔ superlativo", pairs:[
+      ["big","the biggest"],["fast","the fastest"],["good","the best"],
+      ["colorful","the most colorful"],["long","the longest"],["bad","the worst"]
+    ]}
+  ]
+},
+
+/* ---------------------------------------------------------------- NIVEL 5 */
+{
+  nombre:"Animal Actions", emoji:"🐾", sub:"Lesson 3 · verbos de acción",
+  teoria:{
+    intro:"En la Lesson 3 aprendemos <b>acciones de los animales</b>. ¡Ocho verbos clave que aparecen en toda la unidad!",
+    puntos:[
+      "<span class='k'>chew</span> masticar · <span class='k'>crawl</span> gatear / reptar · <span class='k'>dive</span> zambullirse · <span class='k'>leap</span> saltar",
+      "<span class='k'>make</span> hacer / construir · <span class='k'>roar</span> rugir · <span class='k'>sleep</span> dormir · <span class='k'>stretch</span> estirarse",
+      "En <b>presente simple</b> el verbo va tal cual con <i>I / you / we / they</i>: <i>Spiders <b>crawl</b> on the wall.</i>",
+      "Con <b>he / she / it</b> se agrega <b>-s</b>: <i>The lion <b>roars</b>.</i>",
+      "En <b>presente continuo</b> (acción ahora) usamos <span class='k'>is / are + verbo-ing</span>: <i>The lion <b>is roaring</b>.</i>",
+      "Ojo con la ortografía del -ing: <i>make → mak<b>ing</b></i> (se cae la e)."
+    ],
+    resumen:"8 verbos de acción + presente simple (<i>Spiders crawl</i>) y presente continuo (<i>The lion is roaring</i>).",
+    ejemplos:[
+      "Spiders <b>crawl</b> on the wall.",
+      "Penguins <b>dive</b> in the water.",
+      "Rabbits <b>leap</b> very well.",
+      "Birds <b>make</b> a nest to take care of their eggs.",
+      "Animals <b>chew</b> with their teeth when they eat.",
+      "The lion <b>is roaring</b> at the cheetah.",
+      "The bird <b>is making</b> a nest in the tree."
+    ],
+    dato:"🧠 Truco: <b>roar</b> suena como el rugido “rooar”. Y <b>stretch</b> es lo que haces al despertar… ¡y antes de hacer ejercicio!"
+  },
+  acts:[
+    {t:'flash', title:"Flashcards: los 8 verbos de acción", cards:[
+      ["chew","masticar — Animals chew with their teeth."],
+      ["crawl","gatear / reptar — Spiders crawl on the wall."],
+      ["dive","zambullirse — Penguins dive in the water."],
+      ["leap","saltar — Rabbits leap very well."],
+      ["make","hacer / construir — Birds make a nest."],
+      ["roar","rugir — Big cats roar."],
+      ["sleep","dormir — You sleep at night."],
+      ["stretch","estirarse — We stretch before we exercise."]
+    ]},
+    {t:'flash', title:"Flashcards: presente continuo (-ing)", cards:[
+      ["The lion is …ing at the cheetah.","roaring"],
+      ["The cheetah is …ing its legs.","stretching"],
+      ["The frog is …ing.","leaping"],
+      ["The hippo is …ing grass.","chewing"],
+      ["The baby hippo is …ing.","sleeping"],
+      ["The eagle is …ing into the water.","diving"],
+      ["The lizard is …ing up the tree.","crawling"],
+      ["The bird is …ing a nest in the tree.","making"]
+    ]},
+    {t:'fill', q:"Spiders ___ on the wall.", a:["crawl"], hint:["crawl","dive","leap"], e:"Las arañas <b>crawl</b> (reptan) por la pared."},
+    {t:'fill', q:"Penguins ___ in the water.", a:["dive"], hint:["dive","stretch","chew"], e:"Los pingüinos <b>dive</b> (se zambullen)."},
+    {t:'fill', q:"Rabbits ___ very well.", a:["leap"], hint:["leap","roar","sleep"], e:"Los conejos <b>leap</b> (saltan) muy bien."},
+    {t:'fill', q:"You ___ at night.", a:["sleep"], hint:["sleep","make","crawl"], e:"De noche tú <b>sleep</b> (duermes)."},
+    {t:'fill', q:"Birds ___ a nest to take care of their eggs.", a:["make"], hint:["make","chew","dive"], e:"Los pájaros <b>make</b> (construyen) un nido."},
+    {t:'fill', q:"Animals ___ with their teeth when they eat.", a:["chew"], hint:["chew","roar","leap"], e:"Los animales <b>chew</b> (mastican) con los dientes."},
+    {t:'fill', q:"Big cats ___ .", a:["roar"], hint:["roar","sleep","dive"], e:"Los grandes felinos <b>roar</b> (rugen)."},
+    {t:'fill', q:"We ___ before we exercise.", a:["stretch"], hint:["stretch","crawl","make"], e:"Antes de hacer ejercicio nos <b>stretch</b> (estiramos)."},
+    {t:'fill', q:"The lion is ___ at the cheetah.  (roar)", a:["roaring"], hint:["roaring","roar"], e:"Presente continuo: <b>is roaring</b>."},
+    {t:'fill', q:"The cheetah is ___ its legs.  (stretch)", a:["stretching"], hint:["stretching","streching"], e:"<b>stretching</b> — se mantiene la 'h'."},
+    {t:'fill', q:"The hippo is ___ grass.  (chew)", a:["chewing"], hint:["chewing","chewwing"], e:"<b>chewing</b>."},
+    {t:'fill', q:"The eagle is ___ into the water.  (dive)", a:["diving"], hint:["diving","diveing"], e:"<b>dive → diving</b>: se cae la 'e' final."},
+    {t:'fill', q:"The bird is ___ a nest in the tree.  (make)", a:["making"], hint:["making","makeing"], e:"<b>make → making</b>: se cae la 'e' final."},
+    {t:'mc', q:"The frog is ___ .", o:["leaping","roaring","chewing"], c:0,
+      e:"¡Correcto! La rana está saltando: <b>leaping</b>.",
+      w:["","Rugir es de los felinos.","Masticar es comer, no saltar."]},
+    {t:'mc', q:"The lizard is ___ up the tree.", o:["diving","crawling","sleeping"], c:1,
+      e:"¡Muy bien! El lagarto <b>is crawling</b> (trepa/repta) por el árbol.",
+      w:["Zambullirse es en el agua.","","Si estuviera durmiendo no subiría al árbol."]},
+    {t:'mc', q:"¿Cuál es la forma -ing correcta de “make”?", o:["makeing","making","makking"], c:1,
+      e:"¡Exacto! Se elimina la <i>e</i> final: <b>making</b>.",
+      w:["Se debe quitar la 'e' antes de -ing.","","No se dobla la 'k'."]},
+    {t:'mc', q:"The baby hippo is ___ .", o:["sleeping","roaring","diving"], c:0,
+      e:"¡Sí! El hipopótamo bebé está durmiendo: <b>sleeping</b>.",
+      w:["","Los hipopótamos no rugen como los felinos.","No está en el agua zambulléndose."]},
+    {t:'tf', q:"“Big cats roar.” está en presente simple.", c:true, e:"¡Correcto! Es una verdad general: presente simple."},
+    {t:'tf', q:"“The lion is roaring.” significa que el león ruge ahora mismo.", c:true, e:"¡Exacto! El presente continuo indica acción en este momento."},
+    {t:'tf', q:"“crawl” significa “volar”.", c:false, e:"<b>crawl</b> es gatear o reptar. Volar es <i>fly</i>."},
+    {t:'tf', q:"“stretch” es lo que hacemos antes de hacer ejercicio.", c:true, e:"¡Sí! <i>We stretch before we exercise.</i>"},
+    {t:'match', title:"Relaciona el verbo con su significado", pairs:[
+      ["chew","masticar"],["crawl","reptar / gatear"],["dive","zambullirse"],["leap","saltar"],["roar","rugir"]
+    ]},
+    {t:'match', title:"Relaciona el animal con su acción", pairs:[
+      ["Spiders","crawl on the wall."],
+      ["Penguins","dive in the water."],
+      ["Rabbits","leap very well."],
+      ["Birds","make a nest."],
+      ["Big cats","roar."]
+    ]},
+    {t:'memory', title:"Memorice: verbo ↔ forma -ing", pairs:[
+      ["make","making"],["dive","diving"],["chew","chewing"],
+      ["stretch","stretching"],["roar","roaring"],["sleep","sleeping"]
+    ]}
+  ]
+},
+
+/* ---------------------------------------------------------------- NIVEL 6 */
+{
+  nombre:"Adverbs: fast & the fastest", emoji:"💨", sub:"Lesson 3 · adverbios comparativos y superlativos",
+  teoria:{
+    intro:"Los <b>adverbios</b> dicen <b>CÓMO</b> se hace una acción. También se pueden comparar, igual que los adjetivos… ¡pero acompañan al verbo, no al sustantivo!",
+    puntos:[
+      "Adverbios <b>cortos</b> (fast, high, hard) → <span class='k'>-er … than</span> / <span class='k'>the …est</span>: <i>faster than</i>, <i>the fastest</i>.",
+      "Adverbios terminados en <b>-ly</b> (quickly, slowly, carefully, easily) → <span class='k'>more … than</span> / <span class='k'>the most …</span>: <i>more slowly than</i>, <i>the most carefully</i>.",
+      "Irregular: <i>well → <b>better than</b> / <b>the best</b></i>.",
+      "El adverbio va <b>después del verbo</b>: <i>A lion runs <b>faster than</b> a boy.</i>",
+      "Diferencia clave: <b>adjetivo</b> describe un sustantivo (<i>a fast cheetah</i>); <b>adverbio</b> describe un verbo (<i>the cheetah runs fast</i>)."
+    ],
+    resumen:"Corto → <b>-er / the -est</b>. Termina en <b>-ly</b> → <b>more / the most</b>. Y <i>well → better → the best</i>.",
+    ejemplos:[
+      "Samira runs <b>faster than</b> Sonja.",
+      "The spider crawls <b>more slowly than</b> the giant tortoise.",
+      "Dad skateboards <b>more quickly than</b> me.",
+      "The big frogs leap <b>higher than</b> the little frogs.",
+      "Bald eagles can <b>dive the best</b>.",
+      "The sailfish swims <b>the fastest</b>.",
+      "My little brother runs <b>the most slowly</b>.",
+      "A sloth climbs trees <b>more easily than</b> a boy."
+    ],
+    dato:"🧠 Truco: si el adverbio termina en <b>-ly</b>, casi siempre necesita <b>more</b> o <b>the most</b>. ¡La “-ly” es demasiado larga para agregarle “-er”!"
+  },
+  acts:[
+    {t:'flash', title:"Flashcards: adverbio → comparativo → superlativo", cards:[
+      ["fast","faster than · the fastest"],
+      ["high","higher than · the highest"],
+      ["quickly","more quickly than · the most quickly"],
+      ["slowly","more slowly than · the most slowly"],
+      ["carefully","more carefully than · the most carefully"],
+      ["easily","more easily than · the most easily"],
+      ["well","better than · the best (irregular)"],
+      ["hard","harder than · the hardest"]
+    ]},
+    {t:'fill', q:"Samira runs ___ ___ Sonja.  (fast) — escribe las dos palabras", a:["faster than"], hint:["faster than","more fast than"], e:"<b>fast</b> es corto → <b>faster than</b>."},
+    {t:'fill', q:"The spider crawls ___ ___ ___ the giant tortoise.  (slowly) — tres palabras", a:["more slowly than"], hint:["more slowly than","slowlier than"], e:"Termina en -ly → <b>more slowly than</b>."},
+    {t:'fill', q:"Dad skateboards ___ ___ ___ me.  (quickly) — tres palabras", a:["more quickly than"], hint:["more quickly than","quicklier than"], e:"<b>more quickly than</b>."},
+    {t:'fill', q:"The big frogs leap ___ ___ the little frogs.  (high) — dos palabras", a:["higher than"], hint:["higher than","more high than"], e:"<b>high</b> es corto → <b>higher than</b>."},
+    {t:'fill', q:"Birds can dive well. Bald eagles can dive ___ ___ .  (superlativo) — dos palabras", a:["the best"], hint:["the best","the most well"], e:"<b>well → the best</b> (irregular)."},
+    {t:'fill', q:"A lot of fish swim fast. The sailfish swims ___ ___ .  — dos palabras", a:["the fastest"], hint:["the fastest","the most fast"], e:"<b>the fastest</b>."},
+    {t:'fill', q:"Most dogs chew quickly. My dog chews ___ ___ ___ .  — tres palabras", a:["the most quickly"], hint:["the most quickly","the quickliest"], e:"Adverbio en -ly → <b>the most quickly</b>."},
+    {t:'fill', q:"My mom and dad run slowly, but my little brother runs ___ ___ ___ .  — tres palabras", a:["the most slowly"], hint:["the most slowly","the slowliest"], e:"<b>the most slowly</b>."},
+    {t:'mc', q:"A lion runs ___ a boy.", o:["faster than","the fastest","more fast than"], c:0,
+      e:"¡Correcto! Comparación entre dos → <b>faster than</b>.",
+      w:["","El superlativo no lleva <i>than</i> con un solo rival.","<i>fast</i> es corto: nunca 'more fast'."]},
+    {t:'mc', q:"A sloth climbs trees ___ a boy.", o:["easier than","more easily than","the most easily"], c:1,
+      e:"¡Muy bien! <b>easily</b> termina en -ly → <b>more easily than</b>.",
+      w:["'easier' es el adjetivo; el adverbio es 'easily'.","","Ese es superlativo, pero aquí comparamos con una persona (dos)."]},
+    {t:'mc', q:"A lion leaps ___ of the three.", o:["higher than","the highest","more high"], c:1,
+      e:"¡Exacto! Entre tres → superlativo <b>the highest</b>.",
+      w:["<i>than</i> se usa entre dos.","","Esa forma no existe."]},
+    {t:'mc', q:"A sloth crawls ___ of the three.", o:["the most slowly","more slowly","slowlier"], c:0,
+      e:"¡Perfecto! <b>the most slowly</b>.",
+      w:["","Ese es el comparativo y necesita <i>than</i>.","Esa palabra no existe."]},
+    {t:'mc', q:"¿Cuál es el superlativo del adverbio “well”?", o:["the goodest","the best","the most well"], c:1,
+      e:"¡Sí! <b>well → the best</b>.",
+      w:["No existe.","","No se usa 'more/most' con well."]},
+    {t:'mc', q:"En “The cheetah runs fast”, la palabra “fast” es…", o:["un adjetivo","un adverbio","un sustantivo"], c:1,
+      e:"¡Correcto! Describe CÓMO corre → es <b>adverbio</b>.",
+      w:["Sería adjetivo en 'a fast cheetah'.","","'fast' no nombra una cosa."]},
+    {t:'tf', q:"Los adverbios terminados en -ly usan “more” para el comparativo.", c:true, e:"¡Correcto! <i>slowly → more slowly than</i>."},
+    {t:'tf', q:"“the most fast” es correcto.", c:false, e:"Lo correcto es <b>the fastest</b>."},
+    {t:'tf', q:"En “Isabela climbs the most carefully”, la frase está en superlativo.", c:true, e:"¡Exacto! <b>the most carefully</b> = la que trepa con más cuidado de todas."},
+    {t:'tf', q:"Un adverbio describe a un sustantivo.", c:false, e:"El adverbio describe al <b>verbo</b> (cómo se hace la acción). El adjetivo describe al sustantivo."},
+    {t:'order', title:"Ordena la oración con adverbio comparativo", items:["A","lion","runs","faster","than","a","boy."]},
+    {t:'order', title:"Ordena la oración con adverbio superlativo", items:["The","sailfish","swims","the","fastest."]},
+    {t:'order', title:"Ordena la oración", items:["The","spider","crawls","more","slowly","than","the","giant","tortoise."]},
+    {t:'match', title:"Relaciona adverbio y comparativo", pairs:[
+      ["fast","faster than"],["slowly","more slowly than"],["high","higher than"],
+      ["carefully","more carefully than"],["well","better than"]
+    ]},
+    {t:'match', title:"Relaciona adverbio y superlativo", pairs:[
+      ["fast","the fastest"],["quickly","the most quickly"],["well","the best"],["easily","the most easily"]
+    ]}
+  ]
+},
+
+/* ---------------------------------------------------------------- NIVEL 7 */
+{
+  nombre:"Story: Working Together", emoji:"📖", sub:"Lesson 4 · comprensión + desafío final",
+  teoria:{
+    intro:"La historia <b>“Working Together”</b> cuenta cómo Gabriela, Valeria e Isabela ayudan a un <b>baby toucan</b> en la escuela del bosque.",
+    puntos:[
+      "1. Gabriela, Valeria e Isabela están en la <b>forest school</b> aprendiendo sobre la naturaleza.",
+      "2. Gabriela sabe mucho de <b>birds</b>: ven un pájaro y aclaran que no es un baby eagle, sino un <b>baby toucan</b>, porque <i>it has a bigger beak</i>.",
+      "3. El baby toucan cae al río. Valeria lo rescata porque <b>she is the fastest swimmer</b>.",
+      "4. Isabela trepa el árbol y pone al toucan en su nido: <i>Isabela, you can climb <b>higher than</b> me</i> · <i>And you climb <b>the most carefully</b></i>.",
+      "5. La mamá del toucan <b>is making a nest</b> en ese árbol.",
+      "6. Las niñas trabajan juntas: <i>We're good at <b>different</b> things. We make a great team!</i>"
+    ],
+    resumen:"Tres amigas rescatan a un tucán bebé. Cada una es buena en algo distinto: Gabriela sabe de aves, Valeria nada más rápido e Isabela trepa más alto y con más cuidado. ¡El trabajo en equipo gana!",
+    ejemplos:[
+      "It isn't a baby eagle. It's a baby toucan. It has a <b>bigger</b> beak.",
+      "Valeria, you must help it! You are <b>the fastest</b> swimmer.",
+      "Isabela, you can climb <b>higher than</b> me.",
+      "And you climb <b>the most carefully</b>.",
+      "We're good at <b>different</b> things. We make a great team!"
+    ],
+    dato:"🧠 Fíjate: ¡la historia usa TODO lo de la unidad! Comparativos (<i>bigger, higher than</i>), superlativos (<i>the fastest, the most carefully</i>) y acciones (<i>climb, swim, make a nest</i>)."
+  },
+  acts:[
+    {t:'order', title:"Ordena los hechos de la historia (1 a 6)", items:[
+      "The class go to the forest.",
+      "A baby toucan is in the river.",
+      "Valeria swims in the river.",
+      "Isabela climbs the tree.",
+      "The baby toucan is safe with its mother.",
+      "The three girls are a great team."
+    ]},
+    {t:'mc', q:"What animal do the girls help?", o:["a baby eagle","a baby toucan","a beaver"], c:1,
+      e:"¡Correcto! Ayudan a un <b>baby toucan</b>.",
+      w:["Al principio lo confunden, pero no es un águila.","","No aparece ningún castor en la historia."]},
+    {t:'mc', q:"How do they know it isn't a baby eagle?", o:["It has a bigger beak.","It is smaller.","It can't fly."], c:0,
+      e:"¡Muy bien! <i>It has a bigger beak</i> → es un tucán.",
+      w:["","El tamaño no es la pista de la historia.","La historia no menciona eso."]},
+    {t:'mc', q:"Why does Valeria rescue the toucan?", o:["She climbs the highest.","She is the fastest swimmer.","She knows about birds."], c:1,
+      e:"¡Exacto! <i>You are the fastest swimmer.</i>",
+      w:["La que trepa es Isabela.","","La que sabe de aves es Gabriela."]},
+    {t:'mc', q:"Who climbs the tree to put the toucan in its nest?", o:["Gabriela","Valeria","Isabela"], c:2,
+      e:"¡Sí! <b>Isabela</b> trepa el árbol.",
+      w:["Gabriela es la experta en aves.","Valeria es la nadadora.",""]},
+    {t:'mc', q:"“And you climb the most carefully.” ¿Qué tipo de forma es?", o:["comparativo","superlativo","presente continuo"], c:1,
+      e:"¡Correcto! <b>the most carefully</b> es un adverbio en superlativo.",
+      w:["Un comparativo llevaría <i>than</i>.","","El presente continuo sería <i>is climbing</i>."]},
+    {t:'mc', q:"What is the toucan's mom doing at the end?", o:["She is sleeping.","She is making a nest.","She is diving."], c:1,
+      e:"¡Muy bien! <i>Its mom is making a nest in that tree.</i>",
+      w:["No está durmiendo.","","No se zambulle."]},
+    {t:'mc', q:"What is the message of the story?", o:["Being the fastest is all that matters.","They are good at different things and make a great team.","Only one girl can help."], c:1,
+      e:"¡Perfecto! Cada una aporta algo distinto: eso es trabajo en equipo.",
+      w:["La historia valora todas las habilidades, no solo la velocidad.","","Las tres ayudan juntas."]},
+    {t:'tf', q:"The girls are in the city.", c:false, e:"Están en el <b>forest</b> (el bosque), en la forest school."},
+    {t:'tf', q:"Gabriela knows about plants.", c:false, e:"Gabriela sabe mucho sobre <b>birds</b> (aves)."},
+    {t:'tf', q:"A toucan has a bigger beak than an eagle.", c:true, e:"¡Correcto! Por eso saben que es un tucán."},
+    {t:'tf', q:"Valeria can swim more quickly than Isabela.", c:true, e:"¡Sí! Valeria es <b>the fastest swimmer</b>."},
+    {t:'tf', q:"Isabela can climb higher than Gabriela.", c:true, e:"¡Exacto! <i>Isabela, you can climb higher than me.</i>"},
+    {t:'tf', q:"The girls are good at the same things.", c:false, e:"Son buenas en cosas <b>different</b> (diferentes), y por eso son un gran equipo."},
+    {t:'fill', q:"Corrige: “The girls are in the city.” → The girls are in the ___ .", a:["forest"], hint:["forest","city","river"], e:"La historia ocurre en el bosque: <b>forest</b>."},
+    {t:'fill', q:"Corrige: “Gabriela knows about plants.” → Gabriela knows about ___ .", a:["birds"], hint:["birds","plants","fish"], e:"Gabriela sabe de <b>birds</b>."},
+    {t:'fill', q:"Corrige: “A toucan has a smaller beak than an eagle.” → a ___ beak", a:["bigger"], hint:["bigger","smaller","longer"], e:"El tucán tiene un pico <b>bigger</b> (más grande)."},
+    {t:'fill', q:"Corrige: “The girls are good at the same things.” → at ___ things", a:["different"], hint:["different","same","new"], e:"Son buenas en cosas <b>different</b>."},
+    {t:'match', title:"Relaciona cada niña con su habilidad", pairs:[
+      ["Gabriela","She knows a lot about birds."],
+      ["Valeria","She is the fastest swimmer."],
+      ["Isabela","She climbs the highest and the most carefully."]
+    ]},
+
+    /* ---- Desafío final: mezcla de toda la unidad ---- */
+    {t:'mc', q:"🏁 DESAFÍO FINAL — This animal has eight arms.", o:["an octopus","a spider","a sailfish"], c:0,
+      e:"¡Bien! <b>An octopus</b> tiene ocho brazos.",
+      w:["","La araña tiene ocho patas, no brazos.","El pez vela no tiene brazos."]},
+    {t:'mc', q:"🏁 DESAFÍO FINAL — A cheetah is ___ a sloth.", o:["lazier than","faster than","the fastest"], c:1,
+      e:"¡Correcto! Comparación entre dos → <b>faster than</b>.",
+      w:["El perezoso es el 'lazier'.","","Falta contexto de grupo y sobra el <i>than</i> ausente."]},
+    {t:'mc', q:"🏁 DESAFÍO FINAL — Which animal is the most colorful?", o:["sloth","eagle","parrot"], c:2,
+      e:"¡Sí! El <b>parrot</b>.",
+      w:["El perezoso no es colorido.","El águila tampoco.",""]},
+    {t:'mc', q:"🏁 DESAFÍO FINAL — Penguins ___ in the water.", o:["crawl","dive","roar"], c:1,
+      e:"¡Muy bien! Los pingüinos <b>dive</b>.",
+      w:["Reptar es de arañas y lagartos.","","Rugir es de los grandes felinos."]},
+    {t:'mc', q:"🏁 DESAFÍO FINAL — My little brother runs ___ .", o:["the most slowly","more slowly","slowlier"], c:0,
+      e:"¡Perfecto! Superlativo de adverbio en -ly → <b>the most slowly</b>.",
+      w:["","Ese es comparativo y necesita <i>than</i>.","Esa palabra no existe."]},
+    {t:'tf', q:"🏁 DESAFÍO FINAL — “It can fly very high.” describe una habilidad.", c:true, e:"¡Correcto! <b>can</b> = habilidad."},
+    {t:'tf', q:"🏁 DESAFÍO FINAL — “the biggest” es un comparativo.", c:false, e:"Es un <b>superlativo</b>: lleva <i>the</i> y no lleva <i>than</i>."},
+    {t:'fill', q:"🏁 DESAFÍO FINAL — Harry is ___ ___ eagle. He measures 105 cm. (big) — dos palabras", a:["the biggest"], hint:["the biggest","bigger than"], e:"<b>the biggest</b>."},
+    {t:'memory', title:"🏁 Memorice final: repasa toda la Unit 7", pairs:[
+      ["toucan","tucán"],["chew","masticar"],["the fastest","el más rápido"],
+      ["more colorful than","más colorido que"],["stretch","estirarse"],["beaver","castor"]
+    ]}
+  ]
+}
+];
+
+/* ==========================================================================
+   3) ESTADO DEL JUEGO
+   ========================================================================== */
+const S = {
+  pts:0, xp:0, streak:0, bestStreak:0,
+  ok:0, bad:0, t0:null,
+  lvlDone:[],       // índices completados
+  lvlStars:{},      // idx -> estrellas
+  lvlStats:{},      // idx -> {ok,bad}
+  medals:new Set(),
+  cur:null, qi:0, curOk:0, curBad:0
+};
+const el = id => document.getElementById(id);
+const $screen = () => el('screen');
+
+/* ---------- utilidades ---------- */
+function shuffle(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}return x;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function norm(s){return String(s).toLowerCase().trim().replace(/[.,!?;:]+$/,'').replace(/\s+/g,' ').replace(/[’‘]/g,"'");}
+function toast(msg){const t=el('toast');t.innerHTML=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1900);}
+const PRAISE=["¡Excelente! 🎉","¡Muy bien! 👏","¡Perfecto! ⭐","¡Genial! 🚀","¡Lo lograste! 💪","¡Increíble! 🌟","¡Sigue así! 🔥"];
+const praise=()=>PRAISE[Math.floor(Math.random()*PRAISE.length)];
+
+/* ---------- HUD ---------- */
+function hud(){
+  el('uiPts').textContent=S.pts;
+  el('uiXp').textContent=S.xp;
+  el('uiStreak').textContent=S.streak;
+  const total=NIVELES.length;
+  el('uiBar').style.width=Math.round(S.lvlDone.length/total*100)+'%';
+}
+function award(base){
+  let g=base;
+  if(S.streak>=3) g+=5;
+  if(S.streak>=5) g+=10;
+  S.pts+=g; S.xp+=g;
+  hud();
+  return g;
+}
+function correct(extra){
+  S.ok++; S.curOk++; S.streak++;
+  if(S.streak>S.bestStreak) S.bestStreak=S.streak;
+  const g=award(extra||10);
+  if(S.streak===3) toast("🔥 ¡Racha de 3! +5 bonus");
+  if(S.streak===5) toast("🔥🔥 ¡Racha de 5! +10 bonus");
+  return g;
+}
+function wrong(){ S.bad++; S.curBad++; S.streak=0; hud(); }
+
+/* ==========================================================================
+   4) PANTALLAS
+   ========================================================================== */
+function pantallaInicio(){
+  el('topbar').classList.add('hidden');
+  const m=window.GUIA_META;
+  const nActs=NIVELES.reduce((a,l)=>a+l.acts.length,0);
+  $screen().innerHTML=`
+  <div class="hero">
+    <div class="emoji">${m.emoji}</div>
+    <h1>The World of Animals</h1>
+    <p><b>${esc(m.asignatura)}</b> · ${esc(m.curso)} · ${esc(m.unidad)}</p>
+    <p class="small">${m.desc}</p>
+    <div class="pills">${m.tags.map(t=>`<span class="pill">${esc(t)}</span>`).join('')}</div>
+  </div>
+
+  <div class="card">
+    <h2>¿Cómo funciona? 🎮</h2>
+    <p>Vas a recorrer <b>7 niveles</b>. En cada uno primero aprendes la teoría con ejemplos y luego juegas con actividades: preguntas, verdadero/falso, flashcards, completar, relacionar, ordenar y memorice.</p>
+    <ul>
+      <li>⭐ Ganas <b>puntos y XP</b> por cada respuesta correcta.</li>
+      <li>🔥 Si aciertas seguido consigues <b>bonus por racha</b>.</li>
+      <li>🏅 Cada nivel te da <b>estrellas</b> según tu porcentaje de aciertos.</li>
+      <li>🔓 Los niveles se <b>desbloquean uno a uno</b>.</li>
+    </ul>
+    <div class="box dato"><h4>Antes de empezar</h4>Cuando te equivoques, lee la explicación: ahí está lo que va a salir en la prueba. ¡No te apures! 🦥</div>
+    <div class="btn-row"><button class="btn" id="go">¡Empezar! 🚀</button></div>
+  </div>
+  <footer>${esc(m.semestre)} · ${esc(m.curso)} · Guía de estudio interactiva</footer>`;
+  el('go').onclick=()=>{ if(!S.t0) S.t0=Date.now(); pantallaMapa(); };
+  window.scrollTo(0,0);
+}
+
+function pantallaMapa(){
+  el('topbar').classList.remove('hidden'); hud();
+  const items=NIVELES.map((l,i)=>{
+    const unlocked = i===0 || S.lvlDone.includes(i-1);
+    const done=S.lvlDone.includes(i);
+    const st=S.lvlStars[i]||0;
+    return `<button class="lvl" data-i="${i}" ${unlocked?'':'disabled'}>
+      <span class="ic">${unlocked?l.emoji:'🔒'}</span>
+      <span class="tx">
+        <b>Nivel ${i+1} · ${esc(l.nombre)}</b>
+        <span>${esc(l.sub)} · ${l.acts.length} actividades</span>
+        <span class="stars">${done?('★'.repeat(st)+'☆'.repeat(3-st)):(unlocked?'Disponible':'Bloqueado')}</span>
+      </span>
+    </button>`;
+  }).join('');
+  const all=S.lvlDone.length===NIVELES.length;
+  $screen().innerHTML=`
+    <div class="card">
+      <h2>🗺️ Mapa de niveles</h2>
+      <p class="muted small">Completa cada nivel para desbloquear el siguiente.</p>
+      <div class="levels">${items}</div>
+      ${all?`<div class="btn-row"><button class="btn" id="fin">Ver mi resultado final 🏆</button></div>`:''}
+      <div class="btn-row"><button class="btn ghost" id="rein">↺ Reiniciar todo</button></div>
+    </div>`;
+  $screen().querySelectorAll('.lvl').forEach(b=>b.onclick=()=>abrirNivel(+b.dataset.i));
+  if(all) el('fin').onclick=pantallaFinal;
+  el('rein').onclick=reiniciar;
+  window.scrollTo(0,0);
+}
+
+function abrirNivel(i){
+  S.cur=i; S.qi=0; S.curOk=0; S.curBad=0;
+  pantallaTeoria(i);
+}
+
+function pantallaTeoria(i){
+  const l=NIVELES[i], t=l.teoria;
+  $screen().innerHTML=`
+  <div class="card">
+    <div class="qhead"><span class="badge">Nivel ${i+1} de ${NIVELES.length}</span><span>${esc(l.sub)}</span></div>
+    <h2>${l.emoji} ${esc(l.nombre)}</h2>
+    <p>${t.intro}</p>
+    <h3>📌 Lo que tienes que saber</h3>
+    <ul>${t.puntos.map(p=>`<li>${p}</li>`).join('')}</ul>
+    <div class="box res"><h4>Resumen rápido</h4>${t.resumen}</div>
+    <div class="box ej"><h4>Ejemplos</h4><ul>${t.ejemplos.map(e=>`<li>${e}</li>`).join('')}</ul></div>
+    <div class="box dato"><h4>Dato curioso</h4>${t.dato}</div>
+    <div class="btn-row">
+      <button class="btn ghost" id="atras">‹ Niveles</button>
+      <button class="btn" id="jugar">¡A practicar! (${l.acts.length}) ▶</button>
+    </div>
+  </div>`;
+  el('atras').onclick=pantallaMapa;
+  el('jugar').onclick=()=>{S.qi=0;render();};
+  window.scrollTo(0,0);
+}
+
+/* ---------- Router de actividades ---------- */
+function render(){
+  const l=NIVELES[S.cur];
+  if(S.qi>=l.acts.length){ return pantallaNivelCompleto(); }
+  const a=l.acts[S.qi];
+  const head=`<div class="qhead"><span class="badge">Nivel ${S.cur+1} · ${S.qi+1}/${l.acts.length}</span><span>${esc(l.nombre)}</span></div>`;
+  const box=document.createElement('div');
+  box.className='card';
+  box.innerHTML=head+'<div id="body"></div>';
+  $screen().innerHTML=''; $screen().appendChild(box);
+  ({mc:rMC,tf:rTF,fill:rFill,match:rMatch,order:rOrder,memory:rMemory,flash:rFlash})[a.t](a,el('body'));
+  window.scrollTo(0,0);
+}
+function next(){ S.qi++; render(); }
+function btnNext(cont,label){
+  const d=document.createElement('div'); d.className='btn-row';
+  d.innerHTML=`<button class="btn" id="nx">${label||'Siguiente ▶'}</button>`;
+  cont.appendChild(d); el('nx').onclick=next; el('nx').focus();
+}
+
+/* ---------- Selección múltiple ---------- */
+function rMC(a,c){
+  const idx=shuffle(a.o.map((_,i)=>i));
+  c.innerHTML=`<div class="q">${a.q}</div><div class="opts" id="op"></div><div id="fb"></div>`;
+  const op=el('op');
+  idx.forEach(i=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.innerHTML=esc(a.o[i]);
+    b.onclick=()=>{
+      op.querySelectorAll('.opt').forEach(x=>{x.classList.add('done');x.onclick=null;});
+      const good = i===a.c;
+      b.classList.add(good?'good':'bad');
+      op.querySelectorAll('.opt').forEach((x,k)=>{ if(esc(a.o[a.c])===x.innerHTML) x.classList.add('good'); });
+      if(good){ const g=correct(10); el('fb').innerHTML=`<div class="fb good">${praise()} ${a.e} <br><b>+${g} pts</b></div>`; }
+      else{ wrong(); const w=(a.w&&a.w[i])?a.w[i]:''; el('fb').innerHTML=`<div class="fb bad">❌ ${w?w+'<br>':''}<b>Respuesta correcta:</b> ${esc(a.o[a.c])}. ${a.e}</div>`; }
+      btnNext(c);
+    };
+    op.appendChild(b);
+  });
+}
+
+/* ---------- Verdadero / Falso ---------- */
+function rTF(a,c){
+  c.innerHTML=`<div class="q">${a.q}</div>
+    <div class="tfrow" id="op">
+      <button class="opt center" data-v="1">✅ True</button>
+      <button class="opt center" data-v="0">❌ False</button>
+    </div><div id="fb"></div>`;
+  el('op').querySelectorAll('.opt').forEach(b=>{
+    b.onclick=()=>{
+      const v=b.dataset.v==='1';
+      el('op').querySelectorAll('.opt').forEach(x=>{x.classList.add('done');x.onclick=null;});
+      const good = v===a.c;
+      b.classList.add(good?'good':'bad');
+      if(good){ const g=correct(10); el('fb').innerHTML=`<div class="fb good">${praise()} ${a.e} <br><b>+${g} pts</b></div>`; }
+      else{ wrong(); el('fb').innerHTML=`<div class="fb bad">❌ La respuesta correcta es <b>${a.c?'True':'False'}</b>. ${a.e}</div>`; }
+      btnNext(c);
+    };
+  });
+}
+
+/* ---------- Completar ---------- */
+function rFill(a,c){
+  const hints=(a.hint&&a.hint.length)?`<div class="hintword">${a.hint.map(h=>`<span>${esc(h)}</span>`).join('')}</div>`:'';
+  c.innerHTML=`<div class="qhead"><span></span><span>✍️ Completa</span></div>
+    <div class="inline-q">${a.q.replace(/___+/g,'<b style="color:var(--brand-d)">_____</b>')}</div>
+    ${hints}
+    <div style="margin-top:12px"><input type="text" id="inp" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribe aquí…"></div>
+    <div class="btn-row" style="justify-content:flex-start"><button class="btn" id="chk">Comprobar</button></div>
+    <div id="fb"></div>`;
+  const inp=el('inp'); inp.focus();
+  const check=()=>{
+    const val=norm(inp.value);
+    if(!val) return;
+    el('chk').disabled=true; inp.disabled=true;
+    const good=a.a.some(x=>norm(x)===val);
+    if(good){ const g=correct(10); el('fb').innerHTML=`<div class="fb good">${praise()} ${a.e} <br><b>+${g} pts</b></div>`; }
+    else{ wrong(); el('fb').innerHTML=`<div class="fb bad">❌ Escribiste “${esc(inp.value)}”. <b>Respuesta correcta:</b> ${esc(a.a[0])}. ${a.e}</div>`; }
+    btnNext(c);
+  };
+  el('chk').onclick=check;
+  inp.onkeydown=e=>{ if(e.key==='Enter') check(); };
+}
+
+/* ---------- Relacionar ---------- */
+function rMatch(a,c){
+  const L=shuffle(a.pairs.map((p,i)=>({t:p[0],i})));
+  const R=shuffle(a.pairs.map((p,i)=>({t:p[1],i})));
+  c.innerHTML=`<div class="q">🔗 ${esc(a.title)}</div>
+    <p class="muted small">Toca una palabra de la izquierda y luego su pareja de la derecha.</p>
+    <div class="match">
+      <div class="mcol" id="L">${L.map(o=>`<button class="mit" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div>
+      <div class="mcol" id="R">${R.map(o=>`<button class="mit" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div>
+    </div><div id="fb"></div>`;
+  let sel=null, left=a.pairs.length;
+  const pick=(b,side)=>{
+    if(b.classList.contains('good')) return;
+    if(!sel){ sel={b,side,i:b.dataset.i}; b.classList.add('sel'); return; }
+    if(sel.side===side){ sel.b.classList.remove('sel'); sel={b,side,i:b.dataset.i}; b.classList.add('sel'); return; }
+    if(sel.i===b.dataset.i){
+      sel.b.classList.remove('sel'); sel.b.classList.add('good'); b.classList.add('good');
+      const g=correct(6); left--; sel=null;
+      if(left===0){ el('fb').innerHTML=`<div class="fb good">${praise()} ¡Completaste todas las parejas!</div>`; btnNext(c); }
+    } else {
+      wrong(); b.classList.add('shake'); sel.b.classList.add('shake');
+      const s1=sel.b; setTimeout(()=>{b.classList.remove('shake');s1.classList.remove('shake');s1.classList.remove('sel');},320);
+      sel=null;
+      el('fb').innerHTML=`<div class="fb bad">❌ Esa pareja no corresponde. ¡Inténtalo de nuevo!</div>`;
+    }
+  };
+  el('L').querySelectorAll('.mit').forEach(b=>b.onclick=()=>pick(b,'L'));
+  el('R').querySelectorAll('.mit').forEach(b=>b.onclick=()=>pick(b,'R'));
+}
+
+/* ---------- Ordenar ---------- */
+function rOrder(a,c){
+  let cur=shuffle(a.items);
+  if(cur.join('|')===a.items.join('|')) cur=shuffle(a.items);
+  c.innerHTML=`<div class="q">🔢 ${esc(a.title)}</div>
+    <p class="muted small">Usa ▲ y ▼ para mover cada elemento hasta dejarlo en el orden correcto.</p>
+    <div class="ordlist" id="ol"></div>
+    <div class="btn-row" style="justify-content:flex-start"><button class="btn" id="chk">Comprobar</button></div>
+    <div id="fb"></div>`;
+  const draw=()=>{
+    el('ol').innerHTML=cur.map((t,i)=>`<div class="ordit"><span class="n">${i+1}</span><span>${esc(t)}</span>
+      <span class="mv"><button class="mvb" data-d="-1" data-i="${i}" aria-label="Subir">▲</button><button class="mvb" data-d="1" data-i="${i}" aria-label="Bajar">▼</button></span></div>`).join('');
+    el('ol').querySelectorAll('.mvb').forEach(b=>b.onclick=()=>{
+      const i=+b.dataset.i, j=i+(+b.dataset.d);
+      if(j<0||j>=cur.length) return;
+      [cur[i],cur[j]]=[cur[j],cur[i]]; draw();
+    });
+  };
+  draw();
+  el('chk').onclick=()=>{
+    el('chk').disabled=true;
+    const rows=el('ol').querySelectorAll('.ordit');
+    let hits=0;
+    cur.forEach((t,i)=>{ const ok=t===a.items[i]; if(ok)hits++; rows[i].classList.add(ok?'good':'bad'); });
+    rows.forEach(r=>r.querySelectorAll('.mvb').forEach(b=>b.disabled=true));
+    if(hits===a.items.length){ const g=correct(15); el('fb').innerHTML=`<div class="fb good">${praise()} ¡Orden perfecto! <b>+${g} pts</b></div>`; }
+    else{ wrong(); el('fb').innerHTML=`<div class="fb bad">❌ Acertaste ${hits} de ${a.items.length}. <b>Orden correcto:</b><br>${a.items.map((t,i)=>`${i+1}. ${esc(t)}`).join('<br>')}</div>`; }
+    btnNext(c);
+  };
+}
+
+/* ---------- Memorice ---------- */
+function rMemory(a,c){
+  const deck=shuffle(a.pairs.flatMap((p,i)=>[{t:p[0],i},{t:p[1],i}]));
+  c.innerHTML=`<div class="q">🧠 ${esc(a.title)}</div>
+    <p class="muted small">Da vuelta dos tarjetas y encuentra las parejas.</p>
+    <div class="mem" id="mem">${deck.map((d,k)=>`<button class="mcard" data-i="${d.i}" data-k="${k}">?</button>`).join('')}</div>
+    <div id="fb"></div>`;
+  let open=[], lock=false, left=a.pairs.length;
+  el('mem').querySelectorAll('.mcard').forEach((b,k)=>{
+    b.onclick=()=>{
+      if(lock||b.classList.contains('done')||b.classList.contains('open')) return;
+      b.classList.add('open'); b.textContent=deck[k].t; open.push({b,i:b.dataset.i});
+      if(open.length===2){
+        lock=true;
+        if(open[0].i===open[1].i){
+          setTimeout(()=>{
+            open.forEach(o=>{o.b.classList.remove('open');o.b.classList.add('done');});
+            const g=correct(8); left--; open=[]; lock=false;
+            if(left===0){ el('fb').innerHTML=`<div class="fb good">${praise()} ¡Encontraste todas las parejas!</div>`; btnNext(c); }
+          },420);
+        } else {
+          wrong();
+          setTimeout(()=>{ open.forEach(o=>{o.b.classList.remove('open');o.b.textContent='?';}); open=[]; lock=false; },850);
+        }
+      }
+    };
+  });
+}
+
+/* ---------- Flashcards ---------- */
+function rFlash(a,c){
+  let cards=shuffle(a.cards), i=0, seen=new Set();
+  c.innerHTML=`<div class="q">🃏 ${esc(a.title)}</div>
+    <p class="muted small">Toca la tarjeta para darla vuelta. Revisa todas para avanzar.</p>
+    <div class="fcbox"><div class="fc" id="fc" tabindex="0" role="button" aria-label="Girar tarjeta">
+      <div class="fcf" id="ff"></div><div class="fcb" id="fb2"></div></div></div>
+    <div class="fcnav">
+      <button class="btn ghost" id="prev">‹ Anterior</button>
+      <span class="badge" id="cnt"></span>
+      <button class="btn ghost" id="nxt">Siguiente ›</button>
+    </div>
+    <div class="fcnav"><button class="btn ghost" id="mix">🔀 Mezclar</button></div>
+    <div id="fbz"></div>`;
+  const fc=el('fc');
+  const draw=()=>{
+    fc.classList.remove('flip');
+    el('ff').innerHTML=esc(cards[i][0]);
+    el('fb2').innerHTML=esc(cards[i][1]);
+    el('cnt').textContent=`${i+1} / ${cards.length}`;
+    seen.add(cards[i][0]);
+    if(seen.size===cards.length && !c._done){
+      c._done=true;
+      const g=award(20); S.ok++; S.curOk++;
+      el('fbz').innerHTML=`<div class="fb good">🎉 ¡Revisaste todas las flashcards! <b>+${g} pts</b></div>`;
+      btnNext(c,'Continuar ▶');
+    }
+  };
+  fc.onclick=()=>fc.classList.toggle('flip');
+  fc.onkeydown=e=>{ if(e.key===' '||e.key==='Enter'){e.preventDefault();fc.classList.toggle('flip');} };
+  el('prev').onclick=()=>{ i=(i-1+cards.length)%cards.length; draw(); };
+  el('nxt').onclick=()=>{ i=(i+1)%cards.length; draw(); };
+  el('mix').onclick=()=>{ cards=shuffle(cards); i=0; draw(); toast('🔀 Tarjetas mezcladas'); };
+  draw();
+}
+
+/* ---------- Nivel completo ---------- */
+function pantallaNivelCompleto(){
+  const i=S.cur, l=NIVELES[i];
+  const tot=S.curOk+S.curBad;
+  const pct=tot?Math.round(S.curOk/tot*100):100;
+  const stars = pct>=90?3 : pct>=70?2 : 1;
+  const prev=S.lvlStars[i]||0;
+  S.lvlStars[i]=Math.max(prev,stars);
+  S.lvlStats[i]={ok:S.curOk,bad:S.curBad,pct};
+  if(!S.lvlDone.includes(i)) S.lvlDone.push(i);
+  let bonus=50; let extra='';
+  if(S.curBad===0){ bonus+=50; extra='<div class="medal">💎 ¡Nivel perfecto! +50 bonus</div>'; S.medals.add('💎 Nivel perfecto: '+l.nombre); }
+  S.pts+=bonus; S.xp+=bonus; hud();
+  if(S.lvlDone.length===NIVELES.length) S.medals.add('🏆 Unidad 7 completa');
+  if(S.bestStreak>=8) S.medals.add('🔥 Racha de 8 o más');
+
+  const last=S.lvlDone.length===NIVELES.length;
+  $screen().innerHTML=`
+  <div class="card center">
+    <div style="font-size:56px">${stars===3?'🏅':stars===2?'🎉':'👍'}</div>
+    <h2>¡Nivel ${i+1} completado!</h2>
+    <p class="muted">${esc(l.nombre)}</p>
+    <div class="stars" style="font-size:30px">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+    <div class="stats">
+      <div class="stat"><b>${S.curOk}</b><span>Aciertos</span></div>
+      <div class="stat"><b>${S.curBad}</b><span>Errores</span></div>
+      <div class="stat"><b>${pct}%</b><span>Logro</span></div>
+      <div class="stat"><b>+${bonus}</b><span>Bonus nivel</span></div>
+    </div>
+    <div class="medals">${extra}</div>
+    <div class="btn-row">
+      <button class="btn ghost" id="rep">↺ Repetir nivel</button>
+      <button class="btn sec" id="mapa">🗺️ Mapa</button>
+      ${last?'<button class="btn" id="fin">Ver resultado final 🏆</button>':'<button class="btn" id="sig">Siguiente nivel ▶</button>'}
+    </div>
+  </div>`;
+  el('rep').onclick=()=>abrirNivel(i);
+  el('mapa').onclick=pantallaMapa;
+  if(last) el('fin').onclick=pantallaFinal; else el('sig').onclick=()=>abrirNivel(i+1);
+  window.scrollTo(0,0);
+}
+
+/* ---------- Pantalla final ---------- */
+function pantallaFinal(){
+  const tot=S.ok+S.bad;
+  const pct=tot?Math.round(S.ok/tot*100):0;
+  const mins=S.t0?Math.max(1,Math.round((Date.now()-S.t0)/60000)):0;
+  const nivel = pct>=90?'🦅 Animal Expert' : pct>=75?'🦁 Animal Explorer' : pct>=55?'🐢 Animal Learner' : '🦥 Animal Beginner';
+  if(pct>=90) S.medals.add('🦅 Animal Expert');
+  if(S.bestStreak>=5) S.medals.add('🔥 Racha máxima: '+S.bestStreak);
+
+  const debiles=Object.entries(S.lvlStats)
+    .map(([i,st])=>({i:+i,...st}))
+    .filter(x=>x.pct<80)
+    .sort((a,b)=>a.pct-b.pct);
+  const recs = debiles.length
+    ? `<ul>${debiles.map(d=>`<li>Repasa <b>${esc(NIVELES[d.i].nombre)}</b> (${d.pct}% de aciertos) — ${esc(NIVELES[d.i].sub)}</li>`).join('')}</ul>`
+    : `<p>¡Dominas todos los temas de la Unit 7! Repite la guía sin mirar la teoría para llegar aún más segura/o a la prueba. 💪</p>`;
+
+  el('topbar').classList.add('hidden');
+  $screen().innerHTML=`
+  <div class="hero"><div class="emoji">🏆</div><h1>¡Terminaste la Unit 7!</h1><p>${nivel}</p></div>
+  <div class="card">
+    <h2>📊 Tus estadísticas</h2>
+    <div class="stats">
+      <div class="stat"><b>${S.pts}</b><span>Puntos</span></div>
+      <div class="stat"><b>${S.xp}</b><span>XP</span></div>
+      <div class="stat"><b>${S.ok}</b><span>Correctas</span></div>
+      <div class="stat"><b>${S.bad}</b><span>Incorrectas</span></div>
+      <div class="stat"><b>${pct}%</b><span>Logro</span></div>
+      <div class="stat"><b>${S.bestStreak}</b><span>Mejor racha</span></div>
+      <div class="stat"><b>${S.lvlDone.length}/${NIVELES.length}</b><span>Niveles</span></div>
+      <div class="stat"><b>${mins}</b><span>Minutos</span></div>
+    </div>
+    <h3>🏅 Medallas</h3>
+    <div class="medals">${[...S.medals].map(m=>`<span class="medal">${esc(m)}</span>`).join('')||'<span class="muted small">Sigue jugando para ganar medallas.</span>'}</div>
+    <h3>⭐ Estrellas por nivel</h3>
+    <ul class="small">${NIVELES.map((l,i)=>`<li>${l.emoji} <b>${esc(l.nombre)}</b> — ${'★'.repeat(S.lvlStars[i]||0)}${'☆'.repeat(3-(S.lvlStars[i]||0))} ${S.lvlStats[i]?`(${S.lvlStats[i].pct}%)`:''}</li>`).join('')}</ul>
+    <div class="rec"><h4>📚 Recomendaciones para tu prueba</h4>${recs}</div>
+    <div class="btn-row">
+      <button class="btn sec" id="mapa">🗺️ Volver al mapa</button>
+      <button class="btn" id="again">↺ Volver a jugar</button>
+    </div>
+  </div>
+  <footer>${esc(window.GUIA_META.semestre)} · ${esc(window.GUIA_META.curso)} · ${esc(window.GUIA_META.unidad)}</footer>`;
+  el('mapa').onclick=()=>{pantallaMapa();};
+  el('again').onclick=reiniciar;
+  window.scrollTo(0,0);
+}
+
+function reiniciar(){
+  S.pts=0;S.xp=0;S.streak=0;S.bestStreak=0;S.ok=0;S.bad=0;S.t0=null;
+  S.lvlDone=[];S.lvlStars={};S.lvlStats={};S.medals=new Set();
+  S.cur=null;S.qi=0;S.curOk=0;S.curBad=0;
+  hud(); pantallaInicio(); toast('↺ Todo reiniciado');
+}
+
+/* ---------- Init ---------- */
+el('btnMapa').onclick=pantallaMapa;
+pantallaInicio();
+</script>
+</body>
+</html>
