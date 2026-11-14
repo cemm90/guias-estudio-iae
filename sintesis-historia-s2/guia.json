@@ -1,14 +1,15 @@
 {
-  "asignatura": "Historia y Geografía",
-  "curso": "Sin curso",
-  "unidad": "Sin unidad",
+  "asignatura": "Historia y Cs. Sociales",
+  "curso": "4° Básico",
+  "unidad": "Prueba de Síntesis · Mayas, aztecas e incas",
   "emoji": "🗺️",
   "color": "#E0713A",
-  "desc": "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
+  "desc": "Guía de estudio interactiva para la Prueba de Síntesis de Historia de 4° Básico: civilización maya, azteca, inca y la comparación entre las tres, con niveles, juegos y medallas.",
   "tags": [
-    "Guía de repaso"
+    "15 tarjetas"
   ],
   "listo": true,
   "autoDesc": true,
-  "autoTags": true
+  "autoTags": true,
+  "semestre": "Segundo Semestre"
 }
