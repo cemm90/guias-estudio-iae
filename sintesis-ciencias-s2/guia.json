@@ -1,0 +1,14 @@
+{
+  "asignatura": "Ciencias Naturales",
+  "curso": "Sin curso",
+  "unidad": "Sin unidad",
+  "emoji": "🔬",
+  "color": "#2FA84F",
+  "desc": "✏️ Escribe aquí una descripción breve de los contenidos de esta guía.",
+  "tags": [
+    "Guía de repaso"
+  ],
+  "listo": true,
+  "autoDesc": true,
+  "autoTags": true
+}
