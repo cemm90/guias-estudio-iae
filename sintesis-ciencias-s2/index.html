@@ -1,1 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exploradores de la Tierra · Guía de estudio Ciencias 4° Básico</title>
+<style>
+/* ===================== ESTILOS ===================== */
+:root{
+  --bg:#0f2a43; --bg2:#16405f; --card:#ffffff; --ink:#1c2b3a; --muted:#5b6b7b;
+  --u4:#e8590c; --u5:#2b8a3e; --gold:#f5b700; --ok:#2b8a3e; --bad:#c92a2a; --blue:#1971c2;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:"Trebuchet MS","Segoe UI",Verdana,sans-serif;color:var(--ink);font-size:18px;line-height:1.45;
+  background:linear-gradient(160deg,var(--bg),var(--bg2) 60%,#1f6f6b);background-attachment:fixed}
+button{font:inherit;cursor:pointer;border:none}
+button:focus-visible,input:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
+.wrap{max-width:900px;margin:0 auto;padding:12px 14px 60px}
+.screen{display:none;animation:fade .35s ease}
+.screen.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+/* Barra superior */
+#hud{position:sticky;top:0;z-index:5;background:rgba(10,30,50,.92);color:#fff;border-radius:0 0 16px 16px;padding:8px 12px;margin-bottom:14px;display:none}
+#hud.on{display:block}
+.hudrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;font-weight:bold}
+.pill{background:rgba(255,255,255,.14);padding:4px 12px;border-radius:99px;white-space:nowrap}
+.hudbtn{background:rgba(255,255,255,.14);color:#fff;border-radius:99px;padding:6px 12px;min-height:38px}
+.bar{height:14px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd43b,#fa5252);border-radius:99px;transition:width .5s}
+.barlbl{font-size:13px;opacity:.9;margin-top:3px}
+/* Tarjetas y botones */
+.card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 8px 24px rgba(0,0,0,.25);margin-bottom:16px}
+h1{font-size:2rem;margin:.2em 0}
+h2{font-size:1.45rem;margin:.2em 0 .5em}
+h3{margin:.3em 0}
+.center{text-align:center}
+.btn{display:inline-block;background:var(--blue);color:#fff;font-weight:bold;padding:14px 26px;border-radius:14px;min-height:52px;font-size:1.05rem;box-shadow:0 4px 0 rgba(0,0,0,.25);transition:transform .1s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.btn.big{font-size:1.3rem;padding:18px 36px}
+.btn.orange{background:var(--u4)} .btn.green{background:var(--u5)} .btn.gray{background:#495057} .btn.gold{background:#e67700}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.hero{font-size:4.5rem;line-height:1;animation:pop .6s}
+.muted{color:var(--muted)}
+input[type=text]{font:inherit;padding:12px 14px;border:3px solid #ced4da;border-radius:12px;width:min(100%,320px);text-align:center}
+/* Mapa de niveles */
+.unit-title{color:#fff;font-size:1.25rem;font-weight:bold;margin:18px 4px 8px;display:flex;align-items:center;gap:8px}
+.unit-title span{padding:3px 12px;border-radius:99px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.lvl{background:#fff;border-radius:16px;padding:14px;text-align:left;border-left:10px solid var(--u4);min-height:120px;box-shadow:0 5px 0 rgba(0,0,0,.25);transition:transform .15s;color:var(--ink);width:100%}
+.lvl.u5{border-left-color:var(--u5)} .lvl.fin{border-left-color:var(--gold);background:#fff9db}
+.lvl:hover:not(.lock){transform:translateY(-3px)}
+.lvl.lock{opacity:.55;cursor:not-allowed;filter:grayscale(.6)}
+.lvl .ic{font-size:2.1rem} .lvl .nm{font-weight:bold;display:block;margin:2px 0}
+.lvl .st{font-size:1.15rem;letter-spacing:2px}
+.badges{display:flex;flex-wrap:wrap;gap:8px}
+.badge{background:#f1f3f5;border-radius:12px;padding:8px 12px;font-size:.92rem;opacity:.4}
+.badge.got{opacity:1;background:#fff3bf;font-weight:bold}
+/* Aprender */
+.learn-img{display:flex;justify-content:center;margin:8px 0}
+.learn-img svg{max-width:100%;height:auto;border-radius:14px}
+.emoji-scene{font-size:3rem;text-align:center;letter-spacing:6px;margin:6px 0}
+.resumen{background:#e7f5ff;border-left:6px solid var(--blue);padding:10px 14px;border-radius:10px;margin:10px 0}
+.dato{background:#fff9db;border-left:6px solid var(--gold);padding:10px 14px;border-radius:10px;margin:10px 0}
+.dots{display:flex;gap:6px;justify-content:center;margin:10px 0}
+.dots i{width:12px;height:12px;border-radius:50%;background:#ced4da} .dots i.on{background:var(--blue)}
+ul{padding-left:1.2em;margin:.4em 0} li{margin:.25em 0}
+/* Juego */
+.qtype{display:inline-block;background:#e9ecef;border-radius:99px;padding:3px 12px;font-size:.85rem;font-weight:bold;color:#495057}
+.q{font-size:1.3rem;font-weight:bold;margin:12px 0 16px}
+.opts{display:grid;gap:10px}
+.opts.two{grid-template-columns:1fr 1fr}
+.opt{background:#f1f3f5;border:3px solid #dee2e6;border-radius:14px;padding:14px 16px;text-align:left;min-height:56px;font-size:1.05rem;color:var(--ink);transition:background .15s,transform .1s}
+.opt:hover:not(:disabled){background:#e7f5ff;border-color:#74c0fc}
+.opt.ok{background:#d3f9d8;border-color:var(--ok);animation:pop .35s}
+.opt.bad{background:#ffe3e3;border-color:var(--bad);animation:shake .35s}
+.opt.sel{background:#fff3bf;border-color:var(--gold)}
+.opt.done{background:#d3f9d8;border-color:var(--ok);opacity:.75}
+.opt:disabled{cursor:default}
+.opt .k{display:inline-block;background:#fff;border-radius:8px;padding:0 8px;margin-right:8px;font-weight:bold;color:#868e96}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.chips .opt{text-align:center;min-width:120px}
+.slot{display:inline-block;min-width:110px;border-bottom:4px solid var(--blue);text-align:center;color:var(--blue);font-weight:bold}
+.orderlist{background:#f8f9fa;border-radius:12px;padding:10px 10px 10px 34px;min-height:48px;margin-bottom:12px}
+.bigitem{font-size:1.5rem;font-weight:bold;text-align:center;background:#fff9db;border-radius:14px;padding:18px;margin-bottom:14px}
+.fb{margin-top:16px;padding:14px 16px;border-radius:14px;display:none}
+.fb.on{display:block;animation:fade .3s}
+.fb.ok{background:#d3f9d8;border:3px solid var(--ok)} .fb.bad{background:#ffe3e3;border:3px solid var(--bad)}
+.fb b.t{font-size:1.2rem;display:block;margin-bottom:4px}
+.timer{height:10px;background:#e9ecef;border-radius:99px;overflow:hidden;margin-bottom:10px}
+.timer i{display:block;height:100%;background:var(--u4);width:100%}
+/* Memorama */
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mcard{aspect-ratio:1/1;border-radius:14px;background:var(--blue);color:#fff;font-size:1.9rem;display:flex;align-items:center;justify-content:center;padding:6px;text-align:center;font-weight:bold;min-height:74px}
+.mcard.up{background:#fff3bf;color:var(--ink);font-size:.95rem;border:3px solid var(--gold)}
+.mcard.up.em{font-size:2.3rem}
+.mcard.hit{background:#d3f9d8;border-color:var(--ok)}
+/* Flashcards */
+.flash{perspective:1000px;margin:14px auto;max-width:560px}
+.flash-in{position:relative;min-height:240px;transition:transform .5s;transform-style:preserve-3d;width:100%;background:none;display:block;padding:0}
+.flash-in.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;text-align:center;font-size:1.3rem;font-weight:bold;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.face.front{background:#fff;color:var(--ink)} .face.back{background:#fff3bf;color:var(--ink);transform:rotateY(180deg);font-weight:normal}
+.face small{font-size:.85rem;color:var(--muted);font-weight:normal;margin-top:10px}
+/* Resultados */
+.stars{font-size:3rem;letter-spacing:6px;animation:pop .6s}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0}
+.stat{background:#f1f3f5;border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font-size:1.6rem}
+.confetti{position:fixed;top:-20px;font-size:1.6rem;pointer-events:none;z-index:9;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#212529;color:#fff;padding:12px 20px;border-radius:99px;font-weight:bold;z-index:10;animation:pop .4s;max-width:92vw;text-align:center}
+@media (max-width:560px){body{font-size:17px}.cols{gap:8px}.mem{grid-template-columns:repeat(3,1fr)}.opts.two{grid-template-columns:1fr}h1{font-size:1.6rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- Barra de progreso siempre visible -->
+  <div id="hud">
+    <div class="hudrow">
+      <span class="pill" id="hRank">🧭 Aprendiz</span>
+      <span class="pill">⚡ <span id="hXp">0</span> XP</span>
+      <span class="pill">⭐ <span id="hStars">0</span>/30</span>
+      <span class="pill">🔥 <span id="hStreak">0</span></span>
+      <span>
+        <button class="hudbtn" id="bSound" aria-label="Activar o silenciar sonido">🔊</button>
+        <button class="hudbtn" id="bMap" aria-label="Volver al mapa">🗺️ Mapa</button>
+      </span>
+    </div>
+    <div class="bar" aria-hidden="true"><i id="hBar"></i></div>
+    <div class="barlbl" id="hLbl">Progreso</div>
+  </div>
 
+  <!-- BIENVENIDA -->
+  <section class="screen on" id="sHome">
+    <div class="card center">
+      <div class="hero">🌍🌋🌿</div>
+      <h1>Exploradores de la Tierra</h1>
+      <p><b>Guía de estudio interactiva · Ciencias Naturales 4° Básico</b><br>
+      <span class="muted">Prueba de síntesis · Unidad 4 (La Tierra se mueve) y Unidad 5 (Ecosistemas)</span></p>
+      <p>¡Hola, explorador o exploradora! Tu misión es recorrer <b>10 niveles</b>, juntar estrellas ⭐ y ganar el <b>Desafío Final</b> 🏆.
+      En cada nivel primero <b>aprendes</b> y después <b>juegas</b>.</p>
+      <p><label for="inName">¿Cómo te llamas?</label><br><input type="text" id="inName" maxlength="20" placeholder="Tu nombre"></p>
+      <div class="btnrow"><button class="btn big green" id="bStart">¡Comenzar la aventura! 🚀</button></div>
+      <p class="muted" style="font-size:.9rem;margin-bottom:0">Consejo: activa el sonido 🔊 para escuchar los efectos. Puedes usar las teclas 1, 2, 3 y 4 para responder.</p>
+    </div>
+  </section>
+
+  <!-- MAPA -->
+  <section class="screen" id="sMap">
+    <div class="card">
+      <h2 id="mapHello">¡Elige tu misión!</h2>
+      <p class="muted" style="margin:0">Completa un nivel con al menos 1 estrella para abrir el siguiente.</p>
+      <div class="btnrow" style="justify-content:flex-start">
+        <button class="btn gold" id="bFlash">🃏 Tarjetas de repaso</button>
+        <button class="btn gray" id="bStats">📊 Mis estadísticas</button>
+      </div>
+    </div>
+    <div id="mapBody"></div>
+    <div class="card" style="margin-top:16px"><h3>🏅 Medallas</h3><div class="badges" id="badgeBox"></div></div>
+  </section>
+
+  <!-- APRENDER -->
+  <section class="screen" id="sLearn"><div class="card" id="learnBox"></div></section>
+  <!-- JUGAR -->
+  <section class="screen" id="sPlay"><div class="card" id="playBox"></div></section>
+  <!-- RESULTADO NIVEL -->
+  <section class="screen" id="sRes"><div class="card center" id="resBox"></div></section>
+  <!-- FLASHCARDS -->
+  <section class="screen" id="sFlash"><div class="card center" id="flashBox"></div></section>
+  <!-- FINAL / ESTADÍSTICAS -->
+  <section class="screen" id="sFinal"><div class="card center" id="finalBox"></div></section>
+</div>
+
+<script>
+/* =====================================================================
+   1) IMÁGENES (SVG dibujados dentro del archivo: funcionan sin internet)
+   ===================================================================== */
+const IMG = {
+esferas:`<svg viewBox="0 0 420 250" width="420" role="img" aria-label="La Tierra con atmósfera, hidrosfera y geosfera"><rect width="420" height="250" fill="#0b2545"/><circle cx="150" cy="125" r="108" fill="#a5d8ff" opacity=".35"/><circle cx="150" cy="125" r="88" fill="#1c7ed6"/><path d="M95 75q30-25 60 0t20 45-40 20-50-25z" fill="#40c057"/><path d="M165 150q30-10 45 15t-20 35-35-20z" fill="#40c057"/><path d="M110 165q15-5 20 10t-15 12z" fill="#40c057"/><g fill="#fff" font-family="Verdana" font-size="14" font-weight="bold"><text x="275" y="50">Atmósfera</text><text x="275" y="68" font-size="11" font-weight="normal">aire y gases</text><text x="275" y="118">Hidrosfera</text><text x="275" y="136" font-size="11" font-weight="normal">toda el agua</text><text x="275" y="190">Geosfera</text><text x="275" y="208" font-size="11" font-weight="normal">rocas y suelo</text></g><g stroke="#fff" stroke-width="2"><line x1="270" y1="45" x2="225" y2="50"/><line x1="270" y1="113" x2="225" y2="110"/><line x1="270" y1="185" x2="195" y2="175"/></g></svg>`,
+capas:`<svg viewBox="0 0 420 260" width="420" role="img" aria-label="Corte de la Tierra: corteza, manto, núcleo externo y núcleo interno"><rect width="420" height="260" fill="#0b2545"/><circle cx="140" cy="130" r="115" fill="#8d6e63"/><circle cx="140" cy="130" r="108" fill="#f76707"/><circle cx="140" cy="130" r="62" fill="#fcc419"/><circle cx="140" cy="130" r="30" fill="#fff3bf"/><g fill="#fff" font-family="Verdana" font-size="14" font-weight="bold"><text x="285" y="40">Corteza</text><text x="285" y="57" font-size="11" font-weight="normal">delgada, sólida y fría</text><text x="285" y="100">Manto</text><text x="285" y="117" font-size="11" font-weight="normal">la capa más gruesa</text><text x="285" y="160">Núcleo externo</text><text x="285" y="177" font-size="11" font-weight="normal">metales líquidos</text><text x="285" y="220">Núcleo interno</text><text x="285" y="237" font-size="11" font-weight="normal">sólido, el más caliente</text></g><g stroke="#fff" stroke-width="2"><line x1="280" y1="36" x2="205" y2="36"/><line x1="280" y1="96" x2="225" y2="100"/><line x1="280" y1="156" x2="190" y2="145"/><line x1="280" y1="216" x2="150" y2="135"/></g></svg>`,
+placas:`<svg viewBox="0 0 420 240" width="420" role="img" aria-label="La placa de Nazca se hunde bajo la placa Sudamericana"><rect width="420" height="240" fill="#f76707"/><rect width="420" height="70" fill="#a5d8ff"/><rect y="70" width="210" height="30" fill="#1c7ed6"/><polygon points="0,100 215,100 330,240 250,240 190,135 0,135" fill="#5c7cfa"/><polygon points="210,100 250,70 285,35 310,62 335,45 360,72 420,80 420,150 245,150" fill="#8d6e63"/><polygon points="285,35 277,47 293,47" fill="#fff"/><path d="M335 45q-6-22 6-34" stroke="#adb5bd" stroke-width="5" fill="none"/><g font-family="Verdana" font-weight="bold" font-size="13"><text x="20" y="122" fill="#fff">Placa de Nazca →</text><text x="290" y="130" fill="#fff">← Sudamericana</text><text x="20" y="90" fill="#fff" font-size="11">Océano Pacífico</text><text x="255" y="22" fill="#1c2b3a" font-size="11">Cordillera de los Andes</text><text x="30" y="200" fill="#fff">Manto</text><text x="205" y="185" fill="#fff" font-size="11" transform="rotate(50 205 185)">subducción ↘</text></g></svg>`,
+sismo:`<svg viewBox="0 0 420 240" width="420" role="img" aria-label="Hipocentro bajo la tierra y epicentro en la superficie"><rect width="420" height="240" fill="#a5d8ff"/><rect y="90" width="420" height="150" fill="#8d6e63"/><rect y="90" width="420" height="12" fill="#40c057"/><g fill="#ffe8cc" stroke="#1c2b3a" stroke-width="2"><rect x="60" y="48" width="38" height="42"/><rect x="300" y="38" width="46" height="52"/></g><path d="M0 200L160 180 260 150 420 130" stroke="#3e2723" stroke-width="4" fill="none"/><g fill="none" stroke="#fff" stroke-width="3"><circle cx="210" cy="165" r="18"/><circle cx="210" cy="165" r="36" opacity=".7"/><circle cx="210" cy="165" r="56" opacity=".45"/></g><circle cx="210" cy="165" r="8" fill="#e03131"/><circle cx="210" cy="96" r="8" fill="#f5b700" stroke="#1c2b3a" stroke-width="2"/><line x1="210" y1="104" x2="210" y2="157" stroke="#1c2b3a" stroke-dasharray="5 4" stroke-width="2"/><g font-family="Verdana" font-weight="bold" font-size="13"><text x="225" y="80" fill="#1c2b3a">Epicentro (en la superficie)</text><text x="225" y="215" fill="#fff">Hipocentro (donde se origina)</text><text x="12" y="225" fill="#fff" font-size="11">falla</text></g></svg>`,
+tsunami:`<svg viewBox="0 0 420 220" width="420" role="img" aria-label="Un sismo en el fondo del mar genera olas que crecen al llegar a la costa"><rect width="420" height="220" fill="#d0ebff"/><path d="M0 95q30-14 60 0t60 0 60 0 50-6q40-70 80-30v161H0z" fill="#1c7ed6"/><polygon points="300,220 420,220 420,95 360,105" fill="#e9c46a"/><g fill="#ffe8cc" stroke="#1c2b3a" stroke-width="2"><rect x="380" y="70" width="26" height="28"/></g><polygon points="0,220 0,185 130,180 135,170 300,220" fill="#6d4c41"/><path d="M128 190l8-22" stroke="#e03131" stroke-width="5"/><g stroke="#fff" stroke-width="3" fill="none"><path d="M120 160q12-18 24 0"/><path d="M110 140q22-26 44 0"/></g><g font-family="Verdana" font-weight="bold" font-size="12" fill="#1c2b3a"><text x="8" y="30">1. Sismo bajo el mar</text><text x="150" y="30">2. Las olas viajan</text><text x="285" y="30">3. Crecen en la costa</text></g><text x="60" y="212" font-family="Verdana" font-size="11" fill="#fff">fondo marino</text></svg>`,
+volcan:`<svg viewBox="0 0 420 260" width="420" role="img" aria-label="Partes de un volcán"><rect width="420" height="260" fill="#a5d8ff"/><rect y="200" width="420" height="60" fill="#8d6e63"/><polygon points="60,200 185,60 235,60 360,200" fill="#6d4c41"/><polygon points="185,60 210,75 235,60" fill="#e03131"/><rect x="202" y="70" width="16" height="150" fill="#f76707"/><ellipse cx="210" cy="232" rx="70" ry="22" fill="#f76707"/><path d="M228 66q30 40 60 100" stroke="#e03131" stroke-width="7" fill="none"/><g fill="#868e96"><circle cx="205" cy="38" r="18"/><circle cx="228" cy="24" r="16"/><circle cx="190" cy="18" r="13"/></g><g font-family="Verdana" font-weight="bold" font-size="12" fill="#1c2b3a"><text x="250" y="22">Cenizas y gases</text><text x="120" y="52">Cráter</text><text x="300" y="150">Lava</text><text x="60" y="140">Cono</text><text x="110" y="180" fill="#fff">Chimenea →</text><text x="290" y="238" fill="#fff">Cámara magmática</text></g><line x1="165" y1="50" x2="200" y2="62" stroke="#1c2b3a" stroke-width="2"/><line x1="285" y1="234" x2="270" y2="234" stroke="#fff" stroke-width="2"/></svg>`
+};
+
+/* =====================================================================
+   2) BANCO DE CONTENIDOS (para agregar más, edita solo esta sección)
+   Formatos:
+     mc   : [pregunta, CORRECTA, incorrecta, incorrecta, incorrecta, explicación]
+     tf   : [afirmación, true/false, explicación]
+     fill : [oración con ___, CORRECTA, distractor, distractor, explicación]
+     match: [[concepto, definición], ...]
+     order: {p: instrucción, items:[en el orden correcto]}
+     sort : {p: instrucción, bins:[categorías], items:[[texto, índice de categoría], ...]}
+     mem  : [[carta A, carta B], ...]  (memorama)
+     flash: [[frente, reverso], ...]
+   ===================================================================== */
+const LEVELS = [
+/* ---------------- UNIDAD 4 ---------------- */
+{id:1,u:4,ic:"🌍",name:"Las capas de la Tierra",rank:"Aprendiz del Planeta",
+ learn:[
+  {t:"Un planeta con tres grandes capas",img:"esferas",h:`<p>Nuestro planeta es como un gran hogar formado por <b>tres capas</b> que trabajan juntas:</p><ul><li>🌬️ <b>Atmósfera:</b> la capa de <b>aire y gases</b> que rodea la Tierra.</li><li>💧 <b>Hidrosfera:</b> toda el <b>agua</b> del planeta.</li><li>🪨 <b>Geosfera:</b> la parte <b>sólida</b>, hecha de rocas y suelo.</li></ul><p>Los seres vivos (plantas, animales y personas) forman la <b>biosfera</b> y necesitan de las tres capas para vivir.</p>`},
+  {t:"¿Para qué sirve cada capa?",h:`<ul><li>🌬️ La <b>atmósfera</b> tiene el <b>oxígeno</b> que respiramos, nos protege de los rayos dañinos del Sol y en ella ocurren las lluvias y los vientos.</li><li>💧 La <b>hidrosfera</b> incluye océanos, mares, ríos, lagos, glaciares y aguas subterráneas. El agua cubre cerca de <b>tres cuartas partes</b> de la superficie del planeta, y la mayor parte es salada.</li><li>🪨 La <b>geosfera</b> es la capa más grande: va desde el suelo que pisas hasta el centro de la Tierra.</li></ul><div class="resumen"><b>Resumen:</b> Atmósfera = aire · Hidrosfera = agua · Geosfera = rocas. Juntas hacen posible la vida.</div><div class="dato">💡 <b>Dato curioso:</b> A la Tierra le dicen el “planeta azul” porque desde el espacio se ve casi toda cubierta de agua.<br>🧠 <b>Truco:</b> <i>hidro</i> = agua (como “hidratarse”), <i>geo</i> = tierra (como “geografía”), <i>atmos</i> = vapor o aire.</div>`}
+ ],
+ mc:[
+  ["¿Cuál es la capa gaseosa que rodea la Tierra?","La atmósfera","La hidrosfera","La geosfera","El núcleo","La atmósfera es la capa de aire y gases; allí está el oxígeno que respiramos."],
+  ["¿Qué capa reúne toda el agua del planeta?","La hidrosfera","La atmósfera","La geosfera","La corteza","Hidro significa agua: océanos, ríos, lagos y glaciares forman la hidrosfera."],
+  ["La geosfera es…","la parte sólida de la Tierra, formada por rocas","la capa de aire","el conjunto de los océanos","el conjunto de los seres vivos","Geo significa tierra: la geosfera es la parte rocosa, desde la superficie hasta el centro."],
+  ["Un río, un glaciar y el mar pertenecen a la…","hidrosfera","atmósfera","geosfera","biosfera","Los tres son agua (líquida o congelada), por eso son parte de la hidrosfera."],
+  ["¿En qué capa ocurren las lluvias y los vientos?","En la atmósfera","En la geosfera","En el manto","En el núcleo","Los fenómenos del tiempo, como lluvia y viento, ocurren en la capa de aire: la atmósfera."]
+ ],
+ tf:[
+  ["La atmósfera contiene el oxígeno que respiramos.",true,"El aire de la atmósfera tiene oxígeno, necesario para los seres vivos."],
+  ["La hidrosfera solo incluye el agua de los océanos.",false,"También incluye ríos, lagos, glaciares y aguas subterráneas."],
+  ["La geosfera es la capa sólida de la Tierra.",true,"Está formada por rocas y minerales."],
+  ["La mayor parte de la superficie de la Tierra está cubierta por agua.",true,"El agua cubre cerca de tres cuartas partes de la superficie."]
+ ],
+ fill:[
+  ["La capa de aire que rodea la Tierra se llama ___.","atmósfera","hidrosfera","geosfera","La atmósfera es la capa gaseosa."],
+  ["Los océanos, ríos y lagos forman la ___.","hidrosfera","geosfera","atmósfera","Hidro = agua."]
+ ],
+ match:[["Atmósfera","Aire y gases"],["Hidrosfera","Agua del planeta"],["Geosfera","Rocas y suelo"],["Biosfera","Seres vivos"]],
+ flash:[["¿Cuáles son las tres grandes capas de la Tierra?","Atmósfera (aire), hidrosfera (agua) y geosfera (rocas)."],["¿Qué es la hidrosfera?","Toda el agua del planeta: océanos, ríos, lagos, glaciares y aguas subterráneas."],["¿Qué es la atmósfera?","La capa de gases que rodea la Tierra; tiene el oxígeno que respiramos."]]
+},
+{id:2,u:4,ic:"🍑",name:"La geosfera por dentro",rank:"Viajero al Centro de la Tierra",
+ learn:[
+  {t:"Un viaje al centro de la Tierra",img:"capas",h:`<p>La <b>geosfera</b> es como un durazno: tiene una cáscara, una pulpa y un cuesco. Sus capas son:</p><ul><li>🟤 <b>Corteza:</b> la “cáscara”. Es la capa <b>más externa, más delgada y más fría</b>. Es sólida y sobre ella vivimos. Puede ser <b>continental</b> (los continentes) u <b>oceánica</b> (el fondo del mar).</li><li>🟠 <b>Manto:</b> la “pulpa”. Es la capa <b>más gruesa</b>. Sus rocas están tan calientes que una parte se mueve lentamente, como una pasta espesa. Aquí se forma el <b>magma</b>.</li><li>🟡 <b>Núcleo:</b> el “cuesco”. Está en el centro, es la capa <b>más caliente</b> y está hecho de metales: <b>hierro y níquel</b>. El <b>núcleo externo es líquido</b> y el <b>núcleo interno es sólido</b>.</li></ul>`},
+  {t:"Mientras más adentro, más calor",h:`<p>A medida que bajamos hacia el centro de la Tierra, la <b>temperatura aumenta</b>. En la corteza podemos vivir; en el núcleo hay miles de grados de temperatura.</p><div class="resumen"><b>Resumen:</b> De afuera hacia adentro: <b>corteza → manto → núcleo externo → núcleo interno</b>. La corteza es la más delgada, el manto la más gruesa y el núcleo la más caliente.</div><div class="dato">💡 <b>Dato curioso:</b> Si la Tierra fuera del tamaño de una manzana, la corteza sería tan delgada como su cáscara.<br>🧠 <b>Truco:</b> “<b>C</b>o<b>M</b>e <b>N</b>ueces”: <b>C</b>orteza, <b>M</b>anto, <b>N</b>úcleo.</div>`}
+ ],
+ mc:[
+  ["¿Cuál es la capa más externa y delgada de la geosfera?","La corteza","El manto","El núcleo externo","El núcleo interno","La corteza es como la cáscara: delgada, sólida y fría."],
+  ["¿Cuál es la capa más gruesa de la geosfera?","El manto","La corteza","El núcleo interno","La atmósfera","El manto está entre la corteza y el núcleo y es la capa de mayor grosor."],
+  ["¿De qué está formado principalmente el núcleo?","De hierro y níquel","De agua y hielo","De arena y arcilla","De aire caliente","El núcleo está hecho de metales: hierro y níquel."],
+  ["¿En qué capa de la geosfera vivimos los seres vivos?","En la corteza","En el manto","En el núcleo externo","En el núcleo interno","Solo en la corteza hay condiciones para la vida."],
+  ["¿Qué ocurre con la temperatura al avanzar hacia el centro de la Tierra?","Aumenta","Disminuye","No cambia","Se congela","Mientras más profundo, más calor: el núcleo es la capa más caliente."],
+  ["¿En qué capa se forma el magma?","En el manto","En la corteza oceánica","En la atmósfera","En el núcleo interno","El magma es roca fundida que se forma en el manto."]
+ ],
+ tf:[
+  ["El manto se ubica entre la corteza y el núcleo.",true,"El orden es corteza, manto y núcleo."],
+  ["La corteza es la capa más caliente de la Tierra.",false,"Es la más fría. La más caliente es el núcleo."],
+  ["El núcleo externo es líquido y el núcleo interno es sólido.",true,"Ambos son de metal, pero el externo está fundido."],
+  ["La corteza puede ser continental u oceánica.",true,"La continental forma los continentes y la oceánica el fondo del mar."]
+ ],
+ fill:[
+  ["La capa más gruesa de la geosfera es el ___.","manto","núcleo","suelo","El manto es la capa de mayor grosor."],
+  ["El fondo del mar está formado por corteza ___.","oceánica","continental","líquida","La corteza bajo los océanos se llama oceánica."]
+ ],
+ match:[["Corteza","Delgada, sólida y fría"],["Manto","La capa más gruesa; aquí se forma el magma"],["Núcleo externo","Metales en estado líquido"],["Núcleo interno","Esfera sólida y muy caliente"]],
+ order:{p:"Ordena las capas desde AFUERA hacia ADENTRO",items:["Corteza","Manto","Núcleo externo","Núcleo interno"]},
+ flash:[["¿Cuáles son las capas de la geosfera?","Corteza, manto y núcleo (externo e interno)."],["¿Cómo es la corteza?","La capa más externa, delgada, sólida y fría. En ella vivimos."],["¿Cómo es el núcleo?","Está en el centro, es la capa más caliente y está hecho de hierro y níquel."],["¿Qué es el manto?","La capa intermedia y más gruesa; sus rocas muy calientes se mueven lentamente."]]
+},
+{id:3,u:4,ic:"🧩",name:"Placas tectónicas",rank:"Armador del Rompecabezas",
+ learn:[
+  {t:"La corteza es un rompecabezas",h:`<div class="emoji-scene">🧩🌎🧩</div><p>La corteza no es una sola pieza: está dividida en grandes trozos llamados <b>placas tectónicas</b>, que encajan como un <b>rompecabezas</b>.</p><p>Las placas “flotan” sobre el manto y <b>se mueven muy lentamente</b>: solo unos centímetros al año, ¡más o menos lo que crecen tus uñas!</p><p>Las placas pueden:</p><ul><li>💥 <b>Chocar</b> entre sí (límite convergente).</li><li>↔️ <b>Separarse</b> (límite divergente).</li><li>↕️ <b>Deslizarse</b> una al lado de la otra (límite transformante).</li></ul>`},
+  {t:"Chile, entre dos placas",img:"placas",h:`<p>Chile está sobre la <b>placa Sudamericana</b>. Frente a nuestra costa, bajo el océano Pacífico, está la <b>placa de Nazca</b>.</p><p>La placa de Nazca <b>choca y se hunde</b> por debajo de la Sudamericana. A eso se le llama <b>subducción</b>.</p><p>Ese choque formó la <b>Cordillera de los Andes</b> y es la razón de que en Chile haya tantos <b>sismos, tsunamis y volcanes</b>.</p><div class="resumen"><b>Resumen:</b> Las placas tectónicas son trozos de corteza que se mueven lentamente sobre el manto. Su movimiento produce sismos, tsunamis y erupciones volcánicas.</div><div class="dato">💡 <b>Dato curioso:</b> Hace millones de años todos los continentes estaban unidos en uno solo llamado <b>Pangea</b>. ¡El movimiento de las placas los separó!</div>`}
+ ],
+ mc:[
+  ["¿Qué son las placas tectónicas?","Grandes trozos de corteza que encajan como un rompecabezas","Nubes muy grandes","Ríos de lava","Capas de hielo del polo","La corteza está dividida en trozos llamados placas tectónicas."],
+  ["¿Sobre qué capa se mueven las placas tectónicas?","Sobre el manto","Sobre el núcleo interno","Sobre la atmósfera","Sobre la hidrosfera","Las placas son de corteza y se desplazan lentamente sobre el manto."],
+  ["¿Sobre qué placa se encuentra Chile continental?","Placa Sudamericana","Placa de Nazca","Placa Africana","Placa del Pacífico","Chile está en el borde de la placa Sudamericana."],
+  ["¿Qué placa está frente a la costa de Chile, bajo el océano Pacífico?","Placa de Nazca","Placa Sudamericana","Placa Euroasiática","Placa Africana","La placa de Nazca choca con la Sudamericana frente a nuestra costa."],
+  ["El choque entre la placa de Nazca y la Sudamericana formó…","la Cordillera de los Andes","el desierto del Sahara","el océano Atlántico","la Antártica","Al chocar las placas, la corteza se levantó y formó los Andes."],
+  ["¿Qué fenómenos produce el movimiento de las placas?","Sismos, tsunamis y erupciones volcánicas","Lluvias y arcoíris","El día y la noche","Las estaciones del año","Los tres fenómenos se originan por la interacción entre placas."]
+ ],
+ tf:[
+  ["Las placas tectónicas se mueven varios kilómetros cada día.",false,"Se mueven muy lento: solo unos centímetros al año."],
+  ["La placa de Nazca se hunde bajo la placa Sudamericana.",true,"Ese proceso se llama subducción."],
+  ["Las placas tectónicas están siempre quietas.",false,"Están en constante movimiento, aunque no lo notemos."],
+  ["Las placas tectónicas forman parte de la corteza terrestre.",true,"Son los trozos en que se divide la corteza."]
+ ],
+ fill:[
+  ["Cuando una placa se hunde debajo de otra ocurre la ___.","subducción","evaporación","erosión","Subducción: una placa se mete bajo la otra, como Nazca bajo Sudamericana."],
+  ["Las placas tectónicas encajan entre sí como un ___.","rompecabezas","espejo","río","Son piezas de corteza que encajan unas con otras."]
+ ],
+ match:[["Límite convergente","Las placas chocan"],["Límite divergente","Las placas se separan"],["Límite transformante","Las placas se deslizan de lado"],["Subducción","Una placa se hunde bajo otra"]],
+ flash:[["¿Qué son las placas tectónicas?","Grandes trozos de corteza que encajan como rompecabezas y se mueven lentamente sobre el manto."],["¿Entre qué placas se encuentra Chile?","Entre la placa de Nazca y la placa Sudamericana."],["¿Qué es la subducción?","Cuando una placa se hunde por debajo de otra."]]
+},
+{id:4,u:4,ic:"📳",name:"Sismos",rank:"Detective de Temblores",
+ learn:[
+  {t:"¿Por qué tiembla?",img:"sismo",h:`<p>Las placas tectónicas se empujan unas a otras y van <b>acumulando energía</b>, como cuando doblas una regla. Cuando esa energía se <b>libera de golpe</b>, la corteza vibra: eso es un <b>sismo</b>.</p><ul><li>🔴 <b>Hipocentro:</b> el lugar <b>bajo la tierra</b> donde se origina el sismo.</li><li>🟡 <b>Epicentro:</b> el punto de la <b>superficie</b> que está justo encima del hipocentro. Ahí se siente con más fuerza.</li></ul>`},
+  {t:"Temblor, terremoto y réplicas",h:`<div class="emoji-scene">🏠📳🏫</div><ul><li>Un <b>temblor</b> es un sismo suave o moderado.</li><li>Un <b>terremoto</b> es un sismo muy fuerte que puede causar daños.</li><li>Las <b>réplicas</b> son sismos más pequeños que ocurren después de uno grande.</li><li>El <b>sismógrafo</b> es el instrumento que registra los sismos. La <b>magnitud</b> indica cuánta energía liberó.</li></ul><p>Los sismos <b>no se pueden predecir</b>: nadie sabe el día ni la hora en que ocurrirán. Por eso hay que estar siempre preparados.</p><div class="resumen"><b>Resumen:</b> Un sismo es una vibración de la corteza por la liberación de energía entre placas. Nace en el hipocentro; el epicentro está arriba, en la superficie.</div><div class="dato">💡 <b>Dato curioso:</b> El terremoto más grande registrado en el mundo ocurrió en Chile: <b>Valdivia, 1960</b>, con magnitud 9,5.<br>🧠 <b>Truco:</b> <b>Hipo</b> = debajo (como hipopótamo bajo el agua). <b>Epi</b> = encima.</div>`}
+ ],
+ mc:[
+  ["¿Qué es un sismo?","Una vibración de la corteza por la liberación de energía","Una lluvia muy fuerte","Una ola gigante","La salida de lava de un volcán","La energía acumulada entre las placas se libera y hace vibrar la corteza."],
+  ["¿Cómo se llama el lugar bajo la tierra donde se origina un sismo?","Hipocentro","Epicentro","Cráter","Chimenea","Hipo = debajo. El hipocentro está en el interior de la Tierra."],
+  ["¿Qué es el epicentro?","El punto de la superficie ubicado sobre el hipocentro","El centro de la Tierra","La parte más alta de un volcán","Una placa tectónica","Epi = encima. Es el punto de la superficie justo arriba del origen."],
+  ["¿Qué instrumento registra los sismos?","El sismógrafo","El termómetro","El telescopio","La brújula","El sismógrafo dibuja las vibraciones del suelo."],
+  ["¿Cómo se llaman los sismos más pequeños que siguen a uno grande?","Réplicas","Epicentros","Lahares","Mareas","Después de un sismo fuerte suelen ocurrir réplicas."],
+  ["¿Por qué en Chile hay tantos sismos?","Porque está en el límite entre la placa de Nazca y la Sudamericana","Porque tiene mucha costa","Porque llueve mucho en el sur","Porque es un país muy largo","El choque constante entre ambas placas acumula y libera energía."],
+  ["¿Cuál es la diferencia entre temblor y terremoto?","El terremoto es un sismo mucho más fuerte y puede causar daños","El temblor ocurre de noche","El terremoto solo ocurre en el mar","No hay ninguna diferencia","Ambos son sismos; cambia la fuerza con que se sienten y sus efectos."]
+ ],
+ tf:[
+  ["Todos los sismos son terremotos.",false,"La mayoría son temblores suaves; solo los muy fuertes son terremotos."],
+  ["El epicentro se ubica en la superficie de la Tierra.",true,"Está justo sobre el hipocentro."],
+  ["El terremoto más grande registrado ocurrió en Valdivia en 1960.",true,"Tuvo magnitud 9,5."],
+  ["Los científicos pueden saber el día y la hora exacta de un sismo.",false,"Los sismos no se pueden predecir; por eso hay que estar preparados."]
+ ],
+ fill:[
+  ["Un sismo ocurre cuando las placas liberan de golpe la ___ acumulada.","energía","lluvia","lava","La energía acumulada se libera y hace vibrar la corteza."],
+  ["El instrumento que registra los sismos es el ___.","sismógrafo","barómetro","microscopio","El sismógrafo registra las vibraciones."]
+ ],
+ match:[["Hipocentro","Lugar bajo tierra donde se origina el sismo"],["Epicentro","Punto de la superficie sobre el origen"],["Réplica","Sismo menor que sigue a uno grande"],["Sismógrafo","Instrumento que registra los sismos"],["Terremoto","Sismo muy fuerte que puede causar daños"]],
+ flash:[["¿Qué es un sismo?","Una vibración de la corteza causada por la liberación de energía entre las placas."],["Hipocentro y epicentro","Hipocentro: origen bajo tierra. Epicentro: punto de la superficie sobre él."],["¿Qué son las réplicas?","Sismos más pequeños que ocurren después de uno grande."]]
+},
+{id:5,u:4,ic:"🌊",name:"Tsunami",rank:"Vigía del Mar",
+ learn:[
+  {t:"Olas que vienen del fondo del mar",img:"tsunami",h:`<p>Un <b>tsunami</b> (o maremoto) es una <b>serie de olas muy grandes</b>. Casi siempre se produce por un <b>sismo fuerte bajo el fondo del mar</b>: el suelo marino se mueve y empuja una enorme cantidad de agua.</p><p>En mar abierto las olas viajan rapidísimo y casi no se notan. Al acercarse a la <b>costa</b>, <b>crecen</b> e inundan la tierra.</p>`},
+  {t:"Señales de la naturaleza",h:`<div class="emoji-scene">🏖️➡️⛰️</div><p>Si estás en la costa, la naturaleza te avisa:</p><ul><li>📳 Un <b>sismo tan fuerte que cuesta mantenerse en pie</b>.</li><li>🌊 El <b>mar se recoge</b> (se aleja de la playa) o hace un ruido extraño.</li></ul><p>Si pasa algo de esto, <b>no esperes</b>: camina rápido hacia una <b>zona alta</b> y aléjate del mar.</p><div class="resumen"><b>Resumen:</b> Un tsunami es una serie de olas grandes causadas generalmente por un sismo bajo el mar. No es una sola ola: pueden llegar varias durante horas.</div><div class="dato">💡 <b>Dato curioso:</b> “Tsunami” es una palabra japonesa que significa “ola de puerto”.</div>`}
+ ],
+ mc:[
+  ["¿Qué es un tsunami?","Una serie de olas muy grandes que inundan la costa","Un viento muy fuerte","Un sismo en la cordillera","Una lluvia de cenizas","Son varias olas grandes que llegan a la costa una tras otra."],
+  ["¿Cuál es la causa más común de un tsunami?","Un sismo fuerte bajo el fondo del mar","Una tormenta eléctrica","El calor del verano","La marea de cada día","El movimiento del fondo marino empuja una gran masa de agua."],
+  ["Estás en la playa y ves que el mar se recoge muchos metros. ¿Qué haces?","Me alejo de inmediato hacia una zona alta","Voy a mirar los peces que quedaron","Me quedo sacando fotos","Me meto al agua","Que el mar se recoja es señal de tsunami: hay que evacuar sin esperar."],
+  ["¿Qué pasa con las olas de un tsunami al llegar a la costa?","Crecen en altura","Desaparecen","Se congelan","Se vuelven más pequeñas","Cerca de la costa el agua es menos profunda y las olas aumentan de altura."],
+  ["Después de la primera ola de un tsunami…","pueden llegar más olas, por eso no hay que volver","ya pasó el peligro","el mar queda tranquilo siempre","conviene bajar a la playa","Un tsunami es una serie de olas que puede durar horas."],
+  ["¿Cuál es el lugar más seguro ante un tsunami?","Una zona alta, lejos del mar","La orilla de la playa","Un muelle","La desembocadura de un río","Hay que subir a una zona alta y alejarse de la costa y de los ríos."]
+ ],
+ tf:[
+  ["Un tsunami es una sola ola gigante.",false,"Es una serie de olas que pueden llegar durante varias horas."],
+  ["Un sismo bajo el mar puede provocar un tsunami.",true,"Es su causa más frecuente."],
+  ["Si el mar se recoge, es buena idea acercarse a mirar.",false,"Es una señal de peligro: hay que evacuar a una zona alta."],
+  ["Ante un tsunami conviene evacuar caminando hacia una zona alta.",true,"A pie se evita quedar atrapado en un taco de autos."]
+ ],
+ fill:[
+  ["Un tsunami es una serie de grandes ___.","olas","nubes","rocas","Son olas que inundan la costa."],
+  ["Si estoy en la costa y hay un sismo muy fuerte, debo ir a una zona ___.","alta","baja","húmeda","Las zonas altas quedan fuera del alcance del agua."]
+ ],
+ order:{p:"Ordena cómo se produce un tsunami",items:["Ocurre un sismo fuerte bajo el fondo del mar","El fondo marino empuja una gran masa de agua","Las olas viajan muy rápido por el océano","Al acercarse a la costa, las olas crecen","El agua inunda la costa"]},
+ match:[["Tsunami","Serie de olas grandes que inundan la costa"],["Mar que se recoge","Señal natural de tsunami"],["Zona alta","Lugar seguro para evacuar"],["Fondo marino","Lugar donde ocurre el sismo que lo origina"]],
+ flash:[["¿Qué es un tsunami?","Una serie de olas muy grandes, causadas generalmente por un sismo bajo el fondo del mar."],["Señales naturales de tsunami","Un sismo que dificulta mantenerse en pie y el mar que se recoge."],["¿Qué hacer ante un tsunami?","Evacuar de inmediato, a pie, hacia una zona alta y no volver hasta que lo indiquen las autoridades."]]
+},
+{id:6,u:4,ic:"🌋",name:"Erupciones volcánicas",rank:"Guardián de los Volcanes",
+ learn:[
+  {t:"¿Qué es un volcán?",img:"volcan",h:`<p>Un <b>volcán</b> es una abertura de la corteza por donde sale material muy caliente del interior de la Tierra.</p><ul><li>🟠 <b>Cámara magmática:</b> depósito bajo tierra donde se acumula el <b>magma</b>.</li><li>⬆️ <b>Chimenea:</b> el conducto por donde sube el magma.</li><li>⭕ <b>Cráter:</b> la abertura por donde sale el material.</li><li>⛰️ <b>Cono volcánico:</b> la “montaña” formada por lava y cenizas acumuladas.</li></ul>`},
+  {t:"¡Erupción!",h:`<div class="emoji-scene">🌋💨🪨</div><p>El <b>magma</b> es roca fundida que está <b>dentro</b> de la Tierra. Cuando sale a la superficie se llama <b>lava</b>.</p><p>En una <b>erupción volcánica</b> el volcán expulsa <b>lava, cenizas, gases y rocas</b>.</p><p>En Chile hay muchos volcanes porque la placa de Nazca se hunde bajo la Sudamericana: al hundirse, la roca se funde y forma magma que sube. Algunos volcanes chilenos son el <b>Villarrica</b>, el <b>Llaima</b>, el <b>Calbuco</b> y el <b>Osorno</b>.</p><div class="resumen"><b>Resumen:</b> Un volcán es una abertura en la corteza. El magma sube por la chimenea y sale por el cráter convertido en lava, junto con cenizas y gases.</div><div class="dato">💡 <b>Dato curioso:</b> Chile forma parte del <b>Cinturón de Fuego del Pacífico</b>, la zona del planeta con más volcanes y sismos.<br>🧠 <b>Truco:</b> <b>M</b>agma = <b>M</b>etido adentro. <b>L</b>ava = <b>L</b>ibre afuera.</div>`}
+ ],
+ mc:[
+  ["¿Qué es un volcán?","Una abertura de la corteza por donde sale material del interior de la Tierra","Una montaña cubierta de hielo","Una ola gigante","Una placa tectónica pequeña","Por el volcán salen magma, gases y cenizas desde el interior."],
+  ["¿Cómo se llama la roca fundida cuando está DENTRO de la Tierra?","Magma","Lava","Ceniza","Granito","Dentro se llama magma; al salir se llama lava."],
+  ["¿Cómo se llama el magma cuando sale a la superficie?","Lava","Vapor","Núcleo","Arena","La lava es el magma que ya salió del volcán."],
+  ["¿Por dónde sale el material en una erupción?","Por el cráter","Por el epicentro","Por el hipocentro","Por la hidrosfera","El cráter es la abertura superior del volcán."],
+  ["¿Qué es la cámara magmática?","El depósito bajo tierra donde se acumula el magma","La punta nevada del volcán","El humo que sale del volcán","Un río de agua caliente","Desde la cámara magmática el magma sube por la chimenea."],
+  ["¿Qué expulsa un volcán en una erupción?","Lava, cenizas, gases y rocas","Solo agua","Solo humo de madera","Hielo y nieve","Además de lava, salen cenizas, gases y fragmentos de roca."],
+  ["¿Por qué en Chile hay tantos volcanes?","Porque la placa de Nazca se hunde bajo la Sudamericana y se forma magma","Porque hace mucho calor en el norte","Porque hay muchos ríos","Porque tiene dos cordilleras","La subducción funde la roca y el magma sube formando volcanes."]
+ ],
+ tf:[
+  ["El magma y la lava son el mismo material, pero en distinto lugar.",true,"Magma está dentro de la Tierra; lava es cuando sale."],
+  ["Chile forma parte del Cinturón de Fuego del Pacífico.",true,"Es la zona con más volcanes y sismos del planeta."],
+  ["Los volcanes solo expulsan lava.",false,"También expulsan cenizas, gases y rocas."],
+  ["La chimenea es el conducto por donde sube el magma.",true,"Conecta la cámara magmática con el cráter."]
+ ],
+ fill:[
+  ["Cuando el magma sale a la superficie se llama ___.","lava","manto","ceniza","Magma adentro, lava afuera."],
+  ["La abertura por donde sale el material del volcán es el ___.","cráter","epicentro","núcleo","El cráter está en la parte superior del volcán."]
+ ],
+ match:[["Cámara magmática","Depósito donde se acumula el magma"],["Chimenea","Conducto por donde sube el magma"],["Cráter","Abertura por donde sale el material"],["Cono volcánico","Montaña de lava y cenizas acumuladas"],["Lava","Magma que salió a la superficie"]],
+ order:{p:"Ordena el camino del magma en una erupción",items:["El magma se acumula en la cámara magmática","Sube por la chimenea","Sale por el cráter","Escurre por el cono como lava"]},
+ flash:[["¿Diferencia entre magma y lava?","Magma: roca fundida dentro de la Tierra. Lava: el magma cuando sale a la superficie."],["Partes de un volcán","Cámara magmática, chimenea, cráter y cono volcánico."],["¿Qué expulsa un volcán?","Lava, cenizas, gases y rocas."]]
+},
+{id:7,u:4,ic:"🎒",name:"Medidas de prevención",rank:"Héroe de la Prevención",
+ learn:[
+  {t:"Antes: prepararse",h:`<div class="emoji-scene">📋🎒🔦</div><p>No podemos evitar los sismos, tsunamis ni erupciones, pero <b>sí podemos prepararnos</b>:</p><ul><li>👨‍👩‍👧 Hacer un <b>plan familiar</b> con un punto de encuentro.</li><li>🎒 Tener un <b>kit de emergencia</b>: agua, alimentos que no se echen a perder, linterna, radio a pilas, botiquín y pilas.</li><li>🚪 Conocer las <b>zonas seguras</b> y las <b>vías de evacuación</b> de la casa y del colegio.</li><li>🪑 Fijar los muebles altos a la pared y participar en los <b>simulacros</b>.</li></ul>`},
+  {t:"Durante y después de un sismo",h:`<p><b>Durante:</b></p><ul><li>😌 Mantener la <b>calma</b>. No correr ni gritar.</li><li>🪑 Protegerse <b>debajo o al lado de un mueble firme</b>.</li><li>🪟 Alejarse de <b>ventanas</b> y de objetos que puedan caer.</li><li>🛗 <b>No usar el ascensor.</b></li></ul><p><b>Después:</b></p><ul><li>👂 Seguir las instrucciones de los adultos y de las autoridades.</li><li>🔥 <b>No encender fósforos ni velas</b>: puede haber fugas de gas. Usar linterna.</li><li>📳 Estar atentos a las <b>réplicas</b>.</li><li>📻 Informarse por radio.</li></ul>`},
+  {t:"Tsunami y erupción volcánica",h:`<p>🌊 <b>Tsunami:</b> si estás en la costa y hay un sismo muy fuerte, <b>evacúa de inmediato, a pie, hacia una zona alta</b>, siguiendo las señales de evacuación. No vuelvas hasta que las autoridades lo indiquen.</p><p>🌋 <b>Erupción volcánica:</b></p><ul><li>Seguir las indicaciones de las autoridades y <b>evacuar</b> si lo piden.</li><li>Cubrir <b>nariz y boca</b> con mascarilla o un paño húmedo y proteger los ojos de la ceniza.</li><li>Alejarse de <b>ríos y quebradas</b> que bajan del volcán.</li><li>Tapar el agua y los alimentos para que no les caiga ceniza.</li></ul><div class="resumen"><b>Resumen:</b> Prevenir es prepararse <b>antes</b>, actuar con calma <b>durante</b> y seguir instrucciones <b>después</b>.</div><div class="dato">💡 <b>Dato curioso:</b> En Chile, el organismo encargado de las emergencias se llama <b>SENAPRED</b> (antes se llamaba ONEMI).</div>`}
+ ],
+ mc:[
+  ["Estás en la sala de clases y comienza un sismo. ¿Qué haces?","Mantengo la calma y me protejo junto a un mueble firme, lejos de las ventanas","Corro hacia la escalera","Me asomo a la ventana","Grito y empujo a mis compañeros","La calma y un lugar protegido evitan accidentes."],
+  ["¿Qué debe tener un kit de emergencia?","Agua, alimentos no perecibles, linterna, radio a pilas y botiquín","Juguetes y dulces","Solo ropa de fiesta","Televisor y consola","Son elementos para sobrevivir y mantenerse informado sin electricidad."],
+  ["Después de un sismo fuerte, ¿por qué NO se deben encender fósforos o velas?","Porque puede haber fugas de gas","Porque hacen ruido","Porque atraen insectos","Porque gastan pilas","Una fuga de gas con fuego puede causar una explosión; es mejor usar linterna."],
+  ["Estás en la costa y ocurre un sismo que casi no te deja estar en pie. ¿Qué haces?","Evacúo a pie hacia una zona alta","Voy a la playa a mirar el mar","Espero en el muelle","Me subo al auto y espero","Un sismo tan fuerte en la costa puede generar tsunami: hay que subir de inmediato."],
+  ["Durante un sismo en un edificio, ¿qué NO debes usar?","El ascensor","La linterna","El lugar seguro","La calma","El ascensor puede quedar detenido o sin electricidad."],
+  ["Cae ceniza por una erupción volcánica. ¿Qué haces?","Me cubro nariz y boca con mascarilla o paño húmedo","Salgo a jugar con la ceniza","Abro todas las ventanas","Tomo agua destapada del patio","La ceniza daña la respiración y los ojos."],
+  ["¿Qué es un simulacro?","Un ensayo para practicar cómo actuar en una emergencia","Un tipo de sismo","Una parte del volcán","Una ola pequeña","Practicar ayuda a actuar con calma cuando la emergencia es real."],
+  ["¿Qué organismo coordina las emergencias en Chile?","SENAPRED","NASA","FIFA","SAG","SENAPRED es el Servicio Nacional de Prevención y Respuesta ante Desastres."]
+ ],
+ tf:[
+  ["Durante un sismo lo mejor es correr rápido hacia la calle.",false,"Correr provoca caídas y golpes; hay que protegerse y mantener la calma."],
+  ["Tener un plan familiar con un punto de encuentro es una medida de prevención.",true,"Así todos saben qué hacer y dónde reunirse."],
+  ["Después de evacuar por tsunami, puedo volver apenas pase la primera ola.",false,"Pueden llegar más olas; se vuelve solo cuando lo indican las autoridades."],
+  ["En una erupción hay que alejarse de los ríos que bajan del volcán.",true,"Por ellos pueden bajar aluviones volcánicos."],
+  ["Después de un sismo pueden ocurrir réplicas.",true,"Por eso hay que seguir atentos."]
+ ],
+ fill:[
+  ["Durante un sismo lo más importante es mantener la ___.","calma","velocidad","ventana","Con calma se toman mejores decisiones."],
+  ["Agua, linterna y radio a pilas forman parte del ___ de emergencia.","kit","mapa","volcán","El kit de emergencia se prepara antes."]
+ ],
+ sort:{p:"¿Cuándo se hace? Clasifica cada acción frente a un sismo",bins:["ANTES","DURANTE","DESPUÉS"],items:[["Preparar el kit de emergencia",0],["Hacer un plan familiar",0],["Conocer las vías de evacuación",0],["Mantener la calma",1],["Protegerse junto a un mueble firme",1],["Alejarse de las ventanas",1],["Estar atento a las réplicas",2],["Usar linterna y no encender fuego",2],["Informarse por radio",2]]},
+ match:[["Sismo","Protegerse junto a un mueble firme"],["Tsunami","Evacuar a pie a una zona alta"],["Caída de ceniza","Cubrir nariz y boca"],["Kit de emergencia","Agua, linterna, radio y botiquín"]],
+ flash:[["¿Qué hacer DURANTE un sismo?","Mantener la calma, protegerse junto a un mueble firme, alejarse de ventanas y no usar ascensor."],["¿Qué lleva un kit de emergencia?","Agua, alimentos no perecibles, linterna, radio a pilas, pilas y botiquín."],["¿Qué hacer en una erupción volcánica?","Seguir a las autoridades, evacuar si lo indican, cubrir nariz y boca y alejarse de ríos y quebradas."]]
+},
+/* ---------------- UNIDAD 5 ---------------- */
+{id:8,u:5,ic:"🌱",name:"Factores bióticos y abióticos",rank:"Detective de Ecosistemas",
+ learn:[
+  {t:"¿Qué es un ecosistema?",h:`<div class="emoji-scene">🦊🌳🍄 + 💧☀️🪨</div><p>Un <b>ecosistema</b> es el conjunto de <b>seres vivos</b> y <b>elementos no vivos</b> de un lugar, que <b>se relacionan entre sí</b>.</p><p>Puede ser tan grande como un desierto o tan pequeño como un charco.</p><ul><li>🟢 <b>Factores bióticos:</b> todos los <b>seres vivos</b>: animales, plantas, hongos y microorganismos.</li><li>🔵 <b>Factores abióticos:</b> los elementos <b>sin vida</b>: agua, aire, luz del Sol, rocas, suelo y temperatura.</li></ul>`},
+  {t:"Todo está conectado",h:`<p>Los seres vivos <b>necesitan</b> los factores abióticos para sobrevivir. Por ejemplo, las plantas necesitan <b>agua y luz del Sol</b> para crecer, y los animales necesitan aire, agua y refugio.</p><p>Si un factor cambia, todo el ecosistema se afecta. Si una fábrica bota basura a un río, los peces pueden enfermar o morir, las plantas se dañan y las personas que beben esa agua pueden enfermarse.</p><p><b>Cuidamos los ecosistemas</b> cuando no botamos basura, no contaminamos el agua, no dañamos las plantas y no molestamos a los animales.</p><div class="resumen"><b>Resumen:</b> Ecosistema = factores bióticos (con vida) + factores abióticos (sin vida) + las relaciones entre ellos.</div><div class="dato">🧠 <b>Truco:</b> <b>Bio</b> significa <b>vida</b> (como “biología”). La “<b>a</b>” de <b>a</b>biótico significa “<b>sin</b>”: sin vida.</div>`}
+ ],
+ mc:[
+  ["¿Qué es un ecosistema?","Un conjunto de seres vivos y elementos no vivos que se relacionan","Un lugar donde solo viven animales","Un lugar donde solo hay plantas","Un espacio donde no existe agua","Incluye lo vivo, lo no vivo y las relaciones entre ambos."],
+  ["¿Qué son los factores bióticos?","Los seres vivos de un ecosistema","Las rocas y el suelo","El agua y el aire","La luz y la temperatura","Bio = vida: animales, plantas, hongos y microorganismos."],
+  ["¿Cuál de estos es un factor abiótico?","El agua","Un hongo","Un zorro","Un árbol","El agua no tiene vida, por eso es abiótica."],
+  ["¿Cuál de estos es un factor biótico?","Un hongo","La luz del Sol","Una roca","El aire","Los hongos son seres vivos."],
+  ["¿Qué grupo tiene SOLO factores abióticos?","Aire, roca, luz del Sol","Pez, agua, alga","Zorro, árbol, hongo","Suelo, lombriz, pasto","Aire, roca y luz no tienen vida."],
+  ["¿Qué necesitan las plantas para crecer?","Agua y luz del Sol","Solo oscuridad","Basura","Solo rocas","Las plantas dependen de factores abióticos como el agua y la luz."],
+  ["Si una fábrica arroja basura a un río, ¿qué puede pasar?","Los peces, las plantas y las personas pueden enfermar","El río se limpia solo de inmediato","Los peces crecen más","No pasa nada","En un ecosistema todo está conectado: contaminar el agua afecta a todos."],
+  ["¿Cuál de estas acciones ayuda a proteger los ecosistemas?","Recoger la basura y cuidar la naturaleza","Botar basura en los ríos","Arrancar las plantas","Molestar a los animales","Cuidar el ambiente protege a todos los seres vivos."]
+ ],
+ tf:[
+  ["En un ecosistema solo existen seres vivos.",false,"También hay elementos no vivos, como agua, aire y rocas."],
+  ["El agua, el aire y la luz del Sol son elementos no vivos.",true,"Son factores abióticos."],
+  ["Los seres vivos necesitan relacionarse con su ambiente para sobrevivir.",true,"Necesitan agua, aire, luz, alimento y refugio."],
+  ["Botar basura en la naturaleza ayuda a proteger los ecosistemas.",false,"La basura contamina y daña a los seres vivos."],
+  ["Los hongos son factores abióticos.",false,"Los hongos son seres vivos: factores bióticos."]
+ ],
+ fill:[
+  ["Un ___ está formado por seres vivos y elementos no vivos que se relacionan.","ecosistema","desierto","volcán","Esa es la definición de ecosistema."],
+  ["Las plantas y los animales son ejemplos de ___.","seres vivos","rocas","elementos no vivos","Son factores bióticos."],
+  ["Las plantas necesitan agua y ___ del Sol para crecer.","luz","sombra","arena","La luz del Sol es un factor abiótico esencial para las plantas."]
+ ],
+ sort:{p:"Clasifica cada elemento del ecosistema",bins:["🟢 BIÓTICO (con vida)","🔵 ABIÓTICO (sin vida)"],items:[["🦊 Zorro",0],["💧 Agua",1],["🌳 Árbol",0],["🪨 Roca",1],["🐟 Pez",0],["🌬️ Aire",1],["🍄 Hongo",0],["☀️ Luz del Sol",1],["🌡️ Temperatura",1],["🐝 Abeja",0]]},
+ match:[["Factor biótico","Ser vivo del ecosistema"],["Factor abiótico","Elemento sin vida del ecosistema"],["Ecosistema","Seres vivos y elementos no vivos que se relacionan"],["Luz del Sol","Elemento no vivo importante para las plantas"]],
+ flash:[["¿Qué es un ecosistema?","El conjunto de seres vivos y elementos no vivos de un lugar que se relacionan entre sí."],["Factores bióticos","Los seres vivos: animales, plantas, hongos y microorganismos."],["Factores abióticos","Los elementos sin vida: agua, aire, luz del Sol, rocas, suelo y temperatura."]]
+},
+{id:9,u:5,ic:"🏜️",name:"Tipos de ecosistemas",rank:"Explorador de Chile",
+ learn:[
+  {t:"Ecosistemas terrestres y acuáticos",h:`<p>Hay ecosistemas de varios tipos:</p><p><b>🌎 Terrestres</b> (en la superficie del planeta; cambian según el clima, la altitud y la vegetación):</p><ul><li>🌴 <b>Bosques tropicales:</b> verdes y densos; llueve casi todo el año y hay muchísima biodiversidad.</li><li>🏜️ <b>Desiertos:</b> muy poca agua y temperaturas extremas.</li><li>🦓 <b>Praderas y sabanas:</b> espacios abiertos con mucho pasto y pocos árboles; viven grandes herbívoros y depredadores.</li><li>🧊 <b>Los polos:</b> domina el hielo y el frío extremo.</li></ul><p><b>🌊 Acuáticos:</b> océanos, ríos, lagos y humedales. Viven desde el diminuto plancton hasta las grandes ballenas.</p>`},
+  {t:"Ecosistemas de Chile",h:`<ul><li>🏜️ <b>Norte – Desierto de Atacama:</b> el más árido del mundo; llueve muy poco. Viven lagartijas, zorros, insectos, flamencos en las lagunas saladas y cactus que almacenan agua.</li><li>🌿 <b>Zona central – Matorrales y bosques:</b> veranos secos e inviernos lluviosos. Árboles como el peumo y el litre; zorro culpeo, aves y pequeños mamíferos.</li><li>🌲 <b>Sur – Bosques templados:</b> mucha lluvia y vegetación. Árboles como la <b>araucaria</b> y el <b>coigüe</b>, helechos y musgos; vive el pudú, el ciervo más pequeño del mundo.</li><li>🌊 <b>Marinos y costeros:</b> algas, peces, moluscos, aves marinas y lobos marinos. La corriente de Humboldt trae aguas frías con muchos nutrientes.</li><li>🏔️ <b>Patagonia:</b> montañas, glaciares, lagos y estepas; frío y viento. Viven el <b>guanaco</b>, el <b>puma</b> y el huemul.</li></ul><div class="resumen"><b>Resumen:</b> Los ecosistemas pueden ser terrestres o acuáticos. Cada uno tiene características propias y seres vivos adaptados a ellas.</div><div class="dato">💡 <b>Dato curioso:</b> Un estudio científico mostró que de los 110 tipos de ecosistemas que hay en el mundo, 88 están en Chile: ¡el 80%!</div>`}
+ ],
+ mc:[
+  ["¿Qué característica tiene el desierto de Atacama?","Es un lugar muy seco","Llueve todos los días","Está cubierto de nieve todo el año","Tiene grandes bosques húmedos","Es uno de los ambientes más secos del planeta."],
+  ["¿Cuál de estos animales puede habitar en la Patagonia?","Guanaco","León africano","Jirafa","Elefante africano","El guanaco y el puma viven en la Patagonia."],
+  ["¿Qué podemos encontrar en un ecosistema marino?","Peces, algas y moluscos","Solo rocas","Únicamente árboles","Solo animales terrestres","En el mar viven algas, peces, moluscos, aves y mamíferos marinos."],
+  ["¿Dónde crecen árboles como la araucaria y el coigüe?","En los bosques templados del sur de Chile","En el desierto de Atacama","En el fondo del mar","En los polos","La lluvia del sur favorece el crecimiento de estos árboles nativos."],
+  ["Océanos, ríos, lagos y humedales son ecosistemas…","acuáticos","terrestres","desérticos","polares","En ellos el agua es el hogar de los seres vivos."],
+  ["¿Cómo son los bosques tropicales?","Verdes, densos y con lluvia casi todo el año","Secos y sin plantas","Cubiertos de hielo","Planos y con puro pasto seco","Tienen enorme biodiversidad gracias al calor y la lluvia."],
+  ["¿Qué ecosistema tiene mucho pasto, pocos árboles y grandes herbívoros?","Praderas y sabanas","Los polos","El océano","El bosque tropical","Son espacios abiertos donde viven herbívoros y sus depredadores."],
+  ["¿Qué encontramos en la zona central de Chile?","Matorrales y bosques con zorros culpeo y aves","Glaciares y pingüinos","Selva tropical","Solo arena y dunas","En la zona central hay matorrales y bosques con árboles, arbustos y hierbas."],
+  ["¿Qué paisajes son típicos de la Patagonia?","Montañas, glaciares, lagos y estepas","Dunas y oasis","Selvas calurosas","Arrecifes de coral","La Patagonia, en el extremo sur, es fría y ventosa."]
+ ],
+ tf:[
+  ["El desierto de Atacama se caracteriza por ser muy seco.",true,"Allí llueve muy poco."],
+  ["Los peces pueden vivir en ecosistemas marinos.",true,"El mar es un ecosistema acuático."],
+  ["En los bosques del sur de Chile crecen árboles nativos.",true,"Como la araucaria y el coigüe."],
+  ["Todos los ecosistemas tienen exactamente los mismos seres vivos.",false,"Cada ecosistema tiene seres vivos adaptados a sus condiciones."],
+  ["En el desierto de Atacama no vive ningún ser vivo.",false,"Viven lagartijas, zorros, insectos y plantas que resisten con poca agua."],
+  ["En los polos el hielo domina el paisaje.",true,"Aun así, hay vida adaptada al frío extremo."]
+ ],
+ fill:[
+  ["El desierto de Atacama se caracteriza por la escasez de ___.","agua","arena","sol","Llueve muy poco."],
+  ["Los peces y las algas pueden vivir en ecosistemas ___.","marinos","desérticos","polares","Son seres vivos acuáticos."],
+  ["Debemos evitar dejar ___ en playas, bosques y ríos.","basura","flores","piedras","La basura contamina los ecosistemas."],
+  ["El ___ de Atacama es uno de los ambientes más secos del planeta.","desierto","bosque","glaciar","Atacama es un desierto."]
+ ],
+ match:[["Desierto de Atacama","Ambiente caracterizado por la escasez de lluvias"],["Bosque templado","Lugar donde crecen el coigüe y la araucaria"],["Ecosistema marino","Ecosistema con peces, algas y moluscos"],["Guanaco","Animal que habita en zonas de la Patagonia"],["Polos","Lugares donde domina el hielo"]],
+ sort:{p:"¿Terrestre o acuático?",bins:["🌎 TERRESTRE","🌊 ACUÁTICO"],items:[["Desierto",0],["Río",1],["Bosque templado",0],["Océano",1],["Pradera",0],["Lago",1],["Humedal",1],["Estepa patagónica",0]]},
+ flash:[["Tipos de ecosistemas","Terrestres (bosques, desiertos, praderas, polos) y acuáticos (océanos, ríos, lagos, humedales)."],["Ecosistema del norte de Chile","Desierto de Atacama: muy seco; lagartijas, zorros, cactus."],["Ecosistema del sur de Chile","Bosques templados lluviosos con araucarias y coigües."],["Patagonia","Montañas, glaciares, lagos y estepas; guanaco y puma."]]
+},
+{id:10,u:5,ic:"🦎",name:"Adaptaciones de animales y plantas",rank:"Maestro de la Naturaleza",
+ learn:[
+  {t:"¿Qué es una adaptación?",h:`<div class="emoji-scene">🐻‍❄️🌵🦅</div><p>Una <b>adaptación</b> es una <b>característica</b> que le permite a un ser vivo <b>sobrevivir</b> en su ecosistema. Hay tres tipos:</p><ul><li>🦴 <b>Morfológicas</b> (la forma del cuerpo): cambios en la <b>estructura física</b>. Ejemplos: las <b>espinas</b> del cactus, el <b>camuflaje</b>, las alas, las garras, las aletas.</li><li>⚙️ <b>Fisiológicas</b> (cómo funciona el cuerpo por dentro): cambios en el <b>funcionamiento interno</b>. Ejemplos: la <b>hibernación</b> y las <b>branquias</b> de los peces.</li><li>🕊️ <b>De comportamiento</b> (lo que hace): cambios en la <b>conducta</b> para sobrevivir y reproducirse. Ejemplos: la <b>migración</b> de las aves y la <b>danza de cortejo</b>.</li></ul>`},
+  {t:"Adaptaciones de animales",h:`<ul><li>🦅 El <b>cóndor</b> tiene grandes alas para volar; el <b>pingüino</b> usa sus alas para nadar.</li><li>🐬 El <b>delfín</b> tiene aletas para desplazarse en el agua.</li><li>🐆 El <b>puma</b> tiene colmillos filosos para desgarrar la carne.</li><li>🦅 El <b>águila pescadora</b> tiene garras fuertes para atrapar peces.</li><li>🦎 El <b>lagarto</b> tiene el color de las rocas: se <b>camufla</b> para que no lo vean.</li><li>🐻‍❄️ El <b>oso polar</b> tiene una gruesa capa de grasa y pelaje para soportar el frío.</li><li>😴 El <b>monito del monte</b> y el <b>oso pardo</b> <b>hibernan</b> en invierno: duermen profundamente para ahorrar energía.</li><li>🐦 El <b>playero ártico</b> <b>migra</b>: viaja desde el Ártico hasta el extremo sur de Sudamérica buscando comida.</li></ul>`},
+  {t:"Adaptaciones de plantas",h:`<ul><li>🌵 <b>Desierto:</b> los <b>cactus</b> (como la copiapoa de Atacama) tienen forma redondeada para <b>guardar agua</b> y <b>espinas</b> en vez de hojas, que los protegen del sol y de los animales.</li><li>🌲 <b>Lugares fríos:</b> el <b>coigüe</b> tiene hojas que no se caen en invierno, lo que le permite seguir haciendo fotosíntesis todo el año.</li><li>🪷 <b>Agua:</b> la <b>lenteja de agua</b> es muy pequeña y <b>flota</b>, así queda cerca de la luz del Sol.</li><li>🌿 <b>Lugares sombríos:</b> la <b>nalca</b> tiene <b>hojas enormes</b> para captar la mayor cantidad de luz posible.</li></ul><div class="resumen"><b>Resumen:</b> Las adaptaciones pueden ser morfológicas (cuerpo), fisiológicas (funcionamiento) o de comportamiento (conducta). Gracias a ellas los seres vivos sobreviven en su ambiente.</div><div class="dato">🧠 <b>Truco:</b> <b>Morfo</b> = forma. <b>Fisio</b> = funcionamiento. <b>Comportamiento</b> = conducta.</div>`}
+ ],
+ mc:[
+  ["¿Qué es una adaptación?","Una característica que permite a un ser vivo sobrevivir en su ambiente","Un tipo de ecosistema","Un factor abiótico","Una enfermedad de las plantas","Las adaptaciones ayudan a vivir y reproducirse en un ecosistema."],
+  ["Las espinas del cactus son una adaptación…","morfológica","fisiológica","de comportamiento","abiótica","Es un cambio en la estructura física de la planta."],
+  ["La hibernación es una adaptación…","fisiológica","morfológica","de comportamiento","marina","Cambia el funcionamiento interno del cuerpo para ahorrar energía."],
+  ["La migración de las aves es una adaptación…","de comportamiento","morfológica","fisiológica","del suelo","Es un cambio en la conducta para sobrevivir."],
+  ["¿Qué ventaja tiene para un lagarto tener el color de las rocas?","Se camufla y sus depredadores no lo ven","Corre más rápido","Necesita menos agua","Puede volar","El camuflaje es una adaptación morfológica de protección."],
+  ["¿Cómo soporta el frío el oso polar?","Con una gruesa capa de grasa y pelaje","Con espinas","Migrando al desierto","Con branquias","La grasa y el pelaje lo aíslan del frío extremo."],
+  ["¿Qué características ayudan a una planta a vivir en el desierto?","Almacenar agua y tener espinas en vez de hojas","Tener hojas enormes y delgadas","Flotar en el agua","Perder todas sus raíces","Así pierde menos agua y se protege del sol."],
+  ["¿Por qué la nalca tiene hojas tan grandes?","Para captar la mayor cantidad de luz en lugares sombríos","Para guardar agua salada","Para espantar pumas","Para flotar en los ríos","Donde hay poca luz, las hojas grandes ayudan a captarla."],
+  ["Las branquias de los peces son una adaptación…","fisiológica","de comportamiento","morfológica del pelaje","abiótica","Les permiten respirar bajo el agua: es parte de cómo funciona su cuerpo."],
+  ["¿Para qué usa sus alas el pingüino?","Para nadar","Para volar muy alto","Para cavar","Para cazar pumas","Sus alas están adaptadas para nadar hábilmente en el mar."],
+  ["La danza de algunas aves para atraer pareja es una adaptación…","de comportamiento","morfológica","fisiológica","acuática","Es una conducta que ayuda a reproducirse."]
+ ],
+ tf:[
+  ["El camuflaje es una adaptación morfológica.",true,"Tiene que ver con el color y la forma del cuerpo."],
+  ["Las plantas no tienen adaptaciones.",false,"Sí tienen: espinas, hojas grandes, flotar en el agua, etc."],
+  ["La lenteja de agua flota para estar cerca de la luz del Sol.",true,"Así puede hacer fotosíntesis."],
+  ["Las garras del águila pescadora le sirven para atrapar peces.",true,"Es una adaptación morfológica para alimentarse."],
+  ["Hibernar significa viajar a otro lugar en invierno.",false,"Hibernar es dormir profundamente para ahorrar energía; viajar es migrar."],
+  ["Los seres vivos están adaptados a las condiciones de su ecosistema.",true,"Por eso cada ecosistema tiene seres vivos distintos."]
+ ],
+ fill:[
+  ["Las adaptaciones ___ son cambios en la estructura física del organismo.","morfológicas","fisiológicas","de comportamiento","Morfo = forma."],
+  ["Las adaptaciones ___ son cambios en el funcionamiento interno del organismo.","fisiológicas","morfológicas","de comportamiento","Fisio = funcionamiento."],
+  ["El viaje de las aves a otros lugares en busca de alimento se llama ___.","migración","hibernación","camuflaje","Migrar es una adaptación de comportamiento."]
+ ],
+ sort:{p:"¿Qué tipo de adaptación es?",bins:["🦴 MORFOLÓGICA","⚙️ FISIOLÓGICA","🕊️ COMPORTAMIENTO"],items:[["Espinas del cactus",0],["Hibernación",1],["Migración de aves",2],["Camuflaje",0],["Branquias de los peces",1],["Danza de cortejo",2],["Garras del águila",0],["Aletas del delfín",0]]},
+ match:[["Cactus","Guarda agua y tiene espinas"],["Oso polar","Capa de grasa y pelaje grueso"],["Pingüino","Alas adaptadas para nadar"],["Nalca","Hojas enormes para captar luz"],["Playero ártico","Migra miles de kilómetros"]],
+ mem:[["🌵","Espinas"],["🐻‍❄️","Grasa y pelaje"],["🐧","Alas para nadar"],["🦎","Camuflaje"],["🐟","Branquias"],["🐦","Migración"]],
+ flash:[["¿Qué es una adaptación?","Una característica que permite a un ser vivo sobrevivir en su ecosistema."],["Tipos de adaptaciones","Morfológicas (estructura física), fisiológicas (funcionamiento interno) y de comportamiento (conducta)."],["Ejemplos de adaptaciones de plantas","Cactus: espinas y guarda agua. Nalca: hojas enormes. Lenteja de agua: flota. Coigüe: conserva sus hojas en invierno."],["Ejemplos de adaptación fisiológica","La hibernación y las branquias de los peces."],["Ejemplos de adaptación de comportamiento","La migración de las aves y la danza de cortejo."]]
+}
+];
+const FINAL_N = 20, FINAL_SECS = 25;         // Desafío final: n° de preguntas y segundos por pregunta
+const BADGES = [
+ ["first","🥾","Primer paso","Completa tu primer nivel"],
+ ["streak5","🔥","Racha de 5","5 respuestas correctas seguidas"],
+ ["streak10","⚡","Racha de 10","10 respuestas correctas seguidas"],
+ ["perfect","💎","Nivel perfecto","Termina un nivel sin errores"],
+ ["u4","🌋","Experto de la Tierra","Completa la Unidad 4"],
+ ["u5","🌿","Guardián de Ecosistemas","Completa la Unidad 5"],
+ ["cards","🃏","Repasador","Revisa todas las tarjetas"],
+ ["final","🏆","Campeón del Desafío","Aprueba el Desafío Final"]
+];
+const RANKS = [[0,"🧭 Aprendiz"],[300,"🥾 Explorador"],[800,"🔬 Investigador"],[1500,"🛡️ Guardián"],[2400,"👑 Maestro de Ciencias"]];
+const CHEERS = ["¡Excelente!","¡Muy bien!","¡Genial!","¡Así se hace!","¡Correcto!","¡Eres una máquina!","¡Bravo!","¡Sigue así!"];
+const OOPS = ["¡Casi!","No pasa nada, ¡a aprender!","Uy, esta vez no.","¡Sigue intentando!"];
+
+/* =====================================================================
+   3) UTILIDADES, ESTADO Y SONIDO
+   ===================================================================== */
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const KEY = "guiaCiencias4B_v1";
+const fresh = () => ({ name: "", xp: 0, stars: {}, best: {}, badges: [], ok: 0, bad: 0, secs: 0, sound: true, finalBest: null, cardsSeen: [] });
+let S = fresh();
+function load() { try { const d = JSON.parse(localStorage.getItem(KEY)); if (d) S = Object.assign(fresh(), d); } catch (e) { } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { } }
+let streak = 0;
+
+/* Sonidos generados con Web Audio (sin archivos externos) */
+let AC = null;
+function tone(f, d, type, when, vol) {
+  if (!S.sound) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime + (when || 0);
+    o.type = type || "sine"; o.frequency.setValueAtTime(f, t);
+    g.gain.setValueAtTime(vol || .18, t); g.gain.exponentialRampToValueAtTime(.001, t + d);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d);
+  } catch (e) { }
+}
+const SFX = {
+  ok() { tone(660, .12, "triangle"); tone(990, .2, "triangle", .1); },
+  bad() { tone(220, .18, "sawtooth", 0, .12); tone(160, .3, "sawtooth", .15, .12); },
+  click() { tone(520, .05, "square", 0, .06); },
+  flip() { tone(400, .06, "sine"); tone(600, .06, "sine", .05); },
+  win() { [523, 659, 784, 1047].forEach((f, i) => tone(f, .22, "triangle", i * .13)); },
+  star() { tone(1200, .15, "sine"); tone(1600, .25, "sine", .1); },
+  tick() { tone(900, .03, "square", 0, .05); }
+};
+function speak(html) {
+  try {
+    const u = new SpeechSynthesisUtterance(html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " "));
+    u.lang = "es-CL"; u.rate = .95; speechSynthesis.cancel(); speechSynthesis.speak(u);
+  } catch (e) { toast("Tu navegador no puede leer en voz alta"); }
+}
+function stopSpeak() { try { speechSynthesis.cancel(); } catch (e) { } }
+function toast(msg) { document.querySelectorAll(".toast").forEach(x => x.remove()); const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; t.setAttribute("role", "status"); document.body.appendChild(t); setTimeout(() => t.remove(), 2600); }
+function confetti() {
+  const em = ["⭐", "🎉", "🌋", "🌿", "🌍", "✨"];
+  for (let i = 0; i < 26; i++) { const c = document.createElement("div"); c.className = "confetti"; c.textContent = pick(em); c.style.left = Math.random() * 100 + "vw"; c.style.animationDuration = 2 + Math.random() * 2 + "s"; document.body.appendChild(c); setTimeout(() => c.remove(), 4200); }
+}
+function award(id) {
+  if (S.badges.includes(id)) return;
+  S.badges.push(id); const b = BADGES.find(x => x[0] === id);
+  toast("🏅 ¡Nueva medalla! " + b[1] + " " + b[2]); SFX.star(); save();
+}
+const rankOf = xp => RANKS.filter(r => xp >= r[0]).pop()[1];
+const totalStars = () => Object.values(S.stars).reduce((a, b) => a + b, 0);
+const unlocked = id => id === 1 || (S.stars[id - 1] || 0) >= 1;
+const finalOpen = () => LEVELS.every(l => (S.stars[l.id] || 0) >= 1);
+
+/* =====================================================================
+   4) NAVEGACIÓN Y HUD
+   ===================================================================== */
+let timerInt = null, clockInt = null;
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("on"));
+  $(id).classList.add("on"); $("hud").classList.toggle("on", id !== "sHome");
+  clearInterval(timerInt); stopSpeak(); window.scrollTo(0, 0); hud();
+  clearInterval(clockInt);
+  if (id === "sPlay" || id === "sLearn") clockInt = setInterval(() => { S.secs++; }, 1000);
+}
+function hud(lbl, pct) {
+  $("hRank").textContent = rankOf(S.xp); $("hXp").textContent = S.xp; $("hStars").textContent = totalStars(); $("hStreak").textContent = streak;
+  $("bSound").textContent = S.sound ? "🔊" : "🔇";
+  if (lbl === undefined) { const done = LEVELS.filter(l => S.stars[l.id]).length + (S.finalBest ? 1 : 0); pct = done / 11 * 100; lbl = "Progreso total: " + done + " de 11 misiones"; }
+  $("hBar").style.width = pct + "%"; $("hLbl").textContent = lbl;
+}
+function starsTxt(n) { return "⭐".repeat(n) + "☆".repeat(3 - n); }
+
+function renderMap() {
+  $("mapHello").textContent = (S.name ? "¡Hola, " + S.name + "! " : "") + "Elige tu misión";
+  let h = "";
+  [[4, "Unidad 4 · La Tierra se mueve", "#ffe8cc"], [5, "Unidad 5 · Ecosistemas", "#d3f9d8"]].forEach(([u, t, c]) => {
+    h += `<div class="unit-title"><span style="background:${c};color:#1c2b3a">${t}</span></div><div class="grid">`;
+    LEVELS.filter(l => l.u === u).forEach(l => {
+      const open = unlocked(l.id);
+      h += `<button class="lvl ${u === 5 ? "u5" : ""} ${open ? "" : "lock"}" data-l="${l.id}" ${open ? "" : 'aria-disabled="true"'}><span class="ic">${open ? l.ic : "🔒"}</span><span class="nm">Nivel ${l.id}: ${l.name}</span><span class="st" aria-label="${S.stars[l.id] || 0} de 3 estrellas">${starsTxt(S.stars[l.id] || 0)}</span></button>`;
+    });
+    h += "</div>";
+  });
+  const fo = finalOpen();
+  h += `<div class="unit-title"><span style="background:#fff3bf;color:#1c2b3a">Misión final</span></div><div class="grid"><button class="lvl fin ${fo ? "" : "lock"}" data-l="final"><span class="ic">${fo ? "🏆" : "🔒"}</span><span class="nm">Desafío Final</span><span class="muted" style="font-size:.9rem">${FINAL_N} preguntas contra el tiempo de las dos unidades${S.finalBest ? " · Mejor: " + S.finalBest + "%" : ""}</span></button></div>`;
+  $("mapBody").innerHTML = h;
+  $("badgeBox").innerHTML = BADGES.map(b => `<div class="badge ${S.badges.includes(b[0]) ? "got" : ""}" title="${b[3]}">${b[1]} ${b[2]}<br><small>${b[3]}</small></div>`).join("");
+  $("mapBody").querySelectorAll(".lvl").forEach(b => b.onclick = () => {
+    const v = b.dataset.l;
+    if (b.classList.contains("lock")) { SFX.bad(); toast(v === "final" ? "🔒 Completa los 10 niveles para abrir el Desafío Final" : "🔒 Primero completa el nivel anterior"); return; }
+    SFX.click(); v === "final" ? startFinal() : startLearn(+v);
+  });
+  show("sMap");
+}
+
+/* =====================================================================
+   5) FASE APRENDER
+   ===================================================================== */
+function startLearn(id) {
+  const L = LEVELS.find(l => l.id === id); let i = 0;
+  const draw = () => {
+    const c = L.learn[i];
+    $("learnBox").innerHTML = `<span class="qtype">📖 Aprende · Nivel ${L.id}: ${L.name}</span><h2>${c.t}</h2>${c.img ? `<div class="learn-img">${IMG[c.img]}</div>` : ""}${c.h}
+      <div class="dots">${L.learn.map((_, k) => `<i class="${k === i ? "on" : ""}"></i>`).join("")}</div>
+      <div class="btnrow"><button class="btn gray" id="lSpeak">🔈 Escuchar</button>${i > 0 ? '<button class="btn gray" id="lPrev">← Atrás</button>' : ""}<button class="btn ${i < L.learn.length - 1 ? "" : "green"}" id="lNext">${i < L.learn.length - 1 ? "Siguiente →" : "¡A jugar! 🎮"}</button></div>`;
+    $("lSpeak").onclick = () => speak(c.t + ". " + c.h);
+    if (i > 0) $("lPrev").onclick = () => { i--; SFX.click(); stopSpeak(); draw(); window.scrollTo(0, 0); };
+    $("lNext").onclick = () => { SFX.click(); stopSpeak(); if (i < L.learn.length - 1) { i++; draw(); window.scrollTo(0, 0); } else startPlay(L); };
+    hud("Nivel " + L.id + " · Aprende " + (i + 1) + "/" + L.learn.length, (i + 1) / L.learn.length * 100);
+  };
+  show("sLearn"); draw();
+}
+
+/* =====================================================================
+   6) MOTOR DEL JUEGO
+   ===================================================================== */
+let G = null; // partida actual
+function buildQueue(L) {
+  let q = [];
+  (L.mc || []).forEach(d => q.push({ k: "mc", d })); (L.tf || []).forEach(d => q.push({ k: "tf", d })); (L.fill || []).forEach(d => q.push({ k: "fill", d }));
+  q = shuffle(q);
+  const sp = [];
+  if (L.match) sp.push({ k: "match", d: L.match }); if (L.order) sp.push({ k: "order", d: L.order }); if (L.sort) sp.push({ k: "sort", d: L.sort }); if (L.mem) sp.push({ k: "mem", d: L.mem });
+  // Intercala las actividades especiales entre las preguntas
+  sp.forEach((s, i) => q.splice(Math.min(q.length, Math.round((i + 1) * q.length / (sp.length + 1)) + i), 0, s));
+  return q;
+}
+function startPlay(L) {
+  G = { L, q: buildQueue(L), i: 0, ok: 0, tot: 0, xp: 0, final: false, maxStreak: 0 };
+  show("sPlay"); nextItem();
+}
+function startFinal() {
+  let pool = [];
+  LEVELS.forEach(l => { l.mc.forEach(d => pool.push({ k: "mc", d, lid: l.id })); l.tf.forEach(d => pool.push({ k: "tf", d, lid: l.id })); });
+  // Mitad de cada unidad, mezcladas
+  const a = shuffle(pool.filter(p => p.lid <= 7)).slice(0, FINAL_N / 2), b = shuffle(pool.filter(p => p.lid > 7)).slice(0, FINAL_N / 2);
+  G = { L: { id: "final", name: "Desafío Final" }, q: shuffle(a.concat(b)), i: 0, ok: 0, tot: 0, xp: 0, final: true, miss: {}, maxStreak: 0 };
+  show("sPlay"); nextItem();
+}
+/* Registra una respuesta: suma puntos, racha y bonos */
+function score(good) {
+  G.tot++;
+  if (good) {
+    G.ok++; S.ok++; streak++; G.maxStreak = Math.max(G.maxStreak, streak);
+    let pts = G.final ? 15 : 10;
+    if (streak > 0 && streak % 3 === 0) { pts += 5; toast("🔥 ¡Racha de " + streak + "! +5 XP extra"); }
+    G.xp += pts; S.xp += pts; SFX.ok();
+    if (streak >= 5) award("streak5"); if (streak >= 10) award("streak10");
+  } else { S.bad++; streak = 0; SFX.bad(); if (G.final) { const it = G.q[G.i]; G.miss[it.lid] = (G.miss[it.lid] || 0) + 1; } }
+  hudPlay();
+}
+function hudPlay() { hud((G.final ? "🏆 Desafío Final" : "Nivel " + G.L.id) + " · Actividad " + Math.min(G.i + 1, G.q.length) + " de " + G.q.length, G.i / G.q.length * 100); }
+function feedback(good, why, right) {
+  const f = $("fb"); f.className = "fb on " + (good ? "ok" : "bad");
+  f.innerHTML = `<b class="t">${good ? "✅ " + pick(CHEERS) : "❌ " + pick(OOPS)}</b>${!good && right ? "La respuesta correcta es: <b>" + esc(right) + "</b>.<br>" : ""}${why ? esc(why) : ""}<div class="btnrow"><button class="btn green" id="bNext">Continuar →</button></div>`;
+  $("bNext").onclick = () => { SFX.click(); G.i++; nextItem(); }; $("bNext").focus();
+}
+function nextItem() {
+  clearInterval(timerInt);
+  if (G.i >= G.q.length) return G.final ? endFinal() : endLevel();
+  hudPlay();
+  const it = G.q[G.i], box = $("playBox");
+  const head = (lbl) => `${G.final ? '<div class="timer"><i id="tBar"></i></div>' : ""}<span class="qtype">${lbl}</span>`;
+  ({ mc: rMC, tf: rTF, fill: rFill, match: rMatch, order: rOrder, sort: rSort, mem: rMem })[it.k](it.d, box, head);
+  if (G.final) runTimer(it);
+  const first = box.querySelector("button.opt, .mcard"); if (first) first.focus({ preventScroll: true });
+}
+function runTimer(it) {
+  let left = FINAL_SECS * 10; const bar = $("tBar");
+  timerInt = setInterval(() => {
+    left--; if (bar) bar.style.width = left / (FINAL_SECS * 10) * 100 + "%";
+    if (left === 50) SFX.tick();
+    if (left <= 0) { clearInterval(timerInt); document.querySelectorAll("#playBox .opt").forEach(b => b.disabled = true); score(false); feedback(false, "⏰ ¡Se acabó el tiempo! " + (it.k === "mc" ? it.d[5] : it.d[2]), it.k === "mc" ? it.d[1] : (it.d[1] ? "Verdadero" : "Falso")); }
+  }, 100);
+}
+/* --- Selección múltiple --- */
+function rMC(d, box, head) {
+  const opts = shuffle(d.slice(1, 5));
+  box.innerHTML = head("🔘 Selección múltiple") + `<div class="q">${esc(d[0])}</div><div class="opts">${opts.map((o, i) => `<button class="opt" data-v="${esc(o)}"><span class="k">${i + 1}</span>${esc(o)}</button>`).join("")}</div><div class="fb" id="fb"></div>`;
+  box.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    clearInterval(timerInt); const good = b.dataset.v === d[1];
+    box.querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x.dataset.v === d[1]) x.classList.add("ok"); });
+    if (!good) b.classList.add("bad"); score(good); feedback(good, d[5], d[1]);
+  });
+}
+/* --- Verdadero o falso --- */
+function rTF(d, box, head) {
+  box.innerHTML = head("✔️ Verdadero o falso") + `<div class="q">${esc(d[0])}</div><div class="opts two"><button class="opt" data-v="1"><span class="k">1</span>✅ Verdadero</button><button class="opt" data-v="0"><span class="k">2</span>❌ Falso</button></div><div class="fb" id="fb"></div>`;
+  box.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    clearInterval(timerInt); const good = (b.dataset.v === "1") === d[1];
+    box.querySelectorAll(".opt").forEach(x => { x.disabled = true; if ((x.dataset.v === "1") === d[1]) x.classList.add("ok"); });
+    if (!good) b.classList.add("bad"); score(good); feedback(good, d[2], d[1] ? "Verdadero" : "Falso");
+  });
+}
+/* --- Completar --- */
+function rFill(d, box, head) {
+  const opts = shuffle(d.slice(1, 4));
+  box.innerHTML = head("✏️ Completa la oración") + `<div class="q">${esc(d[0]).replace("___", '<span class="slot" id="slot">?</span>')}</div><div class="chips">${opts.map((o, i) => `<button class="opt" data-v="${esc(o)}"><span class="k">${i + 1}</span>${esc(o)}</button>`).join("")}</div><div class="fb" id="fb"></div>`;
+  box.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    const good = b.dataset.v === d[1]; $("slot").textContent = d[1];
+    box.querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x.dataset.v === d[1]) x.classList.add("ok"); });
+    if (!good) b.classList.add("bad"); score(good); feedback(good, d[4], d[1]);
+  });
+}
+/* --- Relacionar columnas --- */
+function rMatch(pairs, box, head) {
+  const L = shuffle(pairs.map((p, i) => [p[0], i])), R = shuffle(pairs.map((p, i) => [p[1], i]));
+  let sel = null, left = pairs.length; const failed = new Set();
+  box.innerHTML = head("🔗 Relaciona") + `<div class="q">Toca un concepto y luego su descripción</div><div class="cols"><div class="opts">${L.map(x => `<button class="opt" data-s="L" data-i="${x[1]}">${esc(x[0])}</button>`).join("")}</div><div class="opts">${R.map(x => `<button class="opt" data-s="R" data-i="${x[1]}">${esc(x[0])}</button>`).join("")}</div></div><div class="fb" id="fb"></div>`;
+  box.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    if (b.dataset.s === "L") { box.querySelectorAll('[data-s="L"]').forEach(x => x.classList.remove("sel")); b.classList.add("sel"); sel = b; SFX.click(); return; }
+    if (!sel) { toast("Primero toca un concepto de la izquierda"); return; }
+    if (sel.dataset.i === b.dataset.i) {
+      [sel, b].forEach(x => { x.classList.remove("sel"); x.classList.add("done"); x.disabled = true; });
+      score(!failed.has(sel.dataset.i)); sel = null; left--;
+      if (!left) feedback(failed.size === 0, failed.size === 0 ? "¡Uniste todos los pares sin equivocarte!" : "Lograste unir todos los pares. Repasa los que te costaron.");
+    } else { failed.add(sel.dataset.i); b.classList.add("bad"); SFX.bad(); streak = 0; hudPlay(); setTimeout(() => b.classList.remove("bad"), 450); }
+  });
+}
+/* --- Ordenar --- */
+function rOrder(d, box, head) {
+  let pos = 0, err = 0;
+  box.innerHTML = head("🔢 Ordena") + `<div class="q">${esc(d.p)}</div><ol class="orderlist" id="ol" aria-label="Tu orden"></ol><div class="opts">${shuffle(d.items.map((t, i) => [t, i])).map(x => `<button class="opt" data-i="${x[1]}">${esc(x[0])}</button>`).join("")}</div><div class="fb" id="fb"></div>`;
+  box.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    if (+b.dataset.i === pos) {
+      b.disabled = true; b.classList.add("done"); $("ol").insertAdjacentHTML("beforeend", "<li>" + esc(d.items[pos]) + "</li>"); pos++; SFX.click();
+      if (pos === d.items.length) { score(err === 0); feedback(err === 0, "El orden correcto es: " + d.items.join(" → ") + "."); }
+    } else { err++; b.classList.add("bad"); SFX.bad(); setTimeout(() => b.classList.remove("bad"), 450); toast("Ese todavía no. ¿Cuál va en el lugar " + (pos + 1) + "?"); }
+  });
+}
+/* --- Clasificar --- */
+function rSort(d, box, head) {
+  const items = shuffle(d.items); let i = 0, miss = 0;
+  const draw = () => {
+    box.innerHTML = head("🗂️ Clasifica") + `<div class="q">${esc(d.p)} <span class="muted" style="font-weight:normal">(${i + 1}/${items.length})</span></div><div class="bigitem">${esc(items[i][0])}</div><div class="opts ${d.bins.length === 2 ? "two" : ""}">${d.bins.map((b, k) => `<button class="opt" data-k="${k}" style="text-align:center"><span class="k">${k + 1}</span>${esc(b)}</button>`).join("")}</div><div class="fb" id="fb"></div>`;
+    box.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+      const good = +b.dataset.k === items[i][1];
+      box.querySelectorAll(".opt").forEach(x => { x.disabled = true; if (+x.dataset.k === items[i][1]) x.classList.add("ok"); });
+      if (!good) { b.classList.add("bad"); miss++; } score(good);
+      setTimeout(() => { i++; if (i < items.length) { draw(); const f = box.querySelector(".opt"); if (f) f.focus({ preventScroll: true }); } else { box.querySelectorAll(".opt").forEach(x => x.disabled = true); feedback(miss === 0, miss === 0 ? "¡Clasificaste todo perfecto!" : "Tuviste " + miss + " error(es). Fíjate en las respuestas marcadas en verde."); } }, good ? 600 : 1500);
+    });
+  };
+  draw();
+}
+/* --- Memorama --- */
+function rMem(pairs, box, head) {
+  const cards = shuffle(pairs.flatMap((p, i) => [{ t: p[0], i, em: true }, { t: p[1], i }]));
+  let open = [], found = 0, tries = 0, lock = false;
+  box.innerHTML = head("🧠 Memorama") + `<div class="q">Encuentra cada ser vivo con su adaptación</div><div class="mem">${cards.map((c, k) => `<button class="mcard" data-k="${k}" aria-label="Carta ${k + 1}">❓</button>`).join("")}</div><div class="fb" id="fb"></div>`;
+  box.querySelectorAll(".mcard").forEach(b => b.onclick = () => {
+    const c = cards[+b.dataset.k]; if (lock || b.classList.contains("up")) return;
+    b.classList.add("up"); if (c.em) b.classList.add("em"); b.textContent = c.t; b.setAttribute("aria-label", c.t); SFX.flip(); open.push([b, c]);
+    if (open.length === 2) {
+      tries++; lock = true; const [a, z] = open;
+      if (a[1].i === z[1].i) { a[0].classList.add("hit"); z[0].classList.add("hit"); SFX.ok(); found++; open = []; lock = false;
+        if (found === pairs.length) { const bonus = Math.max(10, 40 - (tries - pairs.length) * 3); G.xp += bonus; S.xp += bonus; hudPlay(); feedback(true, "¡Completaste el memorama en " + tries + " intentos! Bono: +" + bonus + " XP."); }
+      } else setTimeout(() => { open.forEach(([el]) => { el.classList.remove("up", "em"); el.textContent = "❓"; }); open = []; lock = false; }, 900);
+    }
+  });
+}
+/* Teclas 1-4 para responder */
+document.addEventListener("keydown", e => {
+  if (!$("sPlay").classList.contains("on") || !/^[1-4]$/.test(e.key)) return;
+  const b = [...document.querySelectorAll("#playBox .opt")].filter(x => x.querySelector(".k"))[+e.key - 1];
+  if (b && !b.disabled) b.click();
+});
+
+/* =====================================================================
+   7) RESULTADOS
+   ===================================================================== */
+function endLevel() {
+  const L = G.L, pct = Math.round(G.ok / G.tot * 100), st = pct >= 90 ? 3 : pct >= 75 ? 2 : pct >= 50 ? 1 : 0;
+  let bonus = st > 0 ? 30 : 0; if (pct === 100) bonus += 50;
+  S.xp += bonus; const prev = S.stars[L.id] || 0; S.stars[L.id] = Math.max(prev, st);
+  if (!S.best[L.id] || pct > S.best[L.id]) S.best[L.id] = pct;
+  if (st > 0) award("first"); if (pct === 100) award("perfect");
+  if (LEVELS.filter(l => l.u === 4).every(l => S.stars[l.id])) award("u4");
+  if (LEVELS.filter(l => l.u === 5).every(l => S.stars[l.id])) award("u5");
+  save(); if (st > 0) { SFX.win(); confetti(); } else SFX.bad();
+  const msg = st === 3 ? "¡Increíble! Dominas este tema." : st === 2 ? "¡Muy bien! Ya casi lo tienes perfecto." : st === 1 ? "¡Bien! Pasaste el nivel. Repite para ganar más estrellas." : "Todavía no alcanza. Repasa la explicación y vuelve a intentarlo: ¡tú puedes!";
+  const nxt = LEVELS.find(l => l.id === L.id + 1);
+  $("resBox").innerHTML = `<div class="hero">${st > 0 ? L.ic : "💪"}</div><h2>Nivel ${L.id}: ${L.name}</h2><div class="stars" aria-label="${st} de 3 estrellas">${starsTxt(st)}</div><p><b>${msg}</b></p>${st === 3 ? `<p>Nuevo título: <b>${L.rank}</b> 🎖️</p>` : ""}
+    <div class="stats"><div class="stat"><b>${G.ok}/${G.tot}</b>Correctas</div><div class="stat"><b>${pct}%</b>Logro</div><div class="stat"><b>+${G.xp + bonus}</b>XP ganados</div><div class="stat"><b>🔥 ${G.maxStreak}</b>Mejor racha</div></div>
+    ${bonus ? `<p class="muted">Bono por completar el nivel: +30 XP${pct === 100 ? " · Bono puntaje perfecto: +50 XP" : ""}</p>` : ""}
+    <div class="btnrow"><button class="btn gray" id="rAgain">🔁 Repetir nivel</button><button class="btn gray" id="rLearn">📖 Repasar explicación</button>${st > 0 && nxt ? '<button class="btn green" id="rNext">Siguiente nivel →</button>' : ""}${st > 0 && !nxt && finalOpen() ? '<button class="btn gold" id="rFinal">🏆 Ir al Desafío Final</button>' : ""}<button class="btn" id="rMap">🗺️ Mapa</button></div>`;
+  $("rAgain").onclick = () => startPlay(L); $("rLearn").onclick = () => startLearn(L.id); $("rMap").onclick = renderMap;
+  if ($("rNext")) $("rNext").onclick = () => startLearn(nxt.id); if ($("rFinal")) $("rFinal").onclick = startFinal;
+  show("sRes");
+}
+function fmtTime(s) { const m = Math.floor(s / 60); return m + " min " + (s % 60) + " s"; }
+function recs(miss) {
+  // Recomendaciones según los temas más débiles
+  const weak = LEVELS.filter(l => (miss && miss[l.id] >= 2) || (S.best[l.id] !== undefined && S.best[l.id] < 75) || S.best[l.id] === undefined);
+  if (!weak.length) return "<p>🌟 ¡No hay temas débiles! Sigue repasando con las tarjetas para llegar seguro/a a la prueba.</p>";
+  return "<p><b>Te recomiendo repasar:</b></p><ul style='text-align:left;display:inline-block'>" + weak.map(l => `<li>${l.ic} <b>${l.name}</b> ${S.best[l.id] === undefined ? "(aún no lo juegas)" : "(mejor resultado: " + S.best[l.id] + "%)"}${miss && miss[l.id] ? " · " + miss[l.id] + " error(es) en el desafío" : ""}</li>`).join("") + "</ul>";
+}
+function endFinal() {
+  const pct = Math.round(G.ok / G.tot * 100), pass = pct >= 60; let bonus = pass ? 100 : 0; if (pct === 100) bonus += 100;
+  S.xp += bonus; S.finalBest = Math.max(S.finalBest || 0, pct); if (pass) award("final"); save();
+  if (pass) { SFX.win(); confetti(); setTimeout(confetti, 900); }
+  statsScreen(`<div class="hero">${pass ? "🏆" : "💪"}</div><h2>${pass ? "¡Desafío Final superado" : "¡Buen intento"}${S.name ? ", " + esc(S.name) : ""}!</h2><p><b>${G.ok} de ${G.tot}</b> correctas en el desafío (${pct}%) · +${G.xp + bonus} XP</p><p>${pct >= 90 ? "¡Estás listo/a para la prueba de síntesis! 🎓" : pass ? "¡Vas muy bien! Un repaso más y quedas perfecto/a." : "Repasa los niveles recomendados y vuelve a intentarlo."}</p>`, G.miss);
+}
+function statsScreen(top, miss) {
+  const tot = S.ok + S.bad, pct = tot ? Math.round(S.ok / tot * 100) : 0;
+  $("finalBox").innerHTML = (top || `<div class="hero">📊</div><h2>Mis estadísticas</h2>`) + `
+    <div class="stats"><div class="stat"><b>${S.xp}</b>Puntaje total (XP)</div><div class="stat"><b>${S.ok}</b>Respuestas correctas</div><div class="stat"><b>${S.bad}</b>Respuestas incorrectas</div><div class="stat"><b>${pct}%</b>Porcentaje de logro</div><div class="stat"><b>${fmtTime(S.secs)}</b>Tiempo de estudio</div><div class="stat"><b>${totalStars()}/30</b>Estrellas</div></div>
+    <p>Nivel alcanzado: <b>${rankOf(S.xp)}</b></p>
+    <p>Medallas: ${S.badges.length ? S.badges.map(id => { const b = BADGES.find(x => x[0] === id); return b[1] + " " + b[2]; }).join(" · ") : "todavía ninguna"}</p>
+    ${recs(miss)}
+    <div class="btnrow"><button class="btn" id="fMap">🗺️ Volver al mapa</button><button class="btn gold" id="fCards">🃏 Tarjetas de repaso</button>${finalOpen() ? '<button class="btn green" id="fAgain">🏆 Jugar el Desafío otra vez</button>' : ""}<button class="btn gray" id="fReset">🔄 Volver a jugar desde cero</button></div>`;
+  $("fMap").onclick = renderMap; $("fCards").onclick = startFlash; if ($("fAgain")) $("fAgain").onclick = startFinal;
+  $("fReset").onclick = () => { const b = $("fReset"); if (b.dataset.sure) { const n = S.name, snd = S.sound; S = fresh(); S.name = n; S.sound = snd; streak = 0; save(); renderMap(); toast("¡Todo listo para empezar de nuevo!"); } else { b.dataset.sure = 1; b.textContent = "⚠️ Toca otra vez para borrar todo tu progreso"; } };
+  show("sFinal");
+}
+
+/* =====================================================================
+   8) TARJETAS DE REPASO (FLASHCARDS)
+   ===================================================================== */
+function startFlash() {
+  let filt = 0, deck = [], i = 0;
+  const build = () => { deck = []; LEVELS.filter(l => !filt || l.u === filt).forEach(l => l.flash.forEach((f, k) => deck.push({ f, l, id: l.id + "-" + k }))); i = 0; };
+  const draw = () => {
+    const c = deck[i]; if (!S.cardsSeen.includes(c.id)) { S.cardsSeen.push(c.id); save(); }
+    const all = LEVELS.reduce((a, l) => a + l.flash.length, 0); if (S.cardsSeen.length >= all) award("cards");
+    $("flashBox").innerHTML = `<h2>🃏 Tarjetas de repaso</h2><div class="btnrow" style="margin-top:0"><button class="btn ${filt === 0 ? "" : "gray"}" data-f="0">Todas</button><button class="btn ${filt === 4 ? "orange" : "gray"}" data-f="4">Unidad 4</button><button class="btn ${filt === 5 ? "green" : "gray"}" data-f="5">Unidad 5</button></div>
+      <p class="muted" style="margin:.6em 0 0">Tarjeta ${i + 1} de ${deck.length} · ${c.l.ic} ${c.l.name}</p>
+      <div class="flash"><button class="flash-in" id="fc" aria-label="Girar tarjeta"><span class="face front">${esc(c.f[0])}<small>👆 Toca para ver la respuesta</small></span><span class="face back">${esc(c.f[1])}</span></button></div>
+      <div class="btnrow"><button class="btn gray" id="fPrev">← Anterior</button><button class="btn gold" id="fMix">🔀 Mezclar</button><button class="btn" id="fNext">Siguiente →</button></div><div class="btnrow"><button class="btn gray" id="fBack">🗺️ Volver al mapa</button></div>`;
+    $("fc").onclick = () => { $("fc").classList.toggle("flip"); SFX.flip(); };
+    $("fPrev").onclick = () => { i = (i - 1 + deck.length) % deck.length; SFX.click(); draw(); };
+    $("fNext").onclick = () => { i = (i + 1) % deck.length; SFX.click(); draw(); };
+    $("fMix").onclick = () => { deck = shuffle(deck); i = 0; SFX.star(); draw(); };
+    $("fBack").onclick = renderMap;
+    $("flashBox").querySelectorAll("[data-f]").forEach(b => b.onclick = () => { filt = +b.dataset.f; build(); draw(); });
+    hud("Tarjetas vistas: " + S.cardsSeen.length + " de " + all, S.cardsSeen.length / all * 100);
+  };
+  show("sFlash"); build(); draw();
+}
+document.addEventListener("keydown", e => {
+  if (!$("sFlash").classList.contains("on")) return;
+  if (e.key === "ArrowRight") $("fNext").click(); if (e.key === "ArrowLeft") $("fPrev").click();
+});
+
+/* =====================================================================
+   9) INICIO
+   ===================================================================== */
+load(); $("inName").value = S.name || "";
+if (S.xp > 0) $("bStart").textContent = "Continuar mi aventura 🚀";
+$("bStart").onclick = () => { S.name = $("inName").value.trim(); save(); SFX.win(); renderMap(); };
+$("inName").addEventListener("keydown", e => { if (e.key === "Enter") $("bStart").click(); });
+$("bMap").onclick = () => { SFX.click(); renderMap(); };
+$("bSound").onclick = () => { S.sound = !S.sound; save(); hud(); SFX.click(); };
+$("bFlash").onclick = () => { SFX.click(); startFlash(); };
+$("bStats").onclick = () => { SFX.click(); statsScreen(); };
+</script>
+</body>
+</html>
